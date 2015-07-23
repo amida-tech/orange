@@ -7697,7 +7697,7 @@ a.button {
 
 .item-error {
   background-color: #FA2E20;
-  padding: 6px 12px; }
+  padding: 12px 12px; }
   .item-error p {
     color: #fff;
     font-size: 12px;
@@ -7762,21 +7762,27 @@ a.button {
     font-weight: bold; }
 
 .list.list-schedule {
-  margin-top: 0; }
+  margin-top: 0;
+  border-color: #fff;
+  border-radius: 0; }
   .list.list-schedule .row, .list.list-schedule .col {
     padding: 0; }
-  .list.list-schedule .med-title {
-    line-height: 1.2; }
-    .list.list-schedule .med-title .med-name {
-      font-weight: normal; }
-    .list.list-schedule .med-title .med-rx {
-      text-transform: uppercase;
-      font-size: 11px;
-      font-weight: bold; }
-  .list.list-schedule .actions {
-    text-align: right;
-    font-size: 35px;
-    line-height: 35px; }
+  .list.list-schedule .item-schedule {
+    border: none; }
+    .list.list-schedule .item-schedule:not(:last-child) {
+      border-bottom: 2px solid #E0E0E0; }
+    .list.list-schedule .item-schedule .med-title {
+      line-height: 1.2; }
+      .list.list-schedule .item-schedule .med-title .med-name {
+        font-weight: normal; }
+      .list.list-schedule .item-schedule .med-title .med-rx {
+        text-transform: uppercase;
+        font-size: 11px;
+        font-weight: bold; }
+    .list.list-schedule .item-schedule .actions {
+      text-align: right;
+      font-size: 35px;
+      line-height: 35px; }
 
 .list.orange-list {
   background-color: #fff; }
@@ -7835,10 +7841,12 @@ a.button {
   border-color: #EDAE36;
   background-color: #EDAE36;
   background-image: linear-gradient(0deg, #EDAE36, #EDAE36 50%, transparent 50%);
-  color: #f8f8f8;
+  color: #fff;
   font-weight: normal; }
   .bar.bar-orange .title {
-    color: #f8f8f8; }
+    color: #fff; }
+  .bar.bar-orange .button-clear {
+    color: #fff; }
   .bar.bar-orange .title {
     font-weight: 400; }
   .bar.bar-orange.bar-footer {
@@ -7884,3 +7892,43 @@ a.button {
   .orange-avatar .log-avatar {
     position: relative;
     top: -46px; }
+
+.onboarding .slider {
+  height: 90%;
+  padding-top: 30%; }
+  .onboarding .slider h1, .onboarding .slider p {
+    margin-top: 40px;
+    text-align: center;
+    color: #fff; }
+  .onboarding .slider .slider-pager .slider-pager-page {
+    margin: 0 1px;
+    color: #f8f8f8;
+    opacity: .8; }
+    .onboarding .slider .slider-pager .slider-pager-page.active {
+      color: #4D4D4D;
+      opacity: .8; }
+    .onboarding .slider .slider-pager .slider-pager-page .icon {
+      font-size: 8.8px; }
+.onboarding .bar.bar-footer {
+  height: 70px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 16px; }
+  .onboarding .bar.bar-footer .button {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 0;
+    margin: 0; }
+    .onboarding .bar.bar-footer .button.create-account {
+      width: 56%;
+      position: absolute;
+      top: 0;
+      left: 16px;
+      bottom: 16px;
+      border-color: #fff; }
+    .onboarding .bar.bar-footer .button.sign-up {
+      width: 32%;
+      top: 0;
+      right: 16px;
+      bottom: 16px; }

@@ -54,7 +54,7 @@ $log-size: 80px;
 
 .item-error {
   background-color: $red;
-  padding: $padding-base-vertical $padding-base-horizontal;
+  padding: $padding-base-horizontal $padding-base-horizontal;
   p {
     color: $light;
     font-size: $font-size-small + 1;
@@ -142,24 +142,32 @@ $log-size: 80px;
 
 .list.list-schedule {
   margin-top: 0;
+  border-color: $light;
+  border-radius: 0;
   .row, .col {
     padding: 0;
   }
-  .med-title {
-    line-height: 1.2;
-    .med-name {
-      font-weight: normal;
+  .item-schedule {
+    border: none;
+    &:not(:last-child) {
+      border-bottom: 2px solid $lightgray;
     }
-    .med-rx {
-      text-transform: uppercase;
-      font-size: $font-size-small;
-      font-weight: bold;
+    .med-title {
+      line-height: 1.2;
+      .med-name {
+        font-weight: normal;
+      }
+      .med-rx {
+        text-transform: uppercase;
+        font-size: $font-size-small;
+        font-weight: bold;
+      }
     }
-  }
-  .actions {
-    text-align: right;
-    font-size: $font-size-base * 2.5;
-    line-height: $font-size-base * 2.5;
+    .actions {
+      text-align: right;
+      font-size: $font-size-base * 2.5;
+      line-height: $font-size-base * 2.5;
+    }
   }
 }
 
@@ -236,8 +244,12 @@ $log-size: 80px;
 }
 
 .bar.bar-orange {
-  @include bar-style($orange, $orange, $stable);
+  @include bar-style($orange, $orange, $light);
   font-weight: normal;
+
+  .button-clear {
+    color: $light;
+  }
   .title {
     font-weight: 400;
   }
@@ -304,5 +316,60 @@ $log-size: 80px;
 
 }
 
+.onboarding {
 
+  .slider {
+    height: 90%;
+    padding-top: 30%;
+    h1, p {
+      margin-top: $padding-large-vertical * 4;
+      text-align: center;
+      color: $light;
+    }
+    .slider-pager {
+      .slider-pager-page {
+        margin: 0 1px;
+        color: $stable;
+        opacity: .8;
+        &.active {
+          color: $dark;
+          opacity: .8;
+        }
+        .icon {
+          font-size: $font-size-small * 0.8;
+        }
+      }
+    }
+  }
+
+  .bar.bar-footer {
+    height: 70px;
+    padding-left: $padding-large-horizontal;
+    padding-right: $padding-large-horizontal;
+    padding-bottom: $padding-large-horizontal;
+
+    .button {
+      display: inline-block;
+      font-size: $font-size-base;
+      font-weight: bold;
+      padding: 0;
+      margin: 0;
+
+      &.create-account {
+        width: 56%;
+        position: absolute;
+        top: 0;
+        left: $padding-large-horizontal;
+        bottom: $padding-large-horizontal;
+        border-color: $light;
+      }
+      &.sign-up {
+        width: 32%;
+        top: 0;
+        right: $padding-large-horizontal;
+        bottom: $padding-large-horizontal;
+      }
+    }
+  }
+}
 

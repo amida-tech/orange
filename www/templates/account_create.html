@@ -1,0 +1,41 @@
+<ion-view view-title="">
+    <ion-header-bar class="bar-orange">
+        <button ui-sref="onboarding" class="button back-button button-clear header-item">
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+        <div class="title">Create Account</div>
+    </ion-header-bar>
+    <ion-content padding="true" class="orange-bg">
+        <div class="card orange-card">
+            <div class="item item-error">
+                <p>This is an error.</p>
+
+                <p>Lorem ipsum dolor sit amet.</p>
+            </div>
+            <div class="item item-body">
+                <form class="orange-form">
+                    <label class="item-input">
+                        <input type="text" placeholder="Full Name"/>
+                    </label>
+                    <label class="item-input">
+                        <input type="email" placeholder="Email"/>
+                    </label>
+
+                    <label class="item-input">
+                        <input type="password" placeholder="Password"/>
+                    </label>
+                    <label class="item-input">
+                        <input type="password" placeholder="Confirm Password"/>
+                    </label>
+                    <label class="checkbox checkbox-square checkbox-orange">
+                        <input type="checkbox"/>
+                        I agree to the Terms of Use
+                    </label>
+                </form>
+            </div>
+            <div class="item item-button">
+                <button class="button button-full button-orange" ui-sref="app.today">Sign Up</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
