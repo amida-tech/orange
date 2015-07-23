@@ -1,0 +1,249 @@
+<ion-view view-title="Orange Components">
+    <ion-content class="orange-bg">
+        <h3>Main Screen</h3>
+        <hr/>
+        <div class="row row-bottom schedule-header">
+            <div class="col col-50 schedule-header-left">7:00 am</div>
+            <div class="col col-50 schedule-header-right">Skipped</div>
+        </div>
+        <div class="list list-inset list-schedule">
+            <div class="item item-schedule">
+                <div class="row row-center">
+                    <div class="col col-80 med-title">
+                        <p class="med-name">Atripla</p>
+
+                        <p class="med-rx">EFAVIRENZ/EMTRICITABINE/TENOFOV</p>
+                    </div>
+                    <div class="col col-20 actions">
+                        <i class="icon ion-ios-checkmark green"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-schedule">
+                <div class="row row-center">
+                    <div class="col col-75 med-title">
+                        <p class="med-name">Aciphex (20mg; 1 tablet)</p>
+                        <p class="med-rx">RABEPRAZOLE</p>
+                    </div>
+                    <div class="col col-25 actions">
+                        <i class="icon ion-ios-checkmark-outline green"></i>
+                        <i class="icon ion-ios-close-outline dark-red"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item item-schedule">
+                <div class="row row-center">
+                    <div class="col col-80 med-title">
+                    <p class="med-name">Tylenol</p>
+                    <p class="med-rx">ACETAMINOPHEN</p>
+                    </div>
+                    <div class="actions col col-20">
+                        <i class="icon ion-ios-close dark-red"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Request Sent</h3>
+        <hr/>
+        <div class="item-large-icon text-center">
+            <i class="icon ion-checkmark-circled"></i>
+        </div>
+
+        <div class="card orange-card">
+            <div class="item item-text-wrap">
+                <h3>Request Sent</h3>
+
+                <p>A request has been sent to <strong>jberry@gmail.com</strong> for approval. Once approved, new logs
+                    will automatically be added to you logs list.</p>
+            </div>
+            <div class="item item-button">
+                <button class="button button-full button-orange">Continue</button>
+            </div>
+        </div>
+        <h3>New Medication</h3>
+        <hr/>
+        <div class="list orange-list">
+            <div class="item item-title">
+                <p>Strattera (18mg)<br><strong>ATMOXETINE</strong></p>
+
+            </div>
+            <div class="item item-text-wrap">
+                <p class="text-muted">When is this medicaiton taken?</p>
+
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : b1 == 1}" ng-click="b1 = 1">As Needed</a>
+                    <a class="button" ng-class="{'active' : b1 == 2}" ng-click="b1 = 2">On a Schedule</a>
+                    <a class="button" ng-class="{'active' : b1 == 3}" ng-click="b1 = 3">Both</a>
+                </div>
+            </div>
+            <div class="item item-text-wrap">
+                <p>For how long</p>
+
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : b2 == 1}" ng-click="b2 = 1">Ongoing</a>
+                    <a class="button" ng-class="{'active' : b2 == 2}" ng-click="b2 = 2"># of Times</a>
+                    <a class="button" ng-class="{'active' : b2 == 3}" ng-click="b2 = 3">Until Set Date</a>
+                </div>
+            </div>
+            <div class="item item-text-wrap">
+                <p>For how long</p>
+
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : b3 == 1}" ng-click="b3 = 1">Dayily</a>
+                    <a class="button" ng-class="{'active' : b3 == 2}" ng-click="b3 = 2">Weekly</a>
+                    <a class="button" ng-class="{'active' : b3 == 3}" ng-click="b3 = 3">Monthly</a>
+                </div>
+                <p>Which days?</p>
+
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : wd == 1}" ng-click="wd = 1">SUN</a>
+                    <a class="button" ng-class="{'active' : wd == 2}" ng-click="wd = 2">MON</a>
+                    <a class="button" ng-class="{'active' : wd == 3}" ng-click="wd = 3">TUE</a>
+                    <a class="button" ng-class="{'active' : wd == 4}" ng-click="wd = 4">WED</a>
+                    <a class="button" ng-class="{'active' : wd == 5}" ng-click="wd = 5">THU</a>
+                    <a class="button" ng-class="{'active' : wd == 6}" ng-click="wd = 6">FRI</a>
+                    <a class="button" ng-class="{'active' : wd == 7}" ng-click="wd = 7">SAT</a>
+                </div>
+            </div>
+            <div class="item item-footer orange-form">
+                <p>How many times a day do you take this medicine?</p>
+                <label class="item-input">
+                    <input type="text" placeholder="Number"/>
+                </label>
+            </div>
+        </div>
+
+        <h3>Request Log</h3>
+        <hr/>
+        <div class="card orange-card">
+
+            <div class="item item-body">
+                <form class="orange-form">
+                    <p>To add logs from an existing account, please
+                        begin by sending a request to the account holder.</p>
+
+                    <p>Once approved, the account holder can choose
+                        which logs to share with you.</p>
+                    <label class="item item-input">
+                        <i class="icon ion-ios-checkmark-outline icon-right"></i>
+                        <input type="email" placeholder="Account Email" value="jberry@gmail.com"/>
+                    </label>
+                </form>
+            </div>
+            <div class="item item-button">
+                <button class="button button-full button-orange">Request Access</button>
+            </div>
+        </div>
+        <h3>Add New Log</h3>
+        <hr/>
+        <div class="card orange-card with-avatar">
+            <div class="orange-avatar">
+                <div class="item-log">
+                    <div class="log-avatar">
+                        <div class="log-caption">+</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="item item-body">
+                <form class="orange-form">
+                    <p class="item-input">John Berry</p>
+                    <label class="item-input">
+                        <input type="text" placeholder="Date of Birth (Optional)"/>
+                    </label>
+                    <label class="item-input">
+                        <input type="text" placeholder="Gender (Optional)"/>
+                    </label>
+                </form>
+            </div>
+            <div class="item item-button">
+                <button class="button button-full button-orange">Add Log</button>
+            </div>
+
+        </div>
+        <h3>Sign Up</h3>
+        <hr/>
+        <div class="card orange-card">
+            <div class="item item-error">
+                <p>This is an error.</p>
+
+                <p>Lorem ipsum dolor sit amet.</p>
+            </div>
+            <div class="item item-body">
+                <form class="orange-form">
+                    <label class="item-input">
+                        <input type="text" placeholder="Full Name"/>
+                    </label>
+                    <label class="item-input">
+                        <input type="email" placeholder="Email"/>
+                    </label>
+
+                    <label class="item-input">
+                        <input type="password" placeholder="Password"/>
+                    </label>
+                    <label class="item-input">
+                        <input type="password" placeholder="Confirm Password"/>
+                    </label>
+                    <label class="checkbox checkbox-square checkbox-orange">
+                        <input type="checkbox"/>
+                        I agree to the Terms of Use
+                    </label>
+                </form>
+            </div>
+            <div class="item item-button">
+                <button class="button button-full button-orange">Sign Up</button>
+            </div>
+        </div>
+
+        <h3>Logs</h3>
+        <hr/>
+        <div class="list">
+            <div class="orange-logs item item-text-wrap">
+                <div class="row">
+                    <div class="col col-33">
+                        <div class="item-log">
+                            <div class="log-avatar">
+                                <div class="log-caption">AW</div>
+                            </div>
+
+                            <div class="log-title">Amy West</div>
+                        </div>
+                    </div>
+                    <div class="col col-33">
+                        <div class="item-log">
+                            <div class="log-avatar">
+                                <div class="log-caption">AW</div>
+                            </div>
+
+                            <div class="log-title">Amy West</div>
+                        </div>
+                    </div>
+                    <div class="col col-33">
+                        <div class="item-log">
+                            <div class="log-avatar">
+                                <div class="log-caption">AW</div>
+                            </div>
+
+                            <div class="log-title">Amy West</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-33">
+                        <div class="item-log">
+                            <div class="log-avatar active">
+                                <div class="log-caption">EL</div>
+                            </div>
+
+                            <div class="log-title">Existing<br/>Log</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

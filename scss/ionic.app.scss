@@ -1,23 +1,308 @@
-/*
-To customize the look and feel of Ionic, you can override the variables
-in ionic's _variables.scss file.
+$light: #fff !default;
+$stable: #f8f8f8 !default;
+$positive: #387ef5 !default;
+$calm: #11c1f3 !default;
+$balanced: #33cd5f !default;
+$energized: #ffc900 !default;
+$assertive: #ef473a !default;
+$royal: #886aea !default;
+$dark: #4D4D4D !default;
 
-For example, you might change some of the default colors:
-
-$light:                           #fff !default;
-$stable:                          #f8f8f8 !default;
-$positive:                        #387ef5 !default;
-$calm:                            #11c1f3 !default;
-$balanced:                        #33cd5f !default;
-$energized:                       #ffc900 !default;
-$assertive:                       #ef473a !default;
-$royal:                           #886aea !default;
-$dark:                            #444 !default;
-*/
+$card-border-radius: 3px !default;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
-@import "www/lib/ionic/scss/ionic";
+@import "../www/lib/ionic/scss/ionic";
+
+// Colors
+$orange: #EDAE36;
+$orange-ligth: #F7D69A;
+$red: #FA2E20;
+$dark-red: #D0021B;
+$green: #47B51F;
+$gray: #9E9A9A;
+$lightgray: #E0E0E0;
+
+// Sizes
+$log-size: 80px;
+
+.orange-bg {
+  background-color: $orange;
+  h3 {
+    color: $stable;
+    text-align: center;
+  }
+}
+
+.green {
+  color: $green;
+}
+
+.red {
+  color: $red;
+}
+
+.dark-red {
+  color: $dark-red;
+}
+
+.text-muted {
+  color: $gray;
+}
+
+.item-error {
+  background-color: $red;
+  padding: $padding-base-vertical $padding-base-horizontal;
+  p {
+    color: $light;
+    font-size: $font-size-small + 1;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+}
+
+.checkbox-orange {
+  @include checkbox-style($checkbox-off-border-default, $orange, $orange);
+}
+
+.button.button-orange {
+  background-color: $orange-ligth;
+  border-color: $orange-ligth;
+}
+
+.orange-form {
+  p.item-input {
+    padding-left: $padding-base-horizontal;
+  }
+  .item-input {
+    padding-left: 0;
+    padding-bottom: $padding-base-horizontal;
+
+    .icon.icon-right {
+      display: block;
+      position: absolute;
+      font-size: 30px;
+      right: $padding-base-horizontal;
+      color: $green;
+      line-height: 42px;
+    }
+
+    input {
+      border: 1px solid $lightgray;
+      border-radius: $card-border-radius;
+      padding: $padding-large-vertical * 2 $padding-base-horizontal;
+    }
+  }
+  .checkbox {
+    display: block;
+    padding: 0;
+    top: -6px;
+    line-height: 1;
+    input[type="checkbox"] {
+      display: inline-block;
+      margin: 0;
+      padding-top: 0;
+      top: 8px;
+
+      &:before {
+        margin-left: 0;
+      }
+
+      &:after {
+        left: 15%;
+        top: 27%
+      }
+    }
+  }
+}
+
+.schedule-header {
+  color: $light;
+
+  &, col {
+    padding-bottom: 0;
+  }
+
+  .schedule-header-left {
+    font-size: $font-size-base * 1.5;
+    font-weight: normal;
+  }
+  .schedule-header-right {
+    text-align: right;
+    text-transform: uppercase;
+    font-size: $font-size-base * 0.7;
+    line-height: 1;
+    font-weight: bold;
+  }
+}
+
+.list.list-schedule {
+  margin-top: 0;
+  .row, .col {
+    padding: 0;
+  }
+  .med-title {
+    line-height: 1.2;
+    .med-name {
+      font-weight: normal;
+    }
+    .med-rx {
+      text-transform: uppercase;
+      font-size: $font-size-small;
+      font-weight: bold;
+    }
+  }
+  .actions {
+    text-align: right;
+    font-size: $font-size-base * 2.5;
+    line-height: $font-size-base * 2.5;
+  }
+}
+
+.list.orange-list {
+  background-color: $light;
+  .item {
+    margin-right: $padding-base-horizontal;
+    margin-left: $padding-base-horizontal;
+    border: none;
+    &:not(:last-child) {
+      border-bottom: 2px solid $lightgray;
+    }
+    &.item-title {
+      border-width: 3px;
+    }
+
+    &.item-footer {
+      border-top: 1px solid $lightgray;
+    }
+    &.item-text-wrap {
+      p {
+        color: $gray;
+        font-weight: 700;
+        &:not(:first-child) {
+          margin-top: $padding-base-horizontal * 2;
+        }
+      }
+    }
+  }
+  .button-bar {
+    box-shadow: 0 0 2px $orange-ligth;
+    .button {
+      padding: 0;
+      margin: 0;
+      font-size: 12px;
+      line-height: 22px;
+      min-height: 24px;
+      height: 24px;
+      min-width: 0;
+      border-color: $orange;
+      background-color: $light;
+      &.active {
+        background-color: $orange;
+        color: $stable;
+      }
+    }
+  }
+}
+
+.card.orange-card {
+  h3 {
+    color: $dark;
+    font-size: 24px;
+    margin-bottom: $padding-large-horizontal;
+  }
+  &.with-avatar {
+    margin-top: $log-size / 2 + $padding-base-horizontal;
+  }
+  border: none;
+  overflow: visible;
+  .item {
+    border: none;
+  }
+  .item.item-button {
+    padding: 0;
+    .button {
+      margin: 0;
+      font-size: 18px;
+      padding: $padding-base-vertical;
+      border-bottom-left-radius: $card-border-radius;
+      border-bottom-right-radius: $card-border-radius;
+    }
+  }
+}
+
+.bar.bar-orange {
+  @include bar-style($orange, $orange, $stable);
+  font-weight: normal;
+  .title {
+    font-weight: 400;
+  }
+  &.bar-footer {
+    background-image: linear-gradient(180deg, $bar-light-border, $bar-light-border 50%, transparent 50%);
+  }
+}
+
+.item-large-icon {
+  margin: $list-header-margin-top auto;
+  .icon {
+    font-size: $item-icon-font-size * 3;
+    color: $light;
+  }
+}
+
+.orange-logs,
+.orange-avatar {
+  text-align: left;
+
+  .item-log {
+    display: inline-block;
+    width: $log-size;
+    margin: $padding-base-vertical;
+
+    .log-avatar {
+      width: $log-size;
+      height: $log-size;
+      background-color: $orange-ligth;
+      border-radius: 50%;
+      &.active {
+        background-color: $orange;
+      }
+
+      .log-caption {
+        display: inline-block;
+        width: $log-size;
+        height: $log-size;
+        text-align: center;
+        font-size: $log-size / 2.5;
+        color: $stable;
+
+        line-height: $log-size;
+        position: relative;
+        top: 0;
+
+      }
+    }
+    .log-title {
+      text-align: center;
+      margin-top: $padding-base-vertical;
+      line-height: 1.2;
+    }
+  }
+}
+
+.orange-avatar {
+  text-align: center;
+  margin-bottom: -$log-size / 2 - $padding-base-vertical * 2;
+  .log-avatar {
+    position: relative;
+    top: -$log-size / 2 - $padding-base-vertical;
+  }
+
+}
+
+
 
