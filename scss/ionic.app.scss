@@ -9,6 +9,7 @@ $royal: #886aea !default;
 $dark: #4D4D4D !default;
 
 $card-border-radius: 3px !default;
+//$menu-width: 220px !default;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
@@ -27,6 +28,8 @@ $lightgray: #E0E0E0;
 
 // Sizes
 $log-size: 80px;
+$avatar-size: 60px;
+
 
 .orange-bg {
   background-color: $orange;
@@ -34,6 +37,14 @@ $log-size: 80px;
     color: $stable;
     text-align: center;
   }
+}
+
+.orange {
+  color: $orange;
+}
+
+.orange-light {
+  color: $orange-ligth;
 }
 
 .green {
@@ -72,6 +83,13 @@ $log-size: 80px;
 .button.button-orange {
   background-color: $orange-ligth;
   border-color: $orange-ligth;
+  &.button-outline {
+    background-color: transparent;
+    color: $orange-ligth;
+  }
+  &.activated {
+    opacity: 0.5;
+  }
 }
 
 .orange-form {
@@ -247,14 +265,44 @@ $log-size: 80px;
   @include bar-style($orange, $orange, $light);
   font-weight: normal;
 
-  .button-clear {
+  .button-clear,
+  .button-icon {
     color: $light;
   }
   .title {
     font-weight: 400;
   }
+
+  .button-profile {
+    margin: 0;
+    line-height: 1;
+    min-height: 0;
+    height: 25px;
+    top: $padding-small-vertical;
+    right: $padding-base-horizontal;
+  }
+
+  .button-dose {
+    top: 1px;
+    &:before {
+      font-size: $font-size-small * 2.2;
+    }
+  }
+
+  &.orange-light {
+    color: $orange-ligth;
+    .button-clear,
+    .button-icon,
+    .button-outline,
+    .title, {
+
+      color: $orange-ligth;
+      font-weight: bold;
+    }
+  }
+
   &.bar-footer {
-    background-image: linear-gradient(180deg, $bar-light-border, $bar-light-border 50%, transparent 50%);
+    //background-image: linear-gradient(180deg, $bar-light-border, $bar-light-border 50%, transparent 50%);
   }
 }
 
@@ -347,6 +395,9 @@ $log-size: 80px;
     padding-left: $padding-large-horizontal;
     padding-right: $padding-large-horizontal;
     padding-bottom: $padding-large-horizontal;
+    border-top: 1px solid $orange;
+    margin: 0;
+
 
     .button {
       display: inline-block;
@@ -373,3 +424,69 @@ $log-size: 80px;
   }
 }
 
+.orange-menu {
+  background: $dark;
+  .menu.menu-left {
+    background-color: $dark;
+    .scroll-content, .scroll {
+      height: 100%;
+    }
+    .avatar {
+      padding-top: $padding-large-vertical * 3;
+      text-align: center;
+      padding-bottom: $padding-large-vertical;
+      .avatar-img {
+        display: inline-block;
+        width: $avatar-size;
+        height: $avatar-size;
+        border-radius: 50%;
+        background-color: $orange;
+      }
+      p {
+        color: $light;
+        font-size: $font-size-base + 2;
+      }
+    }
+    .bottom-list {
+      display: block;
+      position: absolute;
+      bottom: $padding-large-vertical;
+    }
+    .list {
+      .item {
+        margin: auto $padding-large-horizontal * 2.5 auto $padding-large-horizontal;
+        border: none;
+        width: $menu-width - $padding-large-horizontal * 3.5;
+        &:not(:last-child) {
+          border-bottom: 1px solid $gray;
+        }
+
+        .item-content, &.item-email {
+
+          background-color: $dark;
+          color: $lightgray;
+          text-transform: uppercase;
+          font-weight: bold;
+          padding-top: $padding-large-vertical;
+          padding-bottom: $padding-large-vertical;
+          font-size: $font-size-base;
+
+          &:hover, &:active, &.active {
+            color: $light;
+          }
+        }
+        &.item-email {
+          font-size: $font-size-small;
+          padding-top: 0;
+          padding-bottom: $padding-small-vertical;
+          text-transform: lowercase;
+        }
+      }
+    }
+  }
+}
+
+// Fix border on android devices
+.grade-b .menu-content, .grade-c .menu-content {
+  border: none;
+}

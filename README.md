@@ -16,7 +16,6 @@ Restore the platforms and plugins from package.json:
 
 ```
 ionic state restore
-
 ```
 
 And then...
