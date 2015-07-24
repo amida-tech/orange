@@ -7975,7 +7975,8 @@ a.button {
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background-color: #EDAE36; }
+        background: transparent url('../img/ionic.png') no-repeat center;
+        background-size: 90%; }
       .orange-menu .menu.menu-left .avatar p {
         color: #fff;
         font-size: 16px; }

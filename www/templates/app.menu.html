@@ -1,20 +1,5 @@
 <ion-side-menus enable-menu-with-back-views="false" class="orange-menu">
     <ion-side-menu-content>
-        <ion-nav-bar class="bar-orange orange-light" align-title="left">
-            <ion-nav-back-button>
-            </ion-nav-back-button>
-
-            <ion-nav-buttons side="left">
-                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-                </button>
-
-            </ion-nav-buttons>
-            <ion-nav-buttons side="right">
-                <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
-                <button class="button button-icon button-clear button-small ion-plus button-dose"></button>
-            </ion-nav-buttons>
-
-        </ion-nav-bar>
         <ion-nav-view name="menuContent"></ion-nav-view>
     </ion-side-menu-content>
 
@@ -30,29 +15,29 @@
                 <ion-item menu-close ui-sref="app.today">
                     Today
                 </ion-item>
-                <ion-item menu-close ui-sref="app.components">
+                <ion-item menu-close ui-sref="app.notes">
                     Notes
                 </ion-item>
-                <ion-item menu-close ui-sref="app.components">
+                <ion-item menu-close ui-sref="app.medications">
                     Medications
                 </ion-item>
-                <ion-item menu-close ui-sref="app.components">
+                <ion-item menu-close ui-sref="app.doctors">
                     Doctors
                 </ion-item>
-                <ion-item menu-close ui-sref="app.components">
+                <ion-item menu-close ui-sref="app.pharmacies">
                     Pharmacies
                 </ion-item>
             </ion-list>
             <div class="bottom-list">
                 <ion-list>
                     <ion-item class="item-email">accountemail@domain.com</ion-item>
-                    <ion-item menu-close ui-sref="app.components">
+                    <ion-item menu-close ui-sref="app.logs">
                         Logs
                     </ion-item>
-                    <ion-item menu-close ui-sref="app.components">
-                        Notificaiton
+                    <ion-item menu-close ui-sref="app.notifications">
+                        Notificaitons
                     </ion-item>
-                    <ion-item menu-close ui-sref="app.components">
+                    <ion-item menu-close ui-sref="app.settings">
                         Settings
                     </ion-item>
                 </ion-list>

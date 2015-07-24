@@ -27,13 +27,13 @@ angular.module('orange', ['ionic'])
                     .state('app', {
                         url: '/app',
                         abstract: true,
-                        templateUrl: 'templates/menu.html'
+                        templateUrl: 'templates/app.menu.html'
                     })
                     .state('app.today', {
                         url: '/today',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/today.html',
+                                templateUrl: 'templates/app.today.html',
                                 controller: 'TodayCtrl'
                             }
                         }
@@ -42,8 +42,64 @@ angular.module('orange', ['ionic'])
                         url: '/components',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/orange-components.html',
+                                templateUrl: 'templates/app.components.html',
                                 controller: 'ComponentsCtrl'
+                            }
+                        }
+                    })
+                    .state('app.notes', {
+                        url: '/notes',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.notes.html'
+                            }
+                        }
+                    })
+                    .state('app.medications', {
+                        url: '/medications',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.medications.html'
+                            }
+                        }
+                    })
+                    .state('app.doctors', {
+                        url: '/doctors',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.doctors.html'
+                            }
+                        }
+                    })
+                    .state('app.pharmacies', {
+                        url: '/pharmacies',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.pharmacies.html'
+                            }
+                        }
+                    })
+                    .state('app.logs', {
+                        url: '/logs',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.logs.html'
+                            }
+                        }
+                    })
+                    .state('app.notifications', {
+                        url: '/notifications',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.notifications.html'
+                            }
+                        }
+                    })
+                    .state('app.settings', {
+                        url: '/settings',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.settings.html'
                             }
                         }
                     })

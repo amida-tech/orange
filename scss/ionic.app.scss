@@ -39,6 +39,7 @@ $avatar-size: 60px;
   }
 }
 
+
 .orange {
   color: $orange;
 }
@@ -440,7 +441,8 @@ $avatar-size: 60px;
         width: $avatar-size;
         height: $avatar-size;
         border-radius: 50%;
-        background-color: $orange;
+        background: transparent url('../img/ionic.png') no-repeat center;
+        background-size: 90%;
       }
       p {
         color: $light;
