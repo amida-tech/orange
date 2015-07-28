@@ -42,6 +42,16 @@ $avatar-size: 60px;
   }
 }
 
+.col-40 {
+  @include flex(0, 0, 40%);
+  max-width: 40%;
+}
+
+.col-60 {
+  @include flex(0, 0, 60%);
+  max-width: 60%;
+}
+
 
 .orange {
   color: $orange;
@@ -371,7 +381,7 @@ $avatar-size: 60px;
 .onboarding {
 
   .slider {
-    height: 90%;
+    height: 100%;
     padding-top: 30%;
     h1, p {
       margin-top: $padding-large-vertical * 4;
@@ -379,6 +389,7 @@ $avatar-size: 60px;
       color: $light;
     }
     .slider-pager {
+      bottom: $button-height * 3;
       .slider-pager-page {
         margin: 0 1px;
         color: $stable;
@@ -394,37 +405,19 @@ $avatar-size: 60px;
     }
   }
 
-  .bar.bar-footer {
-    height: 70px;
-    padding-left: $padding-large-horizontal;
-    padding-right: $padding-large-horizontal;
-    padding-bottom: $padding-large-horizontal;
-    border-top: 1px solid $orange;
-    margin: 0;
-
-
+  .bottom-buttons {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     .button {
-      display: inline-block;
-      font-size: $font-size-base;
       font-weight: bold;
-      padding: 0;
-      margin: 0;
+      font-size: $font-size-base;
 
-      &.create-account {
-        width: 56%;
-        position: absolute;
-        top: 0;
-        left: $padding-large-horizontal;
-        bottom: $padding-large-horizontal;
+      &.button-light {
         border-color: $light;
       }
-      &.sign-up {
-        width: 32%;
-        top: 0;
-        right: $padding-large-horizontal;
-        bottom: $padding-large-horizontal;
-      }
     }
+
   }
 }
 

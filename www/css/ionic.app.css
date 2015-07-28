@@ -7686,6 +7686,24 @@ a.button {
     color: #f8f8f8;
     text-align: center; }
 
+.col-40 {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 40%;
+  -moz-box-flex: 0;
+  -moz-flex: 0 0 40%;
+  -ms-flex: 0 0 40%;
+  flex: 0 0 40%;
+  max-width: 40%; }
+
+.col-60 {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 60%;
+  -moz-box-flex: 0;
+  -moz-flex: 0 0 60%;
+  -ms-flex: 0 0 60%;
+  flex: 0 0 60%;
+  max-width: 60%; }
+
 .orange {
   color: #EDAE36; }
 
@@ -7920,46 +7938,32 @@ a.button {
     top: -46px; }
 
 .onboarding .slider {
-  height: 90%;
+  height: 100%;
   padding-top: 30%; }
   .onboarding .slider h1, .onboarding .slider p {
     margin-top: 40px;
     text-align: center;
     color: #fff; }
-  .onboarding .slider .slider-pager .slider-pager-page {
-    margin: 0 1px;
-    color: #f8f8f8;
-    opacity: .8; }
-    .onboarding .slider .slider-pager .slider-pager-page.active {
-      color: #4D4D4D;
+  .onboarding .slider .slider-pager {
+    bottom: 126px; }
+    .onboarding .slider .slider-pager .slider-pager-page {
+      margin: 0 1px;
+      color: #f8f8f8;
       opacity: .8; }
-    .onboarding .slider .slider-pager .slider-pager-page .icon {
-      font-size: 8.8px; }
-.onboarding .bar.bar-footer {
-  height: 70px;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 16px;
-  border-top: 1px solid #EDAE36;
-  margin: 0; }
-  .onboarding .bar.bar-footer .button {
-    display: inline-block;
-    font-size: 14px;
+      .onboarding .slider .slider-pager .slider-pager-page.active {
+        color: #4D4D4D;
+        opacity: .8; }
+      .onboarding .slider .slider-pager .slider-pager-page .icon {
+        font-size: 8.8px; }
+.onboarding .bottom-buttons {
+  position: absolute;
+  bottom: 0;
+  width: 100%; }
+  .onboarding .bottom-buttons .button {
     font-weight: bold;
-    padding: 0;
-    margin: 0; }
-    .onboarding .bar.bar-footer .button.create-account {
-      width: 56%;
-      position: absolute;
-      top: 0;
-      left: 16px;
-      bottom: 16px;
+    font-size: 14px; }
+    .onboarding .bottom-buttons .button.button-light {
       border-color: #fff; }
-    .onboarding .bar.bar-footer .button.sign-up {
-      width: 32%;
-      top: 0;
-      right: 16px;
-      bottom: 16px; }
 
 .orange-menu {
   background: #4D4D4D; }
