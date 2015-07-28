@@ -30,6 +30,11 @@ $lightgray: #E0E0E0;
 $log-size: 80px;
 $avatar-size: 60px;
 
+.padding-x2 {
+  padding: $content-padding * 2;
+
+}
+
 .pane {
   background-color: $orange;
 }
@@ -40,8 +45,15 @@ $avatar-size: 60px;
     color: $stable;
     text-align: center;
   }
+
+  p {
+    color: $light;
+  }
 }
 
+.has-bottom-buttons {
+  padding-bottom: $button-height * 2;
+}
 .col-40 {
   @include flex(0, 0, 40%);
   max-width: 40%;
@@ -92,8 +104,10 @@ $avatar-size: 60px;
 
 .list-clean {
   border: none;
+  background: transparent;
   .item {
     border: none;
+    background: transparent;
   }
 }
 
@@ -121,6 +135,15 @@ $avatar-size: 60px;
     padding-left: 0;
     padding-bottom: $padding-base-horizontal;
 
+    .input-label {
+      width: 100%;
+      max-width: 100%;
+      font-size: $font-size-base * 0.9;
+      color: $gray;
+      font-weight: bold;
+      margin-bottom: $padding-small-vertical;
+    }
+
     .icon.icon-right {
       display: block;
       position: absolute;
@@ -133,7 +156,12 @@ $avatar-size: 60px;
     input {
       border: 1px solid $lightgray;
       border-radius: $card-border-radius;
-      padding: $padding-large-vertical * 2 $padding-base-horizontal;
+      padding: $padding-base-vertical $padding-base-horizontal;
+      height: 42px;
+    }
+
+    input[type="search"] {
+      padding: 0 $padding-base-horizontal;
     }
   }
   .checkbox {
@@ -167,7 +195,7 @@ $avatar-size: 60px;
   }
 
   .schedule-header-left {
-    font-size: $font-size-base * 1.5;
+    font-size: $font-size-base * 1.2;
     font-weight: normal;
   }
   .schedule-header-right {
@@ -191,22 +219,24 @@ $avatar-size: 60px;
     &:not(:last-child) {
       border-bottom: 2px solid $lightgray;
     }
-    .med-title {
-      line-height: 1.2;
-      .med-name {
-        font-weight: normal;
-      }
-      .med-rx {
-        text-transform: uppercase;
-        font-size: $font-size-small;
-        font-weight: bold;
-      }
-    }
     .actions {
       text-align: right;
       font-size: $font-size-base * 2.5;
       line-height: $font-size-base * 2.5;
     }
+  }
+}
+.med-title {
+  line-height: 1.2;
+  .med-name {
+    font-weight: normal;
+    color: $dark;
+  }
+  .med-rx {
+    text-transform: uppercase;
+    font-size: $font-size-small;
+    font-weight: bold;
+    color: $dark;
   }
 }
 
@@ -227,17 +257,17 @@ $avatar-size: 60px;
       border-top: 1px solid $lightgray;
     }
     &.item-text-wrap {
-      p {
+      p.text-muted {
         color: $gray;
-        font-weight: 700;
-        &:not(:first-child) {
-          margin-top: $padding-base-horizontal * 2;
-        }
+        font-weight: 500;
+        font-size: $font-size-base * 0.9;
+        margin-top: $padding-base-horizontal;
       }
     }
   }
   .button-bar {
     box-shadow: 0 0 2px $orange-ligth;
+    margin-bottom: $padding-base-horizontal * 2;
     .button {
       padding: 0;
       margin: 0;
@@ -256,7 +286,22 @@ $avatar-size: 60px;
   }
 }
 
+.form-title {
+  padding: 0;
+  margin: 0;
+  color: $gray;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
 .card.orange-card {
+  .form-title {
+    padding: 0;
+    margin: 0;
+    color: $gray;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
   h3 {
     color: $dark;
     font-size: 24px;
@@ -340,11 +385,11 @@ $avatar-size: 60px;
 .orange-avatar {
   text-align: center;
 
+
   .item-log {
     display: inline-block;
     width: $log-size;
-    margin: $padding-base-vertical;
-    margin-bottom: $padding-large-horizontal;
+    margin: $padding-base-vertical $padding-base-vertical $padding-large-horizontal;
 
     .log-avatar {
       width: $log-size;
@@ -367,15 +412,25 @@ $avatar-size: 60px;
 
         line-height: $log-size;
         position: relative;
-        top: 0;
-
+        top: -1px;
       }
     }
     .log-title {
       text-align: center;
       margin-top: $padding-base-vertical;
       line-height: 1.2;
+      font-weight: 500;
     }
+  }
+
+  &.light {
+    .log-avatar {
+      background-color: $light;
+      .log-caption {
+        color: $orange;
+      }
+    }
+
   }
 }
 
@@ -416,20 +471,22 @@ $avatar-size: 60px;
     }
   }
 
-  .bottom-buttons {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    .button {
-      font-weight: bold;
-      font-size: $font-size-base;
-
-      &.button-light {
-        border-color: $light;
-      }
+}
+.bottom-buttons {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  .button {
+    font-weight: bold;
+    font-size: $font-size-base;
+    &.button-full {
+      margin: 0;
     }
-
+    &.button-light {
+      border-color: $light;
+    }
   }
+
 }
 
 .orange-menu {

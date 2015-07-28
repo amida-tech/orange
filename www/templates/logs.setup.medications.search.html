@@ -1,0 +1,22 @@
+<ion-view title="New Medication">
+    <ion-nav-bar class="bar-orange" align-title="center">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-content class="light-bg" padding="true">
+        <p class="form-title">Search</p>
+        <form class="orange-form">
+            <label class="item-input">
+                <input type="search" placeholder="Medication"/>
+            </label>
+        </form>
+        <ion-list class="list-clean">
+            <ion-item ng-repeat="medication in medications" ui-sref="logs-setup-medications-schedule">
+                <div class="med-title">
+                    <p class="med-name" ng-bind="medication.name"></p>
+                    <p class="med-rx" ng-bind="medication.rxName"></p>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

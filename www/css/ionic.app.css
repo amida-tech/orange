@@ -7677,6 +7677,9 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+.padding-x2 {
+  padding: 20px; }
+
 .pane {
   background-color: #EDAE36; }
 
@@ -7685,6 +7688,11 @@ a.button {
   .orange-bg h3 {
     color: #f8f8f8;
     text-align: center; }
+  .orange-bg p {
+    color: #fff; }
+
+.has-bottom-buttons {
+  padding-bottom: 84px; }
 
 .col-40 {
   -webkit-box-flex: 0;
@@ -7733,9 +7741,11 @@ a.button {
     font-weight: 600; }
 
 .list-clean {
-  border: none; }
+  border: none;
+  background: transparent; }
   .list-clean .item {
-    border: none; }
+    border: none;
+    background: transparent; }
 
 .checkbox-orange input:before, .checkbox-orange .checkbox-icon:before {
   border-color: #ddd; }
@@ -7757,6 +7767,13 @@ a.button {
 .orange-form .item-input {
   padding-left: 0;
   padding-bottom: 12px; }
+  .orange-form .item-input .input-label {
+    width: 100%;
+    max-width: 100%;
+    font-size: 12.6px;
+    color: #9E9A9A;
+    font-weight: bold;
+    margin-bottom: 5px; }
   .orange-form .item-input .icon.icon-right {
     display: block;
     position: absolute;
@@ -7767,7 +7784,10 @@ a.button {
   .orange-form .item-input input {
     border: 1px solid #E0E0E0;
     border-radius: 3px;
-    padding: 20px 12px; }
+    padding: 6px 12px;
+    height: 42px; }
+  .orange-form .item-input input[type="search"] {
+    padding: 0 12px; }
 .orange-form .checkbox {
   display: block;
   padding: 0;
@@ -7789,7 +7809,7 @@ a.button {
   .schedule-header, .schedule-header col {
     padding-bottom: 0; }
   .schedule-header .schedule-header-left {
-    font-size: 21px;
+    font-size: 16.8px;
     font-weight: normal; }
   .schedule-header .schedule-header-right {
     text-align: right;
@@ -7808,18 +7828,21 @@ a.button {
     border: none; }
     .list.list-schedule .item-schedule:not(:last-child) {
       border-bottom: 2px solid #E0E0E0; }
-    .list.list-schedule .item-schedule .med-title {
-      line-height: 1.2; }
-      .list.list-schedule .item-schedule .med-title .med-name {
-        font-weight: normal; }
-      .list.list-schedule .item-schedule .med-title .med-rx {
-        text-transform: uppercase;
-        font-size: 11px;
-        font-weight: bold; }
     .list.list-schedule .item-schedule .actions {
       text-align: right;
       font-size: 35px;
       line-height: 35px; }
+
+.med-title {
+  line-height: 1.2; }
+  .med-title .med-name {
+    font-weight: normal;
+    color: #4D4D4D; }
+  .med-title .med-rx {
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: bold;
+    color: #4D4D4D; }
 
 .list.orange-list {
   background-color: #fff; }
@@ -7833,13 +7856,14 @@ a.button {
       border-width: 3px; }
     .list.orange-list .item.item-footer {
       border-top: 1px solid #E0E0E0; }
-    .list.orange-list .item.item-text-wrap p {
+    .list.orange-list .item.item-text-wrap p.text-muted {
       color: #9E9A9A;
-      font-weight: 700; }
-      .list.orange-list .item.item-text-wrap p:not(:first-child) {
-        margin-top: 24px; }
+      font-weight: 500;
+      font-size: 12.6px;
+      margin-top: 12px; }
   .list.orange-list .button-bar {
-    box-shadow: 0 0 2px #F7D69A; }
+    box-shadow: 0 0 2px #F7D69A;
+    margin-bottom: 24px; }
     .list.orange-list .button-bar .button {
       padding: 0;
       margin: 0;
@@ -7854,9 +7878,22 @@ a.button {
         background-color: #EDAE36;
         color: #f8f8f8; }
 
+.form-title {
+  padding: 0;
+  margin: 0;
+  color: #9E9A9A;
+  text-transform: uppercase;
+  font-weight: 600; }
+
 .card.orange-card {
   border: none;
   overflow: visible; }
+  .card.orange-card .form-title {
+    padding: 0;
+    margin: 0;
+    color: #9E9A9A;
+    text-transform: uppercase;
+    font-weight: 600; }
   .card.orange-card h3 {
     color: #4D4D4D;
     font-size: 24px;
@@ -7913,8 +7950,7 @@ a.button {
   .orange-logs .item-log, .orange-avatar .item-log {
     display: inline-block;
     width: 80px;
-    margin: 6px;
-    margin-bottom: 16px; }
+    margin: 6px 6px 16px; }
     .orange-logs .item-log .log-avatar, .orange-avatar .item-log .log-avatar {
       width: 80px;
       height: 80px;
@@ -7931,11 +7967,16 @@ a.button {
         color: #f8f8f8;
         line-height: 80px;
         position: relative;
-        top: 0; }
+        top: -1px; }
     .orange-logs .item-log .log-title, .orange-avatar .item-log .log-title {
       text-align: center;
       margin-top: 6px;
-      line-height: 1.2; }
+      line-height: 1.2;
+      font-weight: 500; }
+  .orange-logs.light .log-avatar, .orange-avatar.light .log-avatar {
+    background-color: #fff; }
+    .orange-logs.light .log-avatar .log-caption, .orange-avatar.light .log-avatar .log-caption {
+      color: #EDAE36; }
 
 .orange-avatar {
   text-align: center;
@@ -7962,14 +8003,17 @@ a.button {
         opacity: .8; }
       .onboarding .slider .slider-pager .slider-pager-page .icon {
         font-size: 8.8px; }
-.onboarding .bottom-buttons {
+
+.bottom-buttons {
   position: absolute;
   bottom: 0;
   width: 100%; }
-  .onboarding .bottom-buttons .button {
+  .bottom-buttons .button {
     font-weight: bold;
     font-size: 14px; }
-    .onboarding .bottom-buttons .button.button-light {
+    .bottom-buttons .button.button-full {
+      margin: 0; }
+    .bottom-buttons .button.button-light {
       border-color: #fff; }
 
 .orange-menu {

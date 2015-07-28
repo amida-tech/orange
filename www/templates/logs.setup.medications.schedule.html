@@ -1,0 +1,61 @@
+<ion-view title="New Medication">
+    <ion-nav-bar class="bar-orange" align-title="center">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-content class="light-bg">
+        <div class="list orange-list has-bottom-buttons">
+            <div class="item item-title med-title">
+                <p class="med-name">Strattera (18mg)</p>
+                <p class="med-rx">Atmoxetine</p>
+            </div>
+            <div class="item item-text-wrap">
+                <p class="text-muted">When is this medicaiton taken?</p>
+
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : b1 == 1}" ng-click="b1 = 1">As Needed</a>
+                    <a class="button" ng-class="{'active' : b1 == 2}" ng-click="b1 = 2">On a Schedule</a>
+                    <a class="button" ng-class="{'active' : b1 == 3}" ng-click="b1 = 3">Both</a>
+                </div>
+            </div>
+            <div class="item item-text-wrap">
+                <p class="text-muted">For how long</p>
+
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : b2 == 1}" ng-click="b2 = 1">Ongoing</a>
+                    <a class="button" ng-class="{'active' : b2 == 2}" ng-click="b2 = 2"># of Times</a>
+                    <a class="button" ng-class="{'active' : b2 == 3}" ng-click="b2 = 3">Until Set Date</a>
+                </div>
+            </div>
+            <div class="item item-text-wrap">
+                <p class="text-muted">For how long</p>
+
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : b3 == 1}" ng-click="b3 = 1">Dayily</a>
+                    <a class="button" ng-class="{'active' : b3 == 2}" ng-click="b3 = 2">Weekly</a>
+                    <a class="button" ng-class="{'active' : b3 == 3}" ng-click="b3 = 3">Monthly</a>
+                </div>
+                <p class="text-muted">Which days?</p>
+
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : wd == 1}" ng-click="wd = 1">SUN</a>
+                    <a class="button" ng-class="{'active' : wd == 2}" ng-click="wd = 2">MON</a>
+                    <a class="button" ng-class="{'active' : wd == 3}" ng-click="wd = 3">TUE</a>
+                    <a class="button" ng-class="{'active' : wd == 4}" ng-click="wd = 4">WED</a>
+                    <a class="button" ng-class="{'active' : wd == 5}" ng-click="wd = 5">THU</a>
+                    <a class="button" ng-class="{'active' : wd == 6}" ng-click="wd = 6">FRI</a>
+                    <a class="button" ng-class="{'active' : wd == 7}" ng-click="wd = 7">SAT</a>
+                </div>
+            </div>
+            <div class="item item-footer orange-form item-text-wrap">
+                <p class="text-muted">How many times a day do you take this medicine?</p>
+                <label class="item-input">
+                    <input type="text" placeholder="Number"/>
+                </label>
+            </div>
+        </div>
+    </ion-content>
+    <div class="bottom-buttons">
+        <button class="button button-full button-orange" ui-sref="logs-setup-medications-events">Continue</button>
+    </div>
+</ion-view>

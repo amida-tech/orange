@@ -117,13 +117,54 @@ angular.module('orange', ['ionic'])
                     })
                     .state('logs-request', {
                         url: '/onboarding/logs/request',
-                        templateUrl: 'templates/logs.request.html'
+                        templateUrl: 'templates/logs.request.html',
+                        controller: function($scope) {
+                            $scope.sent = false;
+                            $scope.email = 'jberry@gmail.com';
+                        }
                     })
-                    .state('logs-request-sent', {
-                        url: '/onboarding/logs/request/sent',
-                        templateUrl: 'templates/logs.request.sent.html'
+                    .state('logs-setup', {
+                        url: '/onboarding/logs/setup',
+                        templateUrl: 'templates/logs.setup.html'
                     })
-
+                    .state('logs-setup-habits', {
+                        url: '/onboarding/logs/setup/habits',
+                        templateUrl: 'templates/logs.setup.habits.html'
+                    })
+                    .state('logs-setup-medications', {
+                        url: '/onboarding/logs/setup/medications',
+                        templateUrl: 'templates/logs.setup.medications.html'
+                    })
+                    .state('logs-setup-medications-search', {
+                        url: '/onboarding/logs/setup/medications/search',
+                        templateUrl: 'templates/logs.setup.medications.search.html',
+                        controller: function($scope) {
+                            $scope.medications = [
+                                {'name': 'Strattera (18 mg)', 'rxName': 'Atmoxetine'},
+                                {'name': 'Strattera XR (18 mg)', 'rxName': 'Atmoxetine'},
+                                {'name': 'Strattera (24 mg)', 'rxName': 'Atmoxetine'},
+                                {'name': 'Strattera XR (24 mg)', 'rxName': 'Atmoxetine'},
+                                {'name': 'Strattera (50 mg)', 'rxName': 'Atmoxetine'},
+                                {'name': 'Strattera XR (50 mg)', 'rxName': 'Atmoxetine'},
+                                {'name': 'Strattera (82 mg)', 'rxName': 'Atmoxetine'},
+                                {'name': 'Strattera XR (82 mg)', 'rxName': 'Atmoxetine'}
+                            ]
+                        }
+                    })
+                    .state('logs-setup-medications-schedule', {
+                        url: '/onboarding/logs/setup/medications/schedule',
+                        templateUrl: 'templates/logs.setup.medications.schedule.html',
+                        controller: 'ComponentsCtrl'
+                    })
+                    .state('logs-setup-medications-events', {
+                        url: '/onboarding/logs/setup/medications/events',
+                        templateUrl: 'templates/logs.setup.medications.events.html',
+                        controller: 'ComponentsCtrl'
+                    })
+                    .state('logs-setup-medications-review', {
+                        url: '/onboarding/logs/setup/medications/events',
+                        templateUrl: 'templates/logs.setup.medications.review.html'
+                    })
                     .state('account-create', {
                         url: '/account-create',
                         templateUrl: 'templates/account_create.html'

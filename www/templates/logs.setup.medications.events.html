@@ -1,0 +1,50 @@
+<ion-view title="New Medication">
+    <ion-nav-bar class="bar-orange" align-title="center">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-content class="light-bg">
+        <div class="list orange-list has-bottom-buttons">
+            <div class="item item-title med-title">
+                <p class="med-name">Strattera (18mg)</p>
+                <p class="med-rx">Atmoxetine</p>
+            </div>
+            <div class="item item-text-wrap">
+                <h2>First Event</h2>
+                <p class="info">Three units at 9:00am daily, taken without food</p>
+            </div>
+            <div class="item item-text-wrap orange-form">
+                <h2>Second Event</h2>
+                <p class="text-muted">When do you take this medication the second time?</p>
+
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : b1 == 1}" ng-click="b1 = 1">Around a Meal</a>
+                    <a class="button" ng-class="{'active' : b1 == 2}" ng-click="b1 = 2">As a Set Time</a>
+                    <a class="button" ng-class="{'active' : b1 == 3}" ng-click="b1 = 3">Morning/Night</a>
+                </div>
+                <p class="text-muted">At what time?</p>
+                <label class="item-input">
+                    <input type="text" placeholder="Time"/>
+                </label>
+                <p class="text-muted">How many units?</p>
+                <label class="item-input">
+                    <input type="text" placeholder="Quantity"/>
+                </label>
+
+                <p class="text-muted">Take with food?</p>
+                <div class="button-bar">
+                    <a class="button" ng-class="{'active' : b2 == 1}" ng-click="b2 = 1">Yes</a>
+                    <a class="button" ng-class="{'active' : b2 == 2}" ng-click="b2 = 2">No</a>
+                    <a class="button" ng-class="{'active' : b2 == 3}" ng-click="b2 = 3">Doesn't Matter</a>
+                </div>
+                <p class="text-muted">Send a reminder notification?</p>
+                <label class="item-input">
+                    <input type="text" placeholder="Notification" value="Never"/>
+                </label>
+            </div>
+        </div>
+    </ion-content>
+    <div class="bottom-buttons">
+        <button class="button button-full button-orange" ui-sref="logs-setup-medications-review">Schedule</button>
+    </div>
+</ion-view>

@@ -1,7 +1,10 @@
-<ion-view title="Add My Log">
+<ion-view title="Add Medications">
     <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-back-button>
         </ion-nav-back-button>
+        <ion-nav-buttons side="right">
+            <button class="button button-clear" ui-sref="app.today">Done</button>
+        </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content padding="true">
         <div class="card orange-card with-avatar">
@@ -10,24 +13,30 @@
                     <div class="log-avatar">
                         <div class="log-caption">+</div>
                     </div>
-
                 </div>
             </div>
             <div class="item item-body">
+                <p class="form-title">Automatic Import</p>
                 <form class="orange-form">
-                    <p class="item-input">John Berry</p>
                     <label class="item-input">
-                        <input type="text" placeholder="Date of Birth (Optional)"/>
+                        <input type="text" placeholder="Account Name"/>
                     </label>
                     <label class="item-input">
-                        <input type="text" placeholder="Gender (Optional)"/>
+                        <input type="password" placeholder="Password"/>
                     </label>
                 </form>
             </div>
             <div class="item item-button">
-                <button class="button button-full button-orange" ui-sref="logs">Add Log</button>
+                <button class="button button-full button-orange" ng-click="imported=true">Import</button>
             </div>
-
+        </div>
+        <div class="card orange-card">
+            <div class="item item-body">
+                <p class="form-title">Manual Entry</p>
+            </div>
+            <div class="item item-button">
+                <button class="button button-full button-orange" ui-sref="logs-setup-medications-search">Add Medication</button>
+            </div>
         </div>
 
     </ion-content>
