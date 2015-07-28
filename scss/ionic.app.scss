@@ -344,13 +344,16 @@ $avatar-size: 60px;
     display: inline-block;
     width: $log-size;
     margin: $padding-base-vertical;
+    margin-bottom: $padding-large-horizontal;
 
     .log-avatar {
       width: $log-size;
       height: $log-size;
       background-color: $orange-ligth;
       border-radius: 50%;
-      &.active {
+
+      &.active,
+      &.orange-bg {
         background-color: $orange;
       }
 

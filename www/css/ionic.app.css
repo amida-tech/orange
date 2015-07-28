@@ -7913,13 +7913,14 @@ a.button {
   .orange-logs .item-log, .orange-avatar .item-log {
     display: inline-block;
     width: 80px;
-    margin: 6px; }
+    margin: 6px;
+    margin-bottom: 16px; }
     .orange-logs .item-log .log-avatar, .orange-avatar .item-log .log-avatar {
       width: 80px;
       height: 80px;
       background-color: #F7D69A;
       border-radius: 50%; }
-      .orange-logs .item-log .log-avatar.active, .orange-avatar .item-log .log-avatar.active {
+      .orange-logs .item-log .log-avatar.active, .orange-logs .item-log .log-avatar.orange-bg, .orange-avatar .item-log .log-avatar.active, .orange-avatar .item-log .log-avatar.orange-bg {
         background-color: #EDAE36; }
       .orange-logs .item-log .log-avatar .log-caption, .orange-avatar .item-log .log-avatar .log-caption {
         display: inline-block;
