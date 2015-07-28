@@ -7732,6 +7732,11 @@ a.button {
     line-height: 1.4;
     font-weight: 600; }
 
+.list-clean {
+  border: none; }
+  .list-clean .item {
+    border: none; }
+
 .checkbox-orange input:before, .checkbox-orange .checkbox-icon:before {
   border-color: #ddd; }
 .checkbox-orange input:checked:before, .checkbox-orange input:checked + .checkbox-icon:before {
@@ -7878,7 +7883,8 @@ a.button {
   .bar.bar-orange .title {
     color: #fff; }
   .bar.bar-orange .button-clear, .bar.bar-orange .button-icon {
-    color: #fff; }
+    color: #fff;
+    font-weight: bold; }
   .bar.bar-orange .title {
     font-weight: 400; }
   .bar.bar-orange .button-profile {
@@ -7903,7 +7909,7 @@ a.button {
     color: #fff; }
 
 .orange-logs, .orange-avatar {
-  text-align: left; }
+  text-align: center; }
   .orange-logs .item-log, .orange-avatar .item-log {
     display: inline-block;
     width: 80px;

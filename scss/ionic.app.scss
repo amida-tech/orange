@@ -90,6 +90,13 @@ $avatar-size: 60px;
 
 }
 
+.list-clean {
+  border: none;
+  .item {
+    border: none;
+  }
+}
+
 .checkbox-orange {
   @include checkbox-style($checkbox-off-border-default, $orange, $orange);
 }
@@ -282,6 +289,7 @@ $avatar-size: 60px;
   .button-clear,
   .button-icon {
     color: $light;
+    font-weight: bold;
   }
   .title {
     font-weight: 400;
@@ -330,7 +338,7 @@ $avatar-size: 60px;
 
 .orange-logs,
 .orange-avatar {
-  text-align: left;
+  text-align: center;
 
   .item-log {
     display: inline-block;

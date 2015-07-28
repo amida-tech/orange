@@ -18,7 +18,7 @@ angular.module('orange', ['ionic'])
 
     .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
-                $ionicConfigProvider.backButton.text('').icon('ion-arrow-left-c');
+                $ionicConfigProvider.backButton.previousTitleText('').text('').icon('ion-arrow-left-c');
                 // Ionic uses AngularUI Router which uses the concept of states
                 // Learn more here: https://github.com/angular-ui/ui-router
                 // Set up the various states which the app can be in.
@@ -103,7 +103,27 @@ angular.module('orange', ['ionic'])
                             }
                         }
                     })
-                    // setup an abstract state for the tabs directive
+                    .state('logs', {
+                        url: '/onboarding/logs',
+                        templateUrl: 'templates/logs.html'
+                    })
+                    .state('logs-add', {
+                        url: '/onboarding/logs/add',
+                        templateUrl: 'templates/logs.add.html'
+                    })
+                    .state('logs-add-my', {
+                        url: '/onboarding/logs/add/my',
+                        templateUrl: 'templates/logs.add.my.html'
+                    })
+                    .state('logs-request', {
+                        url: '/onboarding/logs/request',
+                        templateUrl: 'templates/logs.request.html'
+                    })
+                    .state('logs-request-sent', {
+                        url: '/onboarding/logs/request/sent',
+                        templateUrl: 'templates/logs.request.sent.html'
+                    })
+
                     .state('account-create', {
                         url: '/account-create',
                         templateUrl: 'templates/account_create.html'

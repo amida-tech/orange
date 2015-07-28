@@ -1,0 +1,26 @@
+<ion-view title="Add Existing Logs">
+    <ion-nav-bar class="bar-orange" align-title="center">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-content padding="true">
+        <div class="card orange-card">
+            <div class="item item-body">
+                <form class="orange-form">
+                    <p>To add logs from an existing account, please
+                        begin by sending a request to the account holder.</p>
+
+                    <p>Once approved, the account holder can choose
+                        which logs to share with you.</p>
+                    <label class="item item-input">
+                        <i class="icon ion-ios-checkmark-outline icon-right"></i>
+                        <input type="email" placeholder="Account Email" value="jberry@gmail.com"/>
+                    </label>
+                </form>
+            </div>
+            <div class="item item-button">
+                <button class="button button-full button-orange" ui-sref="logs-request-sent">Request Access</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
