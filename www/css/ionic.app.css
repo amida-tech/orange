@@ -7677,6 +7677,9 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+.pane {
+  background-color: #EDAE36; }
+
 .orange-bg {
   background-color: #EDAE36; }
   .orange-bg h3 {
@@ -7865,12 +7868,10 @@ a.button {
     line-height: 1;
     min-height: 0;
     height: 25px;
-    top: 5px;
+    top: 4px;
     right: 12px; }
-  .bar.bar-orange .button-dose {
-    top: 1px; }
-    .bar.bar-orange .button-dose:before {
-      font-size: 24.2px; }
+  .bar.bar-orange .button-dose:before {
+    font-size: 24.2px; }
   .bar.bar-orange.orange-light {
     color: #F7D69A; }
     .bar.bar-orange.orange-light .button-clear, .bar.bar-orange.orange-light .button-icon, .bar.bar-orange.orange-light .button-outline, .bar.bar-orange.orange-light .title {

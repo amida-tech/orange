@@ -6,6 +6,7 @@
         .controller('ComponentsCtrl', ComponentsCtrl);
 
     ComponentsCtrl.$inject = ['$scope'];
+
     function ComponentsCtrl($scope) {
         $scope.b1 = 3;
         $scope.b2 = 2;

@@ -30,6 +30,9 @@ $lightgray: #E0E0E0;
 $log-size: 80px;
 $avatar-size: 60px;
 
+.pane {
+  background-color: $orange;
+}
 
 .orange-bg {
   background-color: $orange;
@@ -279,12 +282,12 @@ $avatar-size: 60px;
     line-height: 1;
     min-height: 0;
     height: 25px;
-    top: $padding-small-vertical;
+    top: $padding-small-vertical - 1px;
     right: $padding-base-horizontal;
   }
 
   .button-dose {
-    top: 1px;
+    //top: 1px;
     &:before {
       font-size: $font-size-small * 2.2;
     }
