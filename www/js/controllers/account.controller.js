@@ -14,18 +14,11 @@
         $scope.error = false;
         $scope.errors = [];
         $scope.user = {
-            'fullName': 'John Doe',
-            'email': 'fooo@example.com',
-            'phone': '+8 322 23442',
-            'password': '123qwe',
-            'confirmPassword': '123qwe',
-            agreement: true
-
         };
 
         function signUp(form) {
             $scope.errors = [];
-            if ($scope.user.agreement === false) {
+            if ($scope.user.agreement !== true) {
                 $scope.errors.push('You must agree to the Terms of User')
             }
 
@@ -75,6 +68,7 @@
                     if (status === true) {
                         $scope.error = false;
                         $scope.errors = [];
+                        $scope.user = [];
                         $state.go('app.today');
                     } else {
                         $scope.error = true;
