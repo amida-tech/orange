@@ -8,15 +8,6 @@ $assertive: #ef473a !default;
 $royal: #886aea !default;
 $dark: #4D4D4D !default;
 
-$card-border-radius: 3px !default;
-//$menu-width: 220px !default;
-
-// The path for our ionicons font files, relative to the built CSS in www/css
-$ionicons-font-path: "../lib/ionic/fonts" !default;
-
-// Include all of Ionic
-@import "../www/lib/ionic/scss/ionic";
-
 // Colors
 $orange: #EDAE36;
 $orange-ligth: #F7D69A;
@@ -25,6 +16,20 @@ $dark-red: #D0021B;
 $green: #47B51F;
 $gray: #9E9A9A;
 $lightgray: #E0E0E0;
+
+
+$card-border-radius: 3px !default;
+$item-default-active-bg: $light !default;
+//$menu-width: 220px !default;
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Include all of Ionic
+@import "../www/lib/ionic/scss/ionic";
+
+
+
 
 // Sizes
 $log-size: 80px;
@@ -39,17 +44,7 @@ $avatar-size: 60px;
   background-color: $orange;
 }
 
-.orange-bg {
-  background-color: $orange;
-  h3 {
-    color: $stable;
-    text-align: center;
-  }
 
-  p {
-    color: $light;
-  }
-}
 
 .has-bottom-buttons {
   padding-bottom: $button-height * 2;
@@ -91,7 +86,7 @@ $avatar-size: 60px;
 
 .item-error {
   background-color: $red;
-  padding: $padding-base-horizontal $padding-base-horizontal;
+  padding: $padding-base-horizontal $padding-large-horizontal;
   p {
     color: $light;
     font-size: $font-size-small + 1;
@@ -104,10 +99,10 @@ $avatar-size: 60px;
 
 .list-clean {
   border: none;
-  background: transparent;
+  background: $light;
   .item {
     border: none;
-    background: transparent;
+    //background: $light;
   }
 }
 
@@ -228,13 +223,15 @@ $avatar-size: 60px;
 }
 .med-title {
   line-height: 1.2;
+  font-size: $font-size-base * 1.1;
   .med-name {
     font-weight: normal;
     color: $dark;
+    font-size: 1em;
   }
   .med-rx {
     text-transform: uppercase;
-    font-size: $font-size-small;
+    font-size: 0.8em;
     font-weight: bold;
     color: $dark;
   }
@@ -385,7 +382,6 @@ $avatar-size: 60px;
 .orange-avatar {
   text-align: center;
 
-
   .item-log {
     display: inline-block;
     width: $log-size;
@@ -486,7 +482,6 @@ $avatar-size: 60px;
       border-color: $light;
     }
   }
-
 }
 
 .orange-menu {
@@ -549,6 +544,18 @@ $avatar-size: 60px;
         }
       }
     }
+  }
+}
+
+.orange-bg {
+  background-color: $orange;
+  h3 {
+    color: $stable;
+    text-align: center;
+  }
+
+  p {
+    color: $light;
   }
 }
 

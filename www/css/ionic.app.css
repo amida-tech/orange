@@ -4723,7 +4723,7 @@ ion-tabs.tabs-color-active-dark .tab-item {
 
 .item.active, .item.activated, .item-complex.active .item-content, .item-complex.activated .item-content, .item .item-content.active, .item .item-content.activated {
   border-color: #ccc;
-  background-color: #D9D9D9; }
+  background-color: #fff; }
   .item.active.item-light, .item.activated.item-light, .item-complex.active .item-content.item-light, .item-complex.activated .item-content.item-light, .item .item-content.active.item-light, .item .item-content.activated.item-light {
     border-color: #ccc;
     background-color: #fafafa; }
@@ -7683,14 +7683,6 @@ a.button {
 .pane {
   background-color: #EDAE36; }
 
-.orange-bg {
-  background-color: #EDAE36; }
-  .orange-bg h3 {
-    color: #f8f8f8;
-    text-align: center; }
-  .orange-bg p {
-    color: #fff; }
-
 .has-bottom-buttons {
   padding-bottom: 84px; }
 
@@ -7732,7 +7724,7 @@ a.button {
 
 .item-error {
   background-color: #FA2E20;
-  padding: 12px 12px; }
+  padding: 12px 16px; }
   .item-error p {
     color: #fff;
     font-size: 12px;
@@ -7742,10 +7734,9 @@ a.button {
 
 .list-clean {
   border: none;
-  background: transparent; }
+  background: #fff; }
   .list-clean .item {
-    border: none;
-    background: transparent; }
+    border: none; }
 
 .checkbox-orange input:before, .checkbox-orange .checkbox-icon:before {
   border-color: #ddd; }
@@ -7834,13 +7825,15 @@ a.button {
       line-height: 35px; }
 
 .med-title {
-  line-height: 1.2; }
+  line-height: 1.2;
+  font-size: 15.4px; }
   .med-title .med-name {
     font-weight: normal;
-    color: #4D4D4D; }
+    color: #4D4D4D;
+    font-size: 1em; }
   .med-title .med-rx {
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: 0.8em;
     font-weight: bold;
     color: #4D4D4D; }
 
@@ -8061,6 +8054,14 @@ a.button {
         padding-top: 0;
         padding-bottom: 5px;
         text-transform: lowercase; }
+
+.orange-bg {
+  background-color: #EDAE36; }
+  .orange-bg h3 {
+    color: #f8f8f8;
+    text-align: center; }
+  .orange-bg p {
+    color: #fff; }
 
 .grade-b .menu-content, .grade-c .menu-content {
   border: none; }

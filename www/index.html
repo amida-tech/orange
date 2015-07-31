@@ -12,6 +12,9 @@
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- libs -->
+    <script src="lib/lodash/lodash.min.js"></script>
+    <script src="lib/restangular/dist/restangular.min.js"></script>
+    <script src="lib/angular-messages/angular-messages.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -20,14 +23,26 @@
     <script src="js/app.js"></script>
 
     <!-- controllers -->
-    <script src="js/controllers/components.js"></script>
-    <script src="js/controllers/today.js"></script>
+    <script src="js/controllers/components.controller.js"></script>
+    <script src="js/controllers/today.controller.js"></script>
+    <script src="js/controllers/notes.controller.js"></script>
+    <script src="js/controllers/medications.controller.js"></script>
+    <script src="js/controllers/doctors.controller.js"></script>
+    <script src="js/controllers/account.controller.js"></script>
 
     <!-- services -->
     <script src="js/services/localstorage.js"></script>
+    <script src="js/services/orange-api.js"></script>
+    <script src="js/services/auth.service.js"></script>
+
+    <!-- directives -->
+    <script src="js/directives/compare-to.directive.js"></script>
 
 </head>
 <body ng-app="orange">
-<ion-nav-view></ion-nav-view>
+<div ng-if="!initialized">Initializing...</div>
+<div ng-if="initialized">
+    <ion-nav-view></ion-nav-view>
+</div>
 </body>
 </html>

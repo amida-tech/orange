@@ -1,6 +1,17 @@
-angular.module('orange', ['ionic'])
+angular.module('orange', ['ionic', 'restangular', 'ngMessages'])
 
-    .run(function ($ionicPlatform) {
+    .run(function ($ionicPlatform, Auth, $rootScope, $state) {
+
+            $rootScope.initialized = false;
+            Auth.init().then(function(status) {
+                $rootScope.initialized = true;
+                //if (status === true) {
+                //    $state.go('app.today');
+                //} else {
+                //    $state.go('onboarding');
+                //}
+            });
+
              $ionicPlatform.ready(function () {
                  // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                  // for form inputs)
@@ -16,9 +27,17 @@ angular.module('orange', ['ionic'])
              });
          })
 
-    .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, OrangeApiProvider) {
+
+                // Config Orange API
+                OrangeApiProvider.setBaseUrl('http://orange-api.amida-demo.com/api/v1');
+                OrangeApiProvider.setClientSecret('testsecret');
+
 
                 $ionicConfigProvider.backButton.previousTitleText('').text('').icon('ion-arrow-left-c');
+                // Native scrolling on Android
+                // $ionicConfigProvider.platform.android.scrolling.jsScrolling(false);
+
                 // Ionic uses AngularUI Router which uses the concept of states
                 // Learn more here: https://github.com/angular-ui/ui-router
                 // Set up the various states which the app can be in.
@@ -51,7 +70,17 @@ angular.module('orange', ['ionic'])
                         url: '/notes',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.notes.html'
+                                templateUrl: 'templates/app.notes.html',
+                                controller: 'NotesCtrl'
+                            }
+                        }
+                    })
+                    .state('app.note-view', {
+                        url: '/notes/:id',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.notes.view.html',
+                                controller: 'NotesCtrl'
                             }
                         }
                     })
@@ -59,7 +88,8 @@ angular.module('orange', ['ionic'])
                         url: '/medications',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.medications.html'
+                                templateUrl: 'templates/app.medications.html',
+                                controller: 'MedicationsCtrl'
                             }
                         }
                     })
@@ -67,7 +97,8 @@ angular.module('orange', ['ionic'])
                         url: '/doctors',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.doctors.html'
+                                templateUrl: 'templates/app.doctors.html',
+                                controller: 'DoctorsCtrl'
                             }
                         }
                     })
@@ -118,7 +149,7 @@ angular.module('orange', ['ionic'])
                     .state('logs-request', {
                         url: '/onboarding/logs/request',
                         templateUrl: 'templates/logs.request.html',
-                        controller: function($scope) {
+                        controller: function ($scope) {
                             $scope.sent = false;
                             $scope.email = 'jberry@gmail.com';
                         }
@@ -138,7 +169,7 @@ angular.module('orange', ['ionic'])
                     .state('logs-setup-medications-search', {
                         url: '/onboarding/logs/setup/medications/search',
                         templateUrl: 'templates/logs.setup.medications.search.html',
-                        controller: function($scope) {
+                        controller: function ($scope) {
                             $scope.medications = [
                                 {'name': 'Strattera (18 mg)', 'rxName': 'Atmoxetine'},
                                 {'name': 'Strattera XR (18 mg)', 'rxName': 'Atmoxetine'},
@@ -165,15 +196,17 @@ angular.module('orange', ['ionic'])
                         url: '/onboarding/logs/setup/medications/events',
                         templateUrl: 'templates/logs.setup.medications.review.html'
                     })
+
                     .state('account-create', {
                         url: '/account-create',
-                        templateUrl: 'templates/account_create.html'
+                        templateUrl: 'templates/account_create.html',
+                        controller: 'AccountCtrl'
                     })
                     .state('account-login', {
                         url: '/account-login',
-                        templateUrl: 'templates/account_login.html'
+                        templateUrl: 'templates/account_login.html',
+                        controller: 'AccountCtrl'
                     })
-
                     .state('onboarding', {
                         url: '/onboarding',
                         templateUrl: 'templates/onboarding.html'

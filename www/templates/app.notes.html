@@ -1,13 +1,32 @@
 <ion-view view-title="NOTES">
-    <ion-nav-bar class="bar-orange orange-light" align-title="center">
+    <ion-nav-bar class="bar-orange orange-light" align-title="left">
         <ion-nav-back-button>
         </ion-nav-back-button>
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
+        <ion-nav-buttons side="right" >
+            <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
+            <button class="button button-icon button-clear button-small ion-plus button-dose"></button>
+        </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="orange-bg">
+    <ion-content class="light-bg" overflow-scroll=”true”>
+        <button class="button button-assertive button-full button-clear" ng-click="toggleDelete()">
+            <span ng-bind="shouldShowDelete ? 'Hide': 'Show'"></span> delete buttons
+        </button>
+        <ion-list class="list-clean list-inset padding" can-swipe="true" show-delete="shouldShowDelete">
+            <ion-item class="item-text-wrap" ng-repeat="note in notes" ui-sref="app.note-view({id: note.id})">
+                <h2 class="text-title" ng-bind="note.date|date:'MMMM d, h:mm a'"></h2>
 
+                <p ng-bind="note.text"></p>
+                <ion-option-button class="button-assertive" ng-click="removeNote(note.id)">
+                    Delete
+                </ion-option-button>
+                <ion-delete-button class="ion-minus-circled"
+                                   ng-click="removeNote(note.id)">
+                </ion-delete-button>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>

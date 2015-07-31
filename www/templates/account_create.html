@@ -7,35 +7,55 @@
     </ion-header-bar>
     <ion-content padding="true" class="orange-bg">
         <div class="card orange-card">
-            <div class="item item-error">
-                <p>This is an error.</p>
+            <form class="orange-form" name="signUpForm">
+            <div class="item item-error" ng-if="error">
+                <p ng-repeat="error in errors" ng-bind="error"></p>
+                <div ng-messages="signUpForm.email.$error">
+                    <p ng-message="email">Invalid email address</p>
+                    <p ng-message="required">Email address is required</p>
+                </div>
 
-                <p>Lorem ipsum dolor sit amet.</p>
+                <div ng-messages="signUpForm.password.$error">
+                    <p ng-message="required">Password is required</p>
+                </div>
+
+                <div ng-messages="signUpForm.confirmPassword.$error">
+                    <p ng-message="required">Confirm Password is required</p>
+                    <p ng-message="compareTo">Passwords mismatch</p>
+                </div>
+
             </div>
             <div class="item item-body">
-                <form class="orange-form">
+
                     <label class="item-input">
-                        <input type="text" placeholder="Full Name"/>
+                        <input type="text" name="fullName" ng-model="user.fullName" placeholder="Full Name"/>
                     </label>
                     <label class="item-input">
-                        <input type="email" placeholder="Email"/>
+                        <input type="email" name="email" ng-model="user.email" placeholder="Email" required/>
+                    </label>
+                    <label class="item-input">
+                        <input type="tel" name="phone" ng-model="user.phone" placeholder="Phone Number" required/>
                     </label>
 
                     <label class="item-input">
-                        <input type="password" placeholder="Password"/>
+                        <input type="password" name="password" ng-model="user.password" placeholder="Password" required/>
                     </label>
                     <label class="item-input">
-                        <input type="password" placeholder="Confirm Password"/>
+                        <input type="password" name="confirmPassword"
+                               ng-model="user.confirmPassword"
+                               compare-to="user.password"
+                               placeholder="Confirm Password" required/>
                     </label>
                     <label class="checkbox checkbox-square checkbox-orange">
-                        <input type="checkbox"/>
+                        <input type="checkbox" name="agreement" ng-model="user.agreement" required/>
                         I agree to the Terms of Use
                     </label>
-                </form>
+
             </div>
             <div class="item item-button">
-                <button class="button button-full button-orange" ui-sref="logs">Sign Up</button>
+                <button class="button button-full button-orange" ng-click="signUp(signUpForm)">Sign Up</button>
             </div>
+            </form>
         </div>
     </ion-content>
 </ion-view>
