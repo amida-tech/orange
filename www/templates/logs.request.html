@@ -5,24 +5,35 @@
     </ion-nav-bar>
     <ion-content padding="true">
         <div class="card orange-card" ng-hide="sent">
-            <div class="item item-body">
-                <form class="orange-form">
+            <form class="orange-form" name="requestForm">
+                <div class="item item-error" ng-if="errors.length">
+                    <p ng-repeat="error in errors" ng-bind="error"></p>
+                </div>
+                <div class="item item-body">
+
                     <p>To add logs from an existing account, please
                         begin by sending a request to the account holder.</p>
 
                     <p>Once approved, the account holder can choose
                         which logs to share with you.</p>
                     <label class="item item-input">
-                        <i class="icon ion-ios-checkmark-outline icon-right"></i>
-                        <input type="email" placeholder="Account Email" ng-model="email"/>
+                        <i ng-show="requestForm.email.$valid"
+                           class="icon ion-ios-checkmark-outline icon-right"></i>
+                        <i ng-show="requestForm.email.$dirty && !requestForm.email.$valid"
+                           class="icon ion-ios-close-outline icon-right icon-red"></i>
+                        <input type="email" placeholder="Account Email" ng-model="data.email" name="email" required/>
                     </label>
-                </form>
-            </div>
-            <div class="item item-button">
-                <button class="button button-full button-orange" ng-click="sent=true">Request Access</button>
-            </div>
+
+                </div>
+                <div class="item item-button">
+                    <input type="submit"
+                           class="button button-block button-orange"
+                           ng-click="sendRequest(requestForm)"
+                           value="Request Access"/>
+                </div>
+            </form>
         </div>
-        <div ng-show="sent">
+        <div ng-if="sent">
             <div class="item-large-icon text-center">
                 <i class="icon ion-checkmark-circled"></i>
             </div>
@@ -31,7 +42,7 @@
                 <div class="item item-text-wrap">
                     <h3 class="text-center">Request Sent</h3>
 
-                    <p>A request has been sent to <strong>jberry@gmail.com</strong> for approval. Once approved, new logs
+                    <p>A request has been sent to <strong>{{email}}</strong> for approval. Once approved, new logs
                         will automatically be added to you logs list.</p>
                 </div>
                 <div class="item item-button">

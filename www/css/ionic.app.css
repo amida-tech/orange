@@ -5825,11 +5825,11 @@ textarea, input[type="text"], input[type="password"], input[type="datetime"], in
 textarea {
   padding-left: 0; }
   textarea::-moz-placeholder {
-    color: #b3b3b3; }
+    color: #9E9A9A; }
   textarea:-ms-input-placeholder {
-    color: #b3b3b3; }
+    color: #9E9A9A; }
   textarea::-webkit-input-placeholder {
-    color: #b3b3b3;
+    color: #9E9A9A;
     text-indent: -3px; }
 
 textarea {
@@ -5854,11 +5854,11 @@ input[type="file"] {
   width: 200px; }
 
 input::-moz-placeholder, textarea::-moz-placeholder {
-  color: #b3b3b3; }
+  color: #9E9A9A; }
 input:-ms-input-placeholder, textarea:-ms-input-placeholder {
-  color: #b3b3b3; }
+  color: #9E9A9A; }
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
-  color: #b3b3b3;
+  color: #9E9A9A;
   text-indent: 0; }
 
 input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.cloned-text-input), textarea[readonly]:not(.cloned-text-input), select[readonly] {
@@ -7755,6 +7755,21 @@ a.button {
 
 .orange-form p.item-input {
   padding-left: 12px; }
+.orange-form .item-select {
+  height: 42px;
+  margin-top: 6px;
+  margin-bottom: 12px !important;
+  border: 1px solid #E0E0E0 !important;
+  border-radius: 3px; }
+  .orange-form .item-select select {
+    width: 100%;
+    max-width: inherit;
+    position: relative;
+    direction: inherit;
+    padding: 0 0 0 12px;
+    top: 2px; }
+    .orange-form .item-select select.placeholder {
+      color: #9E9A9A; }
 .orange-form .item-input {
   padding-left: 0;
   padding-bottom: 12px; }
@@ -7772,11 +7787,15 @@ a.button {
     right: 12px;
     color: #47B51F;
     line-height: 42px; }
+  .orange-form .item-input .icon.icon-right.icon-red {
+    color: #FA2E20; }
   .orange-form .item-input input {
     border: 1px solid #E0E0E0;
     border-radius: 3px;
     padding: 6px 12px;
     height: 42px; }
+  .orange-form .item-input input[readonly].not-readonly {
+    background-color: #fff; }
   .orange-form .item-input input[type="search"] {
     padding: 0 12px; }
 .orange-form .checkbox {
@@ -7942,7 +7961,7 @@ a.button {
   text-align: center; }
   .orange-logs .item-log, .orange-avatar .item-log {
     display: inline-block;
-    width: 80px;
+    width: auto;
     margin: 6px 6px 16px; }
     .orange-logs .item-log .log-avatar, .orange-avatar .item-log .log-avatar {
       width: 80px;
@@ -7959,8 +7978,7 @@ a.button {
         font-size: 32px;
         color: #f8f8f8;
         line-height: 80px;
-        position: relative;
-        top: -1px; }
+        position: relative; }
     .orange-logs .item-log .log-title, .orange-avatar .item-log .log-title {
       text-align: center;
       margin-top: 6px;

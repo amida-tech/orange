@@ -10,7 +10,7 @@ $dark: #4D4D4D !default;
 
 // Colors
 $orange: #EDAE36;
-$orange-ligth: #F7D69A;
+$orange-light: #F7D69A;
 $red: #FA2E20;
 $dark-red: #D0021B;
 $green: #47B51F;
@@ -18,6 +18,7 @@ $gray: #9E9A9A;
 $lightgray: #E0E0E0;
 
 
+$input-color-placeholder: $gray !default;
 $card-border-radius: 3px !default;
 $item-default-active-bg: $light !default;
 //$menu-width: 220px !default;
@@ -65,7 +66,7 @@ $avatar-size: 60px;
 }
 
 .orange-light {
-  color: $orange-ligth;
+  color: $orange-light;
 }
 
 .green {
@@ -111,11 +112,11 @@ $avatar-size: 60px;
 }
 
 .button.button-orange {
-  background-color: $orange-ligth;
-  border-color: $orange-ligth;
+  background-color: $orange-light;
+  border-color: $orange-light;
   &.button-outline {
     background-color: transparent;
-    color: $orange-ligth;
+    color: $orange-light;
   }
   &.activated {
     opacity: 0.5;
@@ -126,6 +127,27 @@ $avatar-size: 60px;
   p.item-input {
     padding-left: $padding-base-horizontal;
   }
+  .item-select {
+    height: 42px;
+    margin-top: $padding-base-vertical;
+    margin-bottom: $padding-base-vertical * 2 !important;
+    border: 1px solid $lightgray !important;
+    border-radius: $card-border-radius;
+
+    select {
+      width: 100%;
+      max-width: inherit;
+      position: relative;
+      direction: inherit;
+      padding: 0 0 0 $padding-base-horizontal;
+      top: 2px;
+
+      &.placeholder {
+        color: $gray;
+      }
+    }
+  }
+
   .item-input {
     padding-left: 0;
     padding-bottom: $padding-base-horizontal;
@@ -148,11 +170,19 @@ $avatar-size: 60px;
       line-height: 42px;
     }
 
+    .icon.icon-right.icon-red {
+      color: $red;
+    }
+
     input {
       border: 1px solid $lightgray;
       border-radius: $card-border-radius;
       padding: $padding-base-vertical $padding-base-horizontal;
       height: 42px;
+    }
+
+    input[readonly].not-readonly {
+      background-color: $light;
     }
 
     input[type="search"] {
@@ -263,7 +293,7 @@ $avatar-size: 60px;
     }
   }
   .button-bar {
-    box-shadow: 0 0 2px $orange-ligth;
+    box-shadow: 0 0 2px $orange-light;
     margin-bottom: $padding-base-horizontal * 2;
     .button {
       padding: 0;
@@ -354,13 +384,13 @@ $avatar-size: 60px;
   }
 
   &.orange-light {
-    color: $orange-ligth;
+    color: $orange-light;
     .button-clear,
     .button-icon,
     .button-outline,
     .title, {
 
-      color: $orange-ligth;
+      color: $orange-light;
       font-weight: bold;
     }
   }
@@ -384,13 +414,13 @@ $avatar-size: 60px;
 
   .item-log {
     display: inline-block;
-    width: $log-size;
+    width: auto;
     margin: $padding-base-vertical $padding-base-vertical $padding-large-horizontal;
 
     .log-avatar {
       width: $log-size;
       height: $log-size;
-      background-color: $orange-ligth;
+      background-color: $orange-light;
       border-radius: 50%;
 
       &.active,
@@ -408,7 +438,6 @@ $avatar-size: 60px;
 
         line-height: $log-size;
         position: relative;
-        top: -1px;
       }
     }
     .log-title {

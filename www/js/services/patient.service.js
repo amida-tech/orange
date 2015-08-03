@@ -13,20 +13,22 @@
 
         return {
             set: set,
-            patient: patient,
-            habits: patient && patient.all('habits'),
-            journal: patient && patient.all('journal'),
-            doctors: patient && patient.all('doctors'),
-            pharmacies: patient && patient.all('pharmacies'),
-            medications: patient && patient.all('medications'),
-            doses: patient && patient.all('doses'),
-            schedule: patient && patient.all('schedule')
+            api: api,
+            getPatient: getPatient
         };
 
         ////////////////
 
+        function getPatient() {
+            return OrangeApi.patients.one(patient);
+        }
+
         function set(patientID) {
-            patient = OrangeApi.patients.one(patientID)
+            patient = patientID.toString();
+        }
+
+        function api(name) {
+            return OrangeApi.patients.one(patient).all(name);
         }
     }
 })();

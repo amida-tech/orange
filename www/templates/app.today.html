@@ -10,7 +10,9 @@
         </ion-nav-buttons>
 
         <ion-nav-buttons side="right" >
-            <button class="button button-outline button-orange button-small button-profile" ng-click="doLogin()">Jon Berry</button>
+            <button class="button button-outline button-orange button-small button-profile" ng-click="doLogin()">
+                {{ profile.first_name }} {{ profile.last_name }}
+            </button>
             <button class="button button-icon button-clear button-small ion-plus button-dose"></button>
         </ion-nav-buttons>
     </ion-nav-bar>

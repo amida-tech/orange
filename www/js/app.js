@@ -1,16 +1,17 @@
-angular.module('orange', ['ionic', 'restangular', 'ngMessages'])
+angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
 
     .run(function ($ionicPlatform, Auth, $rootScope, $state) {
 
-            $rootScope.initialized = false;
-            Auth.init().then(function(status) {
-                $rootScope.initialized = true;
-                //if (status === true) {
-                //    $state.go('app.today');
-                //} else {
-                //    $state.go('onboarding');
-                //}
-            });
+             $rootScope.initialized = false;
+             Auth.init().then(function (status) {
+                 $rootScope.initialized = true;
+                 if (status === true) {
+                     //$state.go('logs-add-my');
+                 } else {
+                     // Not authorized
+                     $state.go('onboarding');
+                 }
+             });
 
              $ionicPlatform.ready(function () {
                  // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -20,10 +21,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages'])
                      cordova.plugins.Keyboard.disableScroll(true);
 
                  }
-                 if (window.StatusBar) {
-                     // org.apache.cordova.statusbar required
-                     StatusBar.styleLightContent();
-                 }
+                 //if (window.StatusBar) {
+                 //    // org.apache.cordova.statusbar required
+                 //    StatusBar.styleLightContent();
+                 //}
              });
          })
 
@@ -46,7 +47,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages'])
                     .state('app', {
                         url: '/app',
                         abstract: true,
-                        templateUrl: 'templates/app.menu.html'
+                        templateUrl: 'templates/app.menu.html',
+                        controller: 'MenuCtrl'
                     })
                     .state('app.today', {
                         url: '/today',
@@ -136,23 +138,60 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages'])
                     })
                     .state('logs', {
                         url: '/onboarding/logs',
-                        templateUrl: 'templates/logs.html'
+                        templateUrl: 'templates/logs.html',
+                        controller: 'LogsCtrl',
+                        cache: false,
+                        resolve: {
+                            'logs': ['OrangeApi', function (OrangeApi) {
+                                console.log('resolving logs');
+                                return OrangeApi.patients.getList();
+                            }]
+                        }
                     })
                     .state('logs-add', {
                         url: '/onboarding/logs/add',
-                        templateUrl: 'templates/logs.add.html'
+                        templateUrl: 'templates/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        resolve: {
+                            log: function () {
+                                return {};
+                            }
+                        }
+
                     })
                     .state('logs-add-my', {
                         url: '/onboarding/logs/add/my',
-                        templateUrl: 'templates/logs.add.my.html'
+                        templateUrl: 'templates/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        resolve: {
+                            log: ['OrangeApi', '$q', function (OrangeApi, $q) {
+                                var deffered = $q.defer();
+                                OrangeApi.patients.getList().then(
+                                    function (patients) {
+                                        var result = {};
+                                        //patients = patients.plain();
+                                        for (var i = 0, len = patients.length; i < len; i++) {
+                                            var patient = patients[i];
+                                            if (patient.me) {
+                                                result = patient;
+                                                break;
+                                            }
+                                        }
+                                        deffered.resolve(result);
+                                    },
+                                    function (error) {
+                                        deffered.resolve({})
+                                    }
+                                );
+                                return deffered.promise;
+                            }]
+                        }
                     })
                     .state('logs-request', {
                         url: '/onboarding/logs/request',
                         templateUrl: 'templates/logs.request.html',
-                        controller: function ($scope) {
-                            $scope.sent = false;
-                            $scope.email = 'jberry@gmail.com';
-                        }
+                        cache: false,
+                        controller: 'RequestLogsCtrl'
                     })
                     .state('logs-setup', {
                         url: '/onboarding/logs/setup',
@@ -198,12 +237,12 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages'])
                     })
 
                     .state('account-create', {
-                        url: '/account-create',
+                        url: '/onboarding/signup',
                         templateUrl: 'templates/account_create.html',
                         controller: 'AccountCtrl'
                     })
                     .state('account-login', {
-                        url: '/account-login',
+                        url: '/login',
                         templateUrl: 'templates/account_login.html',
                         controller: 'AccountCtrl'
                     })

@@ -4,10 +4,10 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$scope', 'OrangeApi', '$stateParams', 'ipsumService'];
+    MedicationsCtrl.$inject = ['$scope', 'OrangeApi', '$stateParams'];
 
     /* @ngInject */
-    function MedicationsCtrl($scope, OrangeApi, $stateParams, ipsumService) {
+    function MedicationsCtrl($scope, OrangeApi, $stateParams) {
         //console.log(ipsumService.randomName());
         if ($stateParams.id) {
             $scope.medication = OrangeApi.medications.get($stateParams.id);

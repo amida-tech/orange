@@ -17,6 +17,7 @@
     <script src="lib/angular-messages/angular-messages.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
+    <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
@@ -29,14 +30,22 @@
     <script src="js/controllers/medications.controller.js"></script>
     <script src="js/controllers/doctors.controller.js"></script>
     <script src="js/controllers/account.controller.js"></script>
+    <script src="js/controllers/menu.controller.js"></script>
+    <script src="js/controllers/logs.controller.js"></script>
+    <script src="js/controllers/log-add.controller.js"></script>
+    <script src="js/controllers/log-request.controller.js"></script>
 
     <!-- services -->
     <script src="js/services/localstorage.js"></script>
     <script src="js/services/orange-api.js"></script>
     <script src="js/services/auth.service.js"></script>
+    <script src="js/services/patient.service.js"></script>
+
 
     <!-- directives -->
     <script src="js/directives/compare-to.directive.js"></script>
+    <script src="js/directives/datefield.directive.js"></script>
+
 
 </head>
 <body ng-app="orange">

@@ -5,15 +5,17 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg padding-top">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="update()">
+        </ion-refresher>
         <div class="list list-clean">
             <div class="orange-logs item item-text-wrap">
-                <div class="row row-no-padding">
-                    <div class="col col-33">
+                <div class="row row-no-padding" ng-repeat="row in logs">
+                    <div class="col col-33" ng-repeat="log in row">
                         <div class="item-log">
                             <div class="log-avatar orange-bg">
-                                <div class="log-caption">JA</div>
+                                <div class="log-caption">{{ log.first_name[0] }}{{ log.last_name[0] }}</div>
                             </div>
-                            <div class="log-title">Jose<br>Alvarez</div>
+                            <div class="log-title">{{ log.first_name }}<br/>{{ log.last_name }}</div>
                         </div>
                     </div>
                 </div>

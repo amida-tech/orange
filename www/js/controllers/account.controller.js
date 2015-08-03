@@ -42,7 +42,18 @@
                 // Call Api
                 OrangeApi.user.post(user).then(
                     function (response) {
-                        console.log(response.plain());
+                        Auth.auth(user).then(function (status) {
+                            if (status === true) {
+                                $scope.error = false;
+                                $scope.errors = [];
+                                $scope.user = [];
+                                $state.go('logs');
+                            } else {
+                                $scope.error = true;
+                                $scope.errors = [];
+                                $scope.errors.push('Invalid Email or Password')
+                            }
+                        })
                     },
                     function (error) {
                         $scope.error = true;

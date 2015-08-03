@@ -18,25 +18,43 @@
                 baseUrl = url;
 
             },
-            setClientSecret: function(secret) {
+            setClientSecret: function (secret) {
                 clientSecret = secret;
             },
-            setAccessToken: function(token) {
+            setAccessToken: function (token) {
                 accessToken = token;
             },
             $get: ['Restangular', function (Restangular) {
                 var OrangeRest = Restangular.withConfig(function (RestangularConfigurer) {
 
                     RestangularConfigurer.setBaseUrl(baseUrl);
+                    RestangularConfigurer.setDefaultHttpFields({cache: false});
                     RestangularConfigurer.setDefaultHeaders({
                         'X-Client-Secret': clientSecret,
-                        'Authorization': accessToken
+                        'Authorization': 'Bearer ' + accessToken
                     });
-                    RestangularConfigurer.addRequestInterceptor(function(element) {
-                        if (element.hasOwnProperty('success')) {
+
+                    RestangularConfigurer.addRequestInterceptor(function (element) {
+                        if (element && element.hasOwnProperty('success')) {
                             delete element['success']
                         }
                         return element;
+                    });
+
+                    RestangularConfigurer.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
+                        var extractedData;
+                        if (operation == 'getList') {
+                            if (data.hasOwnProperty(what)) {
+                                extractedData = data[what];
+                                delete data[what];
+                                extractedData.meta = data;
+                            } else {
+                                extractedData = data;
+                            }
+                        } else {
+                            extractedData = data;
+                        }
+                        return extractedData;
                     });
                 });
 
@@ -55,7 +73,10 @@
                     requests: OrangeRest.all('requests'),
                     patients: OrangeRest.all('patients'),
                     npi: OrangeRest.all('npi'),
-                    rxnorm: OrangeRest.all('rxnorm')
+                    rxnorm: {
+                        search: OrangeRest.all('rxnorm').all('group'),
+                        spelling: OrangeRest.all('rxnorm').all('spelling')
+                    }
                 }
             }]
         }
