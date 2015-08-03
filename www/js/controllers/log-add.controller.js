@@ -13,7 +13,7 @@
         $scope.log = log;
         $scope.saveLog = saveLog;
         $scope.isDevice = ionic.Platform.isWebView();
-        $scope.title = log.me ? 'Add My Log': 'Add New Log';
+        $scope.title = log.me ? 'Add My Log' : 'Add New Log';
 
         function saveLog() {
 
@@ -23,7 +23,7 @@
                 $scope.log.birthdate = $scope.log.birthdate || null;
                 if ($scope.log.birthdate instanceof Date) {
                     $scope.log.birthdate = $scope.log.birthdate.toJSON().slice(0, 10);
-                 }
+                }
                 $scope.log.save().then(
                     function (patient) {
                         $scope.log = patient;
@@ -41,12 +41,12 @@
                 $scope.log.last_name = parts.shift() || '';
 
                 OrangeApi.patients.post($scope.log).then(
-                    function(patient) {
+                    function (patient) {
                         $scope.log = patient;
                         $scope.log.fullName = $scope.log.first_name + ' ' + $scope.log.last_name;
                         $state.go('logs');
                     },
-                    function(error) {
+                    function (error) {
                         alert(error.status);
                     }
                 )

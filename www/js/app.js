@@ -28,11 +28,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
              });
          })
 
-    .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, OrangeApiProvider) {
+    .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, OrangeApiProvider, settings) {
 
                 // Config Orange API
-                OrangeApiProvider.setBaseUrl('http://orange-api.amida-demo.com/api/v1');
-                OrangeApiProvider.setClientSecret('testsecret');
+                OrangeApiProvider.setBaseUrl(settings.orangeApiUrl);
+                OrangeApiProvider.setClientSecret(settings.clientSecret);
 
 
                 $ionicConfigProvider.backButton.previousTitleText('').text('').icon('ion-arrow-left-c');
