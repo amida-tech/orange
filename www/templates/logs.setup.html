@@ -7,34 +7,20 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="orange-bg padding-top">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="update()">
+        </ion-refresher>
         <p class="padding-x2">Here you can add the medications & habits for each log you created.
             This can be done via a BlueButton import, manual entry, or both.
             Pick a log to begin.</p>
         <div class="list list-clean orange-bg">
             <div class="orange-logs item item-text-wrap light orange-bg">
-                <div class="row row-no-padding">
-                    <div class="col col-33">
-                        <div class="item-log" ui-sref="logs-setup-habits">
-                            <div class="log-avatar">
-                                <div class="log-caption">JB</div>
+                <div class="row row-no-padding" ng-repeat="row in logs">
+                    <div class="col col-33" ng-repeat="log in row">
+                        <div class="item-log">
+                            <div class="log-avatar" ui-sref="logs-setup-habits">
+                                <div class="log-caption">{{ log.first_name[0] }}{{ log.last_name[0] }}</div>
                             </div>
-                            <div class="log-title">Jon<br>Berry</div>
-                        </div>
-                    </div>
-                    <div class="col col-33">
-                        <div class="item-log" ui-sref="logs-setup-habits">
-                            <div class="log-avatar">
-                                <div class="log-caption">JA</div>
-                            </div>
-                            <div class="log-title">Joe<br>Anglim</div>
-                        </div>
-                    </div>
-                    <div class="col col-33">
-                        <div class="item-log" ui-sref="logs-setup-habits">
-                            <div class="log-avatar">
-                                <div class="log-caption">AW</div>
-                            </div>
-                            <div class="log-title">Amy<br>West</div>
+                            <div class="log-title">{{ log.first_name }}<br/>{{ log.last_name }}</div>
                         </div>
                     </div>
                 </div>

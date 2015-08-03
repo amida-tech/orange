@@ -6,7 +6,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
              Auth.init().then(function (status) {
                  $rootScope.initialized = true;
                  if (status === true) {
-                     //$state.go('logs-add-my');
+                     $state.go('logs');
                  } else {
                      // Not authorized
                      $state.go('onboarding');
@@ -195,10 +195,18 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
                     })
                     .state('logs-setup', {
                         url: '/onboarding/logs/setup',
-                        templateUrl: 'templates/logs.setup.html'
+                        templateUrl: 'templates/logs.setup.html',
+                        cache: false,
+                        controller: 'LogsCtrl',
+                        resolve: {
+                            'logs': ['OrangeApi', function (OrangeApi) {
+                                console.log('resolving logs');
+                                return OrangeApi.patients.getList();
+                            }]
+                        }
                     })
                     .state('logs-setup-habits', {
-                        url: '/onboarding/logs/setup/habits',
+                        url: '/onboarding/logs/setup/habits/',
                         templateUrl: 'templates/logs.setup.habits.html'
                     })
                     .state('logs-setup-medications', {
