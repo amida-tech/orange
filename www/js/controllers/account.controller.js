@@ -19,7 +19,7 @@
         function signUp(form) {
             $scope.errors = [];
             if ($scope.user.agreement !== true) {
-                $scope.errors.push('You must agree to the Terms of User')
+                $scope.errors.push('Please agree to the Terms of Use')
             }
 
             if (!form.$valid || $scope.errors.length) {
