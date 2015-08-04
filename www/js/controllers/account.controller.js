@@ -30,7 +30,7 @@
                 // Prepare User object
                 var parts = $scope.user.fullName.split(' ');
                 var first_name = parts.shift();
-                var last_name = parts.shift() || '';
+                var last_name = parts.join(' ');
                 var user = {
                     'email': $scope.user.email,
                     'password': $scope.user.password,
@@ -80,7 +80,7 @@
                         $scope.error = false;
                         $scope.errors = [];
                         $scope.user = [];
-                        $state.go('app.today');
+                        $state.go('logs');
                     } else {
                         $scope.error = true;
                         $scope.errors = [];

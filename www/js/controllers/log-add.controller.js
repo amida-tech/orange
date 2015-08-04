@@ -38,7 +38,7 @@
                 // Create new patient
                 var parts = $scope.log.fullName ? $scope.log.fullName.split(' ') : [];
                 $scope.log.first_name = parts.shift() || '';
-                $scope.log.last_name = parts.shift() || '';
+                $scope.log.last_name = parts.join(' ') || '';
 
                 OrangeApi.patients.post($scope.log).then(
                     function (patient) {
