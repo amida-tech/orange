@@ -12,12 +12,13 @@
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
     <!-- libs -->
+    <script src="lib/jstzdetect/jstz.min.js"></script>
     <script src="lib/lodash/lodash.min.js"></script>
     <script src="lib/restangular/dist/restangular.min.js"></script>
     <script src="lib/angular-messages/angular-messages.min.js"></script>
+    <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
-    <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
     <script src="cordova.js"></script>
 
     <!-- your app's js -->
@@ -34,6 +35,7 @@
     <script src="js/controllers/logs.controller.js"></script>
     <script src="js/controllers/log-add.controller.js"></script>
     <script src="js/controllers/log-request.controller.js"></script>
+    <script src="js/controllers/log-habits.controller.js"></script>
 
     <!-- services -->
     <script src="js/services/localstorage.js"></script>
@@ -46,13 +48,11 @@
     <!-- directives -->
     <script src="js/directives/compare-to.directive.js"></script>
     <script src="js/directives/datefield.directive.js"></script>
+    <script src="js/directives/timefield.directive.js"></script>
 
 
 </head>
 <body ng-app="orange">
-<div ng-if="!initialized">Initializing...</div>
-<div ng-if="initialized">
     <ion-nav-view></ion-nav-view>
-</div>
 </body>
 </html>

@@ -2,10 +2,13 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
 
     .run(function ($ionicPlatform, Auth, $rootScope, $state) {
 
+             // Initializing app
              $rootScope.initialized = false;
              Auth.init().then(function (status) {
                  $rootScope.initialized = true;
+
                  if (status === true) {
+                     // User authorized
                      $state.go('logs');
                  } else {
                      // Not authorized
@@ -13,13 +16,20 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
                  }
              });
 
+             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+                 if (!$rootScope.initialized && toState.name !== 'loading') {
+                     event.preventDefault();
+                     $state.go('loading');
+                 }
+             });
+
              $ionicPlatform.ready(function () {
                  // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                  // for form inputs)
                  if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-                     cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+                     //    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
                      cordova.plugins.Keyboard.disableScroll(true);
-
+                     //
                  }
                  //if (window.StatusBar) {
                  //    // org.apache.cordova.statusbar required
@@ -44,6 +54,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
                 // Set up the various states which the app can be in.
                 // Each state's controller can be found in controllers.js
                 $stateProvider
+                    .state('loading', {
+                        url: '/loading',
+                        templateUrl: 'templates/loading.html'
+                    })
                     .state('app', {
                         url: '/app',
                         abstract: true,
@@ -143,7 +157,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
                         cache: false,
                         resolve: {
                             'logs': ['OrangeApi', function (OrangeApi) {
-                                console.log('resolving logs');
                                 return OrangeApi.patients.getList();
                             }]
                         }
@@ -200,14 +213,19 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
                         controller: 'LogsCtrl',
                         resolve: {
                             'logs': ['OrangeApi', function (OrangeApi) {
-                                console.log('resolving logs');
                                 return OrangeApi.patients.getList();
                             }]
                         }
                     })
                     .state('logs-setup-habits', {
-                        url: '/onboarding/logs/setup/habits/',
-                        templateUrl: 'templates/logs.setup.habits.html'
+                        url: '/log/:logId/habits/',
+                        templateUrl: 'templates/logs.setup.habits.html',
+                        controller: 'LogHabitsCtrl',
+                        resolve: {
+                            'habits': ['OrangeApi', '$stateParams', function (OrangeApi, $stateParams) {
+                                return OrangeApi.patients.all($stateParams.logId.toString()).one('habits').get('');
+                            }]
+                        }
                     })
                     .state('logs-setup-medications', {
                         url: '/onboarding/logs/setup/medications',
@@ -260,6 +278,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
                     });
 
                 // if none of the above states are matched, use this as the fallback
-                $urlRouterProvider.otherwise('/onboarding');
+                $urlRouterProvider.otherwise('/loading');
 
             });

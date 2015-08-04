@@ -8,7 +8,7 @@
             <div class="orange-avatar">
                 <div class="item-log">
                     <div class="log-avatar">
-                        <div class="log-caption">+</div>
+                        <div class="log-caption" ng-bind="log.first_name && log.last_name ? log.first_name[0] + log.last_name[0] : '+'"></div>
                     </div>
 
                 </div>

@@ -7677,11 +7677,14 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+body {
+  background-color: #FAAA20; }
+
 .padding-x2 {
   padding: 20px; }
 
 .pane {
-  background-color: #EDAE36; }
+  background-color: #FAAA20; }
 
 .has-bottom-buttons {
   padding-bottom: 84px; }
@@ -7705,13 +7708,13 @@ a.button {
   max-width: 60%; }
 
 .orange {
-  color: #EDAE36; }
+  color: #FAAA20; }
 
 .orange-light {
-  color: #F7D69A; }
+  color: #FFD496; }
 
 .green {
-  color: #47B51F; }
+  color: #20B11D; }
 
 .red {
   color: #FA2E20; }
@@ -7721,6 +7724,10 @@ a.button {
 
 .text-muted {
   color: #9E9A9A; }
+
+.spinner.spinner-orange-light {
+  stroke: #FFD496;
+  fill: #FFD496; }
 
 .item-error {
   background-color: #FA2E20;
@@ -7741,15 +7748,15 @@ a.button {
 .checkbox-orange input:before, .checkbox-orange .checkbox-icon:before {
   border-color: #ddd; }
 .checkbox-orange input:checked:before, .checkbox-orange input:checked + .checkbox-icon:before {
-  background: #EDAE36;
-  border-color: #EDAE36; }
+  background: #FAAA20;
+  border-color: #FAAA20; }
 
 .button.button-orange {
-  background-color: #F7D69A;
-  border-color: #F7D69A; }
+  background-color: #FFD496;
+  border-color: #FFD496; }
   .button.button-orange.button-outline {
     background-color: transparent;
-    color: #F7D69A; }
+    color: #FFD496; }
   .button.button-orange.activated {
     opacity: 0.5; }
 
@@ -7785,7 +7792,7 @@ a.button {
     position: absolute;
     font-size: 30px;
     right: 12px;
-    color: #47B51F;
+    color: #20B11D;
     line-height: 42px; }
   .orange-form .item-input .icon.icon-right.icon-red {
     color: #FA2E20; }
@@ -7794,6 +7801,8 @@ a.button {
     border-radius: 3px;
     padding: 6px 12px;
     height: 42px; }
+    .orange-form .item-input input:focus {
+      border-color: #9E9A9A; }
   .orange-form .item-input input[readonly].not-readonly {
     background-color: #fff; }
   .orange-form .item-input input[type="search"] {
@@ -7874,7 +7883,7 @@ a.button {
       font-size: 12.6px;
       margin-top: 12px; }
   .list.orange-list .button-bar {
-    box-shadow: 0 0 2px #F7D69A;
+    box-shadow: 0 0 2px #FFD496;
     margin-bottom: 24px; }
     .list.orange-list .button-bar .button {
       padding: 0;
@@ -7884,10 +7893,10 @@ a.button {
       min-height: 24px;
       height: 24px;
       min-width: 0;
-      border-color: #EDAE36;
+      border-color: #FAAA20;
       background-color: #fff; }
       .list.orange-list .button-bar .button.active {
-        background-color: #EDAE36;
+        background-color: #FAAA20;
         color: #f8f8f8; }
 
 .form-title {
@@ -7924,9 +7933,9 @@ a.button {
       border-bottom-right-radius: 3px; }
 
 .bar.bar-orange {
-  border-color: #EDAE36;
-  background-color: #EDAE36;
-  background-image: linear-gradient(0deg, #EDAE36, #EDAE36 50%, transparent 50%);
+  border-color: #FAAA20;
+  background-color: #FAAA20;
+  background-image: linear-gradient(0deg, #FAAA20, #FAAA20 50%, transparent 50%);
   color: #fff;
   font-weight: normal; }
   .bar.bar-orange .title {
@@ -7946,9 +7955,9 @@ a.button {
   .bar.bar-orange .button-dose:before {
     font-size: 24.2px; }
   .bar.bar-orange.orange-light {
-    color: #F7D69A; }
+    color: #FFD496; }
     .bar.bar-orange.orange-light .button-clear, .bar.bar-orange.orange-light .button-icon, .bar.bar-orange.orange-light .button-outline, .bar.bar-orange.orange-light .title {
-      color: #F7D69A;
+      color: #FFD496;
       font-weight: bold; }
 
 .item-large-icon {
@@ -7966,10 +7975,10 @@ a.button {
     .orange-logs .item-log .log-avatar, .orange-avatar .item-log .log-avatar {
       width: 80px;
       height: 80px;
-      background-color: #F7D69A;
+      background-color: #FFD496;
       border-radius: 50%; }
       .orange-logs .item-log .log-avatar.active, .orange-logs .item-log .log-avatar.orange-bg, .orange-avatar .item-log .log-avatar.active, .orange-avatar .item-log .log-avatar.orange-bg {
-        background-color: #EDAE36; }
+        background-color: #FAAA20; }
       .orange-logs .item-log .log-avatar .log-caption, .orange-avatar .item-log .log-avatar .log-caption {
         display: inline-block;
         width: 80px;
@@ -7987,7 +7996,7 @@ a.button {
   .orange-logs.light .log-avatar, .orange-avatar.light .log-avatar {
     background-color: #fff; }
     .orange-logs.light .log-avatar .log-caption, .orange-avatar.light .log-avatar .log-caption {
-      color: #EDAE36; }
+      color: #FAAA20; }
 
 .orange-avatar {
   text-align: center;
@@ -8074,12 +8083,21 @@ a.button {
         text-transform: lowercase; }
 
 .orange-bg {
-  background-color: #EDAE36; }
+  background-color: #FAAA20; }
   .orange-bg h3 {
     color: #f8f8f8;
     text-align: center; }
   .orange-bg p {
     color: #fff; }
+
+.loading {
+  position: relative;
+  top: 50%;
+  margin-top: -80px; }
+  .loading h3 {
+    color: #FFD496;
+    font-size: 28px;
+    font-weight: 400; }
 
 .grade-b .menu-content, .grade-c .menu-content {
   border: none; }

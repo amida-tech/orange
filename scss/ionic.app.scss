@@ -9,11 +9,11 @@ $royal: #886aea !default;
 $dark: #4D4D4D !default;
 
 // Colors
-$orange: #EDAE36;
-$orange-light: #F7D69A;
+$orange: #FAAA20;
+$orange-light: #FFD496;
 $red: #FA2E20;
 $dark-red: #D0021B;
-$green: #47B51F;
+$green: #20B11D;
 $gray: #9E9A9A;
 $lightgray: #E0E0E0;
 
@@ -35,6 +35,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Sizes
 $log-size: 80px;
 $avatar-size: 60px;
+
+body {
+  background-color: $orange;
+}
 
 .padding-x2 {
   padding: $content-padding * 2;
@@ -85,6 +89,13 @@ $avatar-size: 60px;
   color: $gray;
 }
 
+.spinner {
+  &.spinner-orange-light {
+    stroke: $orange-light;
+    fill: $orange-light;
+  }
+}
+
 .item-error {
   background-color: $red;
   padding: $padding-base-horizontal $padding-large-horizontal;
@@ -122,6 +133,8 @@ $avatar-size: 60px;
     opacity: 0.5;
   }
 }
+
+
 
 .orange-form {
   p.item-input {
@@ -179,6 +192,11 @@ $avatar-size: 60px;
       border-radius: $card-border-radius;
       padding: $padding-base-vertical $padding-base-horizontal;
       height: 42px;
+
+
+      &:focus {
+        border-color: $gray;
+      }
     }
 
     input[readonly].not-readonly {
@@ -585,6 +603,17 @@ $avatar-size: 60px;
 
   p {
     color: $light;
+  }
+}
+
+.loading {
+  position: relative;
+  top: 50%;
+  margin-top: -($spinner-height + $font-size-base * 2 + $padding-base-horizontal * 2);
+  h3 {
+    color: $orange-light;
+    font-size: $font-size-base * 2;
+    font-weight: 400;
   }
 }
 

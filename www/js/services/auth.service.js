@@ -5,10 +5,10 @@
         .module('orange')
         .service('Auth', Auth);
 
-    Auth.$inject = ['$rootScope', '$q', 'OrangeApi', '$localstorage'];
+    Auth.$inject = ['$rootScope', '$q', '$timeout', 'OrangeApi', '$localstorage'];
 
     /* @ngInject */
-    function Auth($rootScope, $q, OrangeApi, $localstorage) {
+    function Auth($rootScope, $q, $timeout, OrangeApi, $localstorage) {
         var user = null;
         var authorized = null;
 
@@ -48,7 +48,10 @@
 
             } else {
                 authorized = false;
-                deffered.resolve(false);
+                $timeout(function() {
+                    deffered.resolve(false);
+                }, 400);
+
             }
             return deffered.promise;
         }
