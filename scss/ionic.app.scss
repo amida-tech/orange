@@ -163,7 +163,8 @@ body {
 
   .item-input {
     padding-left: 0;
-    padding-bottom: $padding-base-horizontal;
+    padding-bottom: 0;
+    margin-bottom: $padding-base-horizontal;
 
     .input-label {
       width: 100%;

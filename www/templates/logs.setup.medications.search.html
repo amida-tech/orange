@@ -3,18 +3,34 @@
         <ion-nav-back-button>
         </ion-nav-back-button>
     </ion-nav-bar>
-    <ion-content class="light-bg" padding="true">
+    <ion-content class="light-bg" padding="true" scroll="true">
         <p class="form-title">Search</p>
-        <form class="orange-form">
+        <form class="orange-form" name="searchForm">
             <label class="item-input">
-                <input type="search" placeholder="Medication"/>
+                <input type="search" placeholder="Medication" ng-model="search.term" ng-change="searchMedication()"/>
             </label>
         </form>
         <ion-list class="list-clean">
-            <ion-item ng-repeat="medication in medications" ui-sref="logs-setup-medications-schedule">
+            <ion-item ng-show="search.timer" class="text-center">
+                <ion-spinner ng-if="!isAndroid" icon="dots"></ion-spinner>
+                <ion-spinner ng-if="isAndroid"></ion-spinner>
+            </ion-item>
+            <ion-item ng-show="search.suggestions.length" class="item-text-wrap">
+                Suggestions:
+            </ion-item>
+
+            <ion-item ng-show="search.suggestions.length"
+                      ng-repeat="suggestion in search.suggestions"
+                      ng-click="pickSuggestion(suggestion)">
+                <div class="med-title">
+                    <p class="med-name" ng-bind="suggestion"></p>
+                </div>
+            </ion-item>
+
+            <ion-item ng-repeat="medication in search.result">
                 <div class="med-title">
                     <p class="med-name" ng-bind="medication.name"></p>
-                    <p class="med-rx" ng-bind="medication.rxName"></p>
+                    <p class="med-rx" ng-bind="medication.brand"></p>
                 </div>
             </ion-item>
         </ion-list>

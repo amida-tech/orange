@@ -9,7 +9,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
 
                  if (status === true) {
                      // User authorized
-                     $state.go('logs');
+                     if ($rootScope.cachedState) {
+                         $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
+                     } else {
+                         $state.go('logs');
+                     }
                  } else {
                      // Not authorized
                      $state.go('onboarding');
@@ -18,6 +22,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
 
              $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                  if (!$rootScope.initialized && toState.name !== 'loading') {
+                     $rootScope.cachedState = {
+                         toState: toState,
+                         toParams: toParams
+                     };
                      event.preventDefault();
                      $state.go('loading');
                  }
@@ -26,6 +34,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
              $ionicPlatform.ready(function () {
                  // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                  // for form inputs)
+                 $rootScope.isAndroid = ionic.Platform.isAndroid();
+                 $rootScope.isIOS = ionic.Platform.isIOS();
                  if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
                      //    cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
                      cordova.plugins.Keyboard.disableScroll(true);
@@ -228,23 +238,24 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
                         }
                     })
                     .state('logs-setup-medications', {
-                        url: '/onboarding/logs/setup/medications',
-                        templateUrl: 'templates/logs.setup.medications.html'
+                        url: '/log/:logId/medications',
+                        templateUrl: 'templates/logs.setup.medications.html',
+                        //controller: 'LogMedicationsCtrl',
+                        resolve: {
+                            'medications': ['OrangeApi', '$stateParams', function (OrangeApi, $stateParams) {
+                                return OrangeApi.patients.all($stateParams.logId.toString()).all('medications').getList();
+                            }]
+                        }
+
                     })
                     .state('logs-setup-medications-search', {
                         url: '/onboarding/logs/setup/medications/search',
                         templateUrl: 'templates/logs.setup.medications.search.html',
-                        controller: function ($scope) {
-                            $scope.medications = [
-                                {'name': 'Strattera (18 mg)', 'rxName': 'Atmoxetine'},
-                                {'name': 'Strattera XR (18 mg)', 'rxName': 'Atmoxetine'},
-                                {'name': 'Strattera (24 mg)', 'rxName': 'Atmoxetine'},
-                                {'name': 'Strattera XR (24 mg)', 'rxName': 'Atmoxetine'},
-                                {'name': 'Strattera (50 mg)', 'rxName': 'Atmoxetine'},
-                                {'name': 'Strattera XR (50 mg)', 'rxName': 'Atmoxetine'},
-                                {'name': 'Strattera (82 mg)', 'rxName': 'Atmoxetine'},
-                                {'name': 'Strattera XR (82 mg)', 'rxName': 'Atmoxetine'}
-                            ]
+                        controller: 'LogMedicationsCtrl',
+                        resolve: {
+                            'medications': function() {
+                                return [];
+                            }
                         }
                     })
                     .state('logs-setup-medications-schedule', {
