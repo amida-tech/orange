@@ -3,88 +3,50 @@
 
     angular
         .module('orange')
-        .controller('LogMedicationsCtrl', LogMedicationsCtrl);
+        .controller('MedicationsCtrl', MedicationsCtrl);
 
-    LogMedicationsCtrl.$inject = ['$scope', '$q', '$timeout', 'OrangeApi'];
+    MedicationsCtrl.$inject = ['OrangeApi', 'Oauth', 'TokenService'];
 
     /* @ngInject */
-    function LogMedicationsCtrl($scope, $q, $timeout, OrangeApi) {
+    function MedicationsCtrl(OrangeApi, Oauth, TokenService) {
+        /* jshint validthis: true */
+        var vm = this;
 
-        $scope.medications = [];
+        vm.getSMARTToken = getSMARTToken;
 
-        $scope.search = {
-            result: [],
-            suggestions: [],
-            term: null,
-            timer: null
-        };
+        activate();
 
-        $scope.searchMedication = searchMedication;
-        $scope.pickSuggestion = pickSuggestion;
+        ////////////////
 
-
-        function pickSuggestion(suggestion) {
-            $scope.search.term = suggestion;
-            searchMedication();
+        function activate() {
+            console.log('here');
         }
 
-        function searchMedication() {
-
-            var name = $scope.search.term;
-
-            if (!name) return;
-
-            if ($scope.search.timer) {
-                $timeout.cancel($scope.search.timer);
-            }
-            $scope.search.timer = $timeout(function () {
-                var data = {medname: name};
-                OrangeApi.rxnorm.search.post(data).then(
-                    function (data) {
-                        $scope.search.suggestions = [];
-                        $scope.search.result = [];
-                        console.log(data.plain());
-                        var result = data.plain().result;
-                        if (result.compiled.length) {
-                            var medications = [];
-                            result.compiled.forEach(function(elem) {
-                                medications.push({
-                                    name: elem.modifiedname,
-                                    brand: elem.brand,
-                                    rx_norm: elem.rxcui || null,
-                                    form: elem.dfg.length ? elem.dfg[0] : null
-                                });
-                            });
-                            $scope.search.result = medications;
-                        } else {
-                            // Get suggestions if result is empty
-                            getSuggestions(name).then(function (data) {
-                                $scope.search.suggestions = data;
-                            });
-                        }
-                        $scope.search.timer = null;
-                    },
-                    function (error) {
-                        $scope.search.timer = null;
+        function getSMARTToken() {
+            var c;
+            vm.oauthError = "";
+            TokenService.getSMARTCredentials(function (credentials) {
+                c = credentials;
+            });
+            Oauth.smart(c).then(function (requestToken) {
+                TokenService.getTokenResult(c, requestToken, function (err, result) {
+                    if (err) {
+                        console.log("error: " + err);
+                        vm.oauthError = "error: " + err;
+                    } else {
+                        vm.oauthSuccess = "success " + JSON.stringify(result);
+                        result.c = c;
+                        result.patients = [{resource: {name: [{given: ['Daniel'], family: ['Adams']}]}}];
+                        vm.token = result;
+                        TokenService.setToken(result);
+                        vm.tokenExists = true;
+                        console.log(vm.token);
                     }
-                );
-            }, 1000);
+                })
+            }, function (error) {
+                console.log("error: " + error);
+                vm.oauthError = "error " + error;
+            });
         }
-
-        function getSuggestions(name) {
-            var deffered = $q.defer();
-            var data = {medname: name};
-            OrangeApi.rxnorm.spelling.post(data).then(
-                function (data) {
-                    var suggestions = data.plain()['result']['suggestionGroup']['suggestionList']['suggestion'];
-                    deffered.resolve(suggestions || []);
-                },
-                function (error) {
-                    console.log(error);
-                    deffered.resolve([]);
-                });
-            return deffered.promise;
-        }
-
     }
 })();

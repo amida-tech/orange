@@ -240,23 +240,14 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
                     .state('logs-setup-medications', {
                         url: '/log/:logId/medications',
                         templateUrl: 'templates/logs.setup.medications.html',
-                        //controller: 'LogMedicationsCtrl',
-                        resolve: {
-                            'medications': ['OrangeApi', '$stateParams', function (OrangeApi, $stateParams) {
-                                return OrangeApi.patients.all($stateParams.logId.toString()).all('medications').getList();
-                            }]
-                        }
-
+                        controller: 'MedicationsCtrl as meds'
                     })
+
                     .state('logs-setup-medications-search', {
                         url: '/onboarding/logs/setup/medications/search',
                         templateUrl: 'templates/logs.setup.medications.search.html',
-                        controller: 'LogMedicationsCtrl',
-                        resolve: {
-                            'medications': function() {
-                                return [];
-                            }
-                        }
+                        controller: 'SearchMedicationCtrl'
+
                     })
                     .state('logs-setup-medications-schedule', {
                         url: '/onboarding/logs/setup/medications/schedule',
