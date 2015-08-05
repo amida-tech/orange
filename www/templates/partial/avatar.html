@@ -1,0 +1,7 @@
+<div>
+    <div class="log-avatar" ng-if="!imageSrc">
+        <div class="log-caption"
+             ng-bind="patient.first_name && patient.last_name ? patient.first_name[0] + patient.last_name[0] : '+'"></div>
+    </div>
+    <img ng-if="imageSrc" ng-src="{{imageSrc}}" class="log-avatar-img" alt=""/>
+</div>

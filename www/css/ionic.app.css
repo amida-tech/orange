@@ -7973,6 +7973,10 @@ body {
     display: inline-block;
     width: auto;
     margin: 6px 6px 16px; }
+    .orange-logs .item-log .log-avatar-img, .orange-avatar .item-log .log-avatar-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%; }
     .orange-logs .item-log .log-avatar, .orange-avatar .item-log .log-avatar {
       width: 80px;
       height: 80px;
@@ -8002,7 +8006,7 @@ body {
 .orange-avatar {
   text-align: center;
   margin-bottom: -52px; }
-  .orange-avatar .log-avatar {
+  .orange-avatar .log-avatar, .orange-avatar .log-avatar-img {
     position: relative;
     top: -46px; }
 

@@ -7,13 +7,15 @@
         <div class="card orange-card with-avatar">
             <div class="orange-avatar">
                 <div class="item-log">
-                    <div class="log-avatar">
-                        <div class="log-caption" ng-bind="log.first_name && log.last_name ? log.first_name[0] + log.last_name[0] : '+'"></div>
+                    <div class="item-log">
+                        <div class="log-avatar">
+                            <div class="log-caption">+</div>
+                        </div>
                     </div>
-
                 </div>
             </div>
             <div class="item item-body">
+
                 <form class="orange-form">
                     <p ng-if="log.me" class="item-input">{{ log.first_name }} {{ log.last_name }}</p>
                     <label ng-if="!log.me" class="item-input">

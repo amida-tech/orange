@@ -436,6 +436,13 @@ body {
     width: auto;
     margin: $padding-base-vertical $padding-base-vertical $padding-large-horizontal;
 
+    .log-avatar-img {
+      width: $log-size;
+      height: $log-size;
+      //background-color: $orange-light;
+      border-radius: 50%;
+    }
+
     .log-avatar {
       width: $log-size;
       height: $log-size;
@@ -481,7 +488,8 @@ body {
 .orange-avatar {
   text-align: center;
   margin-bottom: -$log-size / 2 - $padding-base-vertical * 2;
-  .log-avatar {
+  .log-avatar,
+  .log-avatar-img {
     position: relative;
     top: -$log-size / 2 - $padding-base-vertical;
   }

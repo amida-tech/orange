@@ -1,4 +1,4 @@
-angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova'])
+angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'base64'])
 
     .run(function ($ionicPlatform, Auth, $rootScope, $state) {
 

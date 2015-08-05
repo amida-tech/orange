@@ -79,9 +79,7 @@
                 result = dfg.slice(0, -1).join(', ');
                 result += ' and/or ' + dfg.slice(-1);
             }
-
             return result;
-
         }
 
         function getSuggestions(name) {

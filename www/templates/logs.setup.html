@@ -17,9 +17,7 @@
                 <div class="row row-no-padding" ng-repeat="row in logs">
                     <div class="col col-33" ng-repeat="log in row">
                         <div class="item-log">
-                            <div class="log-avatar" ui-sref="logs-setup-habits({logId: log.id})">
-                                <div class="log-caption">{{ log.first_name[0] }}{{ log.last_name[0] }}</div>
-                            </div>
+                            <avatar patient="log" ui-sref="logs-setup-habits({logId: log.id})"></avatar>
                             <div class="log-title">{{ log.first_name }}<br/>{{ log.last_name }}</div>
                         </div>
                     </div>
