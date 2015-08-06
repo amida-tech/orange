@@ -5,17 +5,55 @@
         .module('orange')
         .factory('Avatar', Avatar);
 
-    Avatar.$inject = ['$q'];
+    Avatar.$inject = ['$q', '$http'];
 
     /* @ngInject */
-    function Avatar($q) {
+    function Avatar($q, $http) {
         var cache = {};
 
         return {
-            getB64: getB64
+            getB64: getB64,
+            upload: upload
         };
 
         ////////////////
+
+        function upload(patient) {
+            var deffered = $q.defer();
+
+            var config = {
+                transformResponse: [],
+                responseType: "arraybuffer",
+                headers: {
+
+                    'Accept': "image/png"
+                }
+            };
+
+            var avatarUrl = patient.avatarUrl;
+            $http.get(avatarUrl, config).then(
+                function (data) {
+                    patient.one('avatar')
+                        .withHttpConfig({
+                            transformRequest: []
+                        })
+                        .customPOST(data.data, undefined, undefined, {'Content-Type': 'image/png'})
+                        .then(
+                        function () {
+                            deffered.resolve();
+                        },
+                        function (error) {
+                            deffered.reject(error);
+                        }
+                    );
+                },
+                function (error) {
+                    deffered.reject(error);
+                });
+
+            return deffered.promise;
+
+        }
 
         function getB64(patient) {
             var deffered = $q.defer();
@@ -30,7 +68,7 @@
                     deffered.resolve(imageSrc);
                 },
                 function (error) {
-                    console.log(error);
+                    console.log('Error loading avatar:', error);
                     deffered.reject(error);
                 }
             );

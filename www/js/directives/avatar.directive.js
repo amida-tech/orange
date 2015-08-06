@@ -15,15 +15,14 @@
             },
             templateUrl: 'templates/partial/avatar.html',
             replace: true,
-            link: function (scope, element, attributes, ngModel) {
+            link: function (scope) {
+                scope.imageSrc = null;
                 if (scope.patient) {
                     Avatar.getB64(scope.patient).then(
                         function (data) {
                             scope.imageSrc = data;
                         }
                     );
-                } else {
-                    scope.imageSrc = null;
                 }
             }
         }

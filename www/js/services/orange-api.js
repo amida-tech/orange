@@ -16,7 +16,6 @@
         return {
             setBaseUrl: function (url) {
                 baseUrl = url;
-
             },
             setClientSecret: function (secret) {
                 clientSecret = secret;
@@ -33,6 +32,7 @@
                         'X-Client-Secret': clientSecret,
                         'Authorization': 'Bearer ' + accessToken
                     });
+                    RestangularConfigurer.setDefaultHttpFields({timeout: 10 * 1000});
 
                     RestangularConfigurer.addRequestInterceptor(function (element) {
                         if (element && element.hasOwnProperty('success')) {

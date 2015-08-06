@@ -7774,7 +7774,7 @@ body {
     position: relative;
     direction: inherit;
     padding: 0 0 0 12px;
-    top: 2px; }
+    top: -3px; }
     .orange-form .item-select select.placeholder {
       color: #9E9A9A; }
 .orange-form .item-input {

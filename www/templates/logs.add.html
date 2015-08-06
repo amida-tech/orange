@@ -6,16 +6,14 @@
     <ion-content padding="true">
         <div class="card orange-card with-avatar">
             <div class="orange-avatar">
-                <div class="item-log">
-                    <div class="item-log">
-                        <div class="log-avatar">
-                            <div class="log-caption">+</div>
-                        </div>
+                <div class="item-log" ng-click="selectPhoto()">
+                    <div ng-if="!log.avatarUrl" class="log-avatar">
+                        <div class="log-caption">+</div>
                     </div>
+                    <img ng-if="log.avatarUrl" ng-src="{{log.avatarUrl}}" class="log-avatar-img" alt=""/>
                 </div>
             </div>
             <div class="item item-body">
-
                 <form class="orange-form">
                     <p ng-if="log.me" class="item-input">{{ log.first_name }} {{ log.last_name }}</p>
                     <label ng-if="!log.me" class="item-input">
