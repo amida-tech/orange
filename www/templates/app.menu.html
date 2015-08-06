@@ -5,8 +5,8 @@
     <ion-side-menu side="left">
         <ion-content scroll="false">
             <div class="avatar">
-                <div class="avatar-img"></div>
-                <p>{{ profile.first_name }} {{ profile.last_name }}</p>
+                <avatar patient="log"></avatar>
+                <p>{{ log.first_name }} {{ log.last_name }}</p>
             </div>
             <ion-list>
                 <ion-item menu-close ui-sref="app.today">
@@ -18,7 +18,7 @@
                 <ion-item menu-close ui-sref="app.medications">
                     Medications
                 </ion-item>
-                <ion-item menu-close ui-sref="app.doctors">
+                <ion-item menu-close ui-sref="app.doctors.list">
                     Doctors
                 </ion-item>
                 <ion-item menu-close ui-sref="app.pharmacies">

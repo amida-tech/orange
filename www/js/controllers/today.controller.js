@@ -15,37 +15,8 @@
             }, 2000);
         };
 
-        Patient.set(9);
-
         $scope.doLogin = function () {
-            var doctor = {
-                "search": {
-                    "name": [
-                        {
-                            "first": "John",
-                            "last": "Smith"
-                        }
-                    ],
-                    "address": [
-                        {
-                            "state": "CA"
-                        }
-                    ]
-                }
-            };
 
-            var medication = {
-                medname: 'aspirin'
-            };
-
-            Patient.api('journal').get('').then(
-                function(data) {
-                    console.log(data.plain());
-                },
-                function(response) {
-                    console.log(response);
-                }
-            );
 
             //OrangeApi.patients.getList().then(
             //    function (patients) {

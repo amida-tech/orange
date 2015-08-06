@@ -24,6 +24,7 @@
         }
 
         function set(patientID) {
+            console.log('Setting patient');
             patient = patientID.toString();
         }
 

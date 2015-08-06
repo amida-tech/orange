@@ -1,0 +1,35 @@
+<ion-view view-title="{{doctor.title}}">
+    <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+    </ion-nav-bar>
+    <ion-content class="orange-bg">
+
+        <div class="card orange-card">
+            <form name="doctorForm" class="orange-form">
+                <div class="item item-error" ng-if="doctor.error">
+                    <p ng-repeat="error in doctor.errors"></p>
+                </div>
+                <div class="item item-body">
+                    <label class="item-input">
+                        <input type="text" name="name" ng-model="doctor.doctor.name" placeholder="Full Name"/>
+                    </label>
+                    <label class="item-input">
+                        <input type="tel" name="phone" ng-model="doctor.doctor.phone" placeholder="Phone Number (Optional)"/>
+                    </label>
+                    <label class="item-input">
+                        <textarea name="address" data-ng-model="doctor.doctor.address" rows="5" placeholder="Address (Optional)"></textarea>
+                    </label>
+
+                    <label class="item-input">
+                        <textarea name="notes" data-ng-model="doctor.doctor.notes" rows="5" placeholder="Notes (Optional)"></textarea>
+                    </label>
+                </div>
+                <div class="item item-button">
+                    <button class="button button-full button-orange" ng-click="doctor.save()">Save Doctor</button>
+                </div>
+            </form>
+        </div>
+
+    </ion-content>
+</ion-view>

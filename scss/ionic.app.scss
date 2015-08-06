@@ -188,11 +188,12 @@ body {
       color: $red;
     }
 
-    input {
+    input,
+    textarea {
       border: 1px solid $lightgray;
       border-radius: $card-border-radius;
       padding: $padding-base-vertical $padding-base-horizontal;
-      height: 42px;
+      min-height: 42px;
 
 
       &:focus {
@@ -377,11 +378,18 @@ body {
   @include bar-style($orange, $orange, $light);
   font-weight: normal;
 
+  &.main-bar {
+    .title {
+      text-transform: uppercase;
+    }
+  }
+
   .button-clear,
   .button-icon {
     color: $light;
     font-weight: bold;
   }
+
   .title {
     font-weight: 400;
   }
@@ -551,13 +559,14 @@ body {
       padding-top: $padding-large-vertical * 3;
       text-align: center;
       padding-bottom: $padding-large-vertical;
-      .avatar-img {
+      .avatar-img,
+      .log-avatar-img {
         display: inline-block;
         width: $avatar-size;
         height: $avatar-size;
         border-radius: 50%;
-        background: transparent url('../img/ionic.png') no-repeat center;
-        background-size: 90%;
+        //background: transparent url('../img/ionic.png') no-repeat center;
+        background-size: 100%;
       }
       p {
         color: $light;

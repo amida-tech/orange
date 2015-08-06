@@ -72,7 +72,30 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '/app',
                         abstract: true,
                         templateUrl: 'templates/app.menu.html',
-                        controller: 'MenuCtrl'
+                        controller: 'MenuCtrl',
+                        resolve: {
+                            log: ['OrangeApi', '$q', function (OrangeApi, $q) {
+                                var deffered = $q.defer();
+                                OrangeApi.patients.getList().then(
+                                    function (patients) {
+                                        var result = {};
+                                        //patients = patients.plain();
+                                        for (var i = 0, len = patients.length; i < len; i++) {
+                                            var patient = patients[i];
+                                            if (patient.me) {
+                                                result = patient;
+                                                break;
+                                            }
+                                        }
+                                        deffered.resolve(result);
+                                    },
+                                    function (error) {
+                                        deffered.resolve({})
+                                    }
+                                );
+                                return deffered.promise;
+                            }]
+                        }
                     })
                     .state('app.today', {
                         url: '/today',
@@ -121,11 +144,45 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.doctors', {
                         url: '/doctors',
+                        abstract: true,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.doctors.html',
-                                controller: 'DoctorsCtrl'
+                                template: '<ion-nav-view></ion-nav-view>'
                             }
+                        }
+
+                    })
+                    .state('app.doctors.list', {
+                        url: '',
+                        templateUrl: 'templates/app.doctors.html',
+                        controller: 'DoctorsCtrl as doctors',
+                        cache: false,
+                        resolve: {
+                            doctors: ['log', function (log) {
+                                console.log('resolving doctors');
+                                return log.all('doctors').getList();
+                            }]
+                        }
+                    })
+                    .state('app.doctors.add', {
+                        url: '/add',
+                        templateUrl: 'templates/app.doctors.add.html',
+                        controller: 'DoctorCtrl as doctor',
+                        resolve: {
+                            doctor: function() {
+                                return {};
+                            }
+                        }
+                    })
+                    .state('app.doctors.edit', {
+                        url: '/edit/:id',
+                        templateUrl: 'templates/app.doctors.add.html',
+                        controller: 'DoctorCtrl as doctor',
+                        resolve: {
+                            doctor: ['$stateParams', 'log', function($stateParams, log) {
+                                var id = $stateParams.id;
+                                return log.all('doctors').get(id);
+                            }]
                         }
                     })
                     .state('app.pharmacies', {
