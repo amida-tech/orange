@@ -7943,6 +7943,10 @@ body {
     color: #fff; }
   .bar.bar-orange.main-bar .title {
     text-transform: uppercase; }
+  .bar.bar-orange.bar-static {
+    position: static;
+    background-color: #ccc;
+    border-color: #ccc; }
   .bar.bar-orange .button-clear, .bar.bar-orange .button-icon {
     color: #fff;
     font-weight: bold; }

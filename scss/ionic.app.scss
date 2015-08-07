@@ -384,6 +384,12 @@ body {
     }
   }
 
+  &.bar-static {
+    position: static;
+    background-color: #ccc;
+    border-color: #ccc;
+  }
+
   .button-clear,
   .button-icon {
     color: $light;
@@ -420,12 +426,14 @@ body {
       color: $orange-light;
       font-weight: bold;
     }
+
   }
 
   &.bar-footer {
     //background-image: linear-gradient(180deg, $bar-light-border, $bar-light-border 50%, transparent 50%);
   }
 }
+
 
 .item-large-icon {
   margin: $list-header-margin-top auto;

@@ -46,7 +46,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                  //    StatusBar.styleLightContent();
                  //}
              });
-         })
+     })
 
     .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, OrangeApiProvider, settings) {
 
@@ -117,18 +117,41 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.notes', {
                         url: '/notes',
+                        abstract: true,
                         views: {
-                            'menuContent': {
-                                templateUrl: 'templates/app.notes.html',
-                                controller: 'NotesCtrl'
+                            menuContent: {
+                                template: '<ion-nav-view/>'
                             }
                         }
                     })
-                    .state('app.note-view', {
-                        url: '/notes/:id',
+                    .state('app.notes.list', {
+                        url: '',
+                        templateUrl: 'templates/app.notes.html',
+                        controller: 'NotesCtrl',
+                        cache: false,
+                        resolve: {
+                            notes: ['log', function (log) {
+                                console.log('resolving notes');
+                                return log.all('journal').getList();
+                            }]
+                        }
+                    })
+                    .state('app.notes.add', {
+                        url: '/add',
+                        templateUrl: 'templates/app.notes.add.html',
+                        controller: 'NoteAddCtrl as notes_add',
+                        resolve: {
+                            medications: ['log', function (log) {
+                                console.log('resolving medications');
+                                return log.all('medications').getList();
+                            }]
+                        }
+                    })
+                    .state('app.notes.details', {
+                        url: ':id/details',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.notes.view.html',
+                                templateUrl: 'templates/app.notes.add.html',
                                 controller: 'NotesCtrl'
                             }
                         }
