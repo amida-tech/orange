@@ -89,6 +89,10 @@ body {
   color: $gray;
 }
 
+.text-title {
+  text-transform: capitalize;
+}
+
 .spinner {
   &.spinner-orange-light {
     stroke: $orange-light;

@@ -7,26 +7,26 @@
         <p class="form-title">Search</p>
         <form class="orange-form" name="searchForm">
             <label class="item-input">
-                <input type="search" placeholder="Medication" ng-model="search.term" ng-change="searchMedication()"/>
+                <input type="search" placeholder="Medication" ng-model="meds.search.term" ng-change="meds.searchMedication()"/>
             </label>
         </form>
         <ion-list class="list-clean">
-            <ion-item ng-show="search.timer" class="text-center">
+            <ion-item ng-show="meds.search.timer" class="text-center">
                 <ion-spinner icon="dots"></ion-spinner>
             </ion-item>
-            <ion-item ng-show="search.suggestions.length" class="item-text-wrap">
+            <ion-item ng-show="meds.search.suggestions.length" class="item-text-wrap">
                 Suggestions:
             </ion-item>
 
-            <ion-item ng-show="search.suggestions.length"
-                      ng-repeat="suggestion in search.suggestions"
-                      ng-click="pickSuggestion(suggestion)">
+            <ion-item ng-show="meds.search.suggestions.length"
+                      ng-repeat="suggestion in meds.search.suggestions"
+                      ng-click="meds.pickSuggestion(suggestion)">
                 <div class="med-title">
                     <p class="med-name" ng-bind="suggestion"></p>
                 </div>
             </ion-item>
 
-            <ion-item ng-repeat="medication in search.result">
+            <ion-item ng-repeat="medication in meds.search.result" ng-click="meds.selectMedication(medication)">
                 <div class="med-title">
                     <p class="med-name" ng-bind="medication.name"></p>
                     <p class="med-rx" ng-bind="medication.brand"></p>

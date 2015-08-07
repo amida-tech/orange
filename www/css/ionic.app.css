@@ -7725,6 +7725,9 @@ body {
 .text-muted {
   color: #9E9A9A; }
 
+.text-title {
+  text-transform: capitalize; }
+
 .spinner.spinner-orange-light {
   stroke: #FFD496;
   fill: #FFD496; }

@@ -284,37 +284,53 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                             }]
                         }
                     })
-                    .state('logs-setup-habits', {
-                        url: '/log/:logId/habits/',
+
+                    .state('onboarding-log', {
+                        url: '/onboarding/log/:id',
+                        abstract: true,
+                        template: '<ion-nav-view></ion-nav-view>',
+                        resolve: {
+                            log: ['$stateParams', 'OrangeApi', function($stateParams, OrangeApi) {
+                                var id = $stateParams.id;
+                                return OrangeApi.patients.get(id);
+                            }]
+                        }
+                    })
+                    .state('onboarding-log.habits', {
+                        url: '/habits/',
                         templateUrl: 'templates/logs.setup.habits.html',
                         controller: 'LogHabitsCtrl',
                         resolve: {
                             'habits': ['OrangeApi', '$stateParams', function (OrangeApi, $stateParams) {
-                                return OrangeApi.patients.all($stateParams.logId.toString()).one('habits').get('');
+                                return OrangeApi.patients.all($stateParams.id.toString()).one('habits').get('');
                             }]
                         }
                     })
-                    .state('logs-setup-medications', {
-                        url: '/log/:logId/medications',
+                    .state('onboarding-log.medications', {
+                        url: '/medications',
+                        abstract: true,
+                        template: '<ion-nav-view></ion-nav-view>',
                         templateUrl: 'templates/logs.setup.medications.html',
                         controller: 'MedicationsCtrl as meds'
                     })
 
-                    .state('logs-setup-medications-search', {
-                        url: '/onboarding/logs/setup/medications/search',
-                        templateUrl: 'templates/logs.setup.medications.search.html',
-                        controller: 'SearchMedicationCtrl'
+                    .state('onboarding-log.medications.list', {
+                        url: '',
+                        templateUrl: 'templates/logs.setup.medications.html'
+                    })
 
+                    .state('onboarding-log.medications.search', {
+                        url: '/search',
+                        templateUrl: 'templates/logs.setup.medications.search.html'
                     })
-                    .state('logs-setup-medications-schedule', {
-                        url: '/onboarding/logs/setup/medications/schedule',
-                        templateUrl: 'templates/logs.setup.medications.schedule.html',
-                        controller: 'ComponentsCtrl'
+
+                    .state('onboarding-log.medications.schedule', {
+                        url: '/schedule',
+                        templateUrl: 'templates/logs.setup.medications.schedule.html'
                     })
-                    .state('logs-setup-medications-events', {
-                        url: '/onboarding/logs/setup/medications/events',
-                        templateUrl: 'templates/logs.setup.medications.events.html',
-                        controller: 'ComponentsCtrl'
+                    .state('onboarding-log.medications.events', {
+                        url: '/events',
+                        templateUrl: 'templates/logs.setup.medications.events.html'
                     })
                     .state('logs-setup-medications-review', {
                         url: '/onboarding/logs/setup/medications/events',

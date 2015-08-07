@@ -5,13 +5,15 @@
         .module('orange')
         .controller('LogHabitsCtrl', LogHabitsCtrl);
 
-    LogHabitsCtrl.$inject = ['$scope', '$ionicLoading', '$state', '$stateParams', 'habits'];
+    LogHabitsCtrl.$inject = ['$scope', '$ionicLoading', '$state', '$stateParams', 'habits', 'log'];
 
     /* @ngInject */
-    function LogHabitsCtrl($scope, $ionicLoading, $state, $stateParams, habits) {
+    function LogHabitsCtrl($scope, $ionicLoading, $state, $stateParams, habits, log) {
 
         $scope.habits = habits;
+        $scope.log = log;
         $scope.submit = submit;
+
 
         function submit() {
             $ionicLoading.show({
@@ -20,7 +22,7 @@
             $scope.habits.tz = getTZName();
             $scope.habits.save().then(function(data) {
                 $ionicLoading.hide();
-                $state.go('logs-setup-medications', $stateParams);
+                $state.go('onboarding-log.medications.list', $stateParams);
             });
         }
 

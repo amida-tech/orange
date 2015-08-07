@@ -1,0 +1,7 @@
+<div class="button-bar">
+    <button class="button"
+            ng-repeat="option in options"
+            ng-bind="option.name"
+            ng-class="{'active': option.key === value}"
+            ng-click="select(option)"></button>
+</div>
