@@ -8,10 +8,10 @@
         </ion-nav-buttons>
         <ion-nav-buttons side="right" >
             <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
-            <button class="button button-icon button-clear button-small ion-plus button-dose"></button>
+            <button class="button button-icon button-clear button-small ion-plus button-dose" ui-sref="app.notes.add"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="light-bg" overflow-scroll=”true”>
+    <ion-content class="light-bg" overflow-scroll="true">
         <button class="button button-assertive button-full button-clear" ng-click="toggleDelete()">
             <span ng-bind="shouldShowDelete ? 'Hide': 'Show'"></span> delete buttons
         </button>

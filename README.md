@@ -7,7 +7,7 @@ Medication adherence app
 In order to get started, cordova and ionic need to be installed.  Do this by running:
 
 ```
-npm install -g cordova ionic gulp
+npm install -g cordova ionic gulp bower
 
 npm install
 ```

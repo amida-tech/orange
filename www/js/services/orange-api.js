@@ -42,19 +42,26 @@
                     });
 
                     RestangularConfigurer.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
-                        var extractedData;
+                        var extractedData = function(obj, key) {
+                            var ret;
+                            ret = obj[key];
+                            delete obj[key];
+                            ret.meta = obj;
+                            return ret
+                        };
+
                         if (operation == 'getList') {
+
                             if (data.hasOwnProperty(what)) {
-                                extractedData = data[what];
-                                delete data[what];
-                                extractedData.meta = data;
-                            } else {
-                                extractedData = data;
+                                return extractedData(data, what)
+                            } else if  (data.hasOwnProperty('entries')) {
+                                return extractedData(data, 'entries')
                             }
-                        } else {
-                            extractedData = data;
+
+                            return data
                         }
-                        return extractedData;
+
+                        return data;
                     });
                 });
 
