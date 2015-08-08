@@ -5,25 +5,39 @@
         .module('orange')
         .controller('LogHabitsCtrl', LogHabitsCtrl);
 
-    LogHabitsCtrl.$inject = ['$scope', '$ionicLoading', '$state', '$stateParams', 'habits', 'log'];
+    LogHabitsCtrl.$inject = ['$ionicLoading', '$state', '$stateParams', 'habits', 'log'];
 
     /* @ngInject */
-    function LogHabitsCtrl($scope, $ionicLoading, $state, $stateParams, habits, log) {
+    function LogHabitsCtrl($ionicLoading, $state, $stateParams, habits, log) {
 
-        $scope.habits = habits;
-        $scope.log = log;
-        $scope.submit = submit;
+        var vm = this;
+        vm.habits = habits;
+        vm.log = log;
 
+        vm.habitsForm = {};
+        vm.submit = submit;
 
         function submit() {
-            $ionicLoading.show({
-                template: 'Saving...'
-            });
-            $scope.habits.tz = getTZName();
-            $scope.habits.save().then(function(data) {
-                $ionicLoading.hide();
-                $state.go('onboarding-log.medications.list', $stateParams);
-            });
+            vm.errors = [];
+            if (vm.habitsForm.$valid) {
+                $ionicLoading.show({
+                    template: 'Saving...'
+                });
+                vm.habits.tz = getTZName();
+                vm.habits.save().then(
+                    function () {
+                        $ionicLoading.hide();
+                        $state.go('onboarding-log.medications.list', $stateParams);
+                    },
+                    function (error) {
+                        $ionicLoading.hide();
+                        error.data.errors.forEach(function (elem) {
+                            vm.errors.push(_.startCase(elem))
+                        });
+                    });
+            } else {
+                vm.errors.push('Please fill all habits');
+            }
         }
 
         function getTZName() {

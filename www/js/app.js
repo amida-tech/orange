@@ -322,7 +322,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('onboarding-log.habits', {
                         url: '/habits/',
                         templateUrl: 'templates/logs.setup.habits.html',
-                        controller: 'LogHabitsCtrl',
+                        controller: 'LogHabitsCtrl as habits',
                         resolve: {
                             'habits': ['OrangeApi', '$stateParams', function (OrangeApi, $stateParams) {
                                 return OrangeApi.patients.all($stateParams.id.toString()).one('habits').get('');
