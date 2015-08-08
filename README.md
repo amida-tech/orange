@@ -22,6 +22,7 @@ And then...
 
 ```
 bower install
+gulp sass
 ```
 
 

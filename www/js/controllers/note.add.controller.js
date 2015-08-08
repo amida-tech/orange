@@ -34,7 +34,7 @@
         };
 
         //Medication Modal
-        $ionicModal.fromTemplateUrl('templates/elements/medication.list.modal.html', {
+        $ionicModal.fromTemplateUrl('templates/partial/medication.list.modal.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
