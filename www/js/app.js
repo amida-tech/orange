@@ -324,8 +324,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/logs.setup.habits.html',
                         controller: 'LogHabitsCtrl as habits',
                         resolve: {
-                            'habits': ['OrangeApi', '$stateParams', function (OrangeApi, $stateParams) {
-                                return OrangeApi.patients.all($stateParams.id.toString()).one('habits').get('');
+                            'habits': ['log', function (log) {
+                                return log.one('habits').get('');
                             }]
                         }
                     })
@@ -334,7 +334,12 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         template: '<ion-nav-view></ion-nav-view>',
                         templateUrl: 'templates/logs.setup.medications.html',
-                        controller: 'MedicationsCtrl as meds'
+                        controller: 'MedicationsCtrl as meds',
+                        resolve: {
+                            medications: ['log', function(log) {
+                                return log.all('medications').getList();
+                            }]
+                        }
                     })
 
                     .state('onboarding-log.medications.list', {

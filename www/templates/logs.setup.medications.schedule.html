@@ -75,14 +75,6 @@
             </div>
             <div class="item item-text-wrap">
                 <p class="text-muted">Take with food?</p>
-                <div class="button-bar">
-                    <a class="button" ng-class="{'active' : meds.medication.schedule.take_with_food === true}"
-                       ng-click="meds.medication.schedule.take_with_food = true">Yes</a>
-                    <a class="button" ng-class="{'active' : meds.medication.schedule.take_with_food === false}"
-                       ng-click="meds.medication.schedule.take_with_food = false">No</a>
-                    <a class="button" ng-class="{'active' : meds.medication.schedule.take_with_food === null}"
-                       ng-click="meds.medication.schedule.take_with_food = null">Doesn't Matter</a>
-                </div>
                 <div button-bar="meds.withFood" data-ng-model="meds.medication.schedule.take_with_food"></div>
             </div>
             <div ng-if="meds.medication.schedule.regularly" class="item item-footer orange-form item-text-wrap">

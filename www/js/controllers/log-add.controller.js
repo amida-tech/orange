@@ -65,6 +65,7 @@
                             $scope.log.avatarUrl = avatarUrl;
                             Avatar.upload($scope.log).then(
                                 function () {
+                                    Avatar.cleanCache($scope.log.id);
                                     $state.go('logs');
                                     $ionicLoading.hide();
                                 }, function () {

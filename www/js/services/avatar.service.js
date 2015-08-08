@@ -9,14 +9,23 @@
 
     /* @ngInject */
     function Avatar($q, $http) {
-        var cache = {};
+        var avatarCache = {};
 
         return {
             getB64: getB64,
-            upload: upload
+            upload: upload,
+            cleanCache: cleanCache
         };
 
         ////////////////
+
+        function cleanCache(patientId) {
+            if (patientId) {
+                delete avatarCache[patientId];
+            } else {
+                avatarCache = {};
+            }
+        }
 
         function upload(patient) {
             var deffered = $q.defer();
@@ -55,23 +64,30 @@
 
         }
 
-        function getB64(patient) {
+        function getB64(patient, force) {
             var deffered = $q.defer();
+            force = force || false;
 
-            patient.one('avatar').withHttpConfig(
-                {
-                    responseType: "arraybuffer"
-                }
-            ).get('').then(
-                function (data) {
-                    var imageSrc = 'data:image/png;base64,' + bufferToBase64(data);
-                    deffered.resolve(imageSrc);
-                },
-                function (error) {
-                    console.log('Error loading avatar:', error);
-                    deffered.reject(error);
-                }
-            );
+            if (!force && avatarCache.hasOwnProperty(patient.id)) {
+                console.log('resolved from cache');
+                deffered.resolve(avatarCache[patient.id]);
+            } else {
+                patient.one('avatar').withHttpConfig(
+                    {
+                        responseType: "arraybuffer"
+                    }
+                ).get('').then(
+                    function (data) {
+                        var imageSrc = 'data:image/png;base64,' + bufferToBase64(data);
+                        avatarCache[patient.id] = imageSrc;
+                        deffered.resolve(imageSrc);
+                    },
+                    function (error) {
+                        console.log('Error loading avatar:', error);
+                        deffered.reject(error);
+                    }
+                );
+            }
 
             return deffered.promise;
         }

@@ -5,16 +5,17 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$q', '$timeout', '$state', 'OrangeApi', 'Oauth', 'TokenService', 'n2w', 'log'];
+    MedicationsCtrl.$inject = ['$q', '$timeout', '$state', 'OrangeApi', 'Oauth', 'TokenService', 'n2w', 'log', 'medications'];
 
     /* @ngInject */
-    function MedicationsCtrl($q, $timeout, $state, OrangeApi, Oauth, TokenService, n2w, log) {
+    function MedicationsCtrl($q, $timeout, $state, OrangeApi, Oauth, TokenService, n2w, log, medications) {
         /* jshint validthis: true */
         var vm = this;
 
         vm.log = log;
         vm.events = [];
         vm.medicationTimeEvents = 3;
+        vm.medications = medications;
 
         vm.event = {
             n: 1,

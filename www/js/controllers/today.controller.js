@@ -5,9 +5,9 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$scope', '$timeout', 'OrangeApi', 'Patient'];
+    TodayCtrl.$inject = ['$scope', '$timeout', 'OrangeApi', 'log'];
 
-    function TodayCtrl($scope, $timeout, OrangeApi, Patient) {
+    function TodayCtrl($scope, $timeout, OrangeApi, log) {
         $scope.refresh = function () {
             $timeout(function () {
                 console.log('Rerfreshed');

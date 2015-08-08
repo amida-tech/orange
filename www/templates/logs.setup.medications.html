@@ -36,6 +36,12 @@
             <div class="item item-body">
                 <p class="form-title">Manual Entry</p>
             </div>
+            <ion-item ng-repeat="medication in meds.medications">
+                <div class="med-title">
+                    <p class="med-name" ng-bind="medication.name"></p>
+                    <p class="med-rx" ng-bind="medication.brand"></p>
+                </div>
+            </ion-item>
             <div class="item item-button">
                 <button class="button button-full button-orange" ui-sref="onboarding-log.medications.search">Add Medication</button>
             </div>
