@@ -3,12 +3,12 @@
 
     angular
         .module('orange')
-        .controller('MedicationsCtrl', MedicationsCtrl);
+        .controller('LogMedicationsCtrl', LogMedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$q', '$timeout', '$state', 'OrangeApi', 'Oauth', 'TokenService', 'n2w', 'log', 'medications'];
+    LogMedicationsCtrl.$inject = ['$q', '$timeout', '$state', 'OrangeApi', 'Oauth', 'TokenService', 'n2w', 'log', 'medications'];
 
     /* @ngInject */
-    function MedicationsCtrl($q, $timeout, $state, OrangeApi, Oauth, TokenService, n2w, log, medications) {
+    function LogMedicationsCtrl($q, $timeout, $state, OrangeApi, Oauth, TokenService, n2w, log, medications) {
         /* jshint validthis: true */
         var vm = this;
 
