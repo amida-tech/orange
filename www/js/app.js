@@ -335,6 +335,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         template: '<ion-nav-view></ion-nav-view>',
                         templateUrl: 'templates/logs.setup.medications.html',
                         controller: 'LogMedicationsCtrl as meds',
+                        cache: false,
                         resolve: {
                             medications: ['log', function(log) {
                                 return log.all('medications').getList();

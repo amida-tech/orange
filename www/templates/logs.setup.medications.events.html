@@ -26,7 +26,7 @@
                 <div ng-if="meds.event.eventType === 'time'">
                     <p class="text-muted">At what time?</p>
                     <label class="item-input">
-                        <input type="text" placeholder="Time" ng-model="meds.event.time"/>
+                        <input type="text" placeholder="Time" ng-model="meds.event.time" timefield/>
                     </label>
                 </div>
                 <div ng-if="meds.event.eventType === 'meal'">
@@ -41,10 +41,6 @@
                 <div ng-if="meds.event.eventType === 'sleep'">
                     <p class="text-muted">Select event</p>
 
-                    <div button-bar="meds.when" data-ng-model="meds.event.when"></div>
-
-                    <p class="text-muted">Select event</p>
-
                     <div button-bar="meds.sleep" data-ng-model="meds.event.event"></div>
                 </div>
                 <p class="text-muted">How many units?</p>
@@ -55,7 +51,7 @@
 
                 <p class="text-muted">Send a reminder notification?</p>
                 <label class="item-input item-select">
-                    <select>
+                    <select data-ng-model="meds.event.notification">
                         <option value="never" selected>Never</option>
                         <option value="15">15 Minutes Before</option>
                         <option value="30">30 Minutes Before</option>

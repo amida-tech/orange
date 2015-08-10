@@ -1,0 +1,11 @@
+<div class="calendar text-center">
+    <div class="wrapper">
+        <div class="week text-left" ng-repeat="row in chunkedDays">
+            <button class="button day"
+                    ng-repeat="day in row"
+                    ng-class="{'active': selectedDays.indexOf(day.key) !== -1}"
+                    ng-click="toggleDay(day.key)"
+                    ng-bind="day.val"></button>
+        </div>
+    </div>
+</div>

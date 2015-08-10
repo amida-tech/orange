@@ -5,10 +5,10 @@
         .module('orange')
         .controller('LogMedicationsCtrl', LogMedicationsCtrl);
 
-    LogMedicationsCtrl.$inject = ['$q', '$timeout', '$state', 'OrangeApi', 'Oauth', 'TokenService', 'n2w', 'log', 'medications'];
+    LogMedicationsCtrl.$inject = ['$q', '$timeout', '$state', '$ionicLoading', 'OrangeApi', 'Oauth', 'TokenService', 'n2w', 'log', 'medications'];
 
     /* @ngInject */
-    function LogMedicationsCtrl($q, $timeout, $state, OrangeApi, Oauth, TokenService, n2w, log, medications) {
+    function LogMedicationsCtrl($q, $timeout, $state, $ionicLoading, OrangeApi, Oauth, TokenService, n2w, log, medications) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -17,12 +17,7 @@
         vm.medicationTimeEvents = 3;
         vm.medications = medications;
 
-        vm.event = {
-            n: 1,
-            eventType: 'meal',
-            event: 'breakfast',
-            when: 'before'
-        };
+        vm.event = getNewEvent(1);
 
         vm.medication = {
             name: 'Acetaminophen',
@@ -57,8 +52,8 @@
         ];
 
         vm.sleep = [
-            {name: 'Wake', key: 'wake'},
-            {name: 'Sleep', key: 'sleep'}
+            {name: 'After Wake', key: 'wake'},
+            {name: 'Before Sleep', key: 'sleep'}
         ];
 
         vm.withFood = [
@@ -73,6 +68,16 @@
             {name: 'Morning/Night', key: 'sleep'}
         ];
 
+        vm.weekDays = [
+            {name: 'Sun', key: 0},
+            {name: 'Mon', key: 1},
+            {name: 'Tue', key: 2},
+            {name: 'Wed', key: 3},
+            {name: 'Thu', key: 4},
+            {name: 'Fri', key: 5},
+            {name: 'Sat', key: 6}
+        ];
+
         vm.searchMedication = searchMedication;
         vm.pickSuggestion = pickSuggestion;
         vm.selectMedication = selectMedication;
@@ -83,18 +88,35 @@
         vm.setFrequency = setFrequency;
         vm.scheduleEvent = scheduleEvent;
         vm.getEventText = getEventText;
+        vm.toggleWeekDay = toggleWeekDay;
 
         ////////////////
+
+        function getNewEvent(n) {
+            return {
+                n: n ? n : vm.event.n + 1,
+                eventType: 'meal',
+                event: 'breakfast',
+                when: 'before',
+                notification: '30',
+                units: 1
+            }
+        }
+
+        function toggleWeekDay(day) {
+            var index = vm.medication.schedule.frequency.exclude.exclude.indexOf(day);
+            if (index === -1) {
+                vm.medication.schedule.frequency.exclude.exclude.push(day);
+            } else {
+                vm.medication.schedule.frequency.exclude.exclude.splice(index, 1);
+            }
+        }
+
         function scheduleEvent() {
             if (vm.event !== null) {
                 console.log(vm.event);
                 vm.events.push(vm.event);
-                vm.event = {
-                    n: vm.event.n + 1,
-                    eventType: 'meal',
-                    event: 'breakfast',
-                    when: 'before'
-                };
+                vm.event = getNewEvent(1);
                 if (vm.event.n > vm.medicationTimeEvents) vm.event = null;
             } else {
                 console.log(vm.events);
@@ -103,6 +125,9 @@
         }
 
         function saveMedication() {
+            $ionicLoading.show({
+                template: 'Saving...'
+            });
             vm.medication.schedule.times = [];
 
             for (var i = 0, len = vm.events.length; i < len; i++) {
@@ -111,6 +136,7 @@
                 delete time.eventType;
                 delete time.n;
                 delete time.units;
+                delete time.notification;
                 if (item.eventType === 'time') {
                     delete time.when;
                     delete time.event;
@@ -118,14 +144,35 @@
                 } else {
                     time.type = 'event';
                     delete time.time;
+                    if (time.event === 'wake') {
+                        time.event = 'sleep';
+                        time.when = 'after';
+                    } else if (time.event == 'sleep') {
+                        time.when = 'before';
+                    }
                 }
                 vm.medication.schedule.times.push(time);
             }
             console.log(vm.medication);
             log.all('medications').post(vm.medication).then(
                 function (data) {
+                    var promises = [];
                     console.log(data);
+                    for (var i = 0, len = data.schedule.times.length; i < len; i++) {
+                        vm.medications.push(data);
+                        var time = data.schedule.times[i];
+                        //var id = time.id;
+                        time.user = parseInt(vm.events[0].notification);
+                        var p = data.all('times').one(time.id.toString()).customPUT(time);
+                        promises.push(p);
+                    }
+
+                    $q.all(promises).then(function() {
+                        $state.go('onboarding-log.medications.list');
+                        $ionicLoading.hide();
+                    });
                 },
+
                 function (error) {
                     console.log(error);
                 }
@@ -145,20 +192,64 @@
         }
 
         function setupEvents() {
-            vm.events = [];
-            vm.event = {
-                n: 1,
-                eventType: 'meal',
-                event: 'breakfast',
-                when: 'before'
-            };
-            $state.go('onboarding-log.medications.events');
+            if (!vm.medication.schedule.regularly) {
+                delete vm.medication.schedule.frequency;
+                delete vm.medication.schedule.until;
+                $ionicLoading.show({
+                    template: 'Saving...'
+                });
+                log.all('medications').post(vm.medication).then(
+                    function (data) {
+                        $ionicLoading.hide();
+                        vm.medications.push(data);
+                        $state.go('onboarding-log.medications.list');
+                        //configure notifications times
+                    },
+                    function (error) {
+                        $ionicLoading.hide();
+                        console.log(error);
+                    }
+                )
+            } else {
+                vm.events = [];
+                vm.event = getNewEvent();
+
+                //update schedule
+
+                if (vm.frequency === 'week') {
+                    vm.medication.schedule.frequency.start = moment().format('YYYY-MM-DD');
+                    vm.medication.schedule.frequency.exclude.exclude.sort();
+                } else if (vm.frequency === 'month') {
+                    vm.medication.schedule.frequency.start.sort();
+                }
+                $state.go('onboarding-log.medications.events');
+            }
+
+            console.log(vm.medication.schedule);
         }
 
         function setFrequency(frequency) {
-            vm.medication.schedule.frequency = {
-                unit: 'day',
-                n: 1
+            vm.frequency = frequency;
+            if (frequency === 'day') {
+                vm.medication.schedule.frequency = {
+                    unit: frequency,
+                    n: 1
+                }
+            } else if (frequency == 'month') {
+                vm.medication.schedule.frequency = {
+                    unit: frequency,
+                    n: 1,
+                    start: []
+                }
+            } else if (frequency == 'week') {
+                vm.medication.schedule.frequency = {
+                    unit: 'day',
+                    n: 1,
+                    exclude: {
+                        exclude: [0, 1, 2, 3, 4, 5, 6],
+                        repeat: 7
+                    }
+                }
             }
         }
 
@@ -186,14 +277,10 @@
                     type: 'forever'
                 }
             }
-
             if (vm.medication.schedule.regularly && !vm.medication.schedule.frequency) {
-                vm.medication.schedule.frequency = {
-                    unit: 'day',
-                    n: 1
-                }
-            }
 
+                vm.setFrequency('day');
+            }
         }
 
         function selectMedication(medication) {

@@ -13,6 +13,7 @@
     "restangular": "~1.5.1",
     "ngCordova": "~0.1.17-alpha",
     "jstzdetect": "~1.0.6",
-    "angular-issue-9128-patch": "https://gist.github.com/beckyconning/9fe5450046cabfa5d104.git"
+    "angular-issue-9128-patch": "https://gist.github.com/beckyconning/9fe5450046cabfa5d104.git",
+    "moment": "~2.10.6"
   }
 }

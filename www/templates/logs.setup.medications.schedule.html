@@ -3,7 +3,7 @@
         <ion-nav-back-button>
         </ion-nav-back-button>
     </ion-nav-bar>
-    <ion-content class="light-bg">
+    <ion-content class="light-bg has-bottom-bar">
         <div class="list orange-list has-bottom-buttons">
             <div class="item item-title med-title">
                 <p class="med-name" ng-bind="meds.medication.name"></p>
@@ -54,29 +54,46 @@
                 <p class="text-muted">For how long</p>
 
                 <div class="button-bar">
-                    <a class="button" ng-class="{'active' : meds.medication.schedule.frequency.unit === 'day'}" ng-click="meds.setFrequency('dayily')">Dayily</a>
-                    <a class="button" ng-class="{'active' : meds.medication.schedule.frequency.unit === 'week'}" ng-click="meds.setFrequency('weekly')">Weekly</a>
-                    <a class="button" ng-class="{'active' : meds.medication.schedule.frequency.unit === 'month'}"
-                       ng-click="meds.setFrequency('monthly')">Monthly</a>
+                    <a class="button" ng-class="{'active' : meds.frequency === 'day'}"
+                       ng-click="meds.setFrequency('day')">Dayily</a>
+                    <a class="button" ng-class="{'active' : meds.frequency === 'week'}"
+                       ng-click="meds.setFrequency('week')">Weekly</a>
+                    <a class="button" ng-class="{'active' : meds.frequency === 'month'}"
+                       ng-click="meds.setFrequency('month')">Monthly</a>
                 </div>
-                <div ng-if="meds.medication.schedule.frequency.unit === 'week'">
+                <div ng-if="meds.frequency === 'week'">
                     <p class="text-muted">Which days?</p>
 
                     <div class="button-bar">
-                        <a class="button" ng-class="{'active' : wd == 1}" ng-click="wd = 1">SUN</a>
-                        <a class="button" ng-class="{'active' : wd == 2}" ng-click="wd = 2">MON</a>
-                        <a class="button" ng-class="{'active' : wd == 3}" ng-click="wd = 3">TUE</a>
-                        <a class="button" ng-class="{'active' : wd == 4}" ng-click="wd = 4">WED</a>
-                        <a class="button" ng-class="{'active' : wd == 5}" ng-click="wd = 5">THU</a>
-                        <a class="button" ng-class="{'active' : wd == 6}" ng-click="wd = 6">FRI</a>
-                        <a class="button" ng-class="{'active' : wd == 7}" ng-click="wd = 7">SAT</a>
+                        <button class="button"
+                                ng-repeat="day in meds.weekDays"
+                                ng-click="meds.toggleWeekDay(day.key)"
+                                ng-bind="day.name"
+                                ng-class="{'active': meds.medication.schedule.frequency.exclude.exclude.indexOf(day.key) === -1}"></button>
+                        <!--<a class="button" ng-class="{'active' : wd == 1}" ng-click="wd = 1">SUN</a>-->
+                        <!--<a class="button" ng-class="{'active' : wd == 2}" ng-click="wd = 2">MON</a>-->
+                        <!--<a class="button" ng-class="{'active' : wd == 3}" ng-click="wd = 3">TUE</a>-->
+                        <!--<a class="button" ng-class="{'active' : wd == 4}" ng-click="wd = 4">WED</a>-->
+                        <!--<a class="button" ng-class="{'active' : wd == 5}" ng-click="wd = 5">THU</a>-->
+                        <!--<a class="button" ng-class="{'active' : wd == 6}" ng-click="wd = 6">FRI</a>-->
+                        <!--<a class="button" ng-class="{'active' : wd == 7}" ng-click="wd = 7">SAT</a>-->
                     </div>
                 </div>
+
+                <div ng-if="meds.frequency === 'month'">
+                    <p class="text-muted">Which days?</p>
+                    <calendar ng-model="meds.medication.schedule.frequency.start"></calendar>
+                </div>
+
+
             </div>
+
             <div class="item item-text-wrap">
                 <p class="text-muted">Take with food?</p>
-                <div button-bar="meds.withFood" data-ng-model="meds.medication.schedule.take_with_food"></div>
+
+                <div button-bar="meds.withFood" ng-model="meds.medication.schedule.take_with_food"></div>
             </div>
+
             <div ng-if="meds.medication.schedule.regularly" class="item item-footer orange-form item-text-wrap">
                 <p class="text-muted">How many times a day do you take this medicine?</p>
                 <label class="item-input">
