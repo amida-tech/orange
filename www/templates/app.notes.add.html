@@ -7,13 +7,17 @@
     <ion-content class="orange-bg">
         <div class="card orange-card">
             <form class="orange-form" name="noteAdd">
-                <div class="item item-error" ng-if="notes_add.error">
-                    <p ng-repeat="error in notes_add.errors"></p>
+                <div class="item item-error"
+                     ng-show="noteAdd.$submitted && !noteAdd.$valid">
+                    <div ng-messages="noteAdd.text.$error">
+                        <p ng-message="required">Note text is required</p>
+                    </div>
                 </div>
+
                 <div class="item item-body">
                     <label class="item-input">
                         <textarea name="text" data-ng-model="notes_add.note.text" rows="5"
-                                  placeholder="Note Text"></textarea>
+                                  placeholder="Note Text" required></textarea>
                     </label>
 
                     <div class="medication-container">
@@ -31,6 +35,11 @@
                         <ion-list show-delete="notes_add.medicationWidgetData.showDelete">
                             <ion-item ng-repeat="medAdd in notes_add.medicationsAdd | filter: { checked: true }">
                                 {{ medAdd.name }}
+                                <div>
+                                    <strong>{{ medAdd.brand | uppercase }}</strong>
+                                </div>
+
+
                                 <ion-delete-button class="ion-minus-circled"
                                                    ng-click="notes_add.onMedicationRemove(medAdd)">
                                 </ion-delete-button>
@@ -40,7 +49,8 @@
                 </div>
 
                 <div class="item item-button">
-                    <button class="button button-full button-orange" ng-click="notes_add.save()">Save Note</button>
+                    <button type="submit" class="button button-full button-orange"
+                            ng-click="notes_add.save(noteAdd)">Save Note</button>
                 </div>
             </form>
         </div>

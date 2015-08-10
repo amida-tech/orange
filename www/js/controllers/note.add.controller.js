@@ -5,16 +5,21 @@
         .module('orange')
         .controller('NoteAddCtrl', NoteAddCtrl);
 
-    NoteAddCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'log', '$ionicModal', 'medications'];
+    NoteAddCtrl.$inject = [
+        '$scope', '$state', '$ionicLoading', 'log', '$ionicModal',
+        'medications', '$filter', '$cordovaDialogs', 'note'
+    ];
 
     /* @ngInject */
-    function NoteAddCtrl($scope, $state, $ionicLoading, log, $ionicModal, medications) {
+    function NoteAddCtrl($scope, $state, $ionicLoading, log,
+                         $ionicModal, medications, $filter, $cordovaDialogs, note) {
         /* jshint validthis: true */
         var vm = this;
         vm.title = 'Add Note';
+        vm.note = note.restangularized ? note : {} ;
         vm.save = save;
-        vm.medications = log.all('medications').getList();
         vm.medications = medications;
+        //Medications to add model
         vm.medicationsAdd = _.map(vm.medications, function(medication) {
             medication.checked = false;
             return medication
@@ -23,10 +28,6 @@
         //Medications List
         vm.medicationWidgetData = {
             showDelete: false
-        };
-        vm.moveMedication = function(item, fromIndex, toIndex) {
-            vm.medicationsAdd.splice(fromIndex, 1);
-            vm.medicationsAdd.splice(toIndex, 0, item);
         };
 
         vm.onMedicationRemove = function(item) {
@@ -41,16 +42,25 @@
             vm.modal = modal;
         });
 
-        vm.medicationChangeEvent = function(checked) {
-            console.log(vm);
-            return checked
+        //Set medications to note
+        vm.medicationChangeEvent = function() {
+            vm.note.medication_ids = _.compact(_.map(vm.medicationsAdd, function(medication) {
+                if (medication.checked)
+                    return medication.id
+            }));
         };
 
-        function save() {
-            $ionicLoading.show({
-                template: 'Saving...'
-            });
-            log.all('note').post(vm.note).then(saveSuccess, saveError);
+        function save(form) {
+            form.$submitted = true;
+
+            if (_.isEmpty(form.$error)) {
+                vm.note.date = $filter('date')(new Date(), 'yyyy-MM-ddTHH:mm:ssZ');
+                $ionicLoading.show({
+                    template: 'Saving...'
+                });
+
+                log.all('journal').post(vm.note).then(saveSuccess, saveError);
+            }
         }
 
         function saveSuccess(note) {
@@ -60,8 +70,15 @@
         }
 
         function saveError(error) {
-            alert(error);
             $ionicLoading.hide();
+
+            if (error.status == 400) {
+                $cordovaDialogs.alert('Bad Request', 'Error', 'OK');
+            }
+
+            if (error.status == 401) {
+                $cordovaDialogs.alert('Unauthorized', 'Error', 'OK');
+            }
         }
     }
 })();

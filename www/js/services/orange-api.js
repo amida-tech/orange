@@ -23,7 +23,7 @@
             setAccessToken: function (token) {
                 accessToken = token;
             },
-            $get: ['Restangular', function (Restangular) {
+            $get: ['Restangular', '$cordovaDialogs', function (Restangular, $cordovaDialogs) {
                 var OrangeRest = Restangular.withConfig(function (RestangularConfigurer) {
 
                     RestangularConfigurer.setBaseUrl(baseUrl);
@@ -63,6 +63,20 @@
 
                         return data;
                     });
+
+                    RestangularConfigurer.setErrorInterceptor(function (response, deferred, responseHandler) {
+                        if (response.status == 500) {
+                            $cordovaDialogs.alert('Server Error', 'Error', 'OK');
+                            return false;
+                        }
+
+                        if (response.status == 404) {
+                            $cordovaDialogs.alert('Item not found', 'Error', 'OK');
+                            return false;
+                        }
+
+                        return true;
+                    })
                 });
 
                 function setAccessToken(token) {
