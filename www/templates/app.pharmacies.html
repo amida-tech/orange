@@ -6,8 +6,18 @@
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
+            <button class="button button-icon button-clear button-small ion-plus button-dose"></button>
+        </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="orange-bg">
+    <ion-content class="light-bg">
+        <ion-list class="list-clean list-inset padding" can-swipe="true">
+            <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies">
+                <p><strong ng-bind="pharmacy.name"></strong></p>
 
+                <p ng-bind="pharmacy.address"></p>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>

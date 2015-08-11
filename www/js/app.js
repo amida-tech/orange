@@ -204,10 +204,22 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.pharmacies', {
                         url: '/pharmacies',
+                        abstract: true,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.pharmacies.html'
+                                template: '<ion-nav-view></ion-nav-view>'
                             }
+                        }
+                    })
+                    .state('app.pharmacies.list', {
+                        url: '',
+                        templateUrl: 'templates/app.pharmacies.html',
+                        controller: 'PharmaciesCtrl as pharmacies',
+                        cache: false,
+                        resolve: {
+                            pharmacies: ['log', function (log) {
+                                return log.all('pharmacies').getList();
+                            }]
                         }
                     })
                     .state('app.logs', {
