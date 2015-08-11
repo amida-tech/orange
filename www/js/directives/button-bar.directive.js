@@ -5,6 +5,8 @@
         .module('orange')
         .directive('buttonBar', buttonBar);
 
+    buttonBar.$inject = [];
+
     function buttonBar() {
         return {
             require: 'ngModel',
@@ -14,6 +16,7 @@
             replace: true,
             templateUrl: 'templates/partial/button-bar.html',
             link: function (scope, element, attributes, ngModel) {
+
                 scope.value = null;
 
                 scope.select = function(option) {

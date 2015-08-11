@@ -14,24 +14,10 @@
 
         vm.log = log;
         vm.events = [];
+        vm.event = null;
+        vm.medication = null;
         vm.medicationTimeEvents = 3;
         vm.medications = medications;
-
-        vm.event = getNewEvent(1);
-
-        vm.medication = {
-            name: 'Acetaminophen',
-            brand: 'Tylenol',
-            form: 'Oral Tablet',
-            rx_norm: '12343440',
-            schedule: {
-                as_needed: true,
-                regularly: false,
-                take_with_food: null,
-                take_with_medications: [],
-                take_without_medications: []
-            }
-        };
 
         vm.search = {
             result: [],
@@ -116,7 +102,7 @@
             if (vm.event !== null) {
                 console.log(vm.event);
                 vm.events.push(vm.event);
-                vm.event = getNewEvent(1);
+                vm.event = getNewEvent();
                 if (vm.event.n > vm.medicationTimeEvents) vm.event = null;
             } else {
                 console.log(vm.events);
@@ -157,9 +143,7 @@
             log.all('medications').post(vm.medication).then(
                 function (data) {
                     var promises = [];
-                    console.log(data);
                     for (var i = 0, len = data.schedule.times.length; i < len; i++) {
-                        vm.medications.push(data);
                         var time = data.schedule.times[i];
                         //var id = time.id;
                         time.user = parseInt(vm.events[0].notification);
@@ -167,7 +151,9 @@
                         promises.push(p);
                     }
 
-                    $q.all(promises).then(function() {
+                    $q.all(promises).then(function () {
+                        vm.medications.push(vm.medication);
+                        vm.medication = null;
                         $state.go('onboarding-log.medications.list');
                         $ionicLoading.hide();
                     });
@@ -202,6 +188,7 @@
                     function (data) {
                         $ionicLoading.hide();
                         vm.medications.push(data);
+                        vm.medication = null;
                         $state.go('onboarding-log.medications.list');
                         //configure notifications times
                     },
@@ -212,7 +199,7 @@
                 )
             } else {
                 vm.events = [];
-                vm.event = getNewEvent();
+                vm.event = getNewEvent(1);
 
                 //update schedule
 
@@ -257,7 +244,7 @@
             vm.medication.schedule.until = {
                 type: untilType,
                 stop: null
-            }
+            };
         }
 
         function setScheduleType(scheduleType) {
@@ -278,7 +265,6 @@
                 }
             }
             if (vm.medication.schedule.regularly && !vm.medication.schedule.frequency) {
-
                 vm.setFrequency('day');
             }
         }
@@ -287,7 +273,15 @@
             vm.medication = angular.extend({}, medication);
             vm.medication.schedule = {
                 as_needed: true,
-                regularly: false
+                regularly: false,
+                take_with_food: false,
+                take_with_medications: [],
+                take_without_medications: []
+            };
+
+            vm.medication.dose = {
+                quantity: 1,
+                unit: 'mg'
             };
             $state.go('onboarding-log.medications.schedule');
         }

@@ -70,14 +70,17 @@
                                 ng-click="meds.toggleWeekDay(day.key)"
                                 ng-bind="day.name"
                                 ng-class="{'active': meds.medication.schedule.frequency.exclude.exclude.indexOf(day.key) === -1}"></button>
-                        <!--<a class="button" ng-class="{'active' : wd == 1}" ng-click="wd = 1">SUN</a>-->
-                        <!--<a class="button" ng-class="{'active' : wd == 2}" ng-click="wd = 2">MON</a>-->
-                        <!--<a class="button" ng-class="{'active' : wd == 3}" ng-click="wd = 3">TUE</a>-->
-                        <!--<a class="button" ng-class="{'active' : wd == 4}" ng-click="wd = 4">WED</a>-->
-                        <!--<a class="button" ng-class="{'active' : wd == 5}" ng-click="wd = 5">THU</a>-->
-                        <!--<a class="button" ng-class="{'active' : wd == 6}" ng-click="wd = 6">FRI</a>-->
-                        <!--<a class="button" ng-class="{'active' : wd == 7}" ng-click="wd = 7">SAT</a>-->
                     </div>
+                </div>
+
+                <div ng-if="meds.frequency === 'day'" class="orange-form">
+                    <p class="text-muted">Every # day?</p>
+                    <label class="item-input">
+                        <input type="number"
+                               ng-model="meds.medication.schedule.frequency.n"
+                               placeholder="End Date"
+                               />
+                    </label>
                 </div>
 
                 <div ng-if="meds.frequency === 'month'">
@@ -88,10 +91,14 @@
 
             </div>
 
-            <div class="item item-text-wrap">
+            <div class="item item-text-wrap orange-form">
                 <p class="text-muted">Take with food?</p>
 
                 <div button-bar="meds.withFood" ng-model="meds.medication.schedule.take_with_food"></div>
+                <p class="text-muted">How many units?</p>
+                <label class="item-input">
+                    <input type="number" ng-model="meds.medication.dose.quantity" placeholder="Quantity"/>
+                </label>
             </div>
 
             <div ng-if="meds.medication.schedule.regularly" class="item item-footer orange-form item-text-wrap">

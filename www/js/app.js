@@ -276,7 +276,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                                 return {};
                             }
                         }
-
                     })
                     .state('logs-add-my', {
                         url: '/onboarding/logs/add/my',

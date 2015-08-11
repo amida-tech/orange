@@ -149,9 +149,9 @@ body {
       border-radius: 0;
       margin: 0 -1px -1px 0;
       padding: 0;
-      min-width: $button-height;
-      min-height: $button-height;
-      line-height: $button-height;
+      min-width: 38px;
+      min-height: 38px;
+      line-height: 38px;
       border-color: $orange;
       background-color: $light;
       &.active {
