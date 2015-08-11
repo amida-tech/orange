@@ -11,19 +11,11 @@
     function NotesCtrl($scope, $ionicLoading, log) {
         //OrangeApi.notes.
         var vm = this;
-
-        $ionicLoading.show({
-            template: 'Loading...'
-        });
-
-        log.all('journal').getList().then(function(notes) {
-            vm.notes = notes;
-            $ionicLoading.hide()
-        });
-
         vm.refresh = refresh;
         vm.shouldShowDelete = false;
         vm.noteLimit = 208;
+        vm.notesPromise = $scope.notes;
+        vm.notes = $scope.notes.$object;
 
         vm.removeNote = function(note) {
             $ionicLoading.show({

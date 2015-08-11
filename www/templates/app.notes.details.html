@@ -4,32 +4,25 @@
         </ion-nav-back-button>
         <ion-nav-buttons side="right" >
             <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
+            <button class="button button-clear button-small button-dose"
+                    ui-sref="app.notes.update({id: note_details.note.id})">Edit</button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="orange-bg" overflow-scroll="true">
-        <div class="card orange-card">
-            <div class="item item-body">
-                <h2>{{ note_details.note.date | date:'yyyy-MM-dd HH:mm:ss Z' }}</h2>
-                <div>{{ note_details.note.text }}</div>
+    <ion-content class="light-bg" overflow-scroll="true">
 
-                <h2>Medications</h2>
-                <div class="list">
-                    <div class="item" ng-repeat="medication in note_details.note.medications">
-                        {{ medication.name }}
-                        <div>
-                            <strong>{{ medicationbrand | uppercase }}</strong>
-                        </div>
-                    </div>
-                </div>
+        <ion-spinner class="orange-loading-spinner" icon="bubbles"
+                     ng-show="!note_details.notesPromise.$$state.status || !note_details.medicationsPromise.$$state.status"></ion-spinner>
 
-                <div class="buttons">
-                    <button class="button button-assertive" ng-click="note_details.remove()">
-                        Delete
-                    </button>
+        <div class="item item-body">
+            <h2>{{ note_details.note.date | date:'yyyy-MM-dd HH:mm:ss Z' }}</h2>
+            <div class="note-container">{{ note_details.note.text }}</div>
+        </div>
 
-                    <button class="button button-positive" ui-sref="app.notes.update({id: note_details.note.id})">
-                        Edit
-                    </button>
+        <div class="list list-clean medication-list">
+            <div class="item medication-item" ng-repeat="medication in note_details.note.medications">
+                {{ medication.name }}
+                <div>
+                    <strong>{{ medication.brand | uppercase }}</strong>
                 </div>
             </div>
         </div>

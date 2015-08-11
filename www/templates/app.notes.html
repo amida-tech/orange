@@ -12,10 +12,8 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg" overflow-scroll="true">
-        <button class="button button-assertive button-full button-clear"
-                ng-click="notes_list.shouldShowDelete = !notes_list.shouldShowDelete">
-            <span ng-bind="notes_list.shouldShowDelete ? 'Hide': 'Show'"></span> Delete Buttons
-        </button>
+        <ion-spinner class="orange-loading-spinner" icon="bubbles"
+                     ng-show="!notes_list.notesPromise.$$state.status"></ion-spinner>
 
         <ion-list class="list-clean" can-swipe="true" show-delete="notes_list.shouldShowDelete">
             <ion-item class="item-text-wrap" ng-repeat="note in notes_list.notes" ui-sref="app.notes.details({id: note.id})">
@@ -25,10 +23,12 @@
                     {{ note.text | limitTo:notes_list.noteLimit }}{{ note.text.length > notes_list.noteLimit ? '...' : ''}}
                 </p>
 
-                <ion-delete-button class="ion-minus-circled"
-                                   ng-click="notes_list.removeNote(note)">
-                </ion-delete-button>
+                <ion-option-button class="button-assertive option-control" ng-click="notes_list.removeNote(note)">
+                    <i class="icon ion-trash-a"></i>
+                </ion-option-button>
+
             </ion-item>
         </ion-list>
     </ion-content>
 </ion-view>
+

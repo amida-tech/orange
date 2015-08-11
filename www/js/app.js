@@ -120,7 +120,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         views: {
                             menuContent: {
-                                template: '<ion-nav-view/>'
+                                template: '<ion-nav-view/>',
+                                controller: function($scope, $ionicLoading, log) {
+                                    $scope.medications = log.all('medications').getList();
+                                    $scope.notes = log.all('journal').getList();
+                                }
                             }
                         }
                     })
@@ -130,47 +134,21 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         controller: 'NotesCtrl as notes_list',
                         cache: false
                     })
+
                     .state('app.notes.details', {
                         url: '/:id/details',
                         templateUrl: 'templates/app.notes.details.html',
-                        controller: 'NoteDetailsCtrl as note_details',
-                        resolve: {
-                            note: ['$stateParams', 'log', function ($stateParams, log) {
-                                console.log('resolving note');
-                                var id = $stateParams.id;
-                                return log.all('journal').get(id);
-                            }]
-                        }
+                        controller:'NoteDetailsCtrl as note_details'
                     })
                     .state('app.notes.add', {
                         url: '/add',
                         templateUrl: 'templates/app.notes.add.html',
-                        controller: 'NoteAddCtrl as notes_add',
-                        resolve: {
-                            note: function() {
-                                return {};
-                            },
-                            medications: ['log', function (log) {
-                                console.log('resolving medications');
-                                return log.all('medications').getList();
-                            }]
-                        }
+                        controller: 'NoteAddCtrl as notes_add'
                     })
                     .state('app.notes.update', {
                         url: '/:id/update',
                         templateUrl: 'templates/app.notes.add.html',
-                        controller: 'NoteAddCtrl as notes_add',
-                        resolve: {
-                            note: ['$stateParams', 'log', function ($stateParams, log) {
-                                console.log('resolving note');
-                                var id = $stateParams.id;
-                                return log.all('journal').get(id);
-                            }],
-                            medications: ['log', function (log) {
-                                console.log('resolving medications');
-                                return log.all('medications').getList();
-                            }]
-                        }
+                        controller: 'NoteAddCtrl as notes_add'
                     })
                     .state('app.medications', {
                         url: '/medications',

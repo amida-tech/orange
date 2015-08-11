@@ -6,37 +6,45 @@
         .controller('NoteDetailsCtrl', NoteDetailsCtrl);
 
     NoteDetailsCtrl.$inject = [
-        '$scope', '$state', '$ionicLoading', 'note'
+        '$scope', '$stateParams', '$state'
     ];
 
     /* @ngInject */
-    function NoteDetailsCtrl($scope, $state, $ionicLoading, note) {
+    function NoteDetailsCtrl($scope, $stateParams, $state) {
         /* jshint validthis: true */
         var vm = this;
-        vm.title = 'Note Details';
-        vm.note = note;
+        var id = $stateParams.id;
+        var medications = $scope.medications.$object;
 
-        vm.removeNote = function(note) {
-            $ionicLoading.show({
-                template: 'Deleting...'
+        vm.title = 'Note Details';
+        vm.notesPromise = $scope.notes;
+        vm.medicationsPromise = $scope.medications;
+        vm.note = {};
+
+        //TODO: Refactoring data initialization
+        $scope.$watchGroup(['notes.$$state.status', 'medications.$$state.status'], function(newValues, oldValues, group) {
+            if (newValues[0] && newValues[1]) {
+                setNote($scope.notes.$object, $scope.medications.$object)
+            }
+        });
+
+        if ($scope.notes.$$state.status && $scope.medications.$$state.status) {
+            setNote($scope.notes.$object, $scope.medications.$object)
+        }
+
+
+        function setNote(notes, medications) {
+            var note = _.find(notes, function(nt) {
+                return nt.id == id;
             });
 
-            vm.note.remove().then(function() {
-                $ionicLoading.hide();
-                $state.go('app.notes.list');
-            }, removeError);
-        };
+            note.medications = _.map(note.medication_ids, function(id) {
+                return _.filter(medications, function(medication) {
+                    return medication.id == id;
+                })[0]
+            });
 
-        function removeError (error) {
-            $ionicLoading.hide();
-
-            if (error.status == 400) {
-                $cordovaDialogs.alert('Bad Request', 'Error', 'OK');
-            }
-
-            if (error.status == 401) {
-                $cordovaDialogs.alert('Unauthorized', 'Error', 'OK');
-            }
+            vm.note = note;
         }
     }
 })();
