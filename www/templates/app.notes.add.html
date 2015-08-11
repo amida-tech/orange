@@ -5,6 +5,9 @@
     </ion-nav-bar>
 
     <ion-content class="orange-bg">
+        <ion-spinner class="orange-loading-spinner" icon="bubbles"
+                     ng-show="!notes_add.notesPromise.$$state.status || !notes_add.medicationsPromise.$$state.status"></ion-spinner>
+
         <div class="card orange-card">
             <form class="orange-form" name="noteAdd">
                 <div class="item item-error"
@@ -15,6 +18,7 @@
                 </div>
 
                 <div class="item item-body">
+
                     <label class="item-input">
                         <textarea name="text" data-ng-model="notes_add.note.text" rows="5"
                                   placeholder="Note Text" required></textarea>
@@ -24,7 +28,7 @@
                         <ion-header-bar class="bar-small bar-orange bar-static">
                             <div class="buttons">
                                 <button class="button button-icon icon ion-ios-minus-outline"
-                                        ng-click="notes_add.medicationWidgetData.showDelete = !notes_add.medicationWidgetData.showDelete;">
+                                        ng-click="notes_add.medicationShowDelete = !notes_add.medicationShowDelete;">
                                 </button>
                             </div>
                             <h1 class="title">Medications</h1>
@@ -32,16 +36,16 @@
                                     ng-click="notes_add.modal.show()"></button>
                         </ion-header-bar>
 
-                        <ion-list show-delete="notes_add.medicationWidgetData.showDelete">
-                            <ion-item ng-repeat="medAdd in notes_add.medicationsAdd | filter: { checked: true }">
-                                {{ medAdd.name }}
+                        <ion-list class="list-clean medication-list" show-delete="notes_add.medicationShowDelete">
+                            <ion-item class="medication-item" ng-repeat="med in notes_add.medications | filter: { checked: true }">
+                                {{ med.name }}
                                 <div>
-                                    <strong>{{ medAdd.brand | uppercase }}</strong>
+                                    <strong>{{ med.brand | uppercase }}</strong>
                                 </div>
 
 
                                 <ion-delete-button class="ion-minus-circled"
-                                                   ng-click="notes_add.onMedicationRemove(medAdd)">
+                                                   ng-click="notes_add.onMedicationRemove(med)">
                                 </ion-delete-button>
                             </ion-item>
                         </ion-list>

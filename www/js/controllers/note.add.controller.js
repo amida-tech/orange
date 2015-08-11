@@ -7,28 +7,91 @@
 
     NoteAddCtrl.$inject = [
         '$scope', '$state', '$ionicLoading', 'log', '$ionicModal',
-        'medications', '$filter', '$cordovaDialogs', 'note'
+        '$filter', '$cordovaDialogs', '$stateParams'
     ];
 
     /* @ngInject */
-    function NoteAddCtrl($scope, $state, $ionicLoading, log,
-                         $ionicModal, medications, $filter, $cordovaDialogs, note) {
+    function NoteAddCtrl($scope, $state, $ionicLoading, log, $ionicModal,
+                         $filter, $cordovaDialogs, $stateParams) {
         /* jshint validthis: true */
         var vm = this;
-        vm.title = 'Add Note';
-        vm.note = note.restangularized ? note : {} ;
-        vm.save = save;
-        vm.medications = medications;
+        //Check "id" param in url
+        var is_edit = 'id' in $stateParams;
+        if (is_edit) {
+            var id = $stateParams.id;
+        }
+
+        vm.title = (is_edit) ? 'Edit Note' : 'Add Note';
+        vm.note = {} ;
+        vm.notesPromise = $scope.notes;
+        vm.medicationsPromise = $scope.medications;
+
         //Medications to add model
-        vm.medicationsAdd = _.map(vm.medications, function(medication) {
-            medication.checked = false;
-            return medication
+        vm.medications = [];
+
+        //Init data
+        $scope.$watchGroup(['notes.$$state.status', 'medications.$$state.status'], function(newValues, oldValues, group) {
+            if (newValues[0] && newValues[1]) {
+                setData($scope.notes.$object, $scope.medications.$object)
+            }
         });
 
-        //Medications List
-        vm.medicationWidgetData = {
-            showDelete: false
+        if ($scope.notes.$$state.status && $scope.medications.$$state.status) {
+            if (is_edit) {
+                setData($scope.notes.$object, $scope.medications.$object)
+            }
+        }
+
+        function setData(notes, medications) {
+            if (is_edit)
+                setNote(notes, medications);
+
+            vm.medications = _.map(medications, function(medication) {
+                medication.checked = false;
+                if (is_edit && vm.note.medications.length) {
+
+                }
+
+                return medication
+            });
+
+        }
+
+        function setNote(notes, medications) {
+            var note = _.find(notes, function(nt) {
+                return nt.id == id;
+            });
+
+            note.medications = _.map(note.medication_ids, function(id) {
+                return _.find(medications, function(medication) {
+                    return medication.id == id;
+                })
+            });
+
+            vm.note = note;
+        }
+
+        //Save note
+        vm.save = function save(form) {
+            form.$submitted = true;
+
+            if (_.isEmpty(form.$error)) {
+                $ionicLoading.show({
+                    template: 'Saving...'
+                });
+
+                if (is_edit) {
+                    vm.note.save().then(updateSuccess, saveError);
+                } else {
+                    vm.note.date = $filter('date')(new Date(), 'yyyy-MM-ddTHH:mm:ssZ');
+                    log.all('journal').post(vm.note).then(saveSuccess, saveError);
+                }
+
+            }
         };
+
+        //Medications List
+        vm.medicationShowDelete = false;
 
         vm.onMedicationRemove = function(item) {
             item.checked = false;
@@ -44,28 +107,27 @@
 
         //Set medications to note
         vm.medicationChangeEvent = function() {
-            vm.note.medication_ids = _.compact(_.map(vm.medicationsAdd, function(medication) {
+            vm.note.medication_ids = _.compact(_.map(vm.medications, function(medication) {
                 if (medication.checked)
                     return medication.id
             }));
         };
 
-        function save(form) {
-            form.$submitted = true;
-
-            if (_.isEmpty(form.$error)) {
-                vm.note.date = $filter('date')(new Date(), 'yyyy-MM-ddTHH:mm:ssZ');
-                $ionicLoading.show({
-                    template: 'Saving...'
-                });
-
-                log.all('journal').post(vm.note).then(saveSuccess, saveError);
-            }
+        function saveSuccess(note) {
+            $ionicLoading.hide();
+            $scope.notes.$object.push(note);
+            $state.go('app.notes.list');
         }
 
-        function saveSuccess(note) {
-            vm.note = note;
+        function updateSuccess(note) {
             $ionicLoading.hide();
+            $scope.notes.$object = _.map($scope.notes.$object, function(nt) {
+                if (nt.id == note.id) {
+                    return note;
+                }
+
+                return nt
+            });
             $state.go('app.notes.list');
         }
 

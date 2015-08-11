@@ -122,6 +122,18 @@ body {
   }
 }
 
+.medication-list {
+  z-index: 100;
+  margin-top: -1px;
+  .medication-item {
+    font-size: 14px;
+    padding: 5px 16px;
+    .item-content {
+      padding: 7px 49px 7px 7px
+    }
+  }
+}
+
 .checkbox-orange {
   @include checkbox-style($checkbox-off-border-default, $orange, $orange);
 }
@@ -693,6 +705,28 @@ body {
     font-size: $font-size-base * 2;
     font-weight: 400;
   }
+}
+
+.orange-loading-spinner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 100;
+  svg {
+    fill: #FAAA20;
+  }
+}
+
+.note-container {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+}
+
+ion-option-button.option-control.button {
+  display: inline-block;
+  height: auto;
+  position: relative;
+  top: 16px;
 }
 
 // Fix border on android devices
