@@ -20,6 +20,17 @@
     <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
     <script src="lib/moment/min/moment-with-locales.min.js"></script>
 
+    <script>
+        var handleOpenURL = function(url) {
+            var hash = url.split('//')[1];
+            if (hash) {
+                hash = '#/' + hash;
+                console.log(hash);
+                window.location.hash = hash;
+            }
+        };
+    </script>
+
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
