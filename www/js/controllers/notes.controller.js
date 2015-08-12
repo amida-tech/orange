@@ -43,7 +43,7 @@
         }
 
         function refresh() {
-            vm.notes.getList().then(
+            vm.notes.getList({sort_order: 'desc', sort_by: 'date'}).then(
                 function(notes) {
                     $scope.$broadcast('scroll.refreshComplete');
                     vm.notes = notes;

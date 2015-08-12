@@ -22,6 +22,7 @@
         }
 
         vm.title = (is_edit) ? 'Edit Note' : 'Add Note';
+        vm.backState = (is_edit) ? 'app.notes.details({id: '+id+'})' : 'app.notes.list';
         vm.note = {} ;
         vm.notesPromise = $scope.notes;
         vm.medicationsPromise = $scope.medications;
@@ -115,7 +116,7 @@
 
         function saveSuccess(note) {
             $ionicLoading.hide();
-            $scope.notes.$object.push(note);
+            $scope.notes.$object.unshift(note);
             $state.go('app.notes.list');
         }
 
