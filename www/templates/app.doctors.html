@@ -1,24 +1,27 @@
 <ion-view view-title="DOCTORS">
     <ion-nav-bar class="bar-orange orange-light" align-title="left">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
             <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
-            <button class="button button-icon button-clear button-small ion-plus button-dose" ui-sref="app.doctors.add"></button>
+            <button class="button button-icon button-clear button-small ion-plus button-dose" ui-sref="app.doctors.search"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="!doctors.doctorsPromise.$$state.status"></ion-spinner>
+        </div>
+
         <ion-refresher pulling-text="Pull to refresh" on-refresh="doctors.refresh()">
         </ion-refresher>
-        <ion-list class="list-clean list-inset padding" can-swipe="true" show-delete="shouldShowDelete">
-            <ion-item class="item-text-wrap" ng-repeat="doctor in doctors.doctors" ui-sref="app.doctors.edit({id: doctor.id})">
+        <ion-list class="list-clean medication-list list-inset padding" can-swipe="true" show-delete="shouldShowDelete">
+            <ion-item class="item-text-wrap medication-item" ng-repeat="doctor in doctors.doctors" ui-sref="app.doctors.details({id: doctor.id})">
                 <p><strong ng-bind="doctor.name"></strong></p>
 
-                <p ng-bind="doctor.address"></p>
+                <p ng-bind="doctor.title" ng-if="doctor.title"></p>
                 <ion-option-button class="button-assertive" ng-click="doctors.remove(doctor)">
                     Delete
                 </ion-option-button>

@@ -6,21 +6,23 @@
     <ion-content class="orange-bg">
 
         <div class="card orange-card">
+            <div class="text-center">
+                <ion-spinner class="orange-loading-spinner" icon="dots"
+                             ng-if="!doctor.doctorsPromise.$$state.status"></ion-spinner>
+            </div>
             <form name="doctorForm" class="orange-form">
                 <div class="item item-error" ng-if="doctor.error">
                     <p ng-repeat="error in doctor.errors"></p>
                 </div>
                 <div class="item item-body">
-                    <label class="item-input">
-                        <input type="text" name="name" ng-model="doctor.doctor.name" placeholder="Full Name"/>
-                    </label>
-                    <label class="item-input">
-                        <input type="tel" name="phone" ng-model="doctor.doctor.phone" placeholder="Phone Number (Optional)"/>
-                    </label>
-                    <label class="item-input">
-                        <textarea name="address" data-ng-model="doctor.doctor.address" rows="5" placeholder="Address (Optional)"></textarea>
-                    </label>
-
+                    <dl class="dl-worksheet">
+                        <dt>Name</dt>
+                        <dd>{{ doctor.doctor.name }} <small ng-if="doctor.doctor.title">({{ doctor.doctor.title }})</small></dd>
+                        <dt>Phone</dt>
+                        <dd>{{ doctor.doctor.phone }}</dd>
+                        <dt>Address</dt>
+                        <dd class="pre-line">{{ doctor.doctor.address }}</dd>
+                    </dl>
                     <label class="item-input">
                         <textarea name="notes" data-ng-model="doctor.doctor.notes" rows="5" placeholder="Notes (Optional)"></textarea>
                     </label>

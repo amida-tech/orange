@@ -5,13 +5,14 @@
         .module('orange')
         .controller('DoctorsCtrl', DoctorsCtrl);
 
-    DoctorsCtrl.$inject = ['$scope', '$ionicLoading', 'doctors'];
+    DoctorsCtrl.$inject = ['$scope', '$ionicLoading'];
 
     /* @ngInject */
-    function DoctorsCtrl($scope, $ionicLoading, doctors) {
+    function DoctorsCtrl($scope, $ionicLoading) {
         var vm = this;
 
-        vm.doctors = doctors;
+        vm.doctors = $scope.doctors.$object;
+        vm.doctorsPromise = $scope.doctors;
         vm.doctor = {};
         vm.remove = remove;
         vm.refresh = refresh;

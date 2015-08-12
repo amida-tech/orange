@@ -49,8 +49,14 @@
 
             vm.medications = _.map(medications, function(medication) {
                 medication.checked = false;
-                if (is_edit && vm.note.medications.length) {
 
+                if (is_edit) {
+                    var has_medication = _.find(vm.note.medications, function(med) {
+                       return med.id == medication.id
+                    });
+
+                    medication.checked = !_.isUndefined(has_medication);
+                    return medication
                 }
 
                 return medication
@@ -73,7 +79,7 @@
         }
 
         //Save note
-        vm.save = function save(form) {
+        vm.save = function (form) {
             form.$submitted = true;
 
             if (_.isEmpty(form.$error)) {
@@ -122,12 +128,12 @@
 
         function updateSuccess(note) {
             $ionicLoading.hide();
-            $scope.notes.$object = _.map($scope.notes.$object, function(nt) {
-                if (nt.id == note.id) {
-                    return note;
+            _.each($scope.notes.$object, function(nt, i) {
+                if (nt.id != note.id) {
+                    return;
                 }
 
-                return nt
+                $scope.notes.$object[i] = note;
             });
             $state.go('app.notes.list');
         }
