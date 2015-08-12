@@ -28,6 +28,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                      };
                      event.preventDefault();
                      $state.go('loading');
+                 } else if ($rootScope.initialized && toState.name === 'loading') {
+                     event.preventDefault();
                  }
              });
 
@@ -102,7 +104,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             'menuContent': {
                                 templateUrl: 'templates/app.today.html',
-                                controller: 'TodayCtrl'
+                                controller: 'TodayCtrl as today'
                             }
                         }
                     })
