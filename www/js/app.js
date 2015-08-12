@@ -123,7 +123,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                                 template: '<ion-nav-view/>',
                                 controller: function($scope, $ionicLoading, log) {
                                     $scope.medications = log.all('medications').getList();
-                                    $scope.notes = log.all('journal').getList();
+                                    $scope.notes = log.all('journal').getList({sort_order: 'desc', sort_by: 'date'});
                                 }
                             }
                         }

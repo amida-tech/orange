@@ -1,7 +1,5 @@
 <ion-view view-title="NOTES">
     <ion-nav-bar class="bar-orange orange-light" align-title="left">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
@@ -12,8 +10,13 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg" overflow-scroll="true">
-        <ion-spinner class="orange-loading-spinner" icon="bubbles"
-                     ng-show="!notes_list.notesPromise.$$state.status"></ion-spinner>
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="notes_list.refresh()"></ion-refresher>
+
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="!notes_list.notesPromise.$$state.status"></ion-spinner>
+        </div>
+
 
         <ion-list class="list-clean" can-swipe="true" show-delete="notes_list.shouldShowDelete">
             <ion-item class="item-text-wrap" ng-repeat="note in notes_list.notes" ui-sref="app.notes.details({id: note.id})">

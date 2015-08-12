@@ -1,7 +1,10 @@
 <ion-view view-title="{{ note_details.title }}">
     <ion-nav-bar class="bar-orange orange-light" align-title="left">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
+        <ion-nav-buttons side="left" >
+            <button ui-sref="app.notes.list" class="button back-button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
         <ion-nav-buttons side="right" >
             <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
             <button class="button button-clear button-small button-dose"
@@ -10,11 +13,13 @@
     </ion-nav-bar>
     <ion-content class="light-bg" overflow-scroll="true">
 
-        <ion-spinner class="orange-loading-spinner" icon="bubbles"
-                     ng-show="!note_details.notesPromise.$$state.status || !note_details.medicationsPromise.$$state.status"></ion-spinner>
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="!note_details.notesPromise.$$state.status || !note_details.medicationsPromise.$$state.status"></ion-spinner>
+        </div>
 
         <div class="item item-body">
-            <h2>{{ note_details.note.date | date:'yyyy-MM-dd HH:mm:ss Z' }}</h2>
+            <h2>{{ note_details.note.date | date:'yyyy-MM-dd HH:mm:ss' }}</h2>
             <div class="note-container">{{ note_details.note.text }}</div>
         </div>
 
