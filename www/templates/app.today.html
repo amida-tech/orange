@@ -9,80 +9,44 @@
 
         </ion-nav-buttons>
 
-        <ion-nav-buttons side="right" >
-            <button class="button button-outline button-orange button-small button-profile" ng-click="doLogin()">
+        <ion-nav-buttons side="right">
+            <button class="button button-outline button-orange button-small button-profile">
                 {{ profile.first_name }} {{ profile.last_name }}
             </button>
             <button class="button button-icon button-clear button-small ion-plus button-dose"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="orange-bg orange-light">
-        <ion-refresher pulling-text="Pull to refresh" on-refresh="refresh()">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="today.refresh()">
         </ion-refresher>
-        <div class="row row-bottom schedule-header">
-            <div class="col col-50 schedule-header-left">7:00 am</div>
-            <div class="col col-50 schedule-header-right">Skipped</div>
+        <div class="text-center">
+            <ion-spinner class="spinner-orange-light" icon="dots"
+                         ng-if="today.schedule === null"></ion-spinner>
         </div>
-        <div class="list list-inset list-schedule">
-            <div class="item item-schedule">
-                <div class="row row-center row-no-padding">
-                    <div class="col col-80 med-title">
-                        <p class="med-name">Atripla</p>
-                        <p class="med-rx">EFAVIRENZ/EMTRICITABINE/TENOFOV</p>
-                    </div>
-                    <div class="col col-20 actions">
-                        <i class="icon ion-ios-close dark-red"></i>
-                    </div>
-                </div>
+
+        <div class="text-center padding-top" ng-if="today.schedule.length === 0">
+            <h3>Your schedule is empty</h3>
+        </div>
+
+        <div ng-if="today.schedule.length && filter.events.length" ng-repeat="filter in today.filters">
+            <div class="row row-bottom schedule-header">
+                <div class="col col-50 schedule-header-left"></div>
+                <div class="col col-50 schedule-header-right" ng-bind="filter.name"></div>
             </div>
-        </div>
+            <div class="list list-inset list-schedule">
+                <div class="item item-schedule"
+                     ng-repeat="event in filter.events">
+                    <div class="row row-center row-no-padding">
+                        <div class="col col-75 med-title">
+                            <p class="muted">
+                                <small ng-bind="event.date|date:'HH:mm'"></small>
+                            </p>
+                            <p class="med-name" ng-bind="event.medication.name + ' (' + event.medication_id + ')'"></p>
 
-        <div class="row row-bottom schedule-header">
-            <div class="col col-50 schedule-header-left">With Lunch</div>
-            <div class="col col-50 schedule-header-right">taken two hours ago</div>
-        </div>
-        <div class="list list-inset list-schedule">
-            <div class="item item-schedule">
-                <div class="row row-center row-no-padding">
-                    <div class="col col-80 med-title">
-                        <p class="med-name">Aciphex (20gm; 1 tablet)</p>
-
-                        <p class="med-rx">RAPEBRAZOLE</p>
-                    </div>
-                    <div class="actions col col-20">
-                        <i class="icon ion-ios-checkmark green"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="item item-schedule">
-                <div class="row row-center row-no-padding">
-                    <div class="col col-80 med-title">
-                        <p class="med-name">Tylenol</p>
-
-                        <p class="med-rx">ACETAMINOPHEN</p>
-                    </div>
-                    <div class="actions col col-20">
-                        <i class="icon ion-ios-checkmark green"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row row-bottom schedule-header">
-            <div class="col col-50 schedule-header-left">5:00 pm</div>
-            <div class="col col-50 schedule-header-right">due in three hours</div>
-        </div>
-        <div class="list list-inset list-schedule">
-            <div class="item item-schedule">
-                <div class="row row-center row-no-padding">
-                    <div class="col col-75 med-title">
-                        <p class="med-name">Strattera (18mg)</p>
-
-                        <p class="med-rx">ATMOXETINE</p>
-                    </div>
-                    <div class="col col-25 actions">
-                        <i class="icon ion-ios-checkmark-outline green"></i>
-                        <i class="icon ion-ios-close-outline dark-red"></i>
+                            <p class="med-rx" ng-bind="event.medication.brand"></p>
+                        </div>
+                        <div class="col col-25 actions" ng-bind-html="filter.buttons">
+                        </div>
                     </div>
                 </div>
             </div>
