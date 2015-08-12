@@ -17,7 +17,6 @@ $green: #20B11D;
 $gray: #9E9A9A;
 $lightgray: #E0E0E0;
 
-
 $input-color-placeholder: $gray !default;
 $card-border-radius: 3px !default;
 $item-default-active-bg: $light !default;
@@ -28,9 +27,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "../www/lib/ionic/scss/ionic";
-
-
-
 
 // Sizes
 $log-size: 80px;
@@ -49,11 +45,10 @@ body {
   background-color: $orange;
 }
 
-
-
 .has-bottom-buttons {
   padding-bottom: $button-height * 2;
 }
+
 .col-40 {
   @include flex(0, 0, 40%);
   max-width: 40%;
@@ -63,7 +58,6 @@ body {
   @include flex(0, 0, 60%);
   max-width: 60%;
 }
-
 
 .orange {
   color: $orange;
@@ -169,7 +163,7 @@ body {
       &.active {
         background-color: $orange;
         color: $stable;
-        box-shadow: inset 1px 1px 1px rgba(0,0,0,.1);
+        box-shadow: inset 1px 1px 1px rgba(0, 0, 0, .1);
       }
     }
   }
@@ -198,7 +192,6 @@ body {
     }
   }
 }
-
 
 .orange-form {
   p.item-input {
@@ -259,7 +252,6 @@ body {
       padding: $padding-base-vertical $padding-base-horizontal;
       min-height: 42px;
 
-
       &:focus {
         border-color: $gray;
       }
@@ -316,6 +308,21 @@ body {
   }
 }
 
+.scroll-refresher {
+  .ionic-refresher-content {
+    &.ionic-refresher-with-text {
+      color: $orange-light;
+    }
+    .icon-refreshing {
+      svg {
+        stroke: $orange-light;
+        fill: $orange-light;
+      }
+    }
+  }
+
+}
+
 .list.list-schedule {
   margin-top: 0;
   border-color: $light;
@@ -335,6 +342,7 @@ body {
     }
   }
 }
+
 .med-title {
   line-height: 1.2;
   font-size: $font-size-base * 1.1;
@@ -498,7 +506,6 @@ body {
   }
 }
 
-
 .item-large-icon {
   margin: $list-header-margin-top auto;
   .icon {
@@ -604,6 +611,7 @@ body {
   }
 
 }
+
 .bottom-buttons {
   position: absolute;
   bottom: 0;
