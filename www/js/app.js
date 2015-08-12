@@ -227,6 +227,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/app.pharmacies.add.html',
                         controller: 'PharmacyAddCtrl as pharmacies_add'
                     })
+                    .state('app.pharmacies.edit', {
+                        url: '/edit/:id',
+                        templateUrl: 'templates/app.pharmacies.add.html',
+                        controller: 'PharmacyAddCtrl as pharmacies_add'
+                    })
                     .state('app.logs', {
                         url: '/logs',
                         views: {

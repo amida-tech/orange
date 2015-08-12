@@ -20,7 +20,8 @@
                          ng-if="!pharmacies.pharmaciesPromise.$$state.status"></ion-spinner>
         </div>
         <ion-list class="list-clean list-inset padding" can-swipe="true">
-            <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies">
+            <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies"
+                      ui-sref="app.pharmacies.edit({id: pharmacy.id})">
                 <p><strong ng-bind="pharmacy.name"></strong></p>
 
                 <p ng-bind="pharmacy.address"></p>
