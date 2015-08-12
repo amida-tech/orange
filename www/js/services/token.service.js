@@ -82,10 +82,13 @@
 
         function getTokenResult(c, requestToken, callback) {
             var redirect_uri = "http://localhost/callback";
-            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+            //$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
             $http({
                 method: "post",
                 url: c.auth_url + c.credentials.token_path,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 auth: {
                     user: c.credentials.client_id,
                     pass: c.credentials.client_secret,
@@ -101,11 +104,11 @@
                 }
             })
                 .success(function (data) {
-                             console.log("getDREResult: " + data);
+                             console.log("getDREResult: ", data);
                              callback(null, data);
                          })
                 .error(function (data, status) {
-                           console.log("getDREResult error: " + data);
+                           console.log("getDREResult error: ", data);
                            callback("Problem Authenticating");
                        })
         }
@@ -171,10 +174,12 @@
 
         function getUserMedications(callback) {
             getToken(function (token) {
-                var medUrl = token.c.credentials.api_url + '/MedicationPrescription?patient=' + token.patients[0].resource.id;
+                var medUrl;
                 if (token.c.name === 'SMART on FHIR') {
                     // /MedicationPrescription/_search?patient%3APatient=1288992'
                     medUrl = token.c.credentials.api_url + 'MedicationPrescription/_search?patient%3APatient=1288992';
+                } else {
+                    medUrl = token.c.credentials.api_url + '/MedicationPrescription?patient=' + token.patients[0].resource.id
                 }
                 $http({
                     method: "get",
@@ -185,7 +190,7 @@
                     }
                 })
                     .success(function (data) {
-                                 console.log("was successful connection to meds: " + JSON.stringify(data));
+                                 console.log("was successful connection to meds: ", data);
                                  callback(data);
                              })
                     .error(function (data, status) {

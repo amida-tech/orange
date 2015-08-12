@@ -5,7 +5,18 @@
         .module('orange')
         .controller('LogMedicationsCtrl', LogMedicationsCtrl);
 
-    LogMedicationsCtrl.$inject = ['$q', '$timeout', '$state', '$ionicLoading', 'OrangeApi', 'Oauth', 'TokenService', 'n2w', 'log', 'medications'];
+    LogMedicationsCtrl.$inject = [
+        '$q',
+        '$timeout',
+        '$state',
+        '$ionicLoading',
+        'OrangeApi',
+        'Oauth',
+        'TokenService',
+        'n2w',
+        'log',
+        'medications'
+    ];
 
     /* @ngInject */
     function LogMedicationsCtrl($q, $timeout, $state, $ionicLoading, OrangeApi, Oauth, TokenService, n2w, log, medications) {
@@ -18,6 +29,8 @@
         vm.medication = null;
         vm.medicationTimeEvents = 3;
         vm.medications = medications;
+
+        vm.importedMedications = [];
 
         vm.search = {
             result: [],
@@ -75,8 +88,40 @@
         vm.scheduleEvent = scheduleEvent;
         vm.getEventText = getEventText;
         vm.toggleWeekDay = toggleWeekDay;
+        vm.configImportedMedication = configImportedMedication;
+
 
         ////////////////
+
+        function configImportedMedication(medication) {
+
+            selectMedication({name: medication.name});
+        }
+
+        function getMedications(val) {
+            var result = [];
+            if (val && val.entry) {
+                var i, len = val.entry.length;
+                for (i = 0; i < len; i++) {
+                    var content = val.entry[i].content || val.entry[i].resource;
+                    if (content && content.resourceType === 'MedicationPrescription') {
+                        var contained = content.contained;
+                        if (contained && contained.length > 0) {
+                            var j, len2 = contained.length;
+                            for (j = 0; j < len2; j++) {
+                                result.push({
+                                    name: contained[j].name,
+                                    status: content.status
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+
 
         function getNewEvent(n) {
             return {
@@ -184,6 +229,7 @@
                 $ionicLoading.show({
                     template: 'Saving...'
                 });
+                console.log('Medication = ', vm.medication);
                 log.all('medications').post(vm.medication).then(
                     function (data) {
                         $ionicLoading.hide();
@@ -289,6 +335,9 @@
         function getSMARTToken() {
             var c;
             vm.oauthError = "";
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
             TokenService.getSMARTCredentials(function (credentials) {
                 c = credentials;
             });
@@ -297,19 +346,27 @@
                     if (err) {
                         console.log("error: " + err);
                         vm.oauthError = "error: " + err;
+                        $ionicLoading.hide();
                     } else {
                         vm.oauthSuccess = "success " + JSON.stringify(result);
                         result.c = c;
-                        result.patients = [{resource: {name: [{given: ['Daniel'], family: ['Adams']}]}}];
+                        //result.patients = [{resource: {name: [{given: ['Daniel'], family: ['Adams']}]}}];
                         vm.token = result;
                         TokenService.setToken(result);
                         vm.tokenExists = true;
                         console.log(vm.token);
+                        TokenService.getUserMedications(function (response) {
+                            console.log("get user meds response: " + response);
+                            vm.importedMedications = getMedications(response);
+                            console.log(vm.importedMedications);
+                            $ionicLoading.hide();
+                        });
                     }
                 })
             }, function (error) {
                 console.log("error: " + error);
                 vm.oauthError = "error " + error;
+                $ionicLoading.hide();
             });
         }
 

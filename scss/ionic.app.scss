@@ -308,7 +308,7 @@ body {
   }
 }
 
-.scroll-refresher {
+.scroll-refresher.light-orange {
   .ionic-refresher-content {
     &.ionic-refresher-with-text {
       color: $orange-light;
@@ -521,7 +521,7 @@ body {
   .item-log {
     display: inline-block;
     width: auto;
-    margin: $padding-base-vertical $padding-base-vertical $padding-large-horizontal;
+    margin: $padding-base-vertical;
 
     .log-avatar-img {
       width: $log-size;

@@ -15,21 +15,23 @@
                     </div>
                 </div>
             </div>
-            <div class="item item-body">
+            <div class="item item-error" ng-if="meds.oauthError">
                 <p ng-bind="meds.oauthError"></p>
-                <p ng-bind="meds.oauthSuccess"></p>
-                <p class="form-title">Automatic Import</p>
-                <form class="orange-form">
-                    <label class="item-input">
-                        <input type="text" placeholder="Account Name"/>
-                    </label>
-                    <label class="item-input">
-                        <input type="password" placeholder="Password"/>
-                    </label>
-                </form>
             </div>
+            <div class="item item-body">
+
+                <p class="form-title">Automatic Import</p>
+            </div>
+            <ion-item ng-repeat="medication in meds.importedMedications"
+                      ng-if="meds.importedMedications.length"
+                        ng-click="meds.configImportedMedication(medication)">
+                <div class="med-title">
+                    <p class="med-name" ng-bind="medication.name"></p>
+                    <p class="med-rx" ng-bind="medication.brand"></p>
+                </div>
+            </ion-item>
             <div class="item item-button">
-                <button class="button button-full button-orange">Import</button>
+                <button class="button button-full button-orange" ng-click="meds.getSMARTToken()">Import</button>
             </div>
         </div>
         <div class="card orange-card">
