@@ -18,8 +18,12 @@
         </div>
 
         <div class="padding">
-            <h4>{{ doctorDetails.doctor.name }}</h4>
-            <small ng-if="doctorDetails.doctor.title">{{ doctorDetails.doctor.title }}</small>
+            <h4>{{ doctorDetails.doctor.name }}
+                <span ng-if="doctorDetails.doctor.title">
+                    <br><small>{{ doctorDetails.doctor.title }}</small>
+                </span>
+            </h4>
+
         </div>
         <ion-list class="list-last-open">
             <ion-item>

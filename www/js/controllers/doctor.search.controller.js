@@ -56,7 +56,7 @@
                         provider.last_name,
                         provider.name_suffix
                     ].join(' ').toLowerCase()
-                );
+                ).replace('Iii', 'III');
 
                 doctor['phone'] = provider.practice_address.phone;
                 var address = (provider.practice_address.address_line + ' dividerf '

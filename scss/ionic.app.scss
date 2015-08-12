@@ -128,7 +128,7 @@ body {
     position: absolute;
     right: 0;
     display: inline-block;
-    top: 0;
+    top: -14px;
     padding: 16px;
     color: #444;
     float: right;
@@ -142,6 +142,7 @@ body {
     min-height: 0;
     font-size: 14px;
     line-height: 15px;
+    margin-top: 12px;
   }
 }
 

@@ -14,7 +14,7 @@
         var is_edit = 'id' in $stateParams;
 
         vm.title = is_edit ? 'Edit Doctor': 'Add Doctor';
-        vm.doctor =  is_edit ? {} : $scope.doctorToAdd;
+        vm.doctor =  is_edit ? {} : $scope.$parent.doctorToAdd;
         vm.doctorsPromise = $scope.doctors;
 
         if (vm.doctor == null) {
@@ -22,9 +22,11 @@
         }
 
         $scope.doctors.then(function(doctors) {
-            vm.doctor = _.find(doctors, function(doctor) {
-                return doctor.id == $stateParams.id
-            })
+            if (is_edit) {
+                vm.doctor = _.find(doctors, function(doctor) {
+                    return doctor.id == $stateParams.id
+                })
+            }
         });
 
 

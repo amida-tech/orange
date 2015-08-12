@@ -15,10 +15,16 @@
         vm.doctorsPromise = $scope.doctors;
         vm.doctor = {};
 
-        $scope.doctors.then(function(doctors) {
-            vm.doctor = _.find(doctors, function(doctor) {
-                return doctor.id == $stateParams.id
-            })
+        vm.doctor = _.find($scope.doctors.$object, function(doctor) {
+            return doctor.id == $stateParams.id
+        });
+
+        $scope.$watch('doctors.$$state.status', function(newValue, oldValue) {
+            if (newValue) {
+                vm.doctor = _.find($scope.doctors.$object, function(doctor) {
+                    return doctor.id == $stateParams.id
+                })
+            }
         });
 
         vm.callDoctor = function(phone) {
