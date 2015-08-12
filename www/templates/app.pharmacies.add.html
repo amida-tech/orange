@@ -1,0 +1,42 @@
+<ion-view view-title="{{ pharmacies_add.title }}">
+    <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
+        <ion-nav-buttons side="left" >
+            <button ui-sref="app.pharmacies.list" class="button back-button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-content class="orange-bg">
+        <div class="card orange-card">
+            <form class="orange-form" name="pharmacyAdd">
+
+                <div class="item item-error"
+                     ng-show="pharmacyAdd.$submitted && !pharmacyAdd.$valid">
+                    <div ng-messages="pharmacyAdd.name.$error">
+                        <p ng-message="required">Name is required</p>
+                    </div>
+                </div>
+
+                <div class="item item-body">
+                    <label class="item-input">
+                        <input type="text" data-ng-model="pharmacies_add.pharmacy.name" name="name" placeholder="Name" />
+                    </label>
+                    <label class="item-input">
+                        <input type="text" data-ng-model="pharmacies_add.pharmacy.phone" name="phone" placeholder="Phone" />
+                    </label>
+                    <label class="item-input">
+                        <textarea name="address" data-ng-model="pharmacies_add.pharmacy.address" rows="3" placeholder="Address"></textarea>
+                    </label>
+                    <label class="item-input">
+                        <textarea name="notes" data-ng-model="pharmacies_add.pharmacy.notes" rows="5" placeholder="Notes"></textarea>
+                    </label>
+                </div>
+                <div class="item item-button">
+                    <button type="submit" class="button button-full button-orange"
+                            ng-click="pharmacies_add.save(pharmacyAdd)">Save Pharmacy</button>
+                </div>
+            </form>
+        </div>
+    </ion-content>
+</ion-view>

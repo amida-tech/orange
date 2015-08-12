@@ -220,6 +220,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         controller: 'PharmaciesCtrl as pharmacies',
                         cache: false
                     })
+                    .state('app.pharmacies.add', {
+                        url: '/add',
+                        templateUrl: 'templates/app.pharmacies.add.html',
+                        controller: 'PharmacyAddCtrl as pharmacies_add'
+                    })
                     .state('app.logs', {
                         url: '/logs',
                         views: {
