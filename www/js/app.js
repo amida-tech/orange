@@ -207,7 +207,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         views: {
                             'menuContent': {
-                                template: '<ion-nav-view></ion-nav-view>'
+                                template: '<ion-nav-view></ion-nav-view>',
+                                controller: function ($scope, $ionicLoading, log) {
+                                    $scope.pharmacies = log.all('pharmacies').getList();
+                                }
                             }
                         }
                     })
@@ -215,12 +218,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '',
                         templateUrl: 'templates/app.pharmacies.html',
                         controller: 'PharmaciesCtrl as pharmacies',
-                        cache: false,
-                        resolve: {
-                            pharmacies: ['log', function (log) {
-                                return log.all('pharmacies').getList();
-                            }]
-                        }
+                        cache: false
                     })
                     .state('app.logs', {
                         url: '/logs',

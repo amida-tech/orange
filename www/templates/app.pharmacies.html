@@ -12,6 +12,12 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="pharmacies.refresh()">
+        </ion-refresher>
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="!pharmacies.pharmaciesPromise.$$state.status"></ion-spinner>
+        </div>
         <ion-list class="list-clean list-inset padding" can-swipe="true">
             <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies">
                 <p><strong ng-bind="pharmacy.name"></strong></p>

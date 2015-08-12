@@ -5,10 +5,21 @@
         .module('orange')
         .controller('PharmaciesCtrl', PharmaciesCtrl);
 
-    PharmaciesCtrl.$inject = ['$scope', '$ionicLoading', 'pharmacies'];
+    PharmaciesCtrl.$inject = ['$scope', '$ionicLoading', 'log'];
 
-    function PharmaciesCtrl($scope, $ionicLoading, pharmacies) {
+    function PharmaciesCtrl($scope, $ionicLoading, log) {
         var vm = this;
-        vm.pharmacies = pharmacies;
+        vm.pharmaciesPromise = $scope.pharmacies;
+        vm.pharmacies = $scope.pharmacies.$object;
+        vm.refresh = refresh;
+
+        function refresh() {
+            vm.pharmacies.getList().then(
+                function (pharmacies) {
+                    $scope.$broadcast('scroll.refreshComplete');
+                    vm.pharmacies = pharmacies;
+                }
+            );
+        }
     }
 })();
