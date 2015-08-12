@@ -37,6 +37,7 @@
                 <div class="item item-schedule"
                      ng-repeat="event in filter.events">
                     <div class="row row-center row-no-padding">
+
                         <div class="col col-75 med-title">
                             <p class="muted">
                                 <small ng-bind="event.date|date:'HH:mm'"></small>
@@ -44,8 +45,22 @@
                             <p class="med-name" ng-bind="event.medication.name + ' (' + event.medication_id + ')'"></p>
 
                             <p class="med-rx" ng-bind="event.medication.brand"></p>
+
                         </div>
-                        <div class="col col-25 actions" ng-bind-html="filter.buttons">
+                        <!--<div class="col col-25 actions" ng-bind-html="filter.buttons | trusted">-->
+                        <!--</div>-->
+                        <div class="col col-25 actions" ng-switch="filter.type">
+                            <div ng-switch-when="skipped">
+                                <i class="icon ion-ios-close dark-red"></i>
+                            </div>
+                            <div ng-switch-when="taken">
+                                <i class="icon ion-ios-checkmark green"></i>
+                            </div>
+                            <div ng-switch-default>
+                                <i class="icon ion-ios-checkmark-outline green" ng-click="today.createDose(event)"></i>
+                                <i class="icon ion-ios-close-outline dark-red"></i>
+                            </div>
+
                         </div>
                     </div>
                 </div>
