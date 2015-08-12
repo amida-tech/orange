@@ -15,7 +15,7 @@ $red: #FA2E20;
 $dark-red: #D0021B;
 $green: #20B11D;
 $gray: #9E9A9A;
-$lightgray: #E0E0E0;
+$lightgray: #efefef;
 
 $input-color-placeholder: $gray !default;
 $card-border-radius: 3px !default;
@@ -24,6 +24,9 @@ $item-default-active-bg: $light !default;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
+
+//List bottom indent
+$list-bottom-indent: 5px;
 
 // Include all of Ionic
 @import "../www/lib/ionic/scss/ionic";
@@ -34,13 +37,20 @@ $avatar-size: 60px;
 
 body {
   background-color: $orange;
+  font-size: 14px;
 }
 
 .padding-x2 {
   padding: $content-padding * 2;
-
 }
 
+.pull-left {
+  float: left !important;
+}
+
+.pull-right {
+  float: right !important;
+}
 .pane {
   background-color: $orange;
 }
@@ -87,6 +97,10 @@ body {
   text-transform: capitalize;
 }
 
+.pre-line {
+  white-space: pre !important;
+}
+
 .spinner {
   &.spinner-orange-light {
     stroke: $orange-light;
@@ -107,12 +121,48 @@ body {
 
 }
 
+.item {
+  font-size: 14px;
+  .item-label {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    display: inline-block;
+    top: 0;
+    padding: 16px;
+    color: #444;
+    float: right;
+    font-weight: bold;
+  }
+  .item-label .button {
+    padding: 2px;
+    border: 1px solid $gray;
+    background: #efefef;
+    height: auto;
+    min-height: 0;
+    font-size: 14px;
+    line-height: 15px;
+  }
+}
+
+dl.dl-worksheet {
+  dd {
+    margin-bottom: $list-bottom-indent;
+  }
+}
+
 .list-clean {
   border: none;
   background: $light;
   .item {
     border: none;
     //background: $light;
+  }
+}
+
+.list-last-open {
+  .item:last-child {
+    border-bottom: none;
   }
 }
 
@@ -717,12 +767,12 @@ body {
 
 .orange-loading-spinner {
   position: absolute;
-  top: 5px;
+  top: 3px;
   right: 0px;
   left: 0px;
   z-index: 100;
   svg {
-    fill: #FAAA20;
+    fill: $orange;
   }
 }
 

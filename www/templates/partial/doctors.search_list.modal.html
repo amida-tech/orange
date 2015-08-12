@@ -1,0 +1,18 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-orange">
+        <button ng-click="doctorSearch.modal.hide()" class="button back-button buttons button-clear header-item">
+            <i class="icon ion-arrow-left-c"></i>
+            <span class="back-text"></span>
+        </button>
+        <h1 class="title">Doctors</h1>
+    </ion-header-bar>
+    <ion-content>
+        <ul class="list">
+            <li class="item item-body" ng-repeat="doctor in doctorSearch.doctors" ng-click="doctorSearch.addGo(doctor)">
+                <strong>{{ doctor.name }}</strong>
+                <small ng-show="doctor.title">({{ doctor.title }})</small><br>
+                <small class="pre-line">{{ doctor.address }}</small>
+            </li>
+        </ul>
+    </ion-content>
+</ion-modal-view>

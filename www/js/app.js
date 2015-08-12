@@ -140,7 +140,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('app.notes.details', {
                         url: '/:id/details',
                         templateUrl: 'templates/app.notes.details.html',
-                        controller:'NoteDetailsCtrl as note_details'
+                        controller:'NoteDetailsCtrl as note_details',
+                        cache: false
                     })
                     .state('app.notes.add', {
                         url: '/add',
@@ -166,7 +167,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         views: {
                             'menuContent': {
-                                template: '<ion-nav-view></ion-nav-view>'
+                                template: '<ion-nav-view></ion-nav-view>',
+                                controller: function($scope, log) {
+                                    $scope.doctorToAdd = null;
+                                    $scope.doctors = log.all('doctors').getList();
+                                }
                             }
                         }
 
@@ -175,34 +180,28 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '',
                         templateUrl: 'templates/app.doctors.html',
                         controller: 'DoctorsCtrl as doctors',
-                        cache: false,
-                        resolve: {
-                            doctors: ['log', function (log) {
-                                console.log('resolving doctors');
-                                return log.all('doctors').getList();
-                            }]
-                        }
+                        cache: false
+                    })
+                    .state('app.doctors.search', {
+                        url: '/search',
+                        templateUrl: 'templates/app.doctors.search.html',
+                        controller: 'DoctorSearchCtrl as doctorSearch'
+                    })
+                    .state('app.doctors.details', {
+                        url: '/:id/details',
+                        templateUrl: 'templates/app.doctors.details.html',
+                        controller: 'DoctorDetailsCtrl as doctorDetails'
                     })
                     .state('app.doctors.add', {
                         url: '/add',
                         templateUrl: 'templates/app.doctors.add.html',
                         controller: 'DoctorCtrl as doctor',
-                        resolve: {
-                            doctor: function() {
-                                return {};
-                            }
-                        }
+                        cache: false
                     })
                     .state('app.doctors.edit', {
-                        url: '/edit/:id',
+                        url: '/:id/edit',
                         templateUrl: 'templates/app.doctors.add.html',
-                        controller: 'DoctorCtrl as doctor',
-                        resolve: {
-                            doctor: ['$stateParams', 'log', function($stateParams, log) {
-                                var id = $stateParams.id;
-                                return log.all('doctors').get(id);
-                            }]
-                        }
+                        controller: 'DoctorCtrl as doctor'
                     })
                     .state('app.pharmacies', {
                         url: '/pharmacies',

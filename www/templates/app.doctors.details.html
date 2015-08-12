@@ -1,0 +1,43 @@
+<ion-view view-title="{{doctorDetails.title}}">
+    <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
+        <ion-nav-buttons side="left" >
+            <button ui-sref="app.doctors.list" class="button back-button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+
+        <ion-nav-buttons side="right" >
+            <button class="button button-clear button-small button-dose"
+                    ui-sref="app.doctors.edit({id: doctorDetails.doctor.id})">Edit</button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content class="light-bg">
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="!doctorDetails.doctorsPromise.$$state.status"></ion-spinner>
+        </div>
+
+        <div class="padding">
+            <h4>{{ doctorDetails.doctor.name }}</h4>
+            <small ng-if="doctorDetails.doctor.title">{{ doctorDetails.doctor.title }}</small>
+        </div>
+        <ion-list class="list-last-open">
+            <ion-item>
+                <span class="pre-line">{{ doctorDetails.doctor.address }}</span>
+                <span class="item-label">DIRECTIONS</span>
+            </ion-item>
+
+            <ion-item ng-if="doctorDetails.doctor.phone">
+                {{ doctorDetails.doctor.phone }}
+                <span class="item-label">
+                    <span class="button" ng-click="doctorDetails.callDoctor(doctorDetails.doctor.phone)">CALL</span>
+                </span>
+            </ion-item>
+
+            <ion-item ng-if="doctorDetails.doctor.notes">
+                {{ doctorDetails.doctor.notes }}
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+</ion-view>
