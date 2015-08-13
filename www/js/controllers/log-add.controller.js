@@ -5,21 +5,30 @@
         .module('orange')
         .controller('AddLogCtrl', AddLogCtrl);
 
-    AddLogCtrl.$inject = ['$scope', '$state', '$cordovaCamera', '$ionicLoading', 'OrangeApi', 'Avatar', 'log'];
+    AddLogCtrl.$inject = ['$scope', '$state', '$cordovaCamera', '$ionicLoading', 'OrangeApi', 'Avatar',
+                          'log', '$ionicModal', 'settings'];
 
     /* @ngInject */
-    function AddLogCtrl($scope, $state, $cordovaCamera, $ionicLoading, OrangeApi, Avatar, log) {
+    function AddLogCtrl($scope, $state, $cordovaCamera, $ionicLoading, OrangeApi, Avatar, log,
+                        $ionicModal, settings) {
 
         $scope.log = log;
         $scope.saveLog = saveLog;
         $scope.selectPhoto = selectPhoto;
         $scope.isDevice = ionic.Platform.isWebView();
         $scope.title = log.me ? 'Add My Log' : 'Add New Log';
+        $scope.iconItems = _.chunk(settings.avatars, 3);
+
+        $ionicModal.fromTemplateUrl('templates/partial/logs.icon.modal.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.iconModal = modal;
+        });
 
 
-        function selectPhoto() {
-            if (!$scope.isDevice) {
-                $scope.log.avatarUrl = 'img/ionic.png';
+        function selectPhoto(iconUrl) {
+            if (!$scope.isDevice || iconUrl !== undefined) {
+                setAvatarUrl(iconUrl || 'img/ionic.png');
             } else {
                 var options = {
                     quality: 50,
@@ -34,14 +43,14 @@
                     saveToPhotoAlbum: false
                 };
 
-                $cordovaCamera.getPicture(options).then(
-                    function (data) {
-                        $scope.log.avatarUrl = data;
-                    }, function (err) {
-                        // error
-                        console.log(err);
-                    });
+                $cordovaCamera.getPicture(options).then(setAvatarUrl, console.log)
             }
+        }
+
+        function setAvatarUrl(data) {
+            $scope.log.avatar = null;
+            $scope.log.avatarUrl = data;
+            $scope.iconModal.hide();
         }
 
         function saveLog() {

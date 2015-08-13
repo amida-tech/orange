@@ -20,8 +20,7 @@
         vm.save = save;
 
         $ionicModal.fromTemplateUrl('templates/partial/hours.modal.html', {
-            scope: $scope,
-            anumation: 'slide-in-up'
+            scope: $scope
         }).then(function (modal) {
             vm.hoursModal = modal;
 

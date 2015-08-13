@@ -528,6 +528,10 @@ ion-content {
   }
 }
 
+.card.orange-card.icon-modal {
+  box-shadow: none;
+}
+
 .bar.bar-orange {
   @include bar-style($orange, $orange, $light);
   font-weight: normal;

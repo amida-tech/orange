@@ -1,0 +1,27 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-orange">
+        <button ng-click="iconModal.hide()" class="button back-button buttons button-clear header-item">
+            <i class="icon ion-arrow-left-c"></i>
+            <span class="back-text"></span>
+        </button>
+        <h1 class="title">Change Icon</h1>
+    </ion-header-bar>
+    <ion-content>
+        <div class="card orange-card icon-modal">
+            <div class="orange-logs">
+                <div class="row row-no-padding" ng-repeat="row in iconItems">
+                    <div class="col col-33" ng-repeat="icon in row">
+                        <div class="item-log" ng-click="selectPhoto('{{ icon.path2x }}')">
+                            <img ng-src="{{ icon.path2x }}" class="log-avatar-img" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="item-log" ng-click="selectPhoto()">
+                    <div class="log-avatar">
+                        <div class="log-caption">+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>
