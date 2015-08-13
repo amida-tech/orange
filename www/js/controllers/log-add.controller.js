@@ -5,12 +5,12 @@
         .module('orange')
         .controller('AddLogCtrl', AddLogCtrl);
 
-    AddLogCtrl.$inject = ['$scope', '$state', '$cordovaCamera', '$ionicLoading', 'OrangeApi', 'Avatar',
-                          'log', '$ionicModal', 'settings'];
+    AddLogCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', '$cordovaCamera', 'OrangeApi',
+                          'Avatar', 'settings', 'log'];
 
     /* @ngInject */
-    function AddLogCtrl($scope, $state, $cordovaCamera, $ionicLoading, OrangeApi, Avatar, log,
-                        $ionicModal, settings) {
+    function AddLogCtrl($scope, $state, $ionicLoading, $ionicModal, $cordovaCamera, OrangeApi, Avatar,
+                        settings, log) {
 
         $scope.log = log;
         $scope.saveLog = saveLog;
