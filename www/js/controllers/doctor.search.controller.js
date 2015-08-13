@@ -17,7 +17,12 @@
         vm.doctors = [];
 
 
-        vm.search = function () {
+        vm.search = function (form) {
+            form.$submitted = true;
+            if (!_.isEmpty(form.$error)) {
+                return;
+            }
+
             $ionicLoading.show({
                 template: 'Search...'
             });
@@ -54,9 +59,12 @@
                         provider.first_name,
                         provider.middle_name,
                         provider.last_name,
-                        provider.name_suffix
                     ].join(' ').toLowerCase()
-                ).replace('Iii', 'III');
+                );
+
+                if (!_.isUndefined(provider.name_suffix)) {
+                    doctor['name'] += ' ' + provider.name_suffix;
+                }
 
                 doctor['phone'] = provider.practice_address.phone;
                 var address = (provider.practice_address.address_line + ' dividerf '

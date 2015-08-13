@@ -1,5 +1,5 @@
 <ion-view view-title="{{doctorDetails.title}}">
-    <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
+    <ion-nav-bar class="bar-orange orange-light" align-title="center">
         <ion-nav-buttons side="left" >
             <button ui-sref="app.doctors.list" class="button back-button button-clear header-item">
                 <i class="icon ion-arrow-left-c"></i>
@@ -18,30 +18,30 @@
         </div>
 
         <div class="padding">
-            <h4>{{ doctorDetails.doctor.name }}
-                <span ng-if="doctorDetails.doctor.title">
-                    <br><small>{{ doctorDetails.doctor.title }}</small>
-                </span>
-            </h4>
+            <div class="block-with-subscribe">
+                <span class="text-header">{{ doctorDetails.doctor.name }}</span>
+                <span class="text-basic" ng-if="doctorDetails.doctor.title">{{ doctorDetails.doctor.title }}</span>
+            </div>
+
+            <ion-list class="list-last-open list-details">
+                <ion-item>
+                    <span class="text-basic pre-line">{{ doctorDetails.doctor.address }}</span>
+                    <span class="item-label">DIRECTIONS</span>
+                </ion-item>
+
+                <ion-item ng-if="doctorDetails.doctor.phone">
+                    <span class="text-basic">{{ doctorDetails.doctor.phone }}</span>
+                    <span class="item-label">
+                        <span class="button" ng-click="doctorDetails.callDoctor(doctorDetails.doctor.phone)">CALL</span>
+                    </span>
+                </ion-item>
+
+                <ion-item ng-if="doctorDetails.doctor.notes">
+                    <span class="text-basic">{{ doctorDetails.doctor.notes }}</span>
+                </ion-item>
+            </ion-list>
 
         </div>
-        <ion-list class="list-last-open">
-            <ion-item>
-                <span class="pre-line">{{ doctorDetails.doctor.address }}</span>
-                <span class="item-label">DIRECTIONS</span>
-            </ion-item>
-
-            <ion-item ng-if="doctorDetails.doctor.phone">
-                {{ doctorDetails.doctor.phone }}
-                <span class="item-label">
-                    <span class="button" ng-click="doctorDetails.callDoctor(doctorDetails.doctor.phone)">CALL</span>
-                </span>
-            </ion-item>
-
-            <ion-item ng-if="doctorDetails.doctor.notes">
-                {{ doctorDetails.doctor.notes }}
-            </ion-item>
-        </ion-list>
 
     </ion-content>
 </ion-view>
