@@ -275,6 +275,11 @@ dl.dl-worksheet {
     }
   }
 
+  .item.item-small-padding {
+    padding-top: $padding-small-horizontal;
+    padding-bottom: $padding-small-horizontal;
+  }
+
   .item-input {
     padding-left: 0;
     padding-bottom: 0;
@@ -287,6 +292,16 @@ dl.dl-worksheet {
       color: $gray;
       font-weight: bold;
       margin-bottom: $padding-small-vertical;
+
+      &.input-label-wo-margin {
+        margin-bottom: 0;
+        padding: 0;
+      }
+    }
+
+    &.item-input-wo-margin {
+      margin-bottom: 0;
+      padding-top: 0;
     }
 
     .icon.icon-right {
@@ -308,6 +323,7 @@ dl.dl-worksheet {
       border-radius: $card-border-radius;
       padding: $padding-base-vertical $padding-base-horizontal;
       min-height: 42px;
+      margin-right: 5px;
 
       &:focus {
         border-color: $gray;
@@ -807,4 +823,20 @@ ion-option-button.option-control.button {
 // Fix border on android devices
 .grade-b .menu-content, .grade-c .menu-content {
   border: none;
+}
+
+/* Pharmacy */
+.pharmacy-details-hours-list {
+  .item {
+    padding: $padding-small-vertical;
+    border-width: 0;
+
+    .day {
+      min-width: 85px;
+    }
+
+    div {
+      display: inline-block;
+    }
+  }
 }

@@ -1,0 +1,38 @@
+<ion-view view-title="Pharmacy Details">
+    <ion-nav-bar class="bar-orange orange-light" align-title="left">
+        <ion-nav-buttons side="left" >
+            <button ui-sref="app.pharmacies.list" class="button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right" >
+            <button class="button button-clear button-small button-dose"
+                    ui-sref="app.pharmacies.edit({id: pharmacy_details.pharmacy.id})">Edit</button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content class="light-bg" overflow-scroll="true">
+
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="!pharmacy_details.pharmacyPromise.$$state.status"></ion-spinner>
+        </div>
+
+        <div class="item item-body">
+            <h1>{{ pharmacy_details.pharmacy.name }}</h1>
+            <div class="note-container" ng-if="pharmacy_details.pharmacy.address">{{ pharmacy_details.pharmacy.address }}</div>
+            <div class="note-container" ng-if="pharmacy_details.pharmacy.phone">{{ pharmacy_details.pharmacy.phone }}</div>
+            <div class="note-container" ng-if="pharmacy_details.pharmacy.notes">{{ pharmacy_details.pharmacy.notes }}</div>
+            <h2>Working Hours:</h2>
+            <div class="pharmacy-details-hours-list">
+                <div class="item" ng-repeat="day in pharmacy_details.days">
+                    <div class="day"><strong>{{ day }}:</strong></div>
+                     <div>
+                         {{ pharmacy_details.pharmacy.hours[day.toLowerCase()]['open'] }}
+                    - {{ pharmacy_details.pharmacy.hours[day.toLowerCase()]['close'] }}
+                     </div>
+                </div>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

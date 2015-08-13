@@ -206,11 +206,36 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.pharmacies', {
                         url: '/pharmacies',
+                        abstract: true,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.pharmacies.html'
+                                template: '<ion-nav-view></ion-nav-view>',
+                                controller: function ($scope, $ionicLoading, log) {
+                                    $scope.pharmacies = log.all('pharmacies').getList();
+                                }
                             }
                         }
+                    })
+                    .state('app.pharmacies.list', {
+                        url: '',
+                        templateUrl: 'templates/app.pharmacies.html',
+                        controller: 'PharmaciesCtrl as pharmacies',
+                        cache: false
+                    })
+                    .state('app.pharmacies.add', {
+                        url: '/add',
+                        templateUrl: 'templates/app.pharmacies.add.html',
+                        controller: 'PharmacyAddCtrl as pharmacies_add'
+                    })
+                    .state('app.pharmacies.edit', {
+                        url: '/edit/:id',
+                        templateUrl: 'templates/app.pharmacies.add.html',
+                        controller: 'PharmacyAddCtrl as pharmacies_add'
+                    })
+                    .state('app.pharmacies.details', {
+                        url: '/details/:id',
+                        templateUrl: 'templates/app.pharmacies.details.html',
+                        controller: 'PharmacyDetailsCtrl as pharmacy_details'
                     })
                     .state('app.logs', {
                         url: '/logs',

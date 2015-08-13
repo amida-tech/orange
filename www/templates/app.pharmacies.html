@@ -1,13 +1,32 @@
 <ion-view view-title="PHARMACIES">
-    <ion-nav-bar class="bar-orange orange-light" align-title="center">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
+    <ion-nav-bar class="bar-orange orange-light" align-title="left">
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
+            <button class="button button-icon button-clear button-small ion-plus button-dose"
+                    ui-sref="app.pharmacies.add"></button>
+        </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="orange-bg">
+    <ion-content class="light-bg">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="pharmacies.refresh()">
+        </ion-refresher>
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="!pharmacies.pharmaciesPromise.$$state.status"></ion-spinner>
+        </div>
+        <ion-list class="list-clean list-inset padding" can-swipe="true" show-delete="shouldShowDelete">
+            <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies"
+                      ui-sref="app.pharmacies.details({id: pharmacy.id})">
+                <p><strong ng-bind="pharmacy.name"></strong></p>
+                <p ng-bind="pharmacy.address"></p>
 
+                <ion-option-button class="button-assertive option-control" ng-click="pharmacies.remove(pharmacy)">
+                    <i class="icon ion-trash-a"></i>
+                </ion-option-button>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-view>
