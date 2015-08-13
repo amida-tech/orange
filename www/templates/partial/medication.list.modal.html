@@ -9,8 +9,8 @@
     <ion-content>
         <ul class="list">
             <li class="item item-checkbox" ng-repeat="med in notes_add.medications">
-                <label class="checkbox">
-                    <input class="checkbox-orange" type="checkbox"
+                <label class="checkbox checkbox-orange">
+                    <input type="checkbox"
                            ng-model="med.checked"
                            ng-change="notes_add.medicationChangeEvent()"/>
                 </label>
