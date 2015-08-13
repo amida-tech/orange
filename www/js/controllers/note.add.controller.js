@@ -6,13 +6,13 @@
         .controller('NoteAddCtrl', NoteAddCtrl);
 
     NoteAddCtrl.$inject = [
-        '$scope', '$state', '$ionicLoading', 'log', '$ionicModal',
-        '$filter', '$cordovaDialogs', '$stateParams'
+        '$scope', '$filter', '$state', '$stateParams',
+        '$ionicLoading', '$ionicModal', '$cordovaDialogs',  'log'
     ];
 
     /* @ngInject */
-    function NoteAddCtrl($scope, $state, $ionicLoading, log, $ionicModal,
-                         $filter, $cordovaDialogs, $stateParams) {
+    function NoteAddCtrl($scope, $filter, $state, $stateParams,
+                         $ionicLoading, $ionicModal, $cordovaDialogs,  log) {
         /* jshint validthis: true */
         var vm = this;
         //Check "id" param in url
@@ -81,19 +81,19 @@
         //Save note
         vm.save = function (form) {
             form.$submitted = true;
+            if (!_.isEmpty(form.$error)) {
+                return;
+            }
 
-            if (_.isEmpty(form.$error)) {
-                $ionicLoading.show({
-                    template: 'Saving...'
-                });
+            $ionicLoading.show({
+                template: 'Saving...'
+            });
 
-                if (is_edit) {
-                    vm.note.save().then(updateSuccess, saveError);
-                } else {
-                    vm.note.date = $filter('date')(new Date(), 'yyyy-MM-ddTHH:mm:ssZ');
-                    log.all('journal').post(vm.note).then(saveSuccess, saveError);
-                }
-
+            if (is_edit) {
+                vm.note.save().then(updateSuccess, saveError);
+            } else {
+                vm.note.date = $filter('date')(new Date(), 'yyyy-MM-ddTHH:mm:ssZ');
+                log.all('journal').post(vm.note).then(saveSuccess, saveError);
             }
         };
 

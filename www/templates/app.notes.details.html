@@ -18,9 +18,13 @@
                          ng-if="!note_details.notesPromise.$$state.status || !note_details.medicationsPromise.$$state.status"></ion-spinner>
         </div>
 
-        <div class="item item-body">
-            <h2>{{ note_details.note.date | date:'yyyy-MM-dd HH:mm:ss' }}</h2>
-            <div class="note-container">{{ note_details.note.text }}</div>
+        <div class="item-padding">
+            <div class="block-with-subscribe">
+                <span class="text-header" ng-bind="note_details.note.date|date:'MMMM d, h:mm a'"></span>
+                <span class="text-basic" ng-bind="note_details.note.text">
+                    {{ note.text | limitTo:notes_list.noteLimit }}{{ note.text.length > notes_list.noteLimit ? '...' : ''}}
+                </span>
+            </div>
         </div>
 
         <div class="list list-clean medication-list">

@@ -16,6 +16,7 @@
         vm.doctor = {};
         vm.remove = remove;
         vm.refresh = refresh;
+        vm.title = "Doctors";
 
         function remove(doctor) {
             $ionicLoading.show({

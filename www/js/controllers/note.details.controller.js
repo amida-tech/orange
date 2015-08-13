@@ -6,11 +6,11 @@
         .controller('NoteDetailsCtrl', NoteDetailsCtrl);
 
     NoteDetailsCtrl.$inject = [
-        '$scope', '$stateParams', '$state'
+        '$scope', '$stateParams'
     ];
 
     /* @ngInject */
-    function NoteDetailsCtrl($scope, $stateParams, $state) {
+    function NoteDetailsCtrl($scope, $stateParams) {
         /* jshint validthis: true */
         var vm = this;
         var id = $stateParams.id;
