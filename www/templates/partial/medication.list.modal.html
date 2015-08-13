@@ -10,14 +10,15 @@
         <ul class="list">
             <li class="item item-checkbox" ng-repeat="med in notes_add.medications">
                 <label class="checkbox">
-                    <input type="checkbox"
+                    <input class="checkbox-orange" type="checkbox"
                            ng-model="med.checked"
                            ng-change="notes_add.medicationChangeEvent()"/>
                 </label>
-                {{ med.name }}
-                <p>
-                    <strong>{{ med.brand | uppercase }}</strong>
-                </p>
+
+                <div class="block-with-subscribe">
+                    <span class="text-basic" ng-bind="med.name"></span>
+                    <span class="text-medication-brand" ng-bind="med.brand"></span>
+                </div>
             </li>
         </ul>
     </ion-content>
