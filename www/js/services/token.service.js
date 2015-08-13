@@ -124,11 +124,11 @@
                     client_id: '89032ea9-ca63-45fc-a4a9-c41e5d0a5fe4',
                     client_secret: 'ALsLobPCcQFrDCwzJ-eC_puhIPTFeEP6eSz6cj07DNSvWN9mM2nCmxW4hlxwOu9xB8s92BeCbx_eh9nRvZ3lioQ',
                     site: 'https://authorize.smarthealthit.org/',
-                    api_url: 'https://fhir-api.smarthealthit.org/',
+                    api_url: 'https://fhir-api.smarthealthit.org',
                     authorization_path: '/authorize',
                     token_path: '/token',
                     revocation_path: '/revoke',
-                    scope: '',
+                    scope: 'launch/patient',
                     redirect_uri: 'http://localhost/callback'
                 }
             };
@@ -174,29 +174,35 @@
 
         function getUserMedications(callback) {
             getToken(function (token) {
-                var medUrl;
-                if (token.c.name === 'SMART on FHIR') {
-                    // /MedicationPrescription/_search?patient%3APatient=1288992'
-                    medUrl = token.c.credentials.api_url + 'MedicationPrescription/_search?patient%3APatient=1288992';
-                } else {
-                    medUrl = token.c.credentials.api_url + '/MedicationPrescription?patient=' + token.patients[0].resource.id
-                }
-                $http({
-                    method: "get",
-                    url: medUrl,
-                    headers: {
-                        Authorization: 'Bearer ' + token.access_token,
-                        Accept: 'application/json'
+                getPatients(token, function(patients) {
+                    console.log('Received patients: ', patients);
+
+                    //Pick first patient for now
+                    var patient = patients.entry.length ? patients.entry[0] : null;
+                    if (patient) {
+                        var patientID = patient.content.identifier[0].value;
+                        console.log(patientID);
+                        var medUrl = token.c.credentials.api_url + '/MedicationPrescription?patient=' + patientID;
+                        $http({
+                            method: "get",
+                            url: medUrl,
+                            headers: {
+                                Authorization: 'Bearer ' + token.access_token,
+                                Accept: 'application/json'
+                            }
+                        })
+                            .success(function (data) {
+                                         console.log("was successful connection to meds: ", data);
+                                         callback(data);
+                                     })
+                            .error(function (data, status) {
+                                       console.log("error connecting to meds: " + data + " - " + status);
+                                       callback(status);
+                                   })
+                    } else {
+                        callback(404);
                     }
-                })
-                    .success(function (data) {
-                                 console.log("was successful connection to meds: ", data);
-                                 callback(data);
-                             })
-                    .error(function (data, status) {
-                               console.log("error connecting to meds: " + data + " - " + status);
-                               callback(status);
-                           })
+                });
             });
         }
     }

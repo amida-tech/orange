@@ -94,8 +94,12 @@
         ////////////////
 
         function configImportedMedication(medication) {
-
-            selectMedication({name: medication.name});
+            var med = {
+                name: medication.name,
+                origin: 'imported',
+                import_id: medication.code
+            };
+            selectMedication(med);
         }
 
         function getMedications(val) {
@@ -109,10 +113,15 @@
                         if (contained && contained.length > 0) {
                             var j, len2 = contained.length;
                             for (j = 0; j < len2; j++) {
-                                result.push({
-                                    name: contained[j].name,
+                                var item = contained[j];
+                                var med = {
+                                    name: item.name,
                                     status: content.status
-                                });
+                                };
+                                if (item.code && item.code.coding.length && item.code.coding[0].code) {
+                                    med.code = parseInt(item.code.coding[0].code);
+                                }
+                                result.push(med);
                             }
                         }
                     }
