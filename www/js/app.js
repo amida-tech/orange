@@ -232,6 +232,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/app.pharmacies.add.html',
                         controller: 'PharmacyAddCtrl as pharmacies_add'
                     })
+                    .state('app.pharmacies.details', {
+                        url: '/details/:id',
+                        templateUrl: 'templates/app.pharmacies.details.html',
+                        controller: 'PharmacyDetailsCtrl as pharmacy_details'
+                    })
                     .state('app.logs', {
                         url: '/logs',
                         views: {

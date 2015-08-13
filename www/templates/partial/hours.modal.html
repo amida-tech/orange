@@ -13,9 +13,9 @@
         <div class="item item-body">
             <form class="orange-form">
                 <ul class="list">
-                    <li class="item" ng-repeat="day in pharmacies_add.days">
-                        <label class="item-input">
-                        {{ day }}
+                    <li class="item item-small-padding" ng-repeat="day in pharmacies_add.days">
+                        <label class="item-input item-input-wo-margin">
+                        <span class="input-label input-label-wo-margin">{{ day }}</span>
                         </label>
                         <label class="item-input">
                         <input type="text" ng-model="pharmacies_add.pharmacy.hours[day.toLowerCase()].open"

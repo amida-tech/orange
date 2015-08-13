@@ -1,7 +1,5 @@
 <ion-view view-title="PHARMACIES">
-    <ion-nav-bar class="bar-orange orange-light" align-title="center">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
+    <ion-nav-bar class="bar-orange orange-light" align-title="left">
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
@@ -21,9 +19,8 @@
         </div>
         <ion-list class="list-clean list-inset padding" can-swipe="true">
             <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies"
-                      ui-sref="app.pharmacies.edit({id: pharmacy.id})">
+                      ui-sref="app.pharmacies.details({id: pharmacy.id})">
                 <p><strong ng-bind="pharmacy.name"></strong></p>
-
                 <p ng-bind="pharmacy.address"></p>
             </ion-item>
         </ion-list>
