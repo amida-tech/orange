@@ -5,54 +5,277 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading', '$cordovaDialogs', 'log'];
+    TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal', 'n2w', 'log'];
 
-    function TodayCtrl($q, $scope, $ionicLoading, $cordovaDialogs, log) {
+    function TodayCtrl($q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, log) {
         var vm = this;
+        var doseModal = null;
 
         vm.schedule = null;
-
         vm.medications = null;
+        vm.habits = null;
+
+        vm.event = null;
+        vm.dose = null;
 
         vm.filters = [
             {
-                name: 'Skipped',
-                f: function(elem) {
-                    return elem.happened && !elem.took_medication && !_.isUndefined(elem.dose_id);
+                title: 'After Wake',
+                name: '',
+                f: function (elem) {
+                    return elem.event &&
+                        elem.event.type === 'event' &&
+                        elem.event.when === 'after' &&
+                        elem.event.event === 'sleep';
                 },
-                type: 'skipped',
                 events: []
             },
             {
-                name: 'Past',
-                f: function(elem) {
-                    return elem.happened && _.isUndefined(elem.dose_id);
+                title: 'Exact Time',
+                name: '',
+                f: function (elem) {
+                    if (elem.event.type === 'exact') {
+                        var breakfast = moment(vm.habits.breakfast, 'HH:mm');
+                        var time = moment(elem.event.time, 'HH:mm');
+                        return time <= breakfast;
+                    }
+
+                    return false;
+
                 },
-                type: 'undefined',
+                events: []
+
+            },
+            {
+                title: 'Before Breakfast',
+                name: '',
+                f: function (elem) {
+                    return elem.event &&
+                        elem.event.type === 'event' &&
+                        elem.event.when === 'before' &&
+                        elem.event.event === 'breakfast';
+                },
                 events: []
             },
             {
-                name: 'Taken',
-                f: {happened: true, took_medication: true},
-                type: 'taken',
-                buttons: '',
+                title: 'After Breakfast',
+                name: '',
+                f: function (elem) {
+                    return elem.event &&
+                        elem.event.type === 'event' &&
+                        elem.event.when === 'after' &&
+                        elem.event.event === 'breakfast';
+                },
                 events: []
             },
             {
-                name: 'Due',
-                f: {happened: false},
-                type: 'undefined',
+                title: 'Exact Time',
+                name: 'two hours ago',
+                f: function (elem) {
+                    if (elem.event.type === 'exact') {
+                        var breakfast = moment(vm.habits.breakfast, 'HH:mm');
+                        var lunch = moment(vm.habits.lunch, 'HH:mm');
+                        var time = moment(elem.event.time, 'HH:mm');
+                        return (time > breakfast) && (time <= lunch);
+                    }
+
+                    return false;
+
+                },
+                events: []
+
+            },
+            {
+                title: 'Before Lunch',
+                name: '',
+                f: function (elem) {
+                    return elem.event &&
+                        elem.event.type === 'event' &&
+                        elem.event.when === 'before' &&
+                        elem.event.event === 'lunch';
+                },
+                events: []
+            },
+            {
+                title: 'After Lunch',
+                name: '',
+                f: function (elem) {
+                    return elem.event &&
+                        elem.event.type === 'event' &&
+                        elem.event.when === 'after' &&
+                        elem.event.event === 'lunch';
+                },
+                events: []
+            },
+            {
+                title: 'Exact Time',
+                name: '',
+                f: function (elem) {
+                    if (elem.event.type === 'exact') {
+                        var lunch = moment(vm.habits.lunch, 'HH:mm');
+                        var dinner = moment(vm.habits.dinner, 'HH:mm');
+                        var time = moment(elem.event.time, 'HH:mm');
+                        return (time > lunch) && (time <= dinner);
+                    }
+
+                    return false;
+
+                },
+                events: []
+
+            },
+            {
+                title: 'Before Dinner',
+                name: '',
+                f: function (elem) {
+                    return elem.event &&
+                        elem.event.type === 'event' &&
+                        elem.event.when === 'before' &&
+                        elem.event.event === 'dinner';
+                },
+                events: []
+            },
+            {
+                title: 'After Dinner',
+                name: '',
+                f: function (elem) {
+                    return elem.event &&
+                        elem.event.type === 'event' &&
+                        elem.event.when === 'after' &&
+                        elem.event.event === 'dinner';
+                },
+                events: []
+            },
+            {
+                title: 'Exact Time',
+                name: '',
+                f: function (elem) {
+                    if (elem.event.type === 'exact') {
+                        var dinner = moment(vm.habits.dinner, 'HH:mm');
+                        var time = moment(elem.event.time, 'HH:mm');
+                        return (time > dinner);
+                    }
+
+                    return false;
+
+                },
+                events: []
+
+            },
+            {
+                title: 'Before Sleep',
+                name: '',
+                f: function (elem) {
+                    return elem.event &&
+                        elem.event.type === 'event' &&
+                        elem.event.when === 'before' &&
+                        elem.event.event === 'sleep';
+                },
                 events: []
             }
         ];
 
         vm.refresh = refresh;
+        vm.confirmDose = confirmDose;
+        vm.openModal = showModal;
+        vm.closeModal = hideModal;
         vm.createDose = createDose;
 
         refresh();
 
-        function createDose(event) {
-            console.log(event);
+        $ionicModal.fromTemplateUrl('templates/partial/dose.today.modal.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            doseModal = modal
+        });
+
+
+        function createDose(skipped) {
+            skipped = skipped || false;
+            vm.dose.taken = !skipped;
+            log.all('doses').post(vm.dose).finally(function() {
+                refresh();
+                hideModal();
+            });
+        }
+
+        function showModal(event) {
+            if (!_.isUndefined(event.dose_id)) return;
+            vm.event = event;
+            vm.event.text = getEventText(event);
+            vm.dose = {
+                medication_id: event.medication_id,
+                date: moment().format(),
+                taken: true,
+                scheduled: event.scheduled
+            };
+            doseModal.show();
+        }
+
+        function hideModal() {
+            vm.event = null;
+            vm.dose = null;
+            doseModal.hide();
+        }
+
+        function confirmDose(event, skipped) {
+            skipped = skipped || false;
+
+            $ionicPopup.confirm({
+                title: event.medication.name,
+                template: '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped': ' taken') + '?</p>',
+                okText: '<b>Yes</b>',
+                okType: 'button-dark-orange'
+            }).then(
+                function (confirm) {
+                    if (confirm) {
+                        var dose = {
+                            medication_id: event.medication_id,
+                            date: moment().format(),
+                            taken: !skipped,
+                            scheduled: event.scheduled
+                        };
+                        $ionicLoading.show({
+                            template: 'Saving...'
+                        });
+                        log.all('doses').post(dose).finally(function() {
+                            refresh();
+                        })
+                    }
+                });
+        }
+
+        function getEventText(event) {
+            var result = '';
+            result += _.capitalize(n2w.toWords(event.medication.dose.quantity || 0));
+            result += ' unit' + (event.medication.dose.quantity === 1 ? '' : 's');
+            if (event.event.type == 'exact') {
+                result += ' at ' + event.event.time;
+            } else {
+                result += ' ' + event.event.when + ' ' + event.event.event;
+            }
+            if (event.take_with_food !== null) {
+                result += ', taken ' + (event.take_with_food ? 'with': 'without') + ' food'
+            }
+            return result;
+        }
+
+        function getFilterName(events) {
+            var result = '';
+            if (events.length) {
+                var first = moment(events[0].date);
+                return first.fromNow();
+            }
+            return result;
+        }
+
+        function getEventStatus(event) {
+            var status = 'active';
+            if (!_.isUndefined(event.dose_id)) {
+                status = event.took_medication ? 'taken' : 'skipped';
+            }
+            return status;
         }
 
         function refresh() {
@@ -61,23 +284,27 @@
                 //start_date: date.format('YYYY-MM-DD'),
                 end_date: date.format('YYYY-MM-DD')
             };
-            $q.all([log.all('schedule').getList(filter), log.all('medications').getList()])
-                .then(
+            $q.all([
+                log.all('schedule').getList(filter),
+                log.all('medications').getList(),
+                log.one('habits').get('')
+            ]).then(
                 function (data) {
-                    //console.log(schedule);
                     vm.schedule = data[0].plain();
                     vm.medications = data[1].plain();
+                    vm.habits = data[2].plain();
                     vm.schedule.forEach(function (elem) {
                         elem.medication = _.find(vm.medications, {id: elem.medication_id});
 
                         if (!_.isUndefined(elem.scheduled)) {
                             elem.event = _.find(elem.medication.schedule.times, {id: elem.scheduled});
-                            console.log(elem.date, elem.event);
                         }
+                        elem.status = getEventStatus(elem);
                     });
 
-                    vm.filters.forEach(function(filter) {
+                    vm.filters.forEach(function (filter) {
                         filter.events = _.filter(vm.schedule, filter.f);
+                        filter.name = getFilterName(filter.events);
                     })
                 },
                 function (error) {

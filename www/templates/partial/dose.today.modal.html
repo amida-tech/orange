@@ -1,0 +1,30 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-orange" align-title="center">
+        <h1 class="title">Dose Details</h1>
+        <button ng-click="today.closeModal()" class="button back-button buttons button-clear header-item">
+            Done
+        </button>
+    </ion-header-bar>
+    <ion-content padding="true">
+        <div class="list orange-list">
+            <div class="item item-title med-title">
+                <p class="med-name" ng-bind="today.event.medication.name"></p>
+                <p class="med-rx" ng-bind="today.event.medication.brand"></p>
+            </div>
+            <div class="item item-text-wrap orange-form">
+                <p ng-bind="today.event.text">One unit at 9:00am, taken without food</p>
+                <label class="item-input padding-top">
+                        <textarea name="text"
+                                  rows="8"
+                                  placeholder="Add a note..."
+                                  data-ng-model="today.dose.notes"
+                                ></textarea>
+                </label>
+            </div>
+        </div>
+    </ion-content>
+    <div class="bottom-buttons">
+        <button class="button button-small button-full col button-balanced" ng-click="today.createDose()">Take Medication</button>
+        <button class="button button-small button-full col button-assertive" ng-click="today.createDose(true)">Skip Medication</button>
+    </div>
+</ion-modal-view>

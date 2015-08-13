@@ -37,7 +37,7 @@ $avatar-size: 60px;
 
 body {
   background-color: $orange;
-  font-size: 14px;
+  font-size: $font-size-base;
 }
 
 .padding-x2 {
@@ -181,6 +181,12 @@ dl.dl-worksheet {
 
 .checkbox-orange {
   @include checkbox-style($checkbox-off-border-default, $orange, $orange);
+}
+
+.button.button-dark-orange {
+  background-color: $orange;
+  border-color: $orange;
+  color: $light;
 }
 
 .button.button-orange {
@@ -339,6 +345,16 @@ dl.dl-worksheet {
   }
 }
 
+ion-content {
+  .schedule-item:not(:first-child) {
+    margin-top: $padding-base-vertical;
+  }
+
+  .schedule-item:last-child {
+    padding-bottom: $padding-large-vertical * 3;
+  }
+}
+
 .schedule-header {
   color: $light;
 
@@ -371,7 +387,6 @@ dl.dl-worksheet {
       }
     }
   }
-
 }
 
 .list.list-schedule {
