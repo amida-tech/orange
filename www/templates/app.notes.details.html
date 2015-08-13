@@ -21,17 +21,15 @@
         <div class="item-padding">
             <div class="block-with-subscribe">
                 <span class="text-header" ng-bind="note_details.note.date|date:'MMMM d, h:mm a'"></span>
-                <span class="text-basic" ng-bind="note_details.note.text">
-                    {{ note.text | limitTo:notes_list.noteLimit }}{{ note.text.length > notes_list.noteLimit ? '...' : ''}}
-                </span>
+                <span class="text-basic" ng-bind="note_details.note.text"></span>
             </div>
         </div>
 
         <div class="list list-clean medication-list">
             <div class="item medication-item" ng-repeat="medication in note_details.note.medications">
-                {{ medication.name }}
-                <div>
-                    <strong>{{ medication.brand | uppercase }}</strong>
+                <div class="block-with-subscribe">
+                    <span class="text-basic" ng-bind="medication.name"></span>
+                    <span class="text-medication-brand" ng-bind="medication.brand"></span>
                 </div>
             </div>
         </div>

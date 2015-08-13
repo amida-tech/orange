@@ -252,8 +252,13 @@ dl.dl-worksheet {
   }
 }
 
+.checkbox , .checkbox
 .checkbox-orange {
   @include checkbox-style($checkbox-off-border-default, $orange, $orange);
+  input:checked:before, input:checked+.checkbox-icon:before {
+    background: $orange;
+    border-color: $orange;
+  }
 }
 
 .button.button-dark-orange {
