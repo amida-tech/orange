@@ -1,5 +1,5 @@
 <ion-view view-title="{{doctorSearch.title}}">
-    <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
+    <ion-nav-bar class="bar-orange orange-light" align-title="center">
         <ion-nav-buttons side="left" >
             <button ui-sref="app.doctors.list" class="button back-button button-clear header-item">
                 <i class="icon ion-arrow-left-c"></i>
@@ -8,16 +8,22 @@
     </ion-nav-bar>
     <ion-content class="orange-bg">
         <div class="card orange-card">
-            <form name="doctorForm" class="orange-form">
-                <div class="item item-error" ng-if="doctorSearch.error">
-                    <p ng-repeat="error in doctorSearch.errors"></p>
+            <form name="doctorSearchForm" class="orange-form">
+                <div class="item item-error"
+                     ng-show="doctorSearchForm.$submitted && !doctorSearchForm.$valid">
+                    <div ng-messages="doctorSearchForm.first.$error">
+                        <p ng-message="required">First Name is required</p>
+                    </div>
+                    <div ng-messages="doctorSearchForm.last.$error">
+                        <p ng-message="required">Last Name is required</p>
+                    </div>
                 </div>
                 <div class="item item-body">
                     <label class="item-input">
-                        <input type="text" name="first" ng-model="doctorSearch.name.first" placeholder="First Name" required=""/>
+                        <input type="text" name="first" ng-model="doctorSearch.name.first" placeholder="First Name" required/>
                     </label>
                     <label class="item-input">
-                        <input type="text" name="last" ng-model="doctorSearch.name.last" placeholder="Last Name"/>
+                        <input type="text" name="last" ng-model="doctorSearch.name.last" placeholder="Last Name" required/>
                     </label>
                     <label class="item-input">
                         <input name="state" data-ng-model="doctorSearch.address.state" placeholder="State (Optional)"/>
@@ -27,7 +33,7 @@
                     </label>
                 </div>
                 <div class="item item-button">
-                    <button class="button button-full button-orange" ng-click="doctorSearch.search()">Find Doctor</button>
+                    <button class="button button-full button-orange" ng-click="doctorSearch.search(doctorSearchForm)">Find Doctor</button>
                 </div>
             </form>
         </div>

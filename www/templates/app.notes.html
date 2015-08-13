@@ -20,11 +20,12 @@
 
         <ion-list class="list-clean" can-swipe="true" show-delete="notes_list.shouldShowDelete">
             <ion-item class="item-text-wrap" ng-repeat="note in notes_list.notes" ui-sref="app.notes.details({id: note.id})">
-                <h2 class="text-title" ng-bind="note.date|date:'MMMM d, h:mm a'"></h2>
-
-                <p>
-                    {{ note.text | limitTo:notes_list.noteLimit }}{{ note.text.length > notes_list.noteLimit ? '...' : ''}}
-                </p>
+                <div class="block-with-subscribe">
+                    <span class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></span>
+                    <span class="text-basic">
+                        {{ note.text | limitTo:notes_list.noteLimit }}{{ note.text.length > notes_list.noteLimit ? '...' : ''}}
+                    </span>
+                </div>
 
                 <ion-option-button class="button-assertive option-control" ng-click="notes_list.removeNote(note)">
                     <i class="icon ion-trash-a"></i>

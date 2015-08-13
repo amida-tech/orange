@@ -7,6 +7,7 @@ $energized: #ffc900 !default;
 $assertive: #ef473a !default;
 $royal: #886aea !default;
 $dark: #4D4D4D !default;
+$more-dark: #444 !default;
 
 // Colors
 $orange: #FAAA20;
@@ -28,6 +29,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 //List bottom indent
 $list-bottom-indent: 5px;
 
+//Font sizes
+$orange-font-base-size: 13px;
+$orange-font-head-size: 16px;
+
+//Base indents
+$button-mini-padding: 2px;
+$label-item-padding: 90px;
+
+
 // Include all of Ionic
 @import "../www/lib/ionic/scss/ionic";
 
@@ -42,6 +52,10 @@ body {
 
 .padding-x2 {
   padding: $content-padding * 2;
+}
+
+.item-padding {
+  padding: $item-padding;
 }
 
 .pull-left {
@@ -68,6 +82,46 @@ body {
   @include flex(0, 0, 60%);
   max-width: 60%;
 }
+
+//Typography
+.text-basic, .text-basic-bold, .text-header {
+  color: $dark;
+  line-height: 1.4;
+}
+
+.text-basic, .text-basic-bold {
+  font-size: $orange-font-base-size;
+}
+
+.text-basic-bold {
+  font-weight: 700;
+}
+
+.text-header {
+  font-size: $orange-font-head-size;
+}
+
+.text-medication-brand {
+  font-size: $orange-font-base-size;
+  font-weight: bold;
+  color: $more-dark;
+  text-transform: uppercase;
+}
+
+.block-with-subscribe {
+  font-size: 0px;
+  span:first-child {
+    line-height: 1;
+    display: block;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  span:first-child {
+    margin-top: 0;
+    padding-top: 0;
+  }
+}
+
 
 .orange {
   color: $orange;
@@ -121,28 +175,36 @@ body {
 
 }
 
+.list-details {
+  .item {
+    border: None;
+    border-bottom: 1px solid $gray;
+    margin: 0;
+    padding: $item-padding $label-item-padding $item-padding 0;
+  }
+}
+
 .item {
-  font-size: 14px;
+  font-size: $orange-font-base-size;
   .item-label {
     height: 100%;
     position: absolute;
     right: 0;
     display: inline-block;
-    top: -14px;
-    padding: 16px;
-    color: #444;
+    top: 0;
+    padding: $item-padding 0;
+    color: $more-dark;
     float: right;
     font-weight: bold;
   }
   .item-label .button {
-    padding: 2px;
+    padding: $button-mini-padding;
     border: 1px solid $gray;
-    background: #efefef;
+    background: $lightgray;
     height: auto;
     min-height: 0;
-    font-size: 14px;
-    line-height: 15px;
-    margin-top: 12px;
+    font-size: $orange-font-base-size;
+    line-height: 1.1;
   }
 }
 
@@ -157,7 +219,15 @@ dl.dl-worksheet {
   background: $light;
   .item {
     border: none;
+    .item-content {
+      padding-top: 5px;
+    }
     //background: $light;
+  }
+  .item:first-child {
+    .item-content{
+      padding-top: $item-padding;
+    }
   }
 }
 
@@ -169,10 +239,13 @@ dl.dl-worksheet {
 
 .medication-list {
   z-index: 100;
-  margin-top: -1px;
+  padding: 0 $item-padding;
+  .medication-item:first-child {
+    border-top: 1px solid $gray;
+  }
   .medication-item {
     font-size: 14px;
-    padding: 5px 16px;
+    padding: 5px 0;
     .item-content {
       padding: 7px 49px 7px 7px
     }

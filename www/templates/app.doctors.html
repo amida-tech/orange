@@ -1,8 +1,7 @@
 <ion-view view-title="DOCTORS">
     <ion-nav-bar class="bar-orange orange-light" align-title="left">
-        <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-            </button>
+        <ion-nav-buttons side="left" >
+            <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
             <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
@@ -20,9 +19,10 @@
 
         <ion-list class="list-clean" can-swipe="true" show-delete="shouldShowDelete">
             <ion-item class="item-text-wrap" ng-repeat="doctor in doctors.doctors" ui-sref="app.doctors.details({id: doctor.id})">
-                <p><strong ng-bind="doctor.name"></strong></p>
-
-                <p ng-bind="doctor.title" ng-if="doctor.title"></p>
+                <div class="block-with-subscribe">
+                    <span class="text-basic-bold" ng-bind="doctor.name"></span>
+                    <span class="text-basic" ng-bind="doctor.title" ng-if="doctor.title"></span>
+                </div>
 
                 <ion-option-button class="button-assertive option-control" ng-click="doctors.remove(doctor)">
                     <i class="icon ion-trash-a"></i>
