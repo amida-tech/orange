@@ -34,9 +34,9 @@
                 title: 'Exact Time',
                 name: '',
                 f: function (elem) {
-                    if (elem.event.type === 'exact') {
+                    if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
                         var breakfast = moment(vm.habits.breakfast, 'HH:mm');
-                        var time = moment(elem.event.time, 'HH:mm');
+                        var time = moment(elem.date);
                         return time <= breakfast;
                     }
 
@@ -72,10 +72,10 @@
                 title: 'Exact Time',
                 name: 'two hours ago',
                 f: function (elem) {
-                    if (elem.event.type === 'exact') {
+                    if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
                         var breakfast = moment(vm.habits.breakfast, 'HH:mm');
                         var lunch = moment(vm.habits.lunch, 'HH:mm');
-                        var time = moment(elem.event.time, 'HH:mm');
+                        var time = moment(elem.date);
                         return (time > breakfast) && (time <= lunch);
                     }
 
@@ -111,10 +111,10 @@
                 title: 'Exact Time',
                 name: '',
                 f: function (elem) {
-                    if (elem.event.type === 'exact') {
+                    if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
                         var lunch = moment(vm.habits.lunch, 'HH:mm');
                         var dinner = moment(vm.habits.dinner, 'HH:mm');
-                        var time = moment(elem.event.time, 'HH:mm');
+                        var time = moment(elem.date);
                         return (time > lunch) && (time <= dinner);
                     }
 
@@ -150,9 +150,9 @@
                 title: 'Exact Time',
                 name: '',
                 f: function (elem) {
-                    if (elem.event.type === 'exact') {
+                    if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
                         var dinner = moment(vm.habits.dinner, 'HH:mm');
-                        var time = moment(elem.event.time, 'HH:mm');
+                        var time = moment(elem.date);
                         return (time > dinner);
                     }
 
