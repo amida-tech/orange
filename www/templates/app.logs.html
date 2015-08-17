@@ -1,13 +1,27 @@
 <ion-view view-title="LOGS">
-<ion-nav-bar class="bar-orange orange-light" align-title="center">
-    <ion-nav-back-button>
-    </ion-nav-back-button>
-    <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-        </button>
-    </ion-nav-buttons>
-</ion-nav-bar>
-<ion-content class="light-bg">
-
-</ion-content>
+    <ion-nav-bar class="bar-orange orange-light" align-title="left">
+        <ion-nav-buttons side="left">
+            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right" >
+            <button class="button button-clear button-small button-dose">Edit</button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content class="light-bg">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="update()">
+        </ion-refresher>
+        <div class="list list-clean">
+            <div class="orange-logs item item-text-wrap">
+                <div class="row row-no-padding" ng-repeat="row in logs">
+                    <div class="col col-33" ng-repeat="log in row">
+                        <div class="item-log">
+                            <avatar patient="log"></avatar>
+                            <div class="log-title">{{ log.first_name }}<br/>{{ log.last_name }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
 </ion-view>

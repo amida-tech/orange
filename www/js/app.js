@@ -239,11 +239,23 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.logs', {
                         url: '/logs',
+                        abstract: true,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.logs.html'
+                                template: '<ion-nav-view />',
+                                controller: 'LogsCtrl'
                             }
+                        },
+                        resolve: {
+                            'logs': ['OrangeApi', function (OrangeApi) {
+                                return OrangeApi.patients.getList();
+                            }]
                         }
+                    })
+                    .state('app.logs.list', {
+                        url: '',
+                        templateUrl: 'templates/app.logs.html',
+                        cache: false
                     })
                     .state('app.notifications', {
                         url: '/notifications',
