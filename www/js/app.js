@@ -158,7 +158,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             'menuContent': {
                                 templateUrl: 'templates/app.medications.html',
-                                controller: 'MedicationsCtrl'
+                                controller: 'MedicationsCtrl as medications'
                             }
                         }
                     })
