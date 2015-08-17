@@ -23,7 +23,9 @@
             setAccessToken: function (token) {
                 accessToken = token;
             },
-            $get: ['Restangular', '$cordovaDialogs', function (Restangular, $cordovaDialogs) {
+            $get: ['Restangular', '$cordovaDialogs', '$state', '$rootScope', '$ionicLoading',
+                function (Restangular, $cordovaDialogs, $state, $rootScope, $ionicLoading) {
+
                 var OrangeRest = Restangular.withConfig(function (RestangularConfigurer) {
 
                     RestangularConfigurer.setBaseUrl(baseUrl);
@@ -66,12 +68,26 @@
 
                     RestangularConfigurer.setErrorInterceptor(function (response, deferred, responseHandler) {
                         if (response.status == 500) {
+                            $ionicLoading.hide();
                             $cordovaDialogs.alert('Server Error', 'Error', 'OK');
                             return false;
                         }
 
                         if (response.status == 404) {
+                            $ionicLoading.hide();
                             $cordovaDialogs.alert('Item not found', 'Error', 'OK');
+                            return false;
+                        }
+
+                        if (response.status == 502 || !response.status) {
+                            $ionicLoading.hide();
+                            $rootScope.parentResponse = response;
+                            $rootScope.promise = deferred;
+
+                            if (_.isUndefined($rootScope.currentState))
+                                $rootScope.currentState = $state.current.name;
+
+                            $state.go('retry');
                             return false;
                         }
 
@@ -97,7 +113,8 @@
                     rxnorm: {
                         search: OrangeRest.all('rxnorm').all('group'),
                         spelling: OrangeRest.all('rxnorm').all('spelling')
-                    }
+                    },
+                    rest: OrangeRest
                 }
             }]
         }

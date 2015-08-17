@@ -70,6 +70,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '/loading',
                         templateUrl: 'templates/loading.html'
                     })
+                    .state('retry', {
+                        url: '/retry',
+                        templateUrl: 'templates/app.retry.html',
+                        controller: 'RetryCtrl as retry'
+                    })
                     .state('app', {
                         url: '/app',
                         abstract: true,
@@ -120,6 +125,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('app.notes', {
                         url: '/notes',
                         abstract: true,
+                        cache: false,
                         views: {
                             menuContent: {
                                 template: '<ion-nav-view/>',
@@ -165,6 +171,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('app.doctors', {
                         url: '/doctors',
                         abstract: true,
+                        cache: false,
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>',
