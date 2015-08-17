@@ -75,15 +75,10 @@
                             Avatar.upload($scope.log).then(
                                 function () {
                                     Avatar.cleanCache($scope.log.id);
-                                    $state.go('logs');
-                                    $ionicLoading.hide();
-                                }, function () {
-                                    $state.go('logs');
-                                    $ionicLoading.hide();
-                                })
+                                    goToNextState();
+                                }, goToNextState);
                         } else {
-                            $state.go('logs');
-                            $ionicLoading.hide();
+                            goToNextState();
                         }
                     },
                     function (response) {
@@ -103,17 +98,9 @@
                         $scope.log.fullName = $scope.log.first_name + ' ' + $scope.log.last_name;
                         if (avatarUrl) {
                             $scope.log.avatarUrl = avatarUrl;
-                            Avatar.upload($scope.log).then(
-                                function () {
-                                    $state.go('logs');
-                                    $ionicLoading.hide();
-                                }, function () {
-                                    $ionicLoading.hide();
-                                    $state.go('logs');
-                                })
+                            Avatar.upload($scope.log).then(goToNextState, goToNextState);
                         } else {
-                            $ionicLoading.hide();
-                            $state.go('logs');
+                            goToNextState();
                         }
 
                     },
@@ -122,6 +109,11 @@
                     }
                 )
             }
+        }
+
+        function goToNextState() {
+            $state.go($state.params['nextState'] || 'logs');
+            $ionicLoading.hide();
         }
     }
 })();
