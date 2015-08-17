@@ -277,6 +277,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                             nextState: 'app.logs.list'
                         }
                     })
+                    .state('app.logs.details', {
+                        url: '/details/:id',
+                        templateUrl: 'templates/logs.details.html',
+                        controller: 'LogDetailsCtrl as log_details'
+                    })
                     .state('app.logs.request', {
                         url: '/request',
                         templateUrl: 'templates/logs.request.html',

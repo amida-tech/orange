@@ -894,6 +894,18 @@ ion-content {
   border-bottom: 1px solid #ccc;
 }
 
+.text-container {
+  padding-bottom: 5px;
+  font-size: $font-size-base;
+
+  p {
+    font-weight: bold;
+    margin-top: 0;
+    float: left;
+    margin-right: 10px;
+  }
+}
+
 ion-option-button.option-control.button {
   display: inline-block;
   height: auto;

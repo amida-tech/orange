@@ -21,7 +21,7 @@
             <div class="orange-logs item item-text-wrap">
                 <div class="row row-no-padding" ng-repeat="row in logList">
                     <div class="col col-33" ng-repeat="log in row">
-                        <div class="item-log">
+                        <div class="item-log" ui-sref="app.logs.details({id: log.id})">
                             <avatar patient="log"></avatar>
                             <div class="log-title">{{ log.first_name }}<br/>{{ log.last_name }}</div>
                         </div>

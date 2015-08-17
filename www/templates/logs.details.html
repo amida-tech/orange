@@ -1,0 +1,34 @@
+<ion-view view-title="{{ title }}">
+    <ion-nav-bar class="bar-orange orange-light" align-title="left">
+        <ion-nav-buttons side="left" >
+            <button ui-sref="app.logs.list" class="button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right" >
+            <button class="button button-clear button-small button-dose">Delete</button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content class="light-bg" overflow-scroll="true">
+
+        <div class="item item-body">
+            <h1 class="pull-left">{{ log.first_name }}<br>{{ log.last_name }}</h1>
+            <div class="orange-logs pull-right">
+                <div class="item-log">
+                    <avatar patient="log"></avatar>
+                </div>
+            </div>
+        </div>
+        <div class="item item-body">
+            <div class="text-container" ng-if="log.birthdate">
+                <p>Birth Date: </p>{{ log.birthdate }}
+            </div>
+            <div class="text-container" ng-if="log.phone">
+                <p>Phone: </p>{{ log.phone }}
+            </div>
+            <div class="text-container" ng-if="log.sex">
+                <p>Sex: </p>{{ log.sex }}
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
