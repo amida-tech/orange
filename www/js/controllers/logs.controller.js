@@ -5,11 +5,18 @@
         .module('orange')
         .controller('LogsCtrl', LogsCtrl);
 
-    LogsCtrl.$inject = ['$scope', '$state', 'logs'];
+    LogsCtrl.$inject = ['$scope', '$state', 'OrangeApi'];
 
     /* @ngInject */
-    function LogsCtrl($scope, $state, logs) {
-        $scope.logs = _.chunk(logs, 3);
+    function LogsCtrl($scope, $state, OrangeApi) {
+        $scope.logs = [];
+        $scope.logList = [];
+        OrangeApi.patients.getList().then(
+            function (patients) {
+                $scope.logs = patients;
+                $scope.logList = _.chunk($scope.logs, 3);
+            }
+        );
 
         $scope.update = update;
 

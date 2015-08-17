@@ -245,11 +245,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                                 template: '<ion-nav-view />',
                                 controller: 'LogsCtrl'
                             }
-                        },
-                        resolve: {
-                            'logs': ['OrangeApi', function (OrangeApi) {
-                                return OrangeApi.patients.getList();
-                            }]
                         }
                     })
                     .state('app.logs.list', {
@@ -277,12 +272,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '/onboarding/logs',
                         templateUrl: 'templates/logs.html',
                         controller: 'LogsCtrl',
-                        cache: false,
-                        resolve: {
-                            'logs': ['OrangeApi', function (OrangeApi) {
-                                return OrangeApi.patients.getList();
-                            }]
-                        }
+                        cache: false
                     })
                     .state('logs-add', {
                         url: '/onboarding/logs/add',
