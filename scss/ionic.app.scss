@@ -69,6 +69,10 @@ body {
   background-color: $orange;
 }
 
+.pane.light-bg {
+  background-color: $light;
+}
+
 .has-bottom-buttons {
   padding-bottom: $button-height * 2;
 }
@@ -89,8 +93,13 @@ body {
   line-height: 1.4;
 }
 
+
 .text-basic, .text-basic-bold {
   font-size: $orange-font-base-size;
+}
+
+.text-basic.text-compressed {
+  letter-spacing: -0.7px;
 }
 
 .text-basic-bold {
@@ -115,6 +124,8 @@ body {
     display: block;
     margin-bottom: 0;
     padding-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   span:first-child {
     margin-top: 0;
@@ -182,6 +193,9 @@ body {
     margin: 0;
     padding: $item-padding $label-item-padding $item-padding 0;
   }
+  .item.orange-form {
+    padding-right: 0;
+  }
 }
 
 .item {
@@ -193,9 +207,11 @@ body {
     display: inline-block;
     top: 0;
     padding: $item-padding 0;
-    color: $more-dark;
+    .text-title {
+      color: $more-dark;
+      font-weight: bold;
+    }
     float: right;
-    font-weight: bold;
   }
   .item-label .button {
     padding: $button-mini-padding;

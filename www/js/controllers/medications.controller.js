@@ -4,23 +4,60 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$scope', 'OrangeApi', '$stateParams'];
+    MedicationsCtrl.$inject = ['$scope', '$ionicLoading', 'medications', 'log'];
 
     /* @ngInject */
-    function MedicationsCtrl($scope, OrangeApi, $stateParams) {
-        //console.log(ipsumService.randomName());
-        if ($stateParams.id) {
-            $scope.medication = OrangeApi.medications.get($stateParams.id);
-        } else {
+    function MedicationsCtrl($scope, $ionicLoading, medications, log) {
+        var vm = this;
 
-            $scope.medications = [];
-            $scope.shouldShowDelete = false;
-            $scope.toggleDelete = function () {
-                $scope.shouldShowDelete = !$scope.shouldShowDelete;
-            };
+        vm.medications = null;
 
-            $scope.removeNote = function (id) {
+        vm.refresh = refresh;
+        vm.remove = remove;
+
+        medications.setLog(log);
+
+
+        refresh(false);
+
+        $scope.$watch(medications.getMedications, function(medications) {
+            if (medications !== vm.medications) {
+                vm.medications = medications;
             }
+        });
+
+        ///////////////////////////////////
+
+        function refresh(force) {
+            force = force === undefined ? true : force;
+
+            var method = force ? 'fetchAll' : 'getAll';
+
+            medications[method]().then(
+                function(medications) {
+                    vm.medications = medications;
+                    $scope.$broadcast('scroll.refreshComplete');
+                },
+                function(error) {
+                    console.log(error);
+                }
+            )
+        }
+
+        function remove(medication) {
+            $ionicLoading.show({
+                template: 'Deleting…'
+            });
+            medications.remove(medication).then(
+                undefined,
+                function(error) {
+                    console.log(error);
+                }
+            ).finally(
+                function() {
+                    $ionicLoading.hide();
+                }
+            )
         }
 
     }
