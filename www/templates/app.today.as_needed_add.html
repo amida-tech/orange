@@ -1,0 +1,47 @@
+<ion-view class="light-bg" view-title="As Needed Add">
+    <ion-nav-bar class="bar-orange" align-title="center">
+        <ion-nav-buttons side="left" >
+            <button ui-sref="app.today.as_needed" class="button back-button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content class="light-bg">
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="!asNeededAdd.medicationsPromise.$$state.status"></ion-spinner>
+        </div>
+
+        <div class="padding">
+            <ion-list class="list-last-open list-details">
+                <ion-item>
+                    <div class="block-with-subscribe">
+                        <span class="text-basic" ng-bind="asNeededAdd.medication.name"></span>
+                        <span class="text-medication-brand" ng-bind="asNeededAdd.medication.brand"></span>
+                    </div>
+                    <div class="item-label">
+                        <div class="block-with-subscribe">
+                            <span class="text-basic text-compressed">Due at {{ asNeededAdd.date.format('hh:mm A') }}</span>
+                            <span class="text-basic text-compressed">{{ asNeededAdd.date.format('DD/MM/YY') }}</span>
+                        </div>
+                    </div>
+                </ion-item>
+
+                <ion-item class="orange-form">
+                    <p class="text-basic" ng-bind="asNeededAdd.takenText"></p>
+                    <label class="item-input padding-top">
+                            <textarea name="text"
+                                      rows="8"
+                                      placeholder="Add a note..."
+                                      data-ng-model="asNeededAdd.dose.notes"></textarea>
+                    </label>
+                </ion-item>
+            </ion-list>
+        </div>
+
+        <div class="clearfix"></div>
+    </ion-content>
+    <div class="bottom-buttons">
+        <button class="button button-small button-full col button-balanced" ng-click="asNeededAdd.createDose()">Take Medication</button>
+    </div>
+</ion-view>

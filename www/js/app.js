@@ -101,12 +101,33 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.today', {
                         url: '/today',
+                        abstract: true,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.today.html',
-                                controller: 'TodayCtrl as today'
+                                template: '<ion-nav-view></ion-nav-view>',
+                                controller: function($scope, log) {
+                                    $scope.medications = log.all('medications').getList();
+                                }
                             }
                         }
+                    })
+                    .state('app.today.schedule', {
+                        url: '',
+                        templateUrl: 'templates/app.today.html',
+                        controller: 'TodayCtrl as today',
+                        cache: false
+                    })
+                    .state('app.today.as_needed', {
+                        url: '/as_needed',
+                        templateUrl: 'templates/app.today.as_needed.html',
+                        controller: 'TodayAsNeededCtrl as asNeeded',
+                        cache: false
+                    })
+                    .state('app.today.as_needed_add', {
+                        url: '/as_needed/:id/add',
+                        templateUrl: 'templates/app.today.as_needed_add.html',
+                        controller: 'TodayAsNeededAddCtrl as asNeededAdd',
+                        cache: false
                     })
                     .state('app.components', {
                         url: '/components',
@@ -123,7 +144,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             menuContent: {
                                 template: '<ion-nav-view/>',
-                                controller: function($scope, $ionicLoading, log) {
+                                controller: function($scope, log) {
                                     $scope.medications = log.all('medications').getList();
                                     $scope.notes = log.all('journal').getList({sort_order: 'desc', sort_by: 'date'});
                                 }

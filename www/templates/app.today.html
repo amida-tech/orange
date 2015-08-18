@@ -1,8 +1,5 @@
 <ion-view view-title="Today">
     <ion-nav-bar class="bar-orange orange-light" align-title="left">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
-
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
@@ -13,7 +10,8 @@
             <button class="button button-outline button-orange button-small button-profile">
                 {{ profile.first_name }} {{ profile.last_name }}
             </button>
-            <button class="button button-icon button-clear button-small ion-plus button-dose"></button>
+            <button class="button button-icon button-clear button-small ion-plus button-dose"
+                    ui-sref="app.today.as_needed"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="orange-bg orange-light">
