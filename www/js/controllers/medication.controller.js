@@ -20,18 +20,28 @@
 
 
         medications.setLog(log);
+        medications.get(id);
 
-        activate();
         $scope.$watch(medications.getMedication, function (medication) {
-            if (medication !== vm.medication) {
+
+            if (medication && medication !== vm.medication) {
+                console.log('Medication changed', medication);
                 vm.medication = medication;
+                vm.eventsText = getEventText(medication);
             }
         });
 
         ////////////////
 
-        function activate() {
-            medications.get(id);
+        function getEventText(medication) {
+            var text = '';
+            if (medication.schedule.times && medication.schedule.times.length) {
+                var eventsCount = medication.schedule.times.length;
+                text += eventsCount;
+                text += ' event' + (eventsCount > 1 ? 's' : '') + ' per day'
+            }
+
+            return text;
         }
 
         function remove() {

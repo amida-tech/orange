@@ -39,6 +39,12 @@
             timer: null
         };
 
+        vm.eventTypes = [
+            {name: 'Around a Meal', key: 'meal'},
+            {name: 'As a Set Time', key: 'time'},
+            {name: 'Morning/Night', key: 'sleep'}
+        ];
+
         vm.when = [
             {name: 'Before', key: 'before'},
             {name: 'After', key: 'after'}
@@ -61,11 +67,7 @@
             {name: 'Doesn\'t Matter', key: null}
         ];
 
-        vm.eventTypes = [
-            {name: 'Around a Meal', key: 'meal'},
-            {name: 'As a Set Time', key: 'time'},
-            {name: 'Morning/Night', key: 'sleep'}
-        ];
+
 
         vm.weekDays = [
             {name: 'Sun', key: 0},

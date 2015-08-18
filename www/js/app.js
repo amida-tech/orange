@@ -170,11 +170,36 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/app.medications.html',
                         controller: 'MedicationsCtrl as medications'
                     })
-                    .state('app.medications.details', {
-                        url: '/:id/details',
-                        templateUrl: 'templates/app.medications.details.html',
-                        controller: 'MedicationCtrl as medication'
+                    .state('app.medication', {
+                        url: '/medication/{id}',
+                        abstract: true,
+                        cache: false,
+                        params: {
+                            id: {value: null, squash: true}
+                        },
+                        views: {
+                            'menuContent': {
+                                template: '<ion-nav-view></ion-nav-view>',
+                                controller: 'MedicationCtrl as medication'
+                            }
+                        }
                     })
+                    .state('app.medication.details', {
+                        url: '/details',
+                        templateUrl: 'templates/app.medications.details.html'
+                    })
+                    .state('app.medication.schedule', {
+                        url: '/schedule',
+                        templateUrl: 'templates/app.medications.schedule.html',
+                        controller: 'MedicationScheduleCtrl as schedule'
+                    })
+
+                    .state('app.medication.events', {
+                        url: '/events',
+                        templateUrl: 'templates/app.medications.events.html',
+                        controller: 'MedicationEventsCtrl as events'
+                    })
+
                     .state('app.doctors', {
                         url: '/doctors',
                         abstract: true,

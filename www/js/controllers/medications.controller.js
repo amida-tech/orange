@@ -4,10 +4,10 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$scope', '$ionicLoading', '$ionicModal', 'medications', 'log'];
+    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', 'medications', 'log'];
 
     /* @ngInject */
-    function MedicationsCtrl($scope, $ionicLoading, $ionicModal, medications, log) {
+    function MedicationsCtrl($scope, $state, $ionicLoading, $ionicModal, medications, log) {
         var vm = this;
         var searchModal = null;
 
@@ -16,6 +16,7 @@
         vm.remove = remove;
         vm.openModal = openModal;
         vm.closeModal = closeModal;
+        vm.pickMedication = pickMedication;
 
         medications.setLog(log);
         refresh(false);
@@ -32,8 +33,14 @@
         }
 
         function closeModal() {
-
             searchModal.hide();
+        }
+
+        function pickMedication(medication) {
+            console.log('Medication picked:', medication);
+            closeModal();
+            medications.setMedication(medication);
+            $state.go('app.medication.schedule');
         }
 
         $scope.$watch(medications.getMedications, function(medications) {

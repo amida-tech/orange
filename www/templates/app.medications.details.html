@@ -10,7 +10,7 @@
         </ion-nav-buttons>
     </ion-nav-bar>
 
-    <ion-content class="light-bg">
+    <ion-content class="light-bg has-footer">
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots"
                          ng-if="medication.medication === null"></ion-spinner>
@@ -18,12 +18,15 @@
 
         <ion-list ng-if="medication.medication">
             <ion-item class="item-title ">
-                <div class="med-title pull-left">
+                <div class="row row-no-padding">
+                <div class="med-title col col-66">
                     <p class="med-name" ng-bind="medication.medication.name"></p>
                     <p class="med-rx" ng-bind="medication.medication.brand"></p>
                 </div>
-                <div class="pull-right">
-                    <p></p>
+                <div class="col col-33 text-right med-info">
+                    <p ng-bind="medication.medication.schedule_summary"></p>
+                    <p ng-bind="medication.eventsText"></p>
+                </div>
                 </div>
             </ion-item>
 
@@ -37,6 +40,7 @@
 
     </ion-content>
     <div class="bottom-buttons">
-        <button class="button button-orange col button-full">Edit Medication</button>
+        <button class="button button-orange col col-no-padding button-full"
+                ui-sref="app.medication.schedule">Edit Medication</button>
     </div>
 </ion-view>

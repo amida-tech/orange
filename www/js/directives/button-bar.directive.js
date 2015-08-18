@@ -19,17 +19,17 @@
 
                 scope.value = null;
 
-                scope.select = function(option) {
+                scope.select = function (option) {
                     scope.value = option.key;
                     ngModel.$setViewValue(option.key);
                 };
-                scope.select(scope.options[0]);
 
                 scope.$watch(
-                    function(){
+                    function () {
                         return ngModel.$modelValue;
-                    }, function(newValue, oldValue){
-                        if (newValue !== oldValue) {
+                    }, function (newValue) {
+                        console.log('button-bar new value', newValue);
+                        if (!_.isUndefined(newValue) && scope.value !== newValue) {
                             scope.value = newValue;
                         }
                     }, true);

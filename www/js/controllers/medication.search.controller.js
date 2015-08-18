@@ -5,10 +5,10 @@
         .module('orange')
         .controller('MedicationSearchCtrl', MedicationSearchCtrl);
 
-    MedicationSearchCtrl.$inject = ['$q', '$timeout', '$ionicPopup', 'OrangeApi', 'medications'];
+    MedicationSearchCtrl.$inject = ['$q', '$timeout', '$state', '$ionicPopup', 'OrangeApi', 'medications'];
 
     /* @ngInject */
-    function MedicationSearchCtrl($q, $timeout, $ionicPopup, OrangeApi, medications) {
+    function MedicationSearchCtrl($q, $timeout, $state, $ionicPopup, OrangeApi, medications) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -25,22 +25,10 @@
 
 
         vm.pickSuggestion = pickSuggestion;
-        vm.pickMedication = pickMedication;
+
         vm.search = search;
 
         ////////////////
-
-        function pickMedication(medication) {
-            console.log('Medication picked:', medication);
-            medications.createMedication(medication).then(
-                function (data) {
-                    console.log('Medication saved!', data);
-                },
-                function (error) {
-                    console.log('error');
-                }
-            )
-        }
 
         function pickSuggestion(suggestion) {
             vm.term = suggestion;
@@ -99,7 +87,17 @@
                 brand: elem.brand,
                 rx_norm: elem.rxcui || null,
                 form: parseDfg(elem.dfg),
-                origin: 'manual'
+                origin: 'manual',
+                dose: {
+                    quantity: 1,
+                    unit: 'mg'
+                },
+                schedule: {
+                    as_needed: true,
+                    take_with_medications: [],
+                    take_without_medications: [],
+                    take_with_food: null
+                }
             }
         }
 

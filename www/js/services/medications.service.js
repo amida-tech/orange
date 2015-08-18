@@ -48,7 +48,9 @@
             id = parseInt(id);
             var deffered = $q.defer();
             var promise = deffered.promise;
-            if (vm.medication && vm.medication.id === id) {
+            if (vm.medication && !id) {
+                deffered.resolve(vm.medication);
+            } else if (vm.medication && vm.medication.id === id) {
                 deffered.resolve(vm.medication);
             } else if (vm.medications !== null) {
                 vm.medication = _.find(vm.medications, {'id': id});
