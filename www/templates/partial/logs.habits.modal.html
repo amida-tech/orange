@@ -1,0 +1,38 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-orange">
+        <button ng-click="habitsModal.hide()" class="button back-button buttons button-clear header-item">
+            <i class="icon ion-arrow-left-c"></i>
+            <span class="back-text"></span>
+        </button>
+        <h1 class="title">Working Hours</h1>
+        <button ng-click="habitsModal.hide()" class="button buttons button-clear">
+            Done
+        </button>
+    </ion-header-bar>
+    <ion-content>
+        <div class="item item-body">
+            <form class="orange-form">
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">What time do you usually wake up?</span>
+                    <input type="text" ng-model="log.habits.wake" name="wake" timefield placeholder="Time" required/>
+                </label>
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">What time do you usually eat breakfast?</span>
+                    <input type="text" ng-model="log.habits.breakfast" name="breakfast" timefield placeholder="Time" required/>
+                </label>
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">What time do you usually eat lunch?</span>
+                    <input type="text" ng-model="log.habits.lunch" name="lunch" timefield placeholder="Time" required/>
+                </label>
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">What time do you usually eat dinner?</span>
+                    <input type="text" ng-model="log.habits.dinner" name="lunch" timefield placeholder="Time" required/>
+                </label>
+                <label class="item-input item-stacked-label">
+                    <span class="input-label">What time do you usually go to bed?</span>
+                    <input type="text" ng-model="log.habits.sleep" name="sleep" timefield placeholder="Time" required/>
+                </label>
+            </form>
+        </div>
+    </ion-content>
+</ion-modal-view>

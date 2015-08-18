@@ -5,10 +5,10 @@
         .module('orange')
         .controller('RequestLogsCtrl', RequestLogsCtrl);
 
-    RequestLogsCtrl.$inject = ['$scope', 'OrangeApi'];
+    RequestLogsCtrl.$inject = ['$scope', '$state', 'OrangeApi'];
 
     /* @ngInject */
-    function RequestLogsCtrl($scope, OrangeApi) {
+    function RequestLogsCtrl($scope, $state, OrangeApi) {
         $scope.sent = false;
         $scope.data = {
             email: null
@@ -26,6 +26,7 @@
                     function(response) {
                         console.log(response);
                         $scope.sent = true;
+                        $scope.logRequestNextState = $state.params['nextState'] || 'logs';
                     },
                     function(error) {
                         error.data.errors.forEach(function (elem) {

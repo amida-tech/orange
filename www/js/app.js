@@ -267,10 +267,66 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.logs', {
                         url: '/logs',
+                        abstract: true,
+                        cache: false,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.logs.html'
+                                template: '<ion-nav-view />'
                             }
+                        }
+                    })
+                    .state('app.logs.list', {
+                        url: '',
+                        templateUrl: 'templates/app.logs.html',
+                        cache: false,
+                        controller: 'LogsCtrl as menu_logs'
+                    })
+                    .state('app.logs.add', {
+                        url: '/add',
+                        templateUrl: 'templates/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        resolve: {
+                            log: function () {
+                                return {};
+                            }
+                        },
+                        params: {
+                            nextState: 'app.logs.list'
+                        }
+                    })
+                    .state('app.logs.add_my', {
+                        url: '/my',
+                        templateUrl: 'templates/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        resolve: {
+                            log: ['OrangeApi', '$q', getMyProfile]
+                        },
+                        params: {
+                            nextState: 'app.logs.list'
+                        }
+                    })
+                    .state('app.logs.details', {
+                        url: '/details/:id',
+                        templateUrl: 'templates/logs.details.html',
+                        controller: 'LogDetailsCtrl as log_details',
+                        cache: false
+                    })
+                    .state('app.logs.edit', {
+                        url: '/edit',
+                        templateUrl: 'templates/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        cache: false,
+                        params: {
+                            nextState: 'app.logs.list',
+                            editMode: true
+                        }
+                    })
+                    .state('app.logs.request', {
+                        url: '/request',
+                        templateUrl: 'templates/logs.request.html',
+                        controller: 'RequestLogsCtrl',
+                        params: {
+                            nextState: 'app.logs.list'
                         }
                     })
                     .state('app.notifications', {
@@ -293,12 +349,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '/onboarding/logs',
                         templateUrl: 'templates/logs.html',
                         controller: 'LogsCtrl',
-                        cache: false,
-                        resolve: {
-                            'logs': ['OrangeApi', function (OrangeApi) {
-                                return OrangeApi.patients.getList();
-                            }]
-                        }
+                        cache: false
                     })
                     .state('logs-add', {
                         url: '/onboarding/logs/add',
@@ -308,6 +359,9 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                             log: function () {
                                 return {};
                             }
+                        },
+                        params: {
+                            nextState: 'logs'
                         }
                     })
                     .state('logs-add-my', {
@@ -315,34 +369,20 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/logs.add.html',
                         controller: 'AddLogCtrl',
                         resolve: {
-                            log: ['OrangeApi', '$q', function (OrangeApi, $q) {
-                                var deffered = $q.defer();
-                                OrangeApi.patients.getList().then(
-                                    function (patients) {
-                                        var result = {};
-                                        //patients = patients.plain();
-                                        for (var i = 0, len = patients.length; i < len; i++) {
-                                            var patient = patients[i];
-                                            if (patient.me) {
-                                                result = patient;
-                                                break;
-                                            }
-                                        }
-                                        deffered.resolve(result);
-                                    },
-                                    function (error) {
-                                        deffered.resolve({})
-                                    }
-                                );
-                                return deffered.promise;
-                            }]
+                            log: ['OrangeApi', '$q', getMyProfile]
+                        },
+                        params: {
+                            nextState: 'logs'
                         }
                     })
                     .state('logs-request', {
                         url: '/onboarding/logs/request',
                         templateUrl: 'templates/logs.request.html',
                         cache: false,
-                        controller: 'RequestLogsCtrl'
+                        controller: 'RequestLogsCtrl',
+                        params: {
+                            nextState: 'logs'
+                        }
                     })
                     .state('logs-setup', {
                         url: '/onboarding/logs/setup',
@@ -433,3 +473,25 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                 $urlRouterProvider.otherwise('/loading');
 
             });
+
+function getMyProfile(OrangeApi, $q) {
+    var deffered = $q.defer();
+    OrangeApi.patients.getList().then(
+        function (patients) {
+            var result = {};
+            //patients = patients.plain();
+            for (var i = 0, len = patients.length; i < len; i++) {
+                var patient = patients[i];
+                if (patient.me) {
+                    result = patient;
+                    break;
+                }
+            }
+            deffered.resolve(result);
+        },
+        function (error) {
+            deffered.resolve({})
+        }
+    );
+    return deffered.promise;
+}

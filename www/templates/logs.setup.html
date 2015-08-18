@@ -14,7 +14,7 @@
             Pick a log to begin.</p>
         <div class="list list-clean orange-bg">
             <div class="orange-logs item item-text-wrap light orange-bg">
-                <div class="row row-no-padding" ng-repeat="row in logs">
+                <div class="row row-no-padding" ng-repeat="row in logList">
                     <div class="col col-33" ng-repeat="log in row">
                         <div class="item-log">
                             <avatar patient="log" ui-sref="onboarding-log.habits({id: log.id})"></avatar>

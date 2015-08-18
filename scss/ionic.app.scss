@@ -910,6 +910,25 @@ ion-content {
   border-bottom: 1px solid #ccc;
 }
 
+.text-container {
+  padding-bottom: 5px;
+  font-size: $font-size-base;
+
+  p {
+    font-weight: bold;
+    margin-top: 0;
+    float: left;
+    margin-right: 10px;
+  }
+}
+
+ion-option-button.option-control.button {
+  display: inline-block;
+  height: auto;
+  position: relative;
+  top: 16px;
+}
+
 // Fix border on android devices
 .grade-b .menu-content, .grade-c .menu-content {
   border: none;
@@ -927,6 +946,25 @@ ion-content {
 
     div {
       display: inline-block;
+    }
+  }
+}
+
+.log-details-habits-list {
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .item {
+    padding: 0;
+    border-width: 0;
+    font-size: $font-size-base;
+
+    p {
+      margin: 0;
+      float: left;
+      min-width: 80px;
     }
   }
 }
