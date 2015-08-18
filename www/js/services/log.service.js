@@ -10,6 +10,7 @@
     function LogService($q, OrangeApi) {
         var vm = this,
             service = {
+                addLog: addLog,
                 clearLog: clearLog,
                 getDetailLog: getDetailLog,
                 getLog: getLog,
@@ -82,6 +83,19 @@
 
         function setFullName(log) {
             log.fullName = log.first_name + ' ' + log.last_name;
+        }
+
+        function addLog(log) {
+            var existLog = _.filter(vm.logs, function (item) {
+                if (item.id === log.id) {
+                    item.first_name = log.first_name;
+                    item.last_name = log.last_name;
+                    return true;
+                }
+            });
+            if (!existLog) {
+                vm.logs.push(log);
+            }
         }
     }
 })();
