@@ -933,3 +933,22 @@ ion-option-button.option-control.button {
     }
   }
 }
+
+.log-details-habits-list {
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .item {
+    padding: 0;
+    border-width: 0;
+    font-size: $font-size-base;
+
+    p {
+      margin: 0;
+      float: left;
+      min-width: 80px;
+    }
+  }
+}
