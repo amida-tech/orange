@@ -85,7 +85,7 @@
         }
 
         function addLog(log) {
-            var existLog = _.filter(vm.logs, function (item) {
+            var existLog = _.find(vm.logs, function (item) {
                 if (item.id === log.id) {
                     item.first_name = log.first_name;
                     item.last_name = log.last_name;
