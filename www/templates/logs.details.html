@@ -37,24 +37,24 @@
                 <h2>Habits:</h2>
 
                 <div class="item">
-                    <p>Wake:</p>{{ log_details.habits.wake }}
+                    <p>Wake:</p>{{ log_details.currentLog.habits.wake }}
                 </div>
                 <div class="item">
-                    <p>Breakfast:</p>{{ log_details.habits.breakfast }}
+                    <p>Breakfast:</p>{{ log_details.currentLog.habits.breakfast }}
                 </div>
                 <div class="item">
-                    <p>Lunch:</p>{{ log_details.habits.lunch }}
+                    <p>Lunch:</p>{{ log_details.currentLog.habits.lunch }}
                 </div>
                 <div class="item">
-                    <p>Dinner:</p>{{ log_details.habits.dinner }}
+                    <p>Dinner:</p>{{ log_details.currentLog.habits.dinner }}
                 </div>
                 <div class="item">
-                    <p>Sleep:</p>{{ log_details.habits.sleep }}
+                    <p>Sleep:</p>{{ log_details.currentLog.habits.sleep }}
                 </div>
             </div>
         </div>
     </ion-content>
     <div class="bottom-buttons">
-        <button class="button button-full button-orange">Edit</button>
+        <button class="button button-full button-orange" ui-sref="app.logs.edit">Edit</button>
     </div>
 </ion-view>

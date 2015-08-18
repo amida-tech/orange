@@ -5,10 +5,10 @@
         .module('orange')
         .controller('LogsCtrl', LogsCtrl);
 
-    LogsCtrl.$inject = ['$scope', '$state', 'OrangeApi'];
+    LogsCtrl.$inject = ['$scope', 'LogService'];
 
     /* @ngInject */
-    function LogsCtrl($scope, $state, OrangeApi) {
+    function LogsCtrl($scope, LogService) {
         var vm = this;
 
         $scope.logs = [];
@@ -21,21 +21,20 @@
 
         getPatients();
 
-        function getPatients() {
-            OrangeApi.patients.getList().then(
-                function (patients) {
-                    $scope.logs = patients;
-                    $scope.logList = _.chunk($scope.logs, 3);
-                    vm.withMe = _.filter(patients, function (item) {
-                        return item['me'] === true;
-                    });
+        function getPatients(force) {
+            $scope.logs = LogService.getLogs(force).then(function (patients) {
+                $scope.logList = _.chunk(patients, 3);
+                vm.withMe = _.filter(patients, function (item) {
+                    return item['me'] === true;
+                });
+                if (force) {
+                    $scope.$broadcast('scroll.refreshComplete');
                 }
-            );
+            });
         }
 
         function update() {
-            getPatients();
-            $state.reload();
+            getPatients(true);
         }
 
         function setEditMode(isEditMode) {

@@ -301,7 +301,18 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('app.logs.details', {
                         url: '/details/:id',
                         templateUrl: 'templates/logs.details.html',
-                        controller: 'LogDetailsCtrl as log_details'
+                        controller: 'LogDetailsCtrl as log_details',
+                        cache: false
+                    })
+                    .state('app.logs.edit', {
+                        url: '/edit',
+                        templateUrl: 'templates/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        cache: false,
+                        params: {
+                            nextState: 'app.logs.list',
+                            editMode: true
+                        }
                     })
                     .state('app.logs.request', {
                         url: '/request',

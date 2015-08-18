@@ -5,17 +5,16 @@
         .module('orange')
         .controller('LogDetailsCtrl', LogDetailsCtrl);
 
-    LogDetailsCtrl.$inject = ['$scope', '$stateParams', 'OrangeApi'];
+    LogDetailsCtrl.$inject = ['$scope', '$stateParams', 'LogService'];
 
-    function LogDetailsCtrl($scope, $stateParams, OrangeApi) {
+    function LogDetailsCtrl($scope, $stateParams, LogService) {
 
         var vm = this;
 
-        OrangeApi.patients.get($stateParams.id).then(function (item) {
+        vm.currentLog = null;
+
+        LogService.setDetailLog($stateParams.id).then(function (item) {
             vm.currentLog = item;
-            item.one('habits').get('').then(function (habits) {
-                vm.habits = habits;
-            });
             vm.title = item.first_name + ' ' + item.last_name;
         });
     }

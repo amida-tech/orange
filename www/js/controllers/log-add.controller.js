@@ -6,17 +6,19 @@
         .controller('AddLogCtrl', AddLogCtrl);
 
     AddLogCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', '$cordovaCamera', 'OrangeApi',
-                          'Avatar', 'settings', 'log'];
+                          'Avatar', 'LogService', 'settings', 'log'];
 
     /* @ngInject */
     function AddLogCtrl($scope, $state, $ionicLoading, $ionicModal, $cordovaCamera, OrangeApi, Avatar,
-                        settings, log) {
+                        LogService, settings, log) {
 
-        $scope.log = log;
+        $scope.editMode = !!$state.params['editMode'];
+        $scope.log = $scope.editMode ? LogService.getDetailLog(): log;
         $scope.saveLog = saveLog;
         $scope.selectPhoto = selectPhoto;
         $scope.isDevice = ionic.Platform.isWebView();
-        $scope.title = log.me ? 'Add My Log' : 'Add New Log';
+        $scope.title = $scope.editMode ? 'Edit Log' : log.me ? 'Add My Log' : 'Add New Log';
+        $scope.button_title = $scope.editMode ? 'Edit Log' : 'Add Log';
         $scope.iconItems = _.chunk(settings.avatars, 3);
 
         $ionicModal.fromTemplateUrl('templates/partial/logs.icon.modal.html', {
@@ -59,6 +61,9 @@
             $ionicLoading.show({
                 template: 'Saving...'
             });
+            var parts = $scope.log.fullName ? $scope.log.fullName.split(' ') : [];
+            $scope.log.first_name = parts.shift() || '';
+            $scope.log.last_name = parts.join(' ') || '';
 
             if ($scope.log.restangularized) {
                 // Restangular object
@@ -88,10 +93,6 @@
             } else {
                 // Not restangular object
                 // Create new patient
-                var parts = $scope.log.fullName ? $scope.log.fullName.split(' ') : [];
-                $scope.log.first_name = parts.shift() || '';
-                $scope.log.last_name = parts.join(' ') || '';
-
                 OrangeApi.patients.post($scope.log).then(
                     function (patient) {
                         $scope.log = patient;
