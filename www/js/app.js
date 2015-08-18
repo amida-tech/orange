@@ -1,12 +1,15 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch'])
 
-    .run(function ($ionicPlatform, Auth, $rootScope, $state) {
+    .run(function ($rootScope, $state, $ionicPlatform, $ionicHistory, Auth) {
 
              // Initializing app
              $rootScope.initialized = false;
              Auth.init().then(function (status) {
                  $rootScope.initialized = true;
-
+                 $ionicHistory.nextViewOptions({
+                     disableBack: true,
+                     historyRoot: true
+                 });
                  if (status === true) {
                      // User authorized
                      if ($rootScope.cachedState) {
@@ -155,12 +158,22 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.medications', {
                         url: '/medications',
+                        abstract: true,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.medications.html',
-                                controller: 'MedicationsCtrl as medications'
+                                template: '<ion-nav-view></ion-nav-view>'
                             }
                         }
+                    })
+                    .state('app.medications.list', {
+                        url: '',
+                        templateUrl: 'templates/app.medications.html',
+                        controller: 'MedicationsCtrl as medications'
+                    })
+                    .state('app.medications.details', {
+                        url: '/:id/details',
+                        templateUrl: 'templates/app.medications.details.html',
+                        controller: 'MedicationCtrl as medication'
                     })
                     .state('app.doctors', {
                         url: '/doctors',

@@ -1,4 +1,4 @@
-<ion-modal-view xmlns="http://www.w3.org/1999/html">
+<ion-modal-view>
     <ion-header-bar class="bar bar-orange">
         <button ng-click="pharmacies_add.hoursModal.hide()" class="button back-button buttons button-clear header-item">
             <i class="icon ion-arrow-left-c"></i>
@@ -9,23 +9,22 @@
             Done
         </button>
     </ion-header-bar>
-    <ion-content>
-        <div class="item item-body">
-            <form class="orange-form">
-                <ul class="list">
-                    <li class="item item-small-padding" ng-repeat="day in pharmacies_add.days">
-                        <label class="item-input item-input-wo-margin">
+    <ion-content padding="true">
+        <form class="orange-form">
+            <ul class="list">
+                <li class="item item-small-padding" ng-repeat="day in pharmacies_add.days">
+                    <label class="item-input item-input-wo-margin">
                         <span class="input-label input-label-wo-margin">{{ day }}</span>
-                        </label>
-                        <label class="item-input">
+                    </label>
+
+                    <div class="item-input">
                         <input type="text" ng-model="pharmacies_add.pharmacy.hours[day.toLowerCase()].open"
                                timefield placeholder="Open">
                         <input type="text" ng-model="pharmacies_add.pharmacy.hours[day.toLowerCase()].close"
                                timefield placeholder="Close">
-                        </label>
-                    </li>
-                </ul>
-            </form>
-        </div>
+                    </div>
+                </li>
+            </ul>
+        </form>
     </ion-content>
 </ion-modal-view>

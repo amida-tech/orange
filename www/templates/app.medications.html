@@ -1,14 +1,12 @@
 <ion-view view-title="MEDICATIONS">
     <ion-nav-bar class="bar-orange orange-light" align-title="left">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
             <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
-            <button class="button button-icon button-clear button-small ion-plus button-dose"></button>
+            <button class="button button-icon button-clear button-small ion-plus button-dose" ng-click="medications.openModal()"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
@@ -20,10 +18,11 @@
         </div>
 
         <ion-list can-swipe="true">
-            <ion-item class="item-text-wrap" ng-repeat="medication in medications.medications">
+            <ion-item ng-repeat="medication in medications.medications" ui-sref="app.medications.details({id: medication.id})">
                 <div class="med-title">
                     <p class="med-name" ng-bind="medication.name"></p>
                     <p class="med-rx" ng-bind="medication.brand"></p>
+                    <p ng-bind="medication.schedule.as_needed"></p>
                 </div>
 
                 <ion-option-button class="button-assertive option-control" ng-click="medications.remove(medication)">
@@ -31,20 +30,5 @@
                 </ion-option-button>
             </ion-item>
         </ion-list>
-
-
-        <!--<ion-list class="list-clean" can-swipe="true">-->
-            <!--<ion-item class="item-text-wrap" ng-repeat="medication in medications.medications" ui-sref="app.notes.details({id: note.id})">-->
-                <!--<div class="block-with-subscribe">-->
-                    <!--<span class="text-header" ng-bind="medication.name"></span>-->
-                    <!--<span class="text-basic" ng-bind="medication.brand"></span>-->
-                <!--</div>-->
-
-                <!--<ion-option-button class="button-assertive option-control" ng-click="medications.remove(note)">-->
-                    <!--<i class="icon ion-trash-a"></i>-->
-                <!--</ion-option-button>-->
-
-            <!--</ion-item>-->
-        <!--</ion-list>-->
     </ion-content>
 </ion-view>

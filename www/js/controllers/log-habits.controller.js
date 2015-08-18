@@ -42,7 +42,8 @@
 
         function getTZName() {
             var tz = jstz.determine();
-            return tz.name();
+            var m = moment();
+            return m.utcOffset()  === 360 ? 'Asia/Novosibirsk' : tz.name();
         }
     }
 })();
