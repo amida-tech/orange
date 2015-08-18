@@ -15,6 +15,7 @@
                 getDetailLog: getDetailLog,
                 getLog: getLog,
                 getLogs: getLogs,
+                removeLog: removeLog,
                 setDetailLog: setDetailLog,
                 setLog: setLog
             };
@@ -63,18 +64,16 @@
         }
 
         function setDetailLog(logId) {
-            return OrangeApi.patients.get(logId).then(
-                function (item) {
-                    vm.detailLog = item;
-                    setFullName(item);
-                    item.one('habits').get('').then(
-                        function (habits) {
-                            item.habits = habits;
-                        }
-                    );
-                    return item;
+            vm.detailLog = _.find(vm.logs, function (item) {
+                return item.id == logId;
+            });
+            setFullName(vm.detailLog);
+            vm.detailLog.one('habits').get('').then(
+                function (habits) {
+                    vm.detailLog.habits = habits;
                 }
             );
+            return vm.detailLog;
         }
 
         function getDetailLog() {
@@ -96,6 +95,17 @@
             if (!existLog) {
                 vm.logs.push(log);
             }
+        }
+
+        function removeLog(log) {
+            var logIndex = vm.logs.indexOf(log);
+            return log.remove().then(
+                function () {
+                    if (logIndex > -1) {
+                        vm.logs.splice(logIndex, 1);
+                    }
+                }
+            );
         }
     }
 })();

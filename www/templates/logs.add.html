@@ -11,7 +11,7 @@
                         <div class="log-caption">+</div>
                     </div>
                     <img ng-if="log.avatarUrl" ng-src="{{log.avatarUrl}}" class="log-avatar-img" alt=""/>
-                    <avatar patient="log" ng-if="log.avatar && editMode"></avatar>
+                    <avatar patient="log" ng-if="log.avatar && editMode && !log.avatarUrl"></avatar>
                 </div>
             </div>
             <div class="item item-body">

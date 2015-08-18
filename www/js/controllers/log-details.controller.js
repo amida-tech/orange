@@ -5,17 +5,45 @@
         .module('orange')
         .controller('LogDetailsCtrl', LogDetailsCtrl);
 
-    LogDetailsCtrl.$inject = ['$scope', '$stateParams', 'LogService'];
+    LogDetailsCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading',
+                              'LogService'];
 
-    function LogDetailsCtrl($scope, $stateParams, LogService) {
+    function LogDetailsCtrl($scope, $state, $stateParams, $ionicPopup, $ionicLoading, LogService) {
 
         var vm = this;
 
-        vm.currentLog = null;
+        vm.deleteLog = deleteLog;
 
-        LogService.setDetailLog($stateParams.id).then(function (item) {
-            vm.currentLog = item;
-            vm.title = item.first_name + ' ' + item.last_name;
-        });
+        vm.currentLog = LogService.setDetailLog($stateParams.id);
+        vm.title = vm.currentLog.first_name + ' ' + vm.currentLog.last_name;
+
+        function deleteLog() {
+            $ionicPopup.confirm({
+                title: 'Delete Log',
+                template: 'Are you sure want to delete this log?',
+                okType: 'button-orange'
+            }).then(
+                function (confirm) {
+                    if (confirm) {
+                        $ionicLoading.show({
+                            template: 'Deleting...'
+                        });
+                        LogService.removeLog(vm.currentLog).then(
+                            function () {
+                                $ionicLoading.hide();
+                                $state.go('app.logs.list');
+                            },
+                            function (error) {
+                                $ionicLoading.hide();
+                                $ionicPopup.alert({
+                                    title: 'Error',
+                                    template: error.data.errors
+                                });
+                            }
+                        );
+                    }
+                }
+            );
+        }
     }
 })();
