@@ -41,13 +41,12 @@
                                     ng-click="notes_add.modal.show()"></button>
                         </ion-header-bar>
 
-                        <ion-list class="list-clean medication-list" show-delete="notes_add.medicationShowDelete">
+                        <ion-list class="list-clean note-medications-list" show-delete="notes_add.medicationShowDelete">
                             <ion-item class="medication-item" ng-repeat="med in notes_add.medications | filter: { checked: true }">
-                                {{ med.name }}
-                                <div>
-                                    <strong>{{ med.brand | uppercase }}</strong>
+                                <div class="block-with-subscribe">
+                                    <span class="text-basic" ng-bind="med.name"></span>
+                                    <span class="text-medication-brand" ng-bind="med.brand"></span>
                                 </div>
-
 
                                 <ion-delete-button class="ion-minus-circled"
                                                    ng-click="notes_add.onMedicationRemove(med)">

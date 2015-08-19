@@ -120,9 +120,9 @@ body {
 }
 
 .block-with-subscribe {
-  font-size: 0px;
+  font-size: 0;
   span:first-child {
-    line-height: 1;
+    line-height: 14px;
     display: block;
     margin-bottom: 0;
     padding-bottom: 0;
@@ -245,6 +245,17 @@ dl.dl-worksheet {
   .item:first-child {
     .item-content{
       padding-top: $item-padding;
+    }
+    .item-options .option-control {
+      top: $item-padding;
+    }
+  }
+}
+
+.list-clean.note-medications-list {
+  .item.item-complex {
+    .item-content {
+        padding: $card-padding 49px 0 $item-padding;;
     }
   }
 }
@@ -641,6 +652,8 @@ ion-content {
     position: static;
     background-color: #ccc;
     border-color: #ccc;
+    height: 40px;
+    padding: 0;
   }
 
   .button-clear,
@@ -947,7 +960,7 @@ ion-option-button.option-control.button {
   display: inline-block;
   height: auto;
   position: relative;
-  top: 16px;
+  top: 0;
 }
 
 // Fix border on android devices

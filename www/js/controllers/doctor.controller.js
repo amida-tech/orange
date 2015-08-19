@@ -14,6 +14,7 @@
         var is_edit = 'id' in $stateParams;
 
         vm.title = is_edit ? 'Edit Doctor': 'Add Doctor';
+        vm.backState = is_edit ? 'app.doctors.details({id:'+$stateParams.id+'})' : 'app.doctors.search';
         vm.doctor =  is_edit ? {} : $scope.$parent.doctorToAdd;
         vm.doctorsPromise = $scope.doctors;
 

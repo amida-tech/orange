@@ -5,10 +5,10 @@
         .module('orange')
         .factory('Patient', Patient);
 
-    Patient.$inject = ['OrangeApi', '$state', '$localstorage', '$q'];
+    Patient.$inject = ['OrangeApi', '$state', '$localstorage', '$q', '$ionicLoading'];
 
     /* @ngInject */
-    function Patient(OrangeApi, $state, $localstorage, $q) {
+    function Patient(OrangeApi, $state, $localstorage, $q, $ionicLoading) {
         var patient = null;
         var patients = [];
 
@@ -46,6 +46,10 @@
                 return patient
             }
 
+            $ionicLoading.show({
+                template: 'Load patient...'
+            });
+
             var currentPatient = $localstorage.get('currentPatient', null);
             //Patient promise
             var deffered = $q.defer();
@@ -53,6 +57,7 @@
             //Get patient by id
             if (currentPatient) {
                 OrangeApi.patients.get(currentPatient).then(function(currentPatient) {
+                    $ionicLoading.hide();
                     deffered.resolve(currentPatient)
                 }, errorGetPatients);
 
@@ -73,6 +78,7 @@
                     }
                     patients[0].all('medications').getList({limit: 1}).then(function(medication) {
                         if (!_.isUndefined(medication[0])) {
+                            $ionicLoading.hide();
                             $localstorage.set('currentPatient', patients[0].id);
                             deffered.resolve(patients[0]);
                             return;
@@ -90,10 +96,12 @@
 
             function errorGetPatients(response) {
                 console.log('error get patients');
+                $ionicLoading.hide();
                 deffered.resolve(null);
             }
 
             deffered.promise.then(function(pat) {
+                $ionicLoading.hide();
                 patient = pat;
             });
 
