@@ -5,10 +5,10 @@
         .module('orange')
         .controller('DoctorCtrl', DoctorCtrl);
 
-    DoctorCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'log', '$stateParams'];
+    DoctorCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'patient', '$stateParams'];
 
     /* @ngInject */
-    function DoctorCtrl($scope, $state, $ionicLoading, log, $stateParams) {
+    function DoctorCtrl($scope, $state, $ionicLoading, patient, $stateParams) {
         /* jshint validthis: true */
         var vm = this;
         var is_edit = 'id' in $stateParams;
@@ -37,7 +37,7 @@
             if (is_edit) {
                 vm.doctor.save().then(updateSuccess, saveError);
             } else {
-                log.all('doctors').post(vm.doctor).then(saveSuccess, saveError);
+                patient.all('doctors').post(vm.doctor).then(saveSuccess, saveError);
             }
         };
 

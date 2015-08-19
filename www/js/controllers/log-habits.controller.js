@@ -5,14 +5,14 @@
         .module('orange')
         .controller('LogHabitsCtrl', LogHabitsCtrl);
 
-    LogHabitsCtrl.$inject = ['$ionicLoading', '$state', '$stateParams', 'habits', 'log'];
+    LogHabitsCtrl.$inject = ['$ionicLoading', '$state', '$stateParams', 'habits', 'patient'];
 
     /* @ngInject */
-    function LogHabitsCtrl($ionicLoading, $state, $stateParams, habits, log) {
+    function LogHabitsCtrl($ionicLoading, $state, $stateParams, habits, patient) {
 
         var vm = this;
         vm.habits = habits;
-        vm.log = log;
+        vm.log = patient;
 
         vm.habitsForm = {};
         vm.submit = submit;

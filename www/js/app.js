@@ -182,7 +182,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                                 template: '<ion-nav-view></ion-nav-view>',
                                 controller: function($scope, patient) {
                                     $scope.doctorToAdd = null;
-                                    $scope.doctors = log.all('doctors').getList();
+                                    $scope.doctors = patient.all('doctors').getList();
                                 }
                             }
                         }
@@ -222,8 +222,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>',
-                                controller: function ($scope, $ionicLoading, log) {
-                                    $scope.pharmacies = log.all('pharmacies').getList();
+                                controller: function ($scope, $ionicLoading, patient) {
+                                    $scope.pharmacies = patient.all('pharmacies').getList();
                                 }
                             }
                         }
@@ -270,7 +270,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/logs.add.html',
                         controller: 'AddLogCtrl',
                         resolve: {
-                            log: function () {
+                            patient: function () {
                                 return {};
                             }
                         },
@@ -340,7 +340,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/logs.add.html',
                         controller: 'AddLogCtrl',
                         resolve: {
-                            log: function () {
+                            patient: function () {
                                 return {};
                             }
                         },
