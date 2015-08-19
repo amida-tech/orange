@@ -136,7 +136,6 @@ $orange-font-head-size: 18px;
 $button-mini-padding: 2px;
 $label-item-padding: 90px;
 
-
 // Include all of Ionic
 @import "../www/lib/ionic/scss/ionic";
 
@@ -167,6 +166,7 @@ body {
 .pull-right {
   float: right !important;
 }
+
 .pane {
   background-color: $orange;
 }
@@ -235,7 +235,6 @@ body {
     padding-top: 0;
   }
 }
-
 
 .orange {
   color: $orange;
@@ -344,7 +343,7 @@ dl.dl-worksheet {
     //background: $light;
   }
   .item:first-child {
-    .item-content{
+    .item-content {
       padding-top: $item-padding;
     }
     .item-options .option-control {
@@ -384,7 +383,7 @@ dl.dl-worksheet {
 
 .checkbox-orange {
   @include checkbox-style($checkbox-off-border-default, $orange, $orange);
-  input:checked:before, input:checked+.checkbox-icon:before {
+  input:checked:before, input:checked + .checkbox-icon:before {
     background: $orange;
     border-color: $orange;
   }
@@ -530,7 +529,7 @@ dl.dl-worksheet {
       border-radius: $card-border-radius;
       padding: $padding-base-vertical $padding-base-horizontal;
       min-height: 42px;
-      margin-right: 5px;
+      //margin-right: 5px; // WHY THIS?
 
       &:focus {
         border-color: $gray;
@@ -936,9 +935,28 @@ ion-content {
     font-size: $font-size-base;
     &.button-full {
       margin: 0;
+      height: $bar-footer-height;
     }
     &.button-light {
       border-color: $light;
+    }
+  }
+}
+
+.list.accordion-list {
+  .accordion-body {
+    transition: max-height 0.25s ease-in;
+    max-height: 250px;
+    padding-top: $padding-large-vertical;
+
+    &.ng-hide {
+      max-height: 0;
+      transition: max-height 0.25s ease-out;
+    }
+
+    &.ng-hide-remove,
+    &.ng-hide-add {
+      display: block !important;
     }
   }
 }
@@ -1039,6 +1057,19 @@ ion-content {
   svg {
     fill: $orange;
   }
+}
+
+.med-info {
+  line-height: 1.2;
+  font-size: $font-size-base * 1.1;
+  p {
+    color: $dark;
+  }
+
+}
+
+.col-no-padding {
+  padding: 0;
 }
 
 .note-container {

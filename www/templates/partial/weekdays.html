@@ -1,0 +1,7 @@
+<div class="button-bar">
+    <button class="button"
+            ng-repeat="day in weekDays"
+            ng-click="toggleDay(day.key)"
+            ng-bind="day.name"
+            ng-class="{'active': selectedDays.indexOf(day.key) === -1}"></button>
+</div>

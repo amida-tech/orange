@@ -1,12 +1,15 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch'])
 
-    .run(function ($ionicPlatform, Auth, $rootScope, $state, Patient) {
+    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient) {
 
              // Initializing app
              $rootScope.initialized = false;
              Auth.init().then(function (status) {
                  $rootScope.initialized = true;
-
+                 $ionicHistory.nextViewOptions({
+                     disableBack: true,
+                     historyRoot: true
+                 });
                  if (status === true) {
                      // User authorized
                      if ($rootScope.cachedState) {
@@ -85,7 +88,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                             patient: ['Patient', function (Patient) {
                                 return Patient.getPatient();
                             }]
-                        },
+                                    },
                         cache: false
                     })
                     .state('app.today', {
@@ -166,13 +169,51 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.medications', {
                         url: '/medications',
+                        abstract: true,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.medications.html',
-                                controller: 'MedicationsCtrl as medications'
+                                template: '<ion-nav-view></ion-nav-view>'
                             }
                         }
                     })
+                    .state('app.medications.list', {
+                        url: '',
+                        templateUrl: 'templates/app.medications.html',
+                        controller: 'MedicationsCtrl as medications'
+                    })
+                    .state('app.medication', {
+                        url: '/medication/{id}',
+                        abstract: true,
+                        cache: false,
+                        params: {
+                            id: {value: null, squash: true}
+                        },
+                        views: {
+                            'menuContent': {
+                                template: '<ion-nav-view></ion-nav-view>',
+                                controller: 'MedicationCtrl as medication'
+                            }
+                        }
+                    })
+                    .state('app.medication.details', {
+                        url: '/details',
+                        cache: false,
+                        templateUrl: 'templates/app.medications.details.html'
+                    })
+                    .state('app.medication.schedule', {
+                        url: '/schedule',
+                        cache: false,
+                        templateUrl: 'templates/app.medications.schedule.html',
+                        controller: 'MedicationScheduleCtrl as schedule'
+                    })
+
+                    .state('app.medication.events', {
+                        url: '/events',
+                        cache: false,
+                        templateUrl: 'templates/app.medications.events.html',
+                        controller: 'MedicationEventsCtrl as events'
+                    })
+
                     .state('app.doctors', {
                         url: '/doctors',
                         abstract: true,
@@ -303,7 +344,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         params: {
                             nextState: 'app.logs.list',
                             editMode: true
-                        }
+                            }
                     })
                     .state('app.logs.request', {
                         url: '/request',
@@ -354,10 +395,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         controller: 'AddLogCtrl',
                         resolve: {
                             log: ['OrangeApi', '$q', getMyProfile]
-                        },
+                                    },
                         params: {
                             nextState: 'logs'
-                        }
+                                    }
                     })
                     .state('logs-request', {
                         url: '/onboarding/logs/request',

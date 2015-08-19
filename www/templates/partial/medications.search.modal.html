@@ -1,0 +1,43 @@
+<ion-modal-view ng-controller="MedicationSearchCtrl as search">
+    <ion-header-bar class="bar bar-orange" align-title="center">
+        <button ng-click="medications.closeModal()" class="button back-button buttons button-clear header-item">
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+        <h1 class="title" ng-bind="search.title"></h1>
+
+    </ion-header-bar>
+    <ion-content padding="true" class="padding">
+        <p class="form-title">Search</p>
+        <form class="orange-form" name="searchForm">
+            <label class="item-input">
+                <input type="search" placeholder="Medication" ng-model="search.term" ng-change="search.search()"/>
+            </label>
+        </form>
+        <ion-list class="list-clean">
+            <ion-item class="text-center">
+                <ion-spinner class="orange-loading-spinner" icon="dots"
+                             ng-if="search.timer"></ion-spinner>
+            </ion-item>
+            <ion-item ng-show="search.suggestions.length" class="item-text-wrap">
+                <h3>Suggestions:</h3>
+            </ion-item>
+
+            <ion-item ng-repeat="suggestion in search.suggestions"
+                      ng-click="search.pickSuggestion(suggestion)">
+                <div class="med-title">
+                    <p class="med-name" ng-bind="suggestion"></p>
+                </div>
+            </ion-item>
+
+            <ion-item ng-repeat="medication in search.result"
+                      ng-click="medications.pickMedication(medication)">
+                <div class="med-title">
+                    <p class="med-name" ng-bind="medication.name"></p>
+                    <p class="med-rx" ng-bind="medication.brand"></p>
+                </div>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+
+</ion-modal-view>

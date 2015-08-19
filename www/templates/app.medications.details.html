@@ -1,0 +1,46 @@
+<ion-view view-title="{{medication.title}}">
+    <ion-nav-bar class="bar-orange" align-title="center">
+        <ion-nav-buttons side="left">
+            <button ui-sref="app.medications.list" class="button back-button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-clear button-small button-dose" ng-click="medication.remove()">Delete</button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-content class="light-bg has-footer">
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="medication.medication === null"></ion-spinner>
+        </div>
+
+        <ion-list ng-if="medication.medication">
+            <ion-item class="item-title ">
+                <div class="row row-no-padding">
+                <div class="med-title col col-66">
+                    <p class="med-name" ng-bind="medication.medication.name"></p>
+                    <p class="med-rx" ng-bind="medication.medication.brand"></p>
+                </div>
+                <div class="col col-33 text-right med-info">
+                    <p ng-bind="medication.medication.schedule_summary"></p>
+                    <p ng-bind="medication.eventsText"></p>
+                </div>
+                </div>
+            </ion-item>
+
+            <ion-item ng-repeat="event in medication.medication.schedule.times">
+                <h2 class="text-title" ng-bind="($index + 1|toWords:true) + ' event'"></h2>
+
+                <p class="info" ng-bind="medication.getEventText(event)"></p>
+            </ion-item>
+        </ion-list>
+
+
+    </ion-content>
+    <div class="bottom-buttons">
+        <button class="button button-orange col col-no-padding button-full"
+                ui-sref="app.medication.schedule">Edit Medication</button>
+    </div>
+</ion-view>

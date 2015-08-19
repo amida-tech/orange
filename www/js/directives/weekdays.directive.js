@@ -3,17 +3,23 @@
 
     angular
         .module('orange')
-        .directive('calendar', calendar);
+        .directive('weekdays', weekdays);
 
-    function calendar() {
+    function weekdays() {
         return {
             require: 'ngModel',
             replace: true,
-            templateUrl: 'templates/partial/calendar.html',
+            templateUrl: 'templates/partial/weekdays.html',
             link: function (scope, element, attributes, ngModel) {
-                scope.days = [];
-                scope.selectedDays = [];
-                scope.chunkedDays = null;
+
+                scope.weekDays = _.map(moment.weekdaysShort(), function (day, index) {
+                    return {name: day, key: index};
+                });
+
+                scope.selectedDays = _.map(scope.weekDays, function(day, index) {
+                    return index;
+                });
+
                 scope.toggleDay = toggleDay;
 
                 activate();
@@ -21,21 +27,15 @@
                 function toggleDay(day) {
                     var index = scope.selectedDays.indexOf(day);
                     if (index === -1) {
-                        scope.selectedDays.push(day)
+                        if (scope.selectedDays.length < 6) scope.selectedDays.push(day)
                     } else {
-                        if (scope.selectedDays.length > 1) scope.selectedDays.splice(index, 1);
+                        scope.selectedDays.splice(index, 1);
                     }
                     ngModel.$setViewValue(scope.selectedDays);
                 }
 
                 function activate() {
-                    var d = moment();
-                    d.month(0);
-                    for (var i = 0; i < 31; i++) {
-                        d.date(i + 1);
-                        scope.days.push({key: d.format('YYYY-MM-DD'), val: i + 1});
-                    }
-                    scope.chunkedDays = _.chunk(scope.days, 7);
+
                 }
 
                 scope.$watch(attributes['ngModel'], function(val) {
