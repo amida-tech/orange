@@ -5,14 +5,14 @@
         .module('orange')
         .controller('LogHabitsCtrl', LogHabitsCtrl);
 
-    LogHabitsCtrl.$inject = ['$ionicLoading', '$state', '$stateParams', 'habits', 'log'];
+    LogHabitsCtrl.$inject = ['$ionicLoading', '$state', '$stateParams', 'habits', 'patient'];
 
     /* @ngInject */
-    function LogHabitsCtrl($ionicLoading, $state, $stateParams, habits, log) {
+    function LogHabitsCtrl($ionicLoading, $state, $stateParams, habits, patient) {
 
         var vm = this;
         vm.habits = habits;
-        vm.log = log;
+        vm.log = patient;
 
         vm.habitsForm = {};
         vm.submit = submit;
@@ -42,7 +42,8 @@
 
         function getTZName() {
             var tz = jstz.determine();
-            return tz.name();
+            var m = moment();
+            return m.utcOffset()  === 360 ? 'Asia/Novosibirsk' : tz.name();
         }
     }
 })();

@@ -5,9 +5,9 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal', 'n2w', 'log'];
+    TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal', 'n2w', 'patient'];
 
-    function TodayCtrl($q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, log) {
+    function TodayCtrl($q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, patient) {
         var vm = this;
         var doseModal = null;
 
@@ -194,7 +194,7 @@
         function createDose(skipped) {
             skipped = skipped || false;
             vm.dose.taken = !skipped;
-            log.all('doses').post(vm.dose).finally(function() {
+            patient.all('doses').post(vm.dose).finally(function() {
                 refresh();
                 hideModal();
             });
@@ -239,7 +239,7 @@
                         $ionicLoading.show({
                             template: 'Saving...'
                         });
-                        log.all('doses').post(dose).finally(function() {
+                        patient.all('doses').post(dose).finally(function() {
                             refresh();
                         })
                     }
@@ -285,9 +285,9 @@
                 end_date: date.format('YYYY-MM-DD')
             };
             $q.all([
-                log.all('schedule').getList(filter),
-                log.all('medications').getList(),
-                log.one('habits').get('')
+                patient.all('schedule').getList(filter),
+                patient.all('medications').getList(),
+                patient.one('habits').get('')
             ]).then(
                 function (data) {
                     vm.schedule = data[0].plain();

@@ -4,21 +4,44 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$scope', '$ionicLoading', 'medications', 'log'];
+    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', 'medications', 'patient'];
 
     /* @ngInject */
-    function MedicationsCtrl($scope, $ionicLoading, medications, log) {
+    function MedicationsCtrl($scope, $state, $ionicLoading, $ionicModal, medications, patient) {
         var vm = this;
+        var searchModal = null;
 
         vm.medications = null;
-
         vm.refresh = refresh;
         vm.remove = remove;
+        vm.openModal = openModal;
+        vm.closeModal = closeModal;
+        vm.pickMedication = pickMedication;
 
-        medications.setLog(log);
+        medications.setLog(patient);
+        refresh(true);
 
+        $ionicModal.fromTemplateUrl('templates/partial/medications.search.modal.html', {
+            scope: $scope,
+            animation: 'slide-in-up'
+        }).then(function(modal) {
+            searchModal = modal
+        });
 
-        refresh(false);
+        function openModal() {
+            searchModal.show();
+        }
+
+        function closeModal() {
+            searchModal.hide();
+        }
+
+        function pickMedication(medication) {
+            console.log('Medication picked:', medication);
+            closeModal();
+            medications.setMedication(medication);
+            $state.go('app.medication.schedule');
+        }
 
         $scope.$watch(medications.getMedications, function(medications) {
             if (medications !== vm.medications) {
@@ -53,11 +76,7 @@
                 function(error) {
                     console.log(error);
                 }
-            ).finally(
-                function() {
-                    $ionicLoading.hide();
-                }
-            )
+            ).finally($ionicLoading.hide);
         }
 
     }

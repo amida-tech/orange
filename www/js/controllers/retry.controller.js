@@ -6,16 +6,17 @@
         .controller('RetryCtrl', RetryCtrl);
 
     RetryCtrl.$inject = [
-        '$rootScope', 'OrangeApi', '$state', '$http'
+        '$rootScope', 'OrangeApi', '$state'
     ];
 
-    function RetryCtrl($rootScope, OrangeApi, $state, $http) {
+    function RetryCtrl($rootScope, OrangeApi, $state) {
         var vm = this;
 
         var methodsMap = {
             POST: 'post',
             GET: 'get',
-            PUT: 'put'
+            PUT: 'put',
+            DELETE: 'delete'
         };
 
         if (!('parentResponse' in $rootScope)) {

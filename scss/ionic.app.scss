@@ -37,13 +37,14 @@ $orange-font-head-size: 16px;
 $button-mini-padding: 2px;
 $label-item-padding: 90px;
 
-
 // Include all of Ionic
 @import "../www/lib/ionic/scss/ionic";
 
 // Sizes
 $log-size: 80px;
 $avatar-size: 60px;
+$profile-button-max-width: 120px;
+$small-btn-icon-line-height: 15px;
 
 body {
   background-color: $orange;
@@ -65,6 +66,7 @@ body {
 .pull-right {
   float: right !important;
 }
+
 .pane {
   background-color: $orange;
 }
@@ -118,9 +120,9 @@ body {
 }
 
 .block-with-subscribe {
-  font-size: 0px;
+  font-size: 0;
   span:first-child {
-    line-height: 1;
+    line-height: 14px;
     display: block;
     margin-bottom: 0;
     padding-bottom: 0;
@@ -132,7 +134,6 @@ body {
     padding-top: 0;
   }
 }
-
 
 .orange {
   color: $orange;
@@ -241,8 +242,19 @@ dl.dl-worksheet {
     //background: $light;
   }
   .item:first-child {
-    .item-content{
+    .item-content {
       padding-top: $item-padding;
+    }
+    .item-options .option-control {
+      top: $item-padding;
+    }
+  }
+}
+
+.list-clean.note-medications-list {
+  .item.item-complex {
+    .item-content {
+        padding: $card-padding 49px 0 $item-padding;;
     }
   }
 }
@@ -270,7 +282,7 @@ dl.dl-worksheet {
 
 .checkbox-orange {
   @include checkbox-style($checkbox-off-border-default, $orange, $orange);
-  input:checked:before, input:checked+.checkbox-icon:before {
+  input:checked:before, input:checked + .checkbox-icon:before {
     background: $orange;
     border-color: $orange;
   }
@@ -416,7 +428,7 @@ dl.dl-worksheet {
       border-radius: $card-border-radius;
       padding: $padding-base-vertical $padding-base-horizontal;
       min-height: 42px;
-      margin-right: 5px;
+      //margin-right: 5px; // WHY THIS?
 
       &:focus {
         border-color: $gray;
@@ -644,6 +656,8 @@ ion-content {
     position: static;
     background-color: #ccc;
     border-color: #ccc;
+    height: 40px;
+    padding: 0;
   }
 
   .button-clear,
@@ -662,7 +676,24 @@ ion-content {
     min-height: 0;
     height: 25px;
     top: $padding-small-vertical - 1px;
-    right: $padding-base-horizontal;
+    overflow: hidden;
+    right: 2px;
+    white-space: nowrap;
+    .icon:before {
+      line-height: $small-btn-icon-line-height;
+    }
+    .text-btn {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .button-profile {
+      max-width: $profile-button-max-width;
+    }
   }
 
   .button-dose {
@@ -678,7 +709,7 @@ ion-content {
     .button-icon,
     .button-outline,
     .title, {
-
+      margin: 0;
       color: $orange-light;
       font-weight: bold;
     }
@@ -706,6 +737,8 @@ ion-content {
     display: inline-block;
     width: auto;
     margin: $padding-base-vertical;
+    line-height: $padding-base-horizontal;
+    padding-bottom: $padding-base-horizontal;
 
     .log-avatar-img {
       width: $log-size;
@@ -805,9 +838,28 @@ ion-content {
     font-size: $font-size-base;
     &.button-full {
       margin: 0;
+      height: $bar-footer-height;
     }
     &.button-light {
       border-color: $light;
+    }
+  }
+}
+
+.list.accordion-list {
+  .accordion-body {
+    transition: max-height 0.25s ease-in;
+    max-height: 250px;
+    padding-top: $padding-large-vertical;
+
+    &.ng-hide {
+      max-height: 0;
+      transition: max-height 0.25s ease-out;
+    }
+
+    &.ng-hide-remove,
+    &.ng-hide-add {
+      display: block !important;
     }
   }
 }
@@ -902,12 +954,25 @@ ion-content {
 .orange-loading-spinner {
   position: absolute;
   top: 3px;
-  right: 0px;
-  left: 0px;
+  right: 0;
+  left: 0;
   z-index: 100;
   svg {
     fill: $orange;
   }
+}
+
+.med-info {
+  line-height: 1.2;
+  font-size: $font-size-base * 1.1;
+  p {
+    color: $dark;
+  }
+
+}
+
+.col-no-padding {
+  padding: 0;
 }
 
 .note-container {
@@ -931,7 +996,7 @@ ion-option-button.option-control.button {
   display: inline-block;
   height: auto;
   position: relative;
-  top: 16px;
+  top: 0;
 }
 
 // Fix border on android devices
@@ -972,6 +1037,10 @@ ion-option-button.option-control.button {
       min-width: 80px;
     }
   }
+}
+
+.bar .buttons-left span {
+  margin: 0;
 }
 
 /* Sharing */
