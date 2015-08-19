@@ -1,0 +1,28 @@
+<ion-view view-title="Select Logs">
+    <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
+        <ion-nav-buttons side="left" >
+            <button ui-sref="app.sharing" class="button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right" >
+            <button class="button buttons button-clear" ng-click="sharing_accept.accept(acceptForm)">
+                Done
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content>
+        <div class="list list-clean">
+            <form class="orange-logs item item-text-wrap" name="acceptForm">
+                <div class="row row-no-padding" ng-repeat="row in sharing_accept.logList">
+                    <div class="col col-33" ng-repeat="log in row">
+                        <div class="item-log">
+                            <avatar patient="log" with-check="true"></avatar>
+                            <div class="log-title">{{ log.first_name }}<br/>{{ log.last_name }}</div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </ion-content>
+</ion-view>

@@ -333,7 +333,18 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '/sharing',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.sharing.html'
+                                templateUrl: 'templates/app.sharing.html',
+                                controller: 'SharingCtrl as sharing'
+                            }
+                        }
+                    })
+                    .state('app.sharing-accept', {
+                        url: '/sharing/accept',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.sharing.accept.html',
+                                cache: false,
+                                controller: 'SharingAcceptCtrl as sharing_accept'
                             }
                         }
                     })

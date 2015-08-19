@@ -1,13 +1,68 @@
 <ion-view view-title="SHARING">
     <ion-nav-bar class="bar-orange orange-light" align-title="center">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="orange-bg">
-
+    <ion-content class="light-bg" padding="true" scroll="true">
+        <div class="list orange-list">
+            <p class="form-title with-padding">Requests</p>
+            <form class="orange-form with-bottom-border">
+                <ul class="list">
+                    <li class="sharing-list" ng-repeat="request in sharing.requests">
+                        <label class="item-input item-input-wo-margin">
+                            <span class="input-label input-label-wo-margin">
+                                <div class="sharing-email">
+                                    <strong>{{ request.email }}</strong>
+                                    has requested access to your logs
+                                </div>
+                                <div class="sharing-status">
+                                    <button class="button" ui-sref="app.sharing-accept">Accept</button><br>
+                                    <button class="button">Decline</button>
+                                </div>
+                            </span>
+                        </label>
+                    </li>
+                </ul>
+            </form>
+            <p class="form-title">My requests</p>
+            <form class="orange-form with-bottom-border">
+                <ul class="list">
+                    <li class="sharing-list" ng-repeat="request in sharing.requested">
+                        <label class="item-input item-input-wo-margin">
+                            <span class="input-label input-label-wo-margin">
+                                <div class="sharing-email"><strong>{{ request.email }}</strong></div>
+                                <div class="sharing-status">
+                                    {{ request.status }}<br>
+                                    <button class="button" ng-if="request.status=='cancelled'">Retry</button>
+                                    <button class="button" ng-if="request.status=='pending'">Cancel</button>
+                                </div>
+                            </span>
+                        </label>
+                    </li>
+                </ul>
+            </form>
+            <p class="form-title">Reports</p>
+            <form class="orange-form with-bottom-border">
+                <label class="item-input">
+                    <span class="input-label input-label-wo-margin">Select Month</span>
+                </label>
+                <label class="item item-input item-select">
+                    <select>
+                        <option ng-repeat="month in sharing.months" value="{{ month.toLowerCase() }}">{{ month }}</option>
+                    </select>
+                </label>
+                <label class="item-input">
+                    <span class="input-label input-label-wo-margin">Select Log</span>
+                </label>
+                <label class="item item-input item-select">
+                    <select>
+                        <option ng-repeat="log in sharing.logs" value="{{ log.id }}">{{ log.first_name + ' ' + log.last_name }}</option>
+                    </select>
+                </label>
+                    <button class="button button-full button-orange">Get Report</button>
+            </form>
+        </div>
     </ion-content>
 </ion-view>

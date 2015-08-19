@@ -452,6 +452,11 @@ dl.dl-worksheet {
       }
     }
   }
+  &.with-bottom-border {
+    border-bottom: 2px solid #efefef;
+    padding-bottom: $padding-large-vertical;
+    margin-bottom: $padding-large-vertical;
+  }
 }
 
 ion-content {
@@ -967,4 +972,45 @@ ion-option-button.option-control.button {
       min-width: 80px;
     }
   }
+}
+
+/* Sharing */
+.sharing-list {
+  margin-bottom: $padding-base-vertical;
+  border-left: 3px solid orange;
+  padding-left: 5px;
+}
+
+.sharing-email {
+  color: black;
+  font-weight: normal;
+  float: left;
+  max-width: 75%;
+}
+
+.sharing-status {
+  float: right;
+  display: block;
+
+  .button {
+    padding: $button-mini-padding;
+    border: 1px solid $gray;
+    background: $lightgray;
+    height: auto;
+    min-height: 0;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1;
+    float: right;
+    margin-bottom: 1px;
+  }
+}
+
+.icon-log-checked {
+  color:white;
+  position: absolute;
+  font-size: 60px;
+  opacity: 0.7;
+  background-color: $dark;
+  padding-top: 10px;
 }

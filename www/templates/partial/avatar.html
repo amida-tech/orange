@@ -1,4 +1,7 @@
-<div>
+<div ng-click="avatarClick()">
+    <div ng-if="checked" class="log-avatar-img icon-log-checked">
+        <i class="icon ion-checkmark"></i>
+    </div>
     <div class="log-avatar" ng-if="!imageSrc">
         <div class="log-caption"
              ng-bind="patient.first_name && patient.last_name ? patient.first_name[0] + patient.last_name[0] : '+'"></div>
