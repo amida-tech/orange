@@ -5,15 +5,16 @@
         .module('orange')
         .controller('MedicationScheduleCtrl', MedicationScheduleCtrl);
 
-    MedicationScheduleCtrl.$inject = ['$scope', '$state', 'medications'];
+    MedicationScheduleCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'medications'];
 
     /* @ngInject */
-    function MedicationScheduleCtrl($scope, $state, medications) {
+    function MedicationScheduleCtrl($scope, $state, $ionicLoading, medications) {
         /* jshint validthis: true */
         var vm = this;
 
         vm.activate = activate;
         vm.title = 'MedicationScheduleCtrl';
+        vm.buttonText = null;
         vm.schedule = null;
         vm.eventsCount = null;
 
@@ -49,19 +50,44 @@
 
         activate();
 
-        vm.print = function () {
+        vm.continue = function () {
             if (vm.schedule.regularly === false) {
                 delete vm.schedule.until;
                 delete vm.schedule.frequency;
+                // save and go to medication details
+                medications.setMedicationSchedule(vm.schedule);
+                $ionicLoading.show({
+                    template: 'Saving…'
+                });
+                medications.saveMedication().finally(
+                    function() {
+                        $ionicLoading.hide();
+                        $state.go('app.medications.list');
+                    }
+                );
+            } else {
+                // prepare events and go to configure events
+                var events = vm.schedule.times || [];
+                events = events.slice(0, vm.eventsCount);
+                for (var i = events.length; i < vm.eventsCount; i++) {
+                    events.push({
+                        type: 'event',
+                        event: 'breakfast',
+                        when: 'before'
+                    });
+                }
+                vm.schedule.times = events;
+                medications.setMedicationSchedule(vm.schedule);
+                $state.go('app.medication.events');
             }
-            console.log(vm.schedule);
-            $state.go('app.medication.events');
+            //console.log(vm.schedule);
+            //console.log(vm.eventsCount);
+            //$state.go('app.medication.events');
         };
 
         ////////////////
 
         function activate() {
-            console.log(medications.getMedication());
             $scope.$watch(medications.getMedication, function (medication) {
                 if (medication && medication.schedule !== vm.schedule) {
                     console.log('Schedule changed', medication.schedule);
@@ -102,14 +128,17 @@
                 case 'as_needed':
                     vm.schedule.as_needed = true;
                     vm.schedule.regularly = false;
+                    vm.buttonText = 'Save';
                     break;
                 case 'regularly':
                     vm.schedule.as_needed = false;
                     vm.schedule.regularly = true;
+                    vm.buttonText = 'Continue';
                     break;
                 case 'both':
                     vm.schedule.as_needed = true;
                     vm.schedule.regularly = true;
+                    vm.buttonText = 'Continue';
                     break;
             }
 

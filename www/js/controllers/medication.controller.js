@@ -27,13 +27,13 @@
             if (medication && medication !== vm.medication) {
                 console.log('Medication changed', medication);
                 vm.medication = medication;
-                vm.eventsText = getEventText(medication);
+                vm.eventsText = getMedicationText(medication);
             }
         });
 
         ////////////////
 
-        function getEventText(medication) {
+        function getMedicationText(medication) {
             var text = '';
             if (medication.schedule.times && medication.schedule.times.length) {
                 var eventsCount = medication.schedule.times.length;

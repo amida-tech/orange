@@ -791,6 +791,24 @@ ion-content {
   }
 }
 
+.list.accordion-list {
+  .accordion-body {
+    transition: max-height 0.25s ease-in;
+    max-height: 250px;
+    padding-top: $padding-large-vertical;
+
+    &.ng-hide {
+      max-height: 0;
+      transition: max-height 0.25s ease-out;
+    }
+
+    &.ng-hide-remove,
+    &.ng-hide-add {
+      display: block !important;
+    }
+  }
+}
+
 .orange-menu {
   background: $dark;
   .menu.menu-left {

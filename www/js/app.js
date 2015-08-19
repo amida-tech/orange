@@ -186,16 +186,19 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.medication.details', {
                         url: '/details',
+                        cache: false,
                         templateUrl: 'templates/app.medications.details.html'
                     })
                     .state('app.medication.schedule', {
                         url: '/schedule',
+                        cache: false,
                         templateUrl: 'templates/app.medications.schedule.html',
                         controller: 'MedicationScheduleCtrl as schedule'
                     })
 
                     .state('app.medication.events', {
                         url: '/events',
+                        cache: false,
                         templateUrl: 'templates/app.medications.events.html',
                         controller: 'MedicationEventsCtrl as events'
                     })
