@@ -1,13 +1,13 @@
-<ion-view view-title="MEDICATIONS">
+<ion-view view-title="MEDICATIONS" hide-nav-bar="false">
     <ion-nav-bar class="bar-orange orange-light" align-title="left">
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
-        <ion-nav-buttons side="right">
-            <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
-            <button class="button button-icon button-clear button-small ion-plus button-dose" ng-click="medications.openModal()"></button>
-        </ion-nav-buttons>
+        <ion-nav-buttons side="right">            
+            <change-patient></change-patient>
+<button class="button button-icon button-clear button-small ion-plus button-dose" ng-click="medications.openModal()"></button>
+                   </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
         <ion-refresher pulling-text="Pull to refresh" on-refresh="medications.refresh()"></ion-refresher>

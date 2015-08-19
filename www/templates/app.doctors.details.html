@@ -1,5 +1,5 @@
 <ion-view view-title="{{doctorDetails.title}}">
-    <ion-nav-bar class="bar-orange orange-light" align-title="center">
+    <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-buttons side="left" >
             <button ui-sref="app.doctors.list" class="button back-button button-clear header-item">
                 <i class="icon ion-arrow-left-c"></i>
@@ -26,13 +26,16 @@
             <ion-list class="list-last-open list-details">
                 <ion-item>
                     <span class="text-basic pre-line">{{ doctorDetails.doctor.address }}</span>
-                    <span class="item-label">DIRECTIONS</span>
+
+                    <span class="item-label">
+                        <span class="text-title">DIRECTIONS</span>
+                    </span>
                 </ion-item>
 
                 <ion-item ng-if="doctorDetails.doctor.phone">
                     <span class="text-basic">{{ doctorDetails.doctor.phone }}</span>
                     <span class="item-label">
-                        <span class="button" ng-click="doctorDetails.callDoctor(doctorDetails.doctor.phone)">CALL</span>
+                        <span class="button text-title" ng-click="doctorDetails.callDoctor(doctorDetails.doctor.phone)">CALL</span>
                     </span>
                 </ion-item>
 

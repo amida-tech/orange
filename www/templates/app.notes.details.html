@@ -1,12 +1,11 @@
 <ion-view view-title="{{ note_details.title }}">
-    <ion-nav-bar class="bar-orange orange-light" align-title="left">
+    <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-buttons side="left" >
             <button ui-sref="app.notes.list" class="button back-button button-clear header-item">
                 <i class="icon ion-arrow-left-c"></i>
             </button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right" >
-            <button class="button button-outline button-orange button-small button-profile">Jon Berry</button>
             <button class="button button-clear button-small button-dose"
                     ui-sref="app.notes.update({id: note_details.note.id})">Edit</button>
         </ion-nav-buttons>

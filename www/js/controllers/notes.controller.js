@@ -5,10 +5,10 @@
         .module('orange')
         .controller('NotesCtrl', NotesCtrl);
 
-    NotesCtrl.$inject = ['$scope', '$ionicLoading', 'log'];
+    NotesCtrl.$inject = ['$scope', '$ionicLoading', 'patient'];
 
     /* @ngInject */
-    function NotesCtrl($scope, $ionicLoading, log) {
+    function NotesCtrl($scope, $ionicLoading, patient) {
         //OrangeApi.notes.
         var vm = this;
         vm.refresh = refresh;

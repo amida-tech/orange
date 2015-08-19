@@ -7,10 +7,11 @@
         <div class="card orange-card with-avatar">
             <div class="orange-avatar">
                 <div class="item-log" ng-click="iconModal.show()">
-                    <div ng-if="!log.avatarUrl" class="log-avatar">
+                    <div ng-if="!log.avatarUrl && !editMode" class="log-avatar">
                         <div class="log-caption">+</div>
                     </div>
                     <img ng-if="log.avatarUrl" ng-src="{{log.avatarUrl}}" class="log-avatar-img" alt=""/>
+                    <avatar patient="log" ng-if="log.avatar && editMode && !log.avatarUrl"></avatar>
                 </div>
             </div>
             <div class="item item-body">
@@ -38,10 +39,13 @@
                             <option value="unspecified">Unspecified</option>
                         </select>
                     </label>
+                    <label class="item-input" ng-if="editMode">
+                        <button class="button button-dark button-full" ng-click="habitsModal.show()">Habits</button>
+                    </label>
                 </form>
             </div>
             <div class="item item-button">
-                <button class="button button-full button-orange" ng-click="saveLog()">Add Log</button>
+                <button class="button button-full button-orange" ng-click="saveLog()">{{ button_title }}</button>
             </div>
 
         </div>

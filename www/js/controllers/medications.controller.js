@@ -4,10 +4,10 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', 'medications', 'log'];
+    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', 'medications', 'patient'];
 
     /* @ngInject */
-    function MedicationsCtrl($scope, $state, $ionicLoading, $ionicModal, medications, log) {
+    function MedicationsCtrl($scope, $state, $ionicLoading, $ionicModal, medications, patient) {
         var vm = this;
         var searchModal = null;
 
@@ -18,8 +18,8 @@
         vm.closeModal = closeModal;
         vm.pickMedication = pickMedication;
 
-        medications.setLog(log);
-        refresh(false);
+        medications.setLog(patient);
+        refresh(true);
 
         $ionicModal.fromTemplateUrl('templates/partial/medications.search.modal.html', {
             scope: $scope,

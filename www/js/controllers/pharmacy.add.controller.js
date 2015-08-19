@@ -6,11 +6,11 @@
         .controller('PharmacyAddCtrl', PharmacyAddCtrl);
 
     PharmacyAddCtrl.$inject = [
-        '$scope', '$ionicLoading', 'log', '$cordovaDialogs', '$state', '$locale', '$ionicModal',
+        '$scope', '$ionicLoading', 'patient', '$cordovaDialogs', '$state', '$locale', '$ionicModal',
         '$stateParams'
     ];
 
-    function PharmacyAddCtrl($scope, $ionicLoading, log, $cordovaDialogs, $state, $locale,
+    function PharmacyAddCtrl($scope, $ionicLoading, patient, $cordovaDialogs, $state, $locale,
                              $ionicModal, $stateParams) {
         var vm = this,
             is_edit = 'id' in $stateParams;
@@ -46,7 +46,7 @@
                 if (is_edit) {
                     vm.pharmacy.save().then(saveSuccess, saveError);
                 } else {
-                    log.all('pharmacies').post(vm.pharmacy).then(saveSuccess, saveError);
+                    patient.all('pharmacies').post(vm.pharmacy).then(saveSuccess, saveError);
                 }
             }
         }

@@ -14,16 +14,16 @@
         'Oauth',
         'TokenService',
         'n2w',
-        'log',
+        'patient',
         'medications'
     ];
 
     /* @ngInject */
-    function LogMedicationsCtrl($q, $timeout, $state, $ionicLoading, OrangeApi, Oauth, TokenService, n2w, log, medications) {
+    function LogMedicationsCtrl($q, $timeout, $state, $ionicLoading, OrangeApi, Oauth, TokenService, n2w, patient, medications) {
         /* jshint validthis: true */
         var vm = this;
 
-        vm.log = log;
+        vm.log = patient;
         vm.events = [];
         vm.event = null;
         vm.medication = null;
@@ -196,7 +196,7 @@
                 vm.medication.schedule.times.push(time);
             }
             console.log(vm.medication);
-            log.all('medications').post(vm.medication).then(
+            patient.all('medications').post(vm.medication).then(
                 function (data) {
                     var promises = [];
                     for (var i = 0, len = data.schedule.times.length; i < len; i++) {
@@ -241,7 +241,7 @@
                     template: 'Saving...'
                 });
                 console.log('Medication = ', vm.medication);
-                log.all('medications').post(vm.medication).then(
+                patient.all('medications').post(vm.medication).then(
                     function (data) {
                         $ionicLoading.hide();
                         vm.medications.push(data);

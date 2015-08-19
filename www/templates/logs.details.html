@@ -1,0 +1,60 @@
+<ion-view view-title="{{ log_details.title }}">
+    <ion-nav-bar class="bar-orange orange-light" align-title="left">
+        <ion-nav-buttons side="left" >
+            <button ui-sref="app.logs.list" class="button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right" >
+            <button class="button button-clear button-small button-dose" ng-click="log_details.deleteLog()">Delete</button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content class="light-bg" overflow-scroll="true">
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots" ng-show="!log_details.currentLog"></ion-spinner>
+        </div>
+        <div class="item item-body">
+            <h1 class="pull-left">{{ log_details.currentLog.first_name }}<br>{{ log_details.currentLog.last_name }}</h1>
+            <div class="orange-logs pull-right" ng-if="log_details.currentLog">
+                <div class="item-log">
+                    <avatar patient="log_details.currentLog"></avatar>
+                </div>
+            </div>
+        </div>
+        <div class="item item-body">
+            <div class="text-container" ng-if="log_details.currentLog.birthdate">
+                <p>Birth Date: </p>{{ log_details.currentLog.birthdate }}
+            </div>
+            <div class="text-container" ng-if="log_details.currentLog.phone">
+                <p>Phone: </p>{{ log_details.currentLog.phone }}
+            </div>
+            <div class="text-container" ng-if="log_details.currentLog.sex">
+                <p>Sex: </p>{{ log_details.currentLog.sex }}
+            </div>
+        </div>
+        <div class="item item-body">
+            <div class="log-details-habits-list">
+                <h2>Habits:</h2>
+
+                <div class="item">
+                    <p>Wake:</p>{{ log_details.currentLog.habits.wake }}
+                </div>
+                <div class="item">
+                    <p>Breakfast:</p>{{ log_details.currentLog.habits.breakfast }}
+                </div>
+                <div class="item">
+                    <p>Lunch:</p>{{ log_details.currentLog.habits.lunch }}
+                </div>
+                <div class="item">
+                    <p>Dinner:</p>{{ log_details.currentLog.habits.dinner }}
+                </div>
+                <div class="item">
+                    <p>Sleep:</p>{{ log_details.currentLog.habits.sleep }}
+                </div>
+            </div>
+        </div>
+    </ion-content>
+    <div class="bottom-buttons">
+        <button class="button button-full button-orange" ui-sref="app.logs.edit">Edit</button>
+    </div>
+</ion-view>

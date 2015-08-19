@@ -5,7 +5,7 @@
         .module('orange')
         .controller('MedicationCtrl', MedicationCtrl);
 
-    MedicationCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', 'medications', 'log'];
+    MedicationCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', 'medications', 'patient'];
 
     /* @ngInject */
     function MedicationCtrl($scope, $state, $stateParams, $ionicLoading, medications, log) {

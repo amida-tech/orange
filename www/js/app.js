@@ -1,6 +1,6 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch'])
 
-    .run(function ($rootScope, $state, $ionicPlatform, $ionicHistory, Auth) {
+    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient) {
 
              // Initializing app
              $rootScope.initialized = false;
@@ -14,9 +14,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                      // User authorized
                      if ($rootScope.cachedState) {
                          $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
-                     } else {
-                         $state.go('logs');
+                         return status;
                      }
+
+                     Patient.changeStateByPatient();
                  } else {
                      // Not authorized
                      $state.go('onboarding');
@@ -73,43 +74,52 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '/loading',
                         templateUrl: 'templates/loading.html'
                     })
+                    .state('retry', {
+                        url: '/retry',
+                        templateUrl: 'templates/app.retry.html',
+                        controller: 'RetryCtrl as retry'
+                    })
                     .state('app', {
                         url: '/app',
                         abstract: true,
                         templateUrl: 'templates/app.menu.html',
                         controller: 'MenuCtrl',
                         resolve: {
-                            log: ['OrangeApi', '$q', function (OrangeApi, $q) {
-                                var deffered = $q.defer();
-                                OrangeApi.patients.getList().then(
-                                    function (patients) {
-                                        var result = {};
-                                        //patients = patients.plain();
-                                        for (var i = 0, len = patients.length; i < len; i++) {
-                                            var patient = patients[i];
-                                            if (patient.me) {
-                                                result = patient;
-                                                break;
-                                            }
-                                        }
-                                        deffered.resolve(result);
-                                    },
-                                    function (error) {
-                                        deffered.resolve({})
-                                    }
-                                );
-                                return deffered.promise;
+                            patient: ['Patient', function (Patient) {
+                                return Patient.getPatient();
                             }]
-                        }
+                                    },
+                        cache: false
                     })
                     .state('app.today', {
                         url: '/today',
+                        abstract: true,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.today.html',
-                                controller: 'TodayCtrl as today'
+                                template: '<ion-nav-view></ion-nav-view>',
+                                controller: function($scope, patient) {
+                                    $scope.medications = patient.all('medications').getList();
+                                }
                             }
                         }
+                    })
+                    .state('app.today.schedule', {
+                        url: '',
+                        templateUrl: 'templates/app.today.html',
+                        controller: 'TodayCtrl as today',
+                        cache: false
+                    })
+                    .state('app.today.as_needed', {
+                        url: '/as_needed',
+                        templateUrl: 'templates/app.today.as_needed.html',
+                        controller: 'TodayAsNeededCtrl as asNeeded',
+                        cache: false
+                    })
+                    .state('app.today.as_needed_add', {
+                        url: '/as_needed/:id/add',
+                        templateUrl: 'templates/app.today.as_needed_add.html',
+                        controller: 'TodayAsNeededAddCtrl as asNeededAdd',
+                        cache: false
                     })
                     .state('app.components', {
                         url: '/components',
@@ -123,12 +133,13 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('app.notes', {
                         url: '/notes',
                         abstract: true,
+                        cache: false,
                         views: {
                             menuContent: {
                                 template: '<ion-nav-view/>',
-                                controller: function($scope, $ionicLoading, log) {
-                                    $scope.medications = log.all('medications').getList();
-                                    $scope.notes = log.all('journal').getList({sort_order: 'desc', sort_by: 'date'});
+                                controller: function($scope, patient) {
+                                    $scope.medications = patient.all('medications').getList();
+                                    $scope.notes = patient.all('journal').getList({sort_order: 'desc', sort_by: 'date'});
                                 }
                             }
                         }
@@ -206,12 +217,13 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('app.doctors', {
                         url: '/doctors',
                         abstract: true,
+                        cache: false,
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>',
-                                controller: function($scope, log) {
+                                controller: function($scope, patient) {
                                     $scope.doctorToAdd = null;
-                                    $scope.doctors = log.all('doctors').getList();
+                                    $scope.doctors = patient.all('doctors').getList();
                                 }
                             }
                         }
@@ -251,8 +263,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>',
-                                controller: function ($scope, $ionicLoading, log) {
-                                    $scope.pharmacies = log.all('pharmacies').getList();
+                                controller: function ($scope, $ionicLoading, patient) {
+                                    $scope.pharmacies = patient.all('pharmacies').getList();
                                 }
                             }
                         }
@@ -280,10 +292,66 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.logs', {
                         url: '/logs',
+                        abstract: true,
+                        cache: false,
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.logs.html'
+                                template: '<ion-nav-view />'
                             }
+                        }
+                    })
+                    .state('app.logs.list', {
+                        url: '',
+                        templateUrl: 'templates/app.logs.html',
+                        cache: false,
+                        controller: 'LogsCtrl as menu_logs'
+                    })
+                    .state('app.logs.add', {
+                        url: '/add',
+                        templateUrl: 'templates/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        resolve: {
+                            patient: function () {
+                                return {};
+                            }
+                        },
+                        params: {
+                            nextState: 'app.logs.list'
+                        }
+                    })
+                    .state('app.logs.add_my', {
+                        url: '/my',
+                        templateUrl: 'templates/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        resolve: {
+                            log: ['OrangeApi', '$q', getMyProfile]
+                        },
+                        params: {
+                            nextState: 'app.logs.list'
+                        }
+                    })
+                    .state('app.logs.details', {
+                        url: '/details/:id',
+                        templateUrl: 'templates/logs.details.html',
+                        controller: 'LogDetailsCtrl as log_details',
+                        cache: false
+                    })
+                    .state('app.logs.edit', {
+                        url: '/edit',
+                        templateUrl: 'templates/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        cache: false,
+                        params: {
+                            nextState: 'app.logs.list',
+                            editMode: true
+                            }
+                    })
+                    .state('app.logs.request', {
+                        url: '/request',
+                        templateUrl: 'templates/logs.request.html',
+                        controller: 'RequestLogsCtrl',
+                        params: {
+                            nextState: 'app.logs.list'
                         }
                     })
                     .state('app.notifications', {
@@ -306,21 +374,19 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '/onboarding/logs',
                         templateUrl: 'templates/logs.html',
                         controller: 'LogsCtrl',
-                        cache: false,
-                        resolve: {
-                            'logs': ['OrangeApi', function (OrangeApi) {
-                                return OrangeApi.patients.getList();
-                            }]
-                        }
+                        cache: false
                     })
                     .state('logs-add', {
                         url: '/onboarding/logs/add',
                         templateUrl: 'templates/logs.add.html',
                         controller: 'AddLogCtrl',
                         resolve: {
-                            log: function () {
+                            patient: function () {
                                 return {};
                             }
+                        },
+                        params: {
+                            nextState: 'logs'
                         }
                     })
                     .state('logs-add-my', {
@@ -328,34 +394,20 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/logs.add.html',
                         controller: 'AddLogCtrl',
                         resolve: {
-                            log: ['OrangeApi', '$q', function (OrangeApi, $q) {
-                                var deffered = $q.defer();
-                                OrangeApi.patients.getList().then(
-                                    function (patients) {
-                                        var result = {};
-                                        //patients = patients.plain();
-                                        for (var i = 0, len = patients.length; i < len; i++) {
-                                            var patient = patients[i];
-                                            if (patient.me) {
-                                                result = patient;
-                                                break;
-                                            }
-                                        }
-                                        deffered.resolve(result);
+                            log: ['OrangeApi', '$q', getMyProfile]
                                     },
-                                    function (error) {
-                                        deffered.resolve({})
+                        params: {
+                            nextState: 'logs'
                                     }
-                                );
-                                return deffered.promise;
-                            }]
-                        }
                     })
                     .state('logs-request', {
                         url: '/onboarding/logs/request',
                         templateUrl: 'templates/logs.request.html',
                         cache: false,
-                        controller: 'RequestLogsCtrl'
+                        controller: 'RequestLogsCtrl',
+                        params: {
+                            nextState: 'logs'
+                        }
                     })
                     .state('logs-setup', {
                         url: '/onboarding/logs/setup',
@@ -363,8 +415,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         cache: false,
                         controller: 'LogsCtrl',
                         resolve: {
-                            'logs': ['OrangeApi', function (OrangeApi) {
-                                return OrangeApi.patients.getList();
+                            'logs': ['Patient', function (Patient) {
+                                return Patient.getPatients();
                             }]
                         }
                     })
@@ -446,3 +498,25 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                 $urlRouterProvider.otherwise('/loading');
 
             });
+
+function getMyProfile(OrangeApi, $q) {
+    var deffered = $q.defer();
+    OrangeApi.patients.getList().then(
+        function (patients) {
+            var result = {};
+            //patients = patients.plain();
+            for (var i = 0, len = patients.length; i < len; i++) {
+                var patient = patients[i];
+                if (patient.me) {
+                    result = patient;
+                    break;
+                }
+            }
+            deffered.resolve(result);
+        },
+        function (error) {
+            deffered.resolve({})
+        }
+    );
+    return deffered.promise;
+}

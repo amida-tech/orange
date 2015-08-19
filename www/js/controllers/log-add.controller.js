@@ -6,23 +6,31 @@
         .controller('AddLogCtrl', AddLogCtrl);
 
     AddLogCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', '$cordovaCamera', 'OrangeApi',
-                          'Avatar', 'settings', 'log'];
+                          'Avatar', 'LogService', 'settings', 'patient'];
 
     /* @ngInject */
     function AddLogCtrl($scope, $state, $ionicLoading, $ionicModal, $cordovaCamera, OrangeApi, Avatar,
-                        settings, log) {
+                        LogService, settings, patient) {
 
-        $scope.log = log;
-        $scope.saveLog = saveLog;
+        $scope.editMode = !!$state.params['editMode'];
+        $scope.log = $scope.editMode ? LogService.getDetailLog(): patient;
+        $scope.saveLog = $scope.editMode ? saveLogWithHabits: addLog;
         $scope.selectPhoto = selectPhoto;
         $scope.isDevice = ionic.Platform.isWebView();
-        $scope.title = log.me ? 'Add My Log' : 'Add New Log';
+        $scope.title = $scope.editMode ? 'Edit Log' : patient.me ? 'Add My Log' : 'Add New Log';
+        $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
         $scope.iconItems = _.chunk(settings.avatars, 3);
 
         $ionicModal.fromTemplateUrl('templates/partial/logs.icon.modal.html', {
             scope: $scope
         }).then(function (modal) {
             $scope.iconModal = modal;
+        });
+
+        $ionicModal.fromTemplateUrl('templates/partial/logs.habits.modal.html', {
+            scope: $scope
+        }).then(function (modal) {
+            $scope.habitsModal = modal;
         });
 
 
@@ -53,12 +61,36 @@
             $scope.iconModal.hide();
         }
 
-        function saveLog() {
-            var avatarUrl = $scope.log.avatarUrl;
-
+        function addLog() {
             $ionicLoading.show({
                 template: 'Saving...'
             });
+            saveLog();
+        }
+
+        function saveLogWithHabits() {
+            $ionicLoading.show({
+                template: 'Saving...'
+            });
+            if ($scope.log.habits) {
+                $scope.log.habits.save().then(
+                    saveLog,
+                    function (error) {
+                        $ionicLoading.hide();
+                        alert(error.data.errors);
+                    }
+                )
+            } else {
+                saveLog();
+            }
+        }
+
+        function saveLog() {
+            var avatarUrl = $scope.log.avatarUrl;
+
+            var parts = $scope.log.fullName ? $scope.log.fullName.split(' ') : [];
+            $scope.log.first_name = parts.shift() || '';
+            $scope.log.last_name = parts.join(' ') || '';
 
             if ($scope.log.restangularized) {
                 // Restangular object
@@ -69,59 +101,51 @@
                 }
                 $scope.log.save().then(
                     function (patient) {
+                        LogService.addLog(patient);
                         $scope.log = patient;
                         if (avatarUrl) {
                             $scope.log.avatarUrl = avatarUrl;
                             Avatar.upload($scope.log).then(
                                 function () {
                                     Avatar.cleanCache($scope.log.id);
-                                    $state.go('logs');
-                                    $ionicLoading.hide();
-                                }, function () {
-                                    $state.go('logs');
-                                    $ionicLoading.hide();
-                                })
+                                    goToNextState();
+                                }, goToNextState);
                         } else {
-                            $state.go('logs');
-                            $ionicLoading.hide();
+                            goToNextState();
                         }
                     },
                     function (response) {
+                        $ionicLoading.hide();
                         alert(response.data.errors);
                     }
                 )
             } else {
                 // Not restangular object
                 // Create new patient
-                var parts = $scope.log.fullName ? $scope.log.fullName.split(' ') : [];
-                $scope.log.first_name = parts.shift() || '';
-                $scope.log.last_name = parts.join(' ') || '';
-
                 OrangeApi.patients.post($scope.log).then(
                     function (patient) {
+                        LogService.addLog(patient);
                         $scope.log = patient;
                         $scope.log.fullName = $scope.log.first_name + ' ' + $scope.log.last_name;
                         if (avatarUrl) {
                             $scope.log.avatarUrl = avatarUrl;
-                            Avatar.upload($scope.log).then(
-                                function () {
-                                    $state.go('logs');
-                                    $ionicLoading.hide();
-                                }, function () {
-                                    $ionicLoading.hide();
-                                    $state.go('logs');
-                                })
+                            Avatar.upload($scope.log).then(goToNextState, goToNextState);
                         } else {
-                            $ionicLoading.hide();
-                            $state.go('logs');
+                            goToNextState();
                         }
 
                     },
                     function (error) {
+                        $ionicLoading.hide();
                         alert(error.status);
                     }
                 )
             }
+        }
+
+        function goToNextState() {
+            $state.go($state.params['nextState'] || 'logs');
+            $ionicLoading.hide();
         }
     }
 })();

@@ -43,6 +43,8 @@ $label-item-padding: 90px;
 // Sizes
 $log-size: 80px;
 $avatar-size: 60px;
+$profile-button-max-width: 120px;
+$small-btn-icon-line-height: 15px;
 
 body {
   background-color: $orange;
@@ -69,6 +71,10 @@ body {
   background-color: $orange;
 }
 
+.pane.light-bg {
+  background-color: $light;
+}
+
 .has-bottom-buttons {
   padding-bottom: $button-height * 2;
 }
@@ -89,8 +95,13 @@ body {
   line-height: 1.4;
 }
 
+
 .text-basic, .text-basic-bold {
   font-size: $orange-font-base-size;
+}
+
+.text-basic.text-compressed {
+  letter-spacing: -0.7px;
 }
 
 .text-basic-bold {
@@ -109,12 +120,14 @@ body {
 }
 
 .block-with-subscribe {
-  font-size: 0px;
+  font-size: 0;
   span:first-child {
-    line-height: 1;
+    line-height: 14px;
     display: block;
     margin-bottom: 0;
     padding-bottom: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   span:first-child {
     margin-top: 0;
@@ -181,6 +194,9 @@ body {
     margin: 0;
     padding: $item-padding $label-item-padding $item-padding 0;
   }
+  .item.orange-form {
+    padding-right: 0;
+  }
 }
 
 .item {
@@ -192,9 +208,11 @@ body {
     display: inline-block;
     top: 0;
     padding: $item-padding 0;
-    color: $more-dark;
+    .text-title {
+      color: $more-dark;
+      font-weight: bold;
+    }
     float: right;
-    font-weight: bold;
   }
   .item-label .button {
     padding: $button-mini-padding;
@@ -226,6 +244,17 @@ dl.dl-worksheet {
   .item:first-child {
     .item-content {
       padding-top: $item-padding;
+    }
+    .item-options .option-control {
+      top: $item-padding;
+    }
+  }
+}
+
+.list-clean.note-medications-list {
+  .item.item-complex {
+    .item-content {
+        padding: $card-padding 49px 0 $item-padding;;
     }
   }
 }
@@ -622,6 +651,8 @@ ion-content {
     position: static;
     background-color: #ccc;
     border-color: #ccc;
+    height: 40px;
+    padding: 0;
   }
 
   .button-clear,
@@ -640,7 +671,24 @@ ion-content {
     min-height: 0;
     height: 25px;
     top: $padding-small-vertical - 1px;
-    right: $padding-base-horizontal;
+    overflow: hidden;
+    right: 2px;
+    white-space: nowrap;
+    .icon:before {
+      line-height: $small-btn-icon-line-height;
+    }
+    .text-btn {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .button-profile {
+      max-width: $profile-button-max-width;
+    }
   }
 
   .button-dose {
@@ -656,7 +704,7 @@ ion-content {
     .button-icon,
     .button-outline,
     .title, {
-
+      margin: 0;
       color: $orange-light;
       font-weight: bold;
     }
@@ -684,6 +732,8 @@ ion-content {
     display: inline-block;
     width: auto;
     margin: $padding-base-vertical;
+    line-height: $padding-base-horizontal;
+    padding-bottom: $padding-base-horizontal;
 
     .log-avatar-img {
       width: $log-size;
@@ -899,8 +949,8 @@ ion-content {
 .orange-loading-spinner {
   position: absolute;
   top: 3px;
-  right: 0px;
-  left: 0px;
+  right: 0;
+  left: 0;
   z-index: 100;
   svg {
     fill: $orange;
@@ -925,6 +975,25 @@ ion-content {
   border-bottom: 1px solid #ccc;
 }
 
+.text-container {
+  padding-bottom: 5px;
+  font-size: $font-size-base;
+
+  p {
+    font-weight: bold;
+    margin-top: 0;
+    float: left;
+    margin-right: 10px;
+  }
+}
+
+ion-option-button.option-control.button {
+  display: inline-block;
+  height: auto;
+  position: relative;
+  top: 0;
+}
+
 // Fix border on android devices
 .grade-b .menu-content, .grade-c .menu-content {
   border: none;
@@ -944,4 +1013,27 @@ ion-content {
       display: inline-block;
     }
   }
+}
+
+.log-details-habits-list {
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .item {
+    padding: 0;
+    border-width: 0;
+    font-size: $font-size-base;
+
+    p {
+      margin: 0;
+      float: left;
+      min-width: 80px;
+    }
+  }
+}
+
+.bar .buttons-left span {
+  margin: 0;
 }
