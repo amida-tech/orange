@@ -5,12 +5,15 @@
         .module('orange')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$scope', 'Auth', 'Patient', 'log'];
+    MenuCtrl.$inject = ['$scope', '$state', 'Auth', 'patient'];
 
     /* @ngInject */
-    function MenuCtrl($scope, Auth, Patient, log) {
+    function MenuCtrl($scope, $state, Auth, patient) {
         $scope.profile = Auth.userInfo();
-        $scope.log = log;
-        Patient.set(log.id);
+        $scope.log = patient;
+        $scope.patient = patient;
+        if (patient == null) {
+            $state.go('logs')
+        }
     }
 })();

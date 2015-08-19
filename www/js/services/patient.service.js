@@ -5,31 +5,126 @@
         .module('orange')
         .factory('Patient', Patient);
 
-    Patient.$inject = ['OrangeApi'];
+    Patient.$inject = ['OrangeApi', '$state', '$localstorage', '$q'];
 
     /* @ngInject */
-    function Patient(OrangeApi) {
+    function Patient(OrangeApi, $state, $localstorage, $q) {
         var patient = null;
+        var patients = [];
 
         return {
             set: set,
             api: api,
-            getPatient: getPatient
+            getPatient: getPatient,
+            getPatients: getPatients,
+            changeStateByPatient: changeStateByPatient
         };
 
         ////////////////
 
+        //Cache patients list
+        function getPatients() {
+            if (!_.isEmpty(patients)) {
+                return patients
+            }
+            var promise = OrangeApi.patients.getList();
+
+            promise.then(function(pats) {
+                if (!pats.length) {
+                    $state.go('logs');
+                    return pats;
+                }
+                patients = pats;
+            });
+
+            return promise
+        }
+
         function getPatient() {
-            return OrangeApi.patients.one(patient);
+            //Get patient from cache
+            if (patient != null && !$state.reload) {
+                return patient
+            }
+
+            var currentPatient = $localstorage.get('currentPatient', null);
+            //Patient promise
+            var deffered = $q.defer();
+
+            //Get patient by id
+            if (currentPatient) {
+                OrangeApi.patients.get(currentPatient).then(function(currentPatient) {
+                    deffered.resolve(currentPatient)
+                }, errorGetPatients);
+
+                deffered.promise.then(function(pat) {
+                    patient = pat;
+                });
+                return deffered.promise;
+            }
+
+
+            //Get first patient with medication
+            OrangeApi.patients.getList().then(checkMedication, errorGetPatients);
+
+            function checkMedication(patients) {
+                if (patients[0]) {
+                    if (currentPatient == null) {
+                        currentPatient = patients[0];
+                    }
+                    patients[0].all('medications').getList({limit: 1}).then(function(medication) {
+                        if (!_.isUndefined(medication[0])) {
+                            $localstorage.set('currentPatient', patients[0].id);
+                            deffered.resolve(patients[0]);
+                            return;
+                        }
+
+                        checkMedication(patients.slice(1));
+                    });
+                }
+
+                if (currentPatient != null)
+                    $localstorage.set('currentPatient', currentPatient.id);
+
+                deffered.resolve(currentPatient);
+            }
+
+            function errorGetPatients(response) {
+                console.log('error get patients');
+                deffered.resolve(null);
+            }
+
+            deffered.promise.then(function(pat) {
+                patient = pat;
+            });
+
+            return deffered.promise
         }
 
         function set(patientID) {
-            console.log('Setting patient');
             patient = patientID.toString();
         }
 
         function api(name) {
             return OrangeApi.patients.one(patient).all(name);
+        }
+
+        function changeStateByPatient() {
+            var patient = getPatient();
+            //Change state by patient
+            patient.then(function(pat) {
+                 if (pat != null) {
+                     pat.all('medications').getList({limit: 1}).then(function(medication) {
+                         if (!_.isUndefined(medication[0])) {
+                             $state.go('app.today.schedule');
+                             return;
+                         }
+                         $state.go('logs');
+                     });
+
+                     return pat;
+                 }
+                 $state.go('logs');
+            });
         }
     }
 })();

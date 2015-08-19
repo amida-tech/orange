@@ -44,6 +44,8 @@ $label-item-padding: 90px;
 // Sizes
 $log-size: 80px;
 $avatar-size: 60px;
+$profile-button-max-width: 120px;
+$small-btn-icon-line-height: 15px;
 
 body {
   background-color: $orange;
@@ -657,7 +659,24 @@ ion-content {
     min-height: 0;
     height: 25px;
     top: $padding-small-vertical - 1px;
-    right: $padding-base-horizontal;
+    overflow: hidden;
+    right: 2px;
+    white-space: nowrap;
+    .icon:before {
+      line-height: $small-btn-icon-line-height;
+    }
+    .text-btn {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .button-profile {
+      max-width: $profile-button-max-width;
+    }
   }
 
   .button-dose {
@@ -673,7 +692,7 @@ ion-content {
     .button-icon,
     .button-outline,
     .title, {
-
+      margin: 0;
       color: $orange-light;
       font-weight: bold;
     }
@@ -701,6 +720,8 @@ ion-content {
     display: inline-block;
     width: auto;
     margin: $padding-base-vertical;
+    line-height: $padding-base-horizontal;
+    padding-bottom: $padding-base-horizontal;
 
     .log-avatar-img {
       width: $log-size;
@@ -897,8 +918,8 @@ ion-content {
 .orange-loading-spinner {
   position: absolute;
   top: 3px;
-  right: 0px;
-  left: 0px;
+  right: 0;
+  left: 0;
   z-index: 100;
   svg {
     fill: $orange;
@@ -967,4 +988,8 @@ ion-option-button.option-control.button {
       min-width: 80px;
     }
   }
+}
+
+.bar .buttons-left span {
+  margin: 0;
 }

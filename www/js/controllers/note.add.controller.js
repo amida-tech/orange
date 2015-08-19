@@ -7,12 +7,12 @@
 
     NoteAddCtrl.$inject = [
         '$scope', '$filter', '$state', '$stateParams',
-        '$ionicLoading', '$ionicModal', '$cordovaDialogs',  'log'
+        '$ionicLoading', '$ionicModal', '$cordovaDialogs',  'patient'
     ];
 
     /* @ngInject */
     function NoteAddCtrl($scope, $filter, $state, $stateParams,
-                         $ionicLoading, $ionicModal, $cordovaDialogs,  log) {
+                         $ionicLoading, $ionicModal, $cordovaDialogs,  patient) {
         /* jshint validthis: true */
         var vm = this;
         //Check "id" param in url
@@ -93,7 +93,7 @@
                 vm.note.save().then(updateSuccess, saveError);
             } else {
                 vm.note.date = $filter('date')(new Date(), 'yyyy-MM-ddTHH:mm:ssZ');
-                log.all('journal').post(vm.note).then(saveSuccess, saveError);
+                patient.all('journal').post(vm.note).then(saveSuccess, saveError);
             }
         };
 

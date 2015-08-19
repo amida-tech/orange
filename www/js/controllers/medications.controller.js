@@ -4,10 +4,10 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$scope', '$ionicLoading', 'medications', 'log'];
+    MedicationsCtrl.$inject = ['$scope', '$ionicLoading', 'medications', 'patient'];
 
     /* @ngInject */
-    function MedicationsCtrl($scope, $ionicLoading, medications, log) {
+    function MedicationsCtrl($scope, $ionicLoading, medications, patient) {
         var vm = this;
 
         vm.medications = null;
@@ -15,7 +15,7 @@
         vm.refresh = refresh;
         vm.remove = remove;
 
-        medications.setLog(log);
+        medications.setLog(patient);
 
 
         refresh(false);

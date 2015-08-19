@@ -1,0 +1,25 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-orange" align-title="center">
+        <button class="button back-button button-clear header-item" ng-click="modal.hide()">
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+
+        <h1 class="title">Change Patient</h1>
+    </ion-header-bar>
+    <ion-content class="orange-bg padding-top">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="update()">
+        </ion-refresher>
+        <div class="list list-clean orange-bg">
+            <div class="orange-logs item-text-wrap light orange-bg">
+                <div class="row row-no-padding" ng-repeat="row in patients">
+                    <div class="col col-33" ng-repeat="pat in row">
+                        <div class="item-log" ng-click="changePatient(pat)">
+                            <avatar patient="pat" ></avatar>
+                            <div class="log-title">{{ pat.first_name }}<br/>{{ pat.last_name }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>
