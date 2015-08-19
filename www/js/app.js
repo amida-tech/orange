@@ -329,11 +329,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                             nextState: 'app.logs.list'
                         }
                     })
-                    .state('app.notifications', {
-                        url: '/notifications',
+                    .state('app.sharing', {
+                        url: '/sharing',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.notifications.html'
+                                templateUrl: 'templates/app.sharing.html'
                             }
                         }
                     })
