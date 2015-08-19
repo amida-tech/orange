@@ -1,3 +1,102 @@
+//OPEN SANS
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/Open_Sans/OpenSans-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/Open_Sans/OpenSans-Semibold.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/Open_Sans/OpenSans-Light.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/Open_Sans/OpenSans-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/Open_Sans/OpenSans-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/Open_Sans/OpenSans-SemiboldItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'OpenSans';
+    src: url('../fonts/Open_Sans/OpenSans-LightItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+//LATO
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-Black.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-Bold.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-Light.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-SemiboldItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-LightItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
 $light: #fff !default;
 $stable: #f8f8f8 !default;
 $positive: #387ef5 !default;
@@ -31,7 +130,7 @@ $list-bottom-indent: 5px;
 
 //Font sizes
 $orange-font-base-size: 13px;
-$orange-font-head-size: 16px;
+$orange-font-head-size: 18px;
 
 //Base indents
 $button-mini-padding: 2px;
@@ -50,6 +149,7 @@ $small-btn-icon-line-height: 15px;
 body {
   background-color: $orange;
   font-size: $font-size-base;
+  font-family: 'Lato', sans-serif;
 }
 
 .padding-x2 {
@@ -110,6 +210,7 @@ body {
 
 .text-header {
   font-size: $orange-font-head-size;
+  font-weight: 100;
 }
 
 .text-medication-brand {
@@ -211,7 +312,7 @@ body {
     padding: $item-padding 0;
     .text-title {
       color: $more-dark;
-      font-weight: bold;
+      font-weight: 300;
     }
     float: right;
   }
@@ -641,8 +742,9 @@ ion-content {
 .bar.bar-orange {
   @include bar-style($orange, $orange, $light);
   font-weight: normal;
-
+  font-family: 'OpenSans', sans-serif;
   &.main-bar {
+    font-family: 'Lato', sans-serif;
     .title {
       text-transform: uppercase;
     }
@@ -985,7 +1087,6 @@ ion-option-button.option-control.button {
 }
 
 .log-details-habits-list {
-
   h2 {
     margin-top: 0;
   }
@@ -1001,8 +1102,4 @@ ion-option-button.option-control.button {
       min-width: 80px;
     }
   }
-}
-
-.bar .buttons-left span {
-  margin: 0;
 }
