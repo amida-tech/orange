@@ -38,6 +38,11 @@
             } else {
                 vm.errors.push('Please fill all habits');
             }
+
+        function getTZName() {
+            var tz = jstz.determine();
+            var m = moment();
+            return m.utcOffset() === 360 ? 'Asia/Novosibirsk' : tz.name();
         }
     }
 })();

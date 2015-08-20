@@ -955,7 +955,7 @@ ion-content {
 .list.accordion-list {
   .accordion-body {
     transition: max-height 0.25s ease-in;
-    max-height: 250px;
+    max-height: 300px;
     padding-top: $padding-large-vertical;
 
     &.ng-hide {

@@ -1,37 +1,43 @@
 <ion-view title="New Medication">
     <ion-nav-bar class="bar-orange" align-title="center">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
+        <ion-nav-buttons side="left">
+            <button ui-sref="onboarding-log.medications.list"
+                    class="button back-button buttons button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="light-bg" padding="true" scroll="true">
+    <ion-content padding="true" class="padding light-bg">
         <p class="form-title">Search</p>
         <form class="orange-form" name="searchForm">
             <label class="item-input">
-                <input type="search" placeholder="Medication" ng-model="meds.search.term" ng-change="meds.searchMedication()"/>
+                <input type="search" placeholder="Medication" ng-model="search.term" ng-change="search.search()"/>
             </label>
         </form>
         <ion-list class="list-clean">
-            <ion-item ng-show="meds.search.timer" class="text-center">
-                <ion-spinner icon="dots"></ion-spinner>
+            <ion-item class="text-center">
+                <ion-spinner class="orange-loading-spinner" icon="dots"
+                             ng-if="search.timer"></ion-spinner>
             </ion-item>
-            <ion-item ng-show="meds.search.suggestions.length" class="item-text-wrap">
-                Suggestions:
+            <ion-item ng-show="search.suggestions.length" class="item-text-wrap">
+                <h3>Suggestions:</h3>
             </ion-item>
 
-            <ion-item ng-show="meds.search.suggestions.length"
-                      ng-repeat="suggestion in meds.search.suggestions"
-                      ng-click="meds.pickSuggestion(suggestion)">
+            <ion-item ng-repeat="suggestion in search.suggestions"
+                      ng-click="search.pickSuggestion(suggestion)">
                 <div class="med-title">
                     <p class="med-name" ng-bind="suggestion"></p>
                 </div>
             </ion-item>
 
-            <ion-item ng-repeat="medication in meds.search.result" ng-click="meds.selectMedication(medication)">
+            <ion-item ng-repeat="medication in search.result"
+                      ng-click="medications.pickMedication(medication)">
                 <div class="med-title">
                     <p class="med-name" ng-bind="medication.name"></p>
                     <p class="med-rx" ng-bind="medication.brand"></p>
                 </div>
             </ion-item>
         </ion-list>
+
     </ion-content>
 </ion-view>

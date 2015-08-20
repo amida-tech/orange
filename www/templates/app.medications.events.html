@@ -56,6 +56,16 @@
 
                         <div button-bar="events.sleep" data-ng-model="event.event"></div>
                     </div>
+
+                    <p class="text-muted">Send a reminder notification?</p>
+                    <label class="item-input item-select">
+                        <select data-ng-model="events.notifications[$index]">
+                            <option value="never" disabled>Never</option>
+                            <option value="15">15 Minutes Before</option>
+                            <option value="30">30 Minutes Before</option>
+                            <option value="60">1 Hour Before</option>
+                        </select>
+                    </label>
                 </div>
             </ion-item>
         </ion-list>

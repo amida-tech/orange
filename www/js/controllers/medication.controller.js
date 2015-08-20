@@ -24,7 +24,7 @@
 
         $scope.$watch(medications.getMedication, function (medication) {
 
-            if (medication && medication !== vm.medication) {
+            if (medication !== vm.medication) {
                 console.log('Medication changed', medication);
                 vm.medication = medication;
                 vm.eventsText = getMedicationText(medication);
@@ -35,7 +35,7 @@
 
         function getMedicationText(medication) {
             var text = '';
-            if (medication.schedule.times && medication.schedule.times.length) {
+            if (medication && medication.schedule.times && medication.schedule.times.length) {
                 var eventsCount = medication.schedule.times.length;
                 text += eventsCount;
                 text += ' event' + (eventsCount > 1 ? 's' : '') + ' per day'
@@ -58,7 +58,7 @@
             ).finally(
                 function () {
                     $ionicLoading.hide();
-                    $state.go('app.medications.list');
+                    $state.go('app.medications');
                 })
         }
 

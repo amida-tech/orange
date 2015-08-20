@@ -14,6 +14,7 @@
             setMedicationSchedule: setMedicationSchedule,
             setMedicationEvents: setMedicationEvents,
             saveMedication: saveMedication,
+            setNotifications: setNotifications,
             getMedication: getMedication,
             setMedication: setMedication,
             get: get,
@@ -54,7 +55,9 @@
                 return vm.log.all('medications').post(medication).then(
                     function (medication) {
                         vm.medication = medication;
-                        vm.medications.push(medication);
+                        if (!(medication.import_id && _.find(vm.medications, {import_id: medication.import_id}))) {
+                            vm.medications.push(medication);
+                        }
                         return medication;
                     },
                     function (error) {
@@ -62,6 +65,20 @@
                     }
                 )
             }
+        }
+
+        function setNotifications(notifications) {
+            var promises = [];
+            for (var i = 0, len = vm.medication.schedule.times.length; i < len; i++) {
+                var time = vm.medication.schedule.times[i];
+                var notification = notifications[i] || 30;
+                console.log('setting notification time', vm.medication.id, time.id, notification);
+                var promise = vm.medication.all('times').one(time.id.toString()).customPUT({
+                   user: notification
+                });
+                promises.push(promise);
+            }
+            return $q.all(promises);
         }
 
         function setMedication(medication) {
