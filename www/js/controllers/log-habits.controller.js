@@ -5,10 +5,10 @@
         .module('orange')
         .controller('LogHabitsCtrl', LogHabitsCtrl);
 
-    LogHabitsCtrl.$inject = ['$ionicLoading', '$state', '$stateParams', 'habits', 'patient'];
+    LogHabitsCtrl.$inject = ['$ionicLoading', '$state', '$stateParams', 'LogService', 'habits', 'patient'];
 
     /* @ngInject */
-    function LogHabitsCtrl($ionicLoading, $state, $stateParams, habits, patient) {
+    function LogHabitsCtrl($ionicLoading, $state, $stateParams, LogService, habits, patient) {
 
         var vm = this;
         vm.habits = habits;
@@ -23,7 +23,7 @@
                 $ionicLoading.show({
                     template: 'Saving...'
                 });
-                vm.habits.tz = getTZName();
+                vm.habits.tz = LogService.getTZName();
                 vm.habits.save().then(
                     function () {
                         $ionicLoading.hide();
@@ -38,12 +38,6 @@
             } else {
                 vm.errors.push('Please fill all habits');
             }
-        }
-
-        function getTZName() {
-            var tz = jstz.determine();
-            var m = moment();
-            return m.utcOffset()  === 360 ? 'Asia/Novosibirsk' : tz.name();
         }
     }
 })();

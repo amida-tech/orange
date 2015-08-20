@@ -15,6 +15,7 @@
                 getDetailLog: getDetailLog,
                 getLog: getLog,
                 getLogs: getLogs,
+                getTZName: getTZName,
                 removeLog: removeLog,
                 setDetailLog: setDetailLog,
                 setLog: setLog
@@ -70,6 +71,9 @@
             setFullName(vm.detailLog);
             vm.detailLog.one('habits').get('').then(
                 function (habits) {
+                    if (!habits.tz || habits.tz === 'Etc/UTC') {
+                        habits.tz = getTZName();
+                    }
                     vm.detailLog.habits = habits;
                 }
             );
@@ -106,6 +110,12 @@
                     }
                 }
             );
+        }
+
+        function getTZName() {
+            var tz = jstz.determine();
+            var m = moment();
+            return m.utcOffset()  === 360 ? 'Asia/Novosibirsk' : tz.name();
         }
     }
 })();
