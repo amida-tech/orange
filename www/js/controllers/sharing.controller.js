@@ -5,18 +5,93 @@
         .module('orange')
         .controller('SharingCtrl', SharingCtrl);
 
-    SharingCtrl.$inject = ['$scope', '$locale', 'OrangeApi', 'LogService'];
+    SharingCtrl.$inject = ['$scope', '$q', '$locale', '$ionicLoading', '$ionicPopup',
+                           'LogService', 'RequestsService'];
 
-    function SharingCtrl($scope, $locale, OrangeApi, LogService) {
+    function SharingCtrl($scope, $q, $locale, $ionicLoading, $ionicPopup, LogService, RequestsService) {
         var vm = this;
 
         vm.months = $locale.DATETIME_FORMATS.MONTH;
+        vm.decline = decline;
+        vm.cancel = cancel;
+        vm.update = update;
 
-        OrangeApi.requested.getList().then(function (items) {
-            vm.requested = items;
+        LogService.getLogs().then(function (items) {
+            vm.logs = items;
+            vm.logList = _.chunk(items, 3);
         });
-        OrangeApi.requests.getList().then(function (items) {
-            vm.requests = items
-        });
+
+        update();
+
+        function update(force) {
+            $q.all([
+                RequestsService.getRequested(force),
+                RequestsService.getRequests(force)
+            ]).then(
+                function (data) {
+                    vm.requested = data[0];
+                    vm.requests = data[1];
+                    $scope.$broadcast('scroll.refreshComplete');
+                },
+                function (error) {
+                    showError(error);
+                }
+            );
+        }
+
+        function decline(request) {
+            $ionicPopup.confirm({
+                title: 'Decline Request',
+                template: 'Are you sure want decline this request?'
+            }).then(function (confirm) {
+                if (confirm) {
+                    $ionicLoading.show({
+                        template: 'Declining...'
+                    });
+
+                    RequestsService.declineRequest(request).then(
+                        function () {
+                            $ionicLoading.hide();
+                            update();
+                        },
+                        function (error) {
+                            $ionicLoading.hide();
+                            showError(error);
+                        }
+                    );
+                }
+            });
+        }
+
+        function cancel(request) {
+            $ionicPopup.confirm({
+                title: 'Cancel Request',
+                template: 'Are you sure want cancel this request?'
+            }).then(function (confirm) {
+                if (confirm) {
+                    $ionicLoading.show({
+                        template: 'Cancelling...'
+                    });
+
+                    RequestsService.cancelRequested(request).then(
+                        function () {
+                            $ionicLoading.hide();
+                            update();
+                        },
+                        function (error) {
+                            $ionicLoading.hide();
+                            showError(error);
+                        }
+                    );
+                }
+            });
+        }
+
+        function showError(error) {
+            $ionicPopup.alert({
+                title: 'Error',
+                template: error.data.errors
+            });
+        }
     }
 })();
