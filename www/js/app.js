@@ -169,21 +169,17 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.medications', {
                         url: '/medications',
-                        abstract: true,
+                        //abstract: true,
                         views: {
                             'menuContent': {
-                                template: '<ion-nav-view></ion-nav-view>'
+                                templateUrl: 'templates/app.medications.html',
+                                controller: 'MedicationsCtrl as medications'
                             }
                         }
                     })
-                    .state('app.medications.list', {
-                        url: '',
-                        templateUrl: 'templates/app.medications.html',
-                        controller: 'MedicationsCtrl as medications'
-                    })
                     .state('app.medication', {
                         url: '/medication/{id}',
-                        abstract: true,
+                        //abstract: true,
                         cache: false,
                         params: {
                             id: {value: null, squash: true}
@@ -426,7 +422,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         template: '<ion-nav-view></ion-nav-view>',
                         resolve: {
-                            log: ['$stateParams', 'OrangeApi', function($stateParams, OrangeApi) {
+                            patient: ['$stateParams', 'OrangeApi', function($stateParams, OrangeApi) {
                                 var id = $stateParams.id;
                                 return OrangeApi.patients.get(id);
                             }]
@@ -437,8 +433,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/logs.setup.habits.html',
                         controller: 'LogHabitsCtrl as habits',
                         resolve: {
-                            'habits': ['log', function (log) {
-                                return log.one('habits').get('');
+                            'habits': ['patient', function (patient) {
+                                return patient.one('habits').get('');
                             }]
                         }
                     })
@@ -450,8 +446,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         controller: 'LogMedicationsCtrl as meds',
                         cache: false,
                         resolve: {
-                            medications: ['log', function(log) {
-                                return log.all('medications').getList();
+                            medications: ['patient', function(patient) {
+                                return patient.all('medications').getList();
                             }]
                         }
                     })

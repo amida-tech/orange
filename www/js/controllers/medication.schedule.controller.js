@@ -5,10 +5,10 @@
         .module('orange')
         .controller('MedicationScheduleCtrl', MedicationScheduleCtrl);
 
-    MedicationScheduleCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'medications'];
+    MedicationScheduleCtrl.$inject = ['$scope', '$state', '$ionicPopup', '$ionicLoading', 'medications'];
 
     /* @ngInject */
-    function MedicationScheduleCtrl($scope, $state, $ionicLoading, medications) {
+    function MedicationScheduleCtrl($scope, $state, $ionicPopup, $ionicLoading, medications) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -59,10 +59,22 @@
                 $ionicLoading.show({
                     template: 'Saving…'
                 });
-                medications.saveMedication().finally(
+                medications.saveMedication().then(
+                    function(data) {
+                        $ionicLoading.hide();
+                        if (!data.success) {
+                            $ionicPopup.alert({
+                                title: 'Error',
+                                template: data.data.errors,
+                                okType: 'button-dark-orange'
+                            });
+                        }
+                        $state.go('app.medications');
+                    }
+                ).finally(
                     function() {
                         $ionicLoading.hide();
-                        $state.go('app.medications.list');
+                        $state.go('app.medications');
                     }
                 );
             } else {
@@ -208,6 +220,7 @@
                 case 'monthly':
                     console.log('monthly');
                     frequency = {
+                        n: 1,
                         unit: 'month',
                         start: (_.isArray(vm.schedule.frequency.start) && vm.schedule.frequency.start) || [moment().month(0).format('YYYY-MM-DD')]
                     };

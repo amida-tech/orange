@@ -5,14 +5,16 @@
         .module('orange')
         .controller('MedicationEventsCtrl', MedicationEventsCtrl);
 
-    MedicationEventsCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'medications'];
+    MedicationEventsCtrl.$inject = ['$scope', '$state', '$ionicPopup', '$ionicLoading', 'medications'];
 
     /* @ngInject */
-    function MedicationEventsCtrl($scope, $state, $ionicLoading, medications) {
+    function MedicationEventsCtrl($scope, $state, $ionicPopup, $ionicLoading, medications) {
         /* jshint validthis: true */
         var vm = this;
 
         vm.activate = activate;
+        vm.notifications = null;
+        vm.events = null;
         vm.save = save;
         vm.toggleEvent = toggleEvent;
         vm.title = 'Events';
@@ -52,6 +54,9 @@
                 vm.buttonText = 'Schedule';
                 vm.events.forEach(function (elem) {
                     if (elem !== event) {
+                        if (elem.show) {
+                            elem = prepareEvent(cleanEvent(elem));
+                        }
                         elem.show = false;
                     }
                 })
@@ -60,25 +65,36 @@
 
         function save() {
             var switched = nextEvent();
-            if (vm.buttonText == 'Save') {
+            if (vm.buttonText === 'Save') {
                 $ionicLoading.show({
                     template: 'Saving…'
                 });
 
                 var events = _.map(angular.copy(vm.events), cleanEvent);
-                console.log(events);
                 medications.setMedicationEvents(events);
-                var med = medications.getMedication();
-                console.log(med.schedule);
-                medications.saveMedication().finally(
-                    function() {
-                        $state.go('app.medications.list');
-                        $ionicLoading.hide();
 
+
+                medications.saveMedication().then(
+                    function (data) {
+                        //console.log(data);
+                        if (data.success) {
+                            medications.setNotifications(_.map(vm.notifications, Number)).finally(
+                                function () {
+                                    $ionicLoading.hide();
+                                    $state.go('app.medications');
+                                }
+                            )
+                        } else {
+                            $ionicLoading.hide();
+                            $ionicPopup.alert({
+                                title: 'Error',
+                                template: data.data.errors,
+                                okType: 'button-dark-orange'
+                            });
+                            $state.go('app.medications');
+                        }
                     }
-                );
-
-                //console.log('saving...');
+                )
             }
             vm.buttonText = switched ? 'Schedule' : 'Save';
         }
@@ -120,11 +136,13 @@
             delete event.eventType;
             delete event.text;
             delete event.show;
+            delete event.notification;
             return event;
         }
 
         function prepareEvent(event) {
             event.text = medications.getEventText(event);
+            event.notification = 30;
             if (event.type === 'event' && ['breakfast', 'lunch', 'dinner'].indexOf(event.event) !== -1) {
                 event.eventType = 'meal';
             } else if (event.type === 'event') {
@@ -133,6 +151,7 @@
             } else {
                 event.eventType = 'exact';
             }
+
             return event;
         }
 
@@ -147,17 +166,20 @@
                 if (medication && medication.schedule && medication.schedule.times !== vm.events) {
                     console.log('Events changed', medication.schedule.times);
                     update(angular.copy(medication.schedule.times));
+                } else {
+                    update([]);
                 }
             });
         }
 
         function update(events) {
-            console.log(events);
+            vm.notifications = [];
             vm.events = _.map(events, function (event, index) {
-                if (index === 0) event.show = true;
+                vm.notifications[index] = 30;
                 return prepareEvent(event);
             });
-        }
 
+            vm.events.length && toggleEvent(vm.events[0]);
+        }
     }
 })();
