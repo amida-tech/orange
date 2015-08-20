@@ -62,6 +62,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
 
 
                 $ionicConfigProvider.backButton.previousTitleText('').text('').icon('ion-arrow-left-c');
+                // disable swipe back
+                $ionicConfigProvider.views.swipeBackEnabled(false);
                 // Native scrolling on Android
                 // $ionicConfigProvider.platform.android.scrolling.jsScrolling(false);
 
