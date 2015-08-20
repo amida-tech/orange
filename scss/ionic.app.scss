@@ -131,6 +131,7 @@ $list-bottom-indent: 5px;
 //Font sizes
 $orange-font-base-size: 13px;
 $orange-font-head-size: 18px;
+$log-subscribe-font-size: 14px;
 
 //Base indents
 $button-mini-padding: 2px;
@@ -222,15 +223,16 @@ body {
 
 .block-with-subscribe {
   font-size: 0;
+  span {
+    line-height: 1.1;
+  }
   span:first-child {
-    line-height: 14px;
     display: block;
+    line-height: 1.17;
     margin-bottom: 0;
     padding-bottom: 0;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-  span:first-child {
     margin-top: 0;
     padding-top: 0;
   }
@@ -373,7 +375,7 @@ dl.dl-worksheet {
     border-top: 1px solid $gray;
   }
   .medication-item {
-    font-size: 14px;
+    font-size: $log-subscribe-font-size;
     padding: 5px 0;
     .item-content {
       padding: 7px 49px 7px 7px
@@ -585,13 +587,13 @@ ion-content {
   }
 
   .schedule-header-left {
-    font-size: $font-size-base * 1.2;
+    font-size: $orange-font-head-size;
     font-weight: normal;
   }
   .schedule-header-right {
     text-align: right;
     text-transform: uppercase;
-    font-size: $font-size-base * 0.7;
+    font-size: $font-size-small - 1;
     line-height: 1;
     font-weight: bold;
   }
@@ -726,7 +728,7 @@ ion-content {
     padding: 0;
     .button {
       margin: 0;
-      font-size: 18px;
+      font-size: $orange-font-head-size;
       padding: $padding-base-vertical;
       border-bottom-left-radius: $card-border-radius;
       border-bottom-right-radius: $card-border-radius;
@@ -871,7 +873,9 @@ ion-content {
       text-align: center;
       margin-top: $padding-base-vertical;
       line-height: 1.2;
-      font-weight: 500;
+      font-weight: 300;
+      font-size: $log-subscribe-font-size;
+      font-family: 'OpenSans', sans-serif;
     }
   }
 
@@ -963,6 +967,8 @@ ion-content {
 
 .orange-menu {
   background: $dark;
+  font-family: 'OpenSans', sans-serif;
+  font-size: $font-size-base + 2;
   .menu.menu-left {
     background-color: $dark;
     .scroll-content, .scroll {
@@ -983,7 +989,7 @@ ion-content {
       }
       p {
         color: $light;
-        font-size: $font-size-base + 2;
+        font-weight: 100;
       }
     }
     .bottom-list {
@@ -1008,14 +1014,15 @@ ion-content {
           font-weight: bold;
           padding-top: $padding-large-vertical;
           padding-bottom: $padding-large-vertical;
-          font-size: $font-size-base;
+          padding-left: $padding-large-vertical;
+          font-size: $font-size-base + 2;
 
           &:hover, &:active, &.active {
             color: $light;
           }
         }
         &.item-email {
-          font-size: $font-size-small;
+          font-size: $font-size-small - 1;
           padding-top: 0;
           padding-bottom: $padding-small-vertical;
           text-transform: lowercase;
