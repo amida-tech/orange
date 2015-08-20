@@ -14,11 +14,14 @@
                 cancelRequested: cancelRequested,
                 declineRequest: declineRequest,
                 getRequested: getRequested,
-                getRequests: getRequests
+                getRequests: getRequests,
+                getAcceptingRequest: getAcceptingRequest,
+                setAcceptingRequest: setAcceptingRequest
             };
 
         vm.requested = null;
         vm.requests = null;
+        vm.acceptingRequest = null;
 
         return service;
 
@@ -86,6 +89,14 @@
                     }
                 }
             )
+        }
+
+        function setAcceptingRequest(request) {
+            vm.acceptingRequest = request;
+        }
+
+        function getAcceptingRequest() {
+            return vm.acceptingRequest;
         }
     }
 })();

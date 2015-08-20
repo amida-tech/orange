@@ -359,7 +359,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             'menuContent': {
                                 templateUrl: 'templates/app.sharing.html',
-                                controller: 'SharingCtrl as sharing'
+                                controller: 'SharingCtrl as sharing',
+                                cache: false
                             }
                         }
                     })

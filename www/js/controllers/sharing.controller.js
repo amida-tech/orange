@@ -5,13 +5,14 @@
         .module('orange')
         .controller('SharingCtrl', SharingCtrl);
 
-    SharingCtrl.$inject = ['$scope', '$q', '$locale', '$ionicLoading', '$ionicPopup',
+    SharingCtrl.$inject = ['$scope', '$state', '$q', '$locale', '$ionicLoading', '$ionicPopup',
                            'LogService', 'RequestsService'];
 
-    function SharingCtrl($scope, $q, $locale, $ionicLoading, $ionicPopup, LogService, RequestsService) {
+    function SharingCtrl($scope, $state, $q, $locale, $ionicLoading, $ionicPopup, LogService, RequestsService) {
         var vm = this;
 
         vm.months = $locale.DATETIME_FORMATS.MONTH;
+        vm.accept = accept;
         vm.decline = decline;
         vm.cancel = cancel;
         vm.update = update;
@@ -85,6 +86,11 @@
                     );
                 }
             });
+        }
+
+        function accept(request) {
+            RequestsService.setAcceptingRequest(request);
+            $state.go('app.sharing-accept');
         }
 
         function showError(error) {
