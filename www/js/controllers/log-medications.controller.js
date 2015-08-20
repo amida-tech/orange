@@ -6,102 +6,68 @@
         .controller('LogMedicationsCtrl', LogMedicationsCtrl);
 
     LogMedicationsCtrl.$inject = [
+        '$scope',
         '$q',
-        '$timeout',
         '$state',
         '$ionicLoading',
-        'OrangeApi',
-        'Oauth',
         'TokenService',
-        'n2w',
+        'Oauth',
         'patient',
         'medications'
     ];
 
     /* @ngInject */
-    function LogMedicationsCtrl($q, $timeout, $state, $ionicLoading, OrangeApi, Oauth, TokenService, n2w, patient, medications) {
+    function LogMedicationsCtrl($scope, $q, $state, $ionicLoading, TokenService, Oauth, patient, medications) {
         /* jshint validthis: true */
         var vm = this;
 
-        vm.log = patient;
-        vm.events = [];
-        vm.event = null;
+        vm.importComplete = false;
+        vm.hasImported = false;
+        vm.medications = null;
         vm.medication = null;
-        vm.medicationTimeEvents = 3;
-        vm.medications = medications;
-
-        vm.importedMedications = [];
-
-        vm.search = {
-            result: [],
-            suggestions: [],
-            term: null,
-            timer: null
-        };
-
-        vm.eventTypes = [
-            {name: 'Around a Meal', key: 'meal'},
-            {name: 'As a Set Time', key: 'time'},
-            {name: 'Morning/Night', key: 'sleep'}
-        ];
-
-        vm.when = [
-            {name: 'Before', key: 'before'},
-            {name: 'After', key: 'after'}
-        ];
-
-        vm.meals = [
-            {name: 'Breakfast', key: 'breakfast'},
-            {name: 'Lunch', key: 'lunch'},
-            {name: 'Dinner', key: 'dinner'}
-        ];
-
-        vm.sleep = [
-            {name: 'After Wake', key: 'wake'},
-            {name: 'Before Sleep', key: 'sleep'}
-        ];
-
-        vm.withFood = [
-            {name: 'Yes', key: true},
-            {name: 'No', key: false},
-            {name: 'Doesn\'t Matter', key: null}
-        ];
+        vm.log = patient;
 
 
-
-        vm.weekDays = [
-            {name: 'Sun', key: 0},
-            {name: 'Mon', key: 1},
-            {name: 'Tue', key: 2},
-            {name: 'Wed', key: 3},
-            {name: 'Thu', key: 4},
-            {name: 'Fri', key: 5},
-            {name: 'Sat', key: 6}
-        ];
-
-        vm.searchMedication = searchMedication;
-        vm.pickSuggestion = pickSuggestion;
-        vm.selectMedication = selectMedication;
+        vm.pickMedication = pickMedication;
         vm.getSMARTToken = getSMARTToken;
-        vm.setScheduleType = setScheduleType;
-        vm.setUntil = setUntilType;
-        vm.setupEvents = setupEvents;
-        vm.setFrequency = setFrequency;
-        vm.scheduleEvent = scheduleEvent;
-        vm.getEventText = getEventText;
-        vm.toggleWeekDay = toggleWeekDay;
-        vm.configImportedMedication = configImportedMedication;
+        vm.editMedication = editMedication;
 
+        activate();
 
-        ////////////////
+        //////////////////////
 
-        function configImportedMedication(medication) {
-            var med = {
+        function activate() {
+            console.log('LogMedicationsCtrl activated');
+            medications.setLog(patient);
+            refresh();
+            $scope.$watch(medications.getMedications, function (medications) {
+                console.log('Medications Changed', medications);
+                if (medications !== vm.medications) {
+                    update(medications);
+                }
+            });
+
+            $scope.$watch(medications.getMedication, function (medication) {
+
+                if (medication !== vm.medication) {
+                    console.log('Medication changed', medication);
+                    vm.medication = medication;
+                    vm.eventsText = getMedicationText(medication);
+                }
+            });
+        }
+
+        function prepareMedication(medication) {
+            return {
                 name: medication.name,
+                brand: '',
                 origin: 'imported',
-                import_id: medication.code
-            };
-            selectMedication(med);
+                import_id: medication.code,
+                dose: {
+                    quantity: 1,
+                    unit: 'mg'
+                }
+            }
         }
 
         function getMedications(val) {
@@ -123,224 +89,13 @@
                                 if (item.code && item.code.coding.length && item.code.coding[0].code) {
                                     med.code = parseInt(item.code.coding[0].code);
                                 }
-                                result.push(med);
+                                result.push(prepareMedication(med));
                             }
                         }
                     }
                 }
             }
             return result;
-        }
-
-
-
-        function getNewEvent(n) {
-            return {
-                n: n ? n : vm.event.n + 1,
-                eventType: 'meal',
-                event: 'breakfast',
-                when: 'before',
-                notification: '30',
-                units: 1
-            }
-        }
-
-        function toggleWeekDay(day) {
-            var index = vm.medication.schedule.frequency.exclude.exclude.indexOf(day);
-            if (index === -1) {
-                vm.medication.schedule.frequency.exclude.exclude.push(day);
-            } else {
-                vm.medication.schedule.frequency.exclude.exclude.splice(index, 1);
-            }
-        }
-
-        function scheduleEvent() {
-            if (vm.event !== null) {
-                console.log(vm.event);
-                vm.events.push(vm.event);
-                vm.event = getNewEvent();
-                if (vm.event.n > vm.medicationTimeEvents) vm.event = null;
-            } else {
-                console.log(vm.events);
-                saveMedication();
-            }
-        }
-
-        function saveMedication() {
-            $ionicLoading.show({
-                template: 'Saving...'
-            });
-            vm.medication.schedule.times = [];
-
-            for (var i = 0, len = vm.events.length; i < len; i++) {
-                var item = vm.events[i];
-                var time = angular.extend({}, item);
-                delete time.eventType;
-                delete time.n;
-                delete time.units;
-                delete time.notification;
-                if (item.eventType === 'time') {
-                    delete time.when;
-                    delete time.event;
-                    time.type = 'exact';
-                } else {
-                    time.type = 'event';
-                    delete time.time;
-                    if (time.event === 'wake') {
-                        time.event = 'sleep';
-                        time.when = 'after';
-                    } else if (time.event == 'sleep') {
-                        time.when = 'before';
-                    }
-                }
-                vm.medication.schedule.times.push(time);
-            }
-            console.log(vm.medication);
-            patient.all('medications').post(vm.medication).then(
-                function (data) {
-                    var promises = [];
-                    for (var i = 0, len = data.schedule.times.length; i < len; i++) {
-                        var time = data.schedule.times[i];
-                        //var id = time.id;
-                        time.user = parseInt(vm.events[0].notification);
-                        var p = data.all('times').one(time.id.toString()).customPUT(time);
-                        promises.push(p);
-                    }
-
-                    $q.all(promises).then(function () {
-                        vm.medications.push(vm.medication);
-                        vm.medication = null;
-                        $state.go('onboarding-log.medications.list');
-                        $ionicLoading.hide();
-                    });
-                },
-
-                function (error) {
-                    console.log(error);
-                }
-            )
-        }
-
-        function getEventText(event) {
-            var result = '';
-            result += _.capitalize(n2w.toWords(event.units || 0));
-            result += ' unit' + (event.units === 1 ? '' : 's');
-            if (event.eventType == 'time') {
-                result += ' at ' + event.time;
-            } else {
-                result += ' ' + event.when + ' ' + event.event;
-            }
-            return result;
-        }
-
-        function setupEvents() {
-            if (!vm.medication.schedule.regularly) {
-                delete vm.medication.schedule.frequency;
-                delete vm.medication.schedule.until;
-                $ionicLoading.show({
-                    template: 'Saving...'
-                });
-                console.log('Medication = ', vm.medication);
-                patient.all('medications').post(vm.medication).then(
-                    function (data) {
-                        $ionicLoading.hide();
-                        vm.medications.push(data);
-                        vm.medication = null;
-                        $state.go('onboarding-log.medications.list');
-                        //configure notifications times
-                    },
-                    function (error) {
-                        $ionicLoading.hide();
-                        console.log(error);
-                    }
-                )
-            } else {
-                vm.events = [];
-                vm.event = getNewEvent(1);
-
-                //update schedule
-
-                if (vm.frequency === 'week') {
-                    vm.medication.schedule.frequency.start = moment().format('YYYY-MM-DD');
-                    vm.medication.schedule.frequency.exclude.exclude.sort();
-                } else if (vm.frequency === 'month') {
-                    vm.medication.schedule.frequency.start.sort();
-                }
-                $state.go('onboarding-log.medications.events');
-            }
-
-            console.log(vm.medication.schedule);
-        }
-
-        function setFrequency(frequency) {
-            vm.frequency = frequency;
-            if (frequency === 'day') {
-                vm.medication.schedule.frequency = {
-                    unit: frequency,
-                    n: 1
-                }
-            } else if (frequency == 'month') {
-                vm.medication.schedule.frequency = {
-                    unit: frequency,
-                    n: 1,
-                    start: []
-                }
-            } else if (frequency == 'week') {
-                vm.medication.schedule.frequency = {
-                    unit: 'day',
-                    n: 1,
-                    exclude: {
-                        exclude: [0, 1, 2, 3, 4, 5, 6],
-                        repeat: 7
-                    }
-                }
-            }
-        }
-
-        function setUntilType(untilType) {
-            vm.medication.schedule.until = {
-                type: untilType,
-                stop: null
-            };
-        }
-
-        function setScheduleType(scheduleType) {
-            if (scheduleType === 'as_needed') {
-                vm.medication.schedule.as_needed = true;
-                vm.medication.schedule.regularly = false;
-            } else if (scheduleType == 'regularly') {
-                vm.medication.schedule.as_needed = false;
-                vm.medication.schedule.regularly = true;
-            } else {
-                vm.medication.schedule.as_needed = true;
-                vm.medication.schedule.regularly = true;
-            }
-
-            if (vm.medication.schedule.regularly && !vm.medication.schedule.until) {
-                vm.medication.schedule.until = {
-                    type: 'forever'
-                }
-            }
-            if (vm.medication.schedule.regularly && !vm.medication.schedule.frequency) {
-                vm.setFrequency('day');
-            }
-        }
-
-        function selectMedication(medication) {
-            vm.medication = angular.extend({}, medication);
-            vm.medication.schedule = {
-                as_needed: true,
-                regularly: false,
-                take_with_food: false,
-                take_with_medications: [],
-                take_without_medications: []
-            };
-
-            vm.medication.dose = {
-                quantity: 1,
-                unit: 'mg'
-            };
-            $state.go('onboarding-log.medications.schedule');
         }
 
         function getSMARTToken() {
@@ -370,7 +125,18 @@
                             console.log("get user meds response: " + response);
                             vm.importedMedications = getMedications(response);
                             console.log(vm.importedMedications);
-                            $ionicLoading.hide();
+                            var promises = [];
+                            vm.importedMedications.forEach(function (elem) {
+                                promises.push(medications.saveMedication(elem));
+                            });
+
+                            $q.all().finally(
+                                function () {
+                                    $ionicLoading.hide();
+                                    vm.importComplete = true;
+                                }
+                            );
+
                         });
                     }
                 })
@@ -381,82 +147,46 @@
             });
         }
 
-        function pickSuggestion(suggestion) {
-            vm.search.term = suggestion;
-            searchMedication();
+        function pickMedication(medication) {
+            console.log('Medication picked:', medication);
+            medications.setMedication(medication);
+            $state.go('onboarding-log.medications.schedule');
         }
 
-        function searchMedication() {
-
-            var name = vm.search.term;
-
-            if (!name) {
-                $timeout.cancel(vm.search.timer);
-                vm.search.timer = null;
-                return;
-            }
-
-            if (vm.search.timer) {
-                $timeout.cancel(vm.search.timer);
-            }
-            vm.search.timer = $timeout(function () {
-                var data = {medname: name};
-                OrangeApi.rxnorm.search.post(data).then(
-                    function (data) {
-                        vm.search.suggestions = [];
-                        vm.search.result = [];
-                        console.log(data.plain());
-                        var result = data.plain().result;
-                        if (result.compiled.length) {
-                            var medications = [];
-                            result.compiled.forEach(function (elem) {
-                                medications.push({
-                                    name: elem.modifiedname,
-                                    brand: elem.brand,
-                                    rx_norm: elem.rxcui || null,
-                                    form: parseDfg(elem.dfg)
-                                });
-                            });
-                            vm.search.result = medications;
-                        } else {
-                            // Get suggestions if result is empty
-                            getSuggestions(name).then(function (data) {
-                                vm.search.suggestions = data;
-                            });
-                        }
-                        vm.search.timer = null;
-                    },
-                    function (error) {
-                        vm.search.timer = null;
-                    }
-                );
-            }, 1000);
-        }
-
-        function parseDfg(dfg) {
-            var result = null;
-            if (dfg.length == 1) {
-                result = dfg[0];
-            } else if (dfg.length > 1) {
-                result = dfg.slice(0, -1).join(', ');
-                result += ' and/or ' + dfg.slice(-1);
-            }
-            return result;
-        }
-
-        function getSuggestions(name) {
-            var deffered = $q.defer();
-            var data = {medname: name};
-            OrangeApi.rxnorm.spelling.post(data).then(
-                function (data) {
-                    var suggestions = data.plain()['result']['suggestionGroup']['suggestionList']['suggestion'];
-                    deffered.resolve(suggestions || []);
+        function refresh() {
+            medications.fetchAll().then(
+                function (medications) {
+                    update(medications);
+                    $scope.$broadcast('scroll.refreshComplete');
                 },
                 function (error) {
                     console.log(error);
-                    deffered.resolve([]);
-                });
-            return deffered.promise;
+
+                }
+            );
+        }
+
+        function update(medications) {
+            vm.medications = medications;
+            vm.hasImported = !!(_.find(vm.medications, {origin: 'imported'}));
+        }
+
+        function editMedication(medication) {
+            medications.setMedication(medication);
+            $state.go('onboarding-log.medications.schedule')
+        }
+
+        function getMedicationText(medication) {
+            var text = '';
+            if (medication && medication.schedule.times && medication.schedule.times.length) {
+                var eventsCount = medication.schedule.times.length;
+                text += eventsCount;
+                text += ' event' + (eventsCount > 1 ? 's' : '') + ' per day'
+            }
+
+            return text;
         }
     }
+
+
 })();

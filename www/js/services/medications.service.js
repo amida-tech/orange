@@ -55,7 +55,9 @@
                 return vm.log.all('medications').post(medication).then(
                     function (medication) {
                         vm.medication = medication;
-                        vm.medications.push(medication);
+                        if (!(medication.import_id && _.find(vm.medications, {import_id: medication.import_id}))) {
+                            vm.medications.push(medication);
+                        }
                         return medication;
                     },
                     function (error) {

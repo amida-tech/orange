@@ -20,6 +20,10 @@
         vm.title = 'Events';
         vm.buttonText = 'Schedule';
 
+        vm.nextUrl = $state.current.name === 'onboarding-log.medications.events' ? 'onboarding-log.medications.list' : 'app.medication';
+        vm.returnUrl = $state.current.name === 'onboarding-log.medications.events' ? 'onboarding-log.medications.list' : 'app.medications';
+
+
         vm.eventTypes = [
             {name: 'Around a Meal', key: 'meal'},
             {name: 'As a Set Time', key: 'exact'},
@@ -81,7 +85,7 @@
                             medications.setNotifications(_.map(vm.notifications, Number)).finally(
                                 function () {
                                     $ionicLoading.hide();
-                                    $state.go('app.medications');
+                                    $state.go(vm.nextUrl);
                                 }
                             )
                         } else {
@@ -91,7 +95,7 @@
                                 template: data.data.errors,
                                 okType: 'button-dark-orange'
                             });
-                            $state.go('app.medications');
+                            $state.go(vm.nextUrl);
                         }
                     }
                 )
@@ -136,6 +140,7 @@
             delete event.eventType;
             delete event.text;
             delete event.show;
+            //delete event.id;
             delete event.notification;
             return event;
         }

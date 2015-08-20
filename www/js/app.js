@@ -443,13 +443,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         template: '<ion-nav-view></ion-nav-view>',
                         templateUrl: 'templates/logs.setup.medications.html',
-                        controller: 'LogMedicationsCtrl as meds',
-                        cache: false,
-                        resolve: {
-                            medications: ['patient', function(patient) {
-                                return patient.all('medications').getList();
-                            }]
-                        }
+                        controller: 'LogMedicationsCtrl as medications',
+                        cache: false
                     })
 
                     .state('onboarding-log.medications.list', {
@@ -459,16 +454,19 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
 
                     .state('onboarding-log.medications.search', {
                         url: '/search',
-                        templateUrl: 'templates/logs.setup.medications.search.html'
+                        templateUrl: 'templates/logs.setup.medications.search.html',
+                        controller: 'MedicationSearchCtrl as search'
                     })
 
                     .state('onboarding-log.medications.schedule', {
                         url: '/schedule',
-                        templateUrl: 'templates/logs.setup.medications.schedule.html'
+                        templateUrl: 'templates/logs.setup.medications.schedule.html',
+                        controller: 'MedicationScheduleCtrl as schedule'
                     })
                     .state('onboarding-log.medications.events', {
                         url: '/events',
-                        templateUrl: 'templates/logs.setup.medications.events.html'
+                        templateUrl: 'templates/logs.setup.medications.events.html',
+                        controller: 'MedicationEventsCtrl as events'
                     })
                     .state('logs-setup-medications-review', {
                         url: '/onboarding/logs/setup/medications/events',

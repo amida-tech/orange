@@ -18,6 +18,9 @@
         vm.schedule = null;
         vm.eventsCount = null;
 
+        vm.nextUrl = $state.current.name === 'onboarding-log.medications.schedule' ? 'onboarding-log.medications.events' : 'app.medication.events';
+        vm.returnUrl = $state.current.name === 'onboarding-log.medications.schedule' ? 'onboarding-log.medications.list' : 'app.medications';
+
 
         vm.selectedRegularity = undefined;
         vm.regularity = [
@@ -69,12 +72,12 @@
                                 okType: 'button-dark-orange'
                             });
                         }
-                        $state.go('app.medications');
+                        $state.go(vm.returnUrl);
                     }
                 ).finally(
                     function() {
                         $ionicLoading.hide();
-                        $state.go('app.medications');
+                        $state.go(vm.returnUrl);
                     }
                 );
             } else {
@@ -90,7 +93,7 @@
                 }
                 vm.schedule.times = events;
                 medications.setMedicationSchedule(vm.schedule);
-                $state.go('app.medication.events');
+                $state.go(vm.nextUrl);
             }
             //console.log(vm.schedule);
             //console.log(vm.eventsCount);

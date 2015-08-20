@@ -1,44 +1,54 @@
 <ion-view title="Add Medications">
     <ion-nav-bar class="bar-orange" align-title="center">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
+        <ion-nav-buttons side="left">
+            <button ui-sref="onboarding-log.habits" class="button back-button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
         <ion-nav-buttons side="right">
             <button class="button button-clear" ui-sref="logs-setup">Done</button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content padding="true">
-        <div class="card orange-card with-avatar">
+        <div class="card orange-card with-avatar" ng-if="!medications.importComplete">
             <div class="orange-avatar">
                 <div class="item-log">
-                    <div class="item-log">
-                        <avatar patient="meds.log"></avatar>
-                    </div>
+                    <avatar patient="medications.log"></avatar>
                 </div>
             </div>
-            <div class="item item-error" ng-if="meds.oauthError">
-                <p ng-bind="meds.oauthError"></p>
+            <div class="item item-error" ng-if="medications.oauthError">
+                <p ng-bind="medications.oauthError"></p>
             </div>
             <div class="item item-body">
 
                 <p class="form-title">Automatic Import</p>
             </div>
-            <ion-item ng-repeat="medication in meds.importedMedications"
-                      ng-if="meds.importedMedications.length"
-                        ng-click="meds.configImportedMedication(medication)">
+
+            <div class="item item-button">
+                <button class="button button-full button-orange" ng-click="medications.getSMARTToken()">Import</button>
+            </div>
+        </div>
+        <div class="card orange-card" ng-class="{'with-avatar': medications.importComplete}">
+            <div class="orange-avatar" ng-if="medications.importComplete">
+                <div class="item-log">
+                    <avatar patient="medications.log"></avatar>
+                </div>
+            </div>
+            <div class="item item-text-wrap" ng-if="medications.hasImported">
+                <p class="form-title">Via Automatic Import</p>
+            </div>
+            <ion-item ng-click="medications.editMedication(medication)"
+                      ng-repeat="medication in medications.medications | filter: {origin: 'imported'}">
                 <div class="med-title">
                     <p class="med-name" ng-bind="medication.name"></p>
                     <p class="med-rx" ng-bind="medication.brand"></p>
                 </div>
             </ion-item>
-            <div class="item item-button">
-                <button class="button button-full button-orange" ng-click="meds.getSMARTToken()">Import</button>
+            <div class="item item-text-wrap">
+                <p class="form-title">Via Manual Entry</p>
             </div>
-        </div>
-        <div class="card orange-card">
-            <div class="item item-body">
-                <p class="form-title">Manual Entry</p>
-            </div>
-            <ion-item ng-repeat="medication in meds.medications">
+            <ion-item ng-click="medications.editMedication(medication)"
+                      ng-repeat="medication in medications.medications | filter: {origin: '!imported'}">
                 <div class="med-title">
                     <p class="med-name" ng-bind="medication.name"></p>
                     <p class="med-rx" ng-bind="medication.brand"></p>

@@ -1,115 +1,92 @@
-<ion-view title="New Medication">
+<ion-view title="Schedule">
     <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-back-button>
         </ion-nav-back-button>
     </ion-nav-bar>
-    <ion-content class="light-bg has-bottom-bar">
-        <div class="list orange-list has-bottom-buttons">
-            <div class="item item-title med-title">
-                <p class="med-name" ng-bind="meds.medication.name"></p>
+    <ion-content class="light-bg has-footer">
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="medications.medication === null"></ion-spinner>
+        </div>
+        <ion-list ng-if="medications.medication" class="list orange-list">
 
-                <p class="med-rx" ng-bind="meds.medication.brand"></p>
-            </div>
-            <div class="item item-text-wrap">
-                <p class="text-muted">When is this medicaiton taken?</p>
-
-                <div class="button-bar">
-                    <a class="button"
-                       ng-class="{'active' : meds.medication.schedule.as_needed && !meds.medication.schedule.regularly}"
-                       ng-click="meds.setScheduleType('as_needed')">As Needed</a>
-                    <a class="button"
-                       ng-class="{'active' : !meds.medication.schedule.as_needed && meds.medication.schedule.regularly}"
-                       ng-click="meds.setScheduleType('regularly')">On a Schedule</a>
-                    <a class="button"
-                       ng-class="{'active' : meds.medication.schedule.as_needed && meds.medication.schedule.regularly}"
-                       ng-click="meds.setScheduleType('both')">Both</a>
-                </div>
-            </div>
-            <div ng-if="meds.medication.schedule.regularly" class="item item-text-wrap orange-form">
-                <p class="text-muted">For how long</p>
-
-                <div class="button-bar">
-                    <a class="button" ng-class="{'active' : meds.medication.schedule.until.type === 'forever'}"
-                       ng-click="meds.setUntil('forever')">Ongoing</a>
-                    <a class="button" ng-class="{'active' : meds.medication.schedule.until.type === 'number'}"
-                       ng-click="meds.setUntil('number')"># of Times</a>
-                    <a class="button" ng-class="{'active' : meds.medication.schedule.until.type === 'date'}"
-                       ng-click="meds.setUntil('date')">Until Set Date</a>
-                </div>
-
-                <label ng-if="meds.medication.schedule.until.type === 'number'" class="item-input">
-                    <input type="number"
-                           ng-model="meds.medication.schedule.until.stop"
-                           placeholder="Number"/>
-                </label>
-
-                <label ng-if="meds.medication.schedule.until.type === 'date'" class="item-input">
-                    <input type="text"
-                           ng-model="meds.medication.schedule.until.stop"
-                           placeholder="End Date"
-                           datefield/>
-                </label>
-            </div>
-            <div ng-if="meds.medication.schedule.regularly" class="item item-text-wrap">
-                <p class="text-muted">For how long</p>
-
-                <div class="button-bar">
-                    <a class="button" ng-class="{'active' : meds.frequency === 'day'}"
-                       ng-click="meds.setFrequency('day')">Daily</a>
-                    <a class="button" ng-class="{'active' : meds.frequency === 'week'}"
-                       ng-click="meds.setFrequency('week')">Weekly</a>
-                    <a class="button" ng-class="{'active' : meds.frequency === 'month'}"
-                       ng-click="meds.setFrequency('month')">Monthly</a>
-                </div>
-                <div ng-if="meds.frequency === 'week'">
-                    <p class="text-muted">Which days?</p>
-
-                    <div class="button-bar">
-                        <button class="button"
-                                ng-repeat="day in meds.weekDays"
-                                ng-click="meds.toggleWeekDay(day.key)"
-                                ng-bind="day.name"
-                                ng-class="{'active': meds.medication.schedule.frequency.exclude.exclude.indexOf(day.key) === -1}"></button>
+            <ion-item class="item-title">
+                <div class="row row-no-padding">
+                    <div class="med-title col col-66">
+                        <p class="med-name" ng-bind="medications.medication.name"></p>
+                        <p class="med-rx" ng-bind="medications.medication.brand"></p>
                     </div>
                 </div>
+            </ion-item>
 
-                <div ng-if="meds.frequency === 'day'" class="orange-form">
-                    <p class="text-muted">Every # day?</p>
-                    <label class="item-input">
-                        <input type="number"
-                               ng-model="meds.medication.schedule.frequency.n"
-                               placeholder="End Date"
-                               />
-                    </label>
-                </div>
+            <ion-item>
+                <p class="text-muted">When is this medication taken?</p>
+                <div button-bar="schedule.regularity" data-ng-model="schedule.selectedRegularity"></div>
+            </ion-item>
 
-                <div ng-if="meds.frequency === 'month'">
-                    <p class="text-muted">Which days?</p>
-                    <calendar ng-model="meds.medication.schedule.frequency.start"></calendar>
-                </div>
-
-
-            </div>
-
-            <div class="item item-text-wrap orange-form">
+            <ion-item class="orange-form">
                 <p class="text-muted">Take with food?</p>
-
-                <div button-bar="meds.withFood" ng-model="meds.medication.schedule.take_with_food"></div>
+                <div button-bar="schedule.withFood" data-ng-model="schedule.schedule.take_with_food"></div>
                 <p class="text-muted">How many units?</p>
                 <label class="item-input">
-                    <input type="number" ng-model="meds.medication.dose.quantity" placeholder="Quantity"/>
+                    <input type="number" ng-model="medications.medication.dose.quantity" placeholder="Quantity"/>
                 </label>
-            </div>
+            </ion-item>
 
-            <div ng-if="meds.medication.schedule.regularly" class="item item-footer orange-form item-text-wrap">
-                <p class="text-muted">How many times a day do you take this medicine?</p>
-                <label class="item-input">
-                    <input type="number" ng-model="meds.medicationTimeEvents" placeholder="Number"/>
-                </label>
+            <div ng-if="schedule.schedule.regularly" class="orange-form">
+                <ion-item>
+                    <p class="text-muted">For how long</p>
+                    <div button-bar="schedule.duration" data-ng-model="schedule.schedule.until.type"></div>
+
+                    <div ng-if="schedule.schedule.until.type === 'number'" class="item-input">
+                        <input type="number"
+                               ng-model="schedule.schedule.until.stop"
+                               placeholder="Number"/>
+                    </div>
+
+                    <div ng-if="schedule.schedule.until.type === 'date'" class="item-input">
+                        <input type="text"
+                               ng-model="schedule.schedule.until.stop"
+                               placeholder="End Date"
+                               datefield/>
+                    </div>
+                </ion-item>
+
+                <ion-item>
+                    <p class="text-muted">How often</p>
+                    <div button-bar="schedule.frequency" data-ng-model="schedule.selectedFrequency"></div>
+
+                    <div ng-if="schedule.selectedFrequency === 'daily'">
+                        <p class="text-muted">Every # day?</p>
+                        <label class="item-input">
+                            <input type="number"
+                                   ng-model="schedule.schedule.frequency.n"
+                                   placeholder="End Date"
+                                    />
+                        </label>
+                    </div>
+
+                    <div ng-if="schedule.selectedFrequency === 'weekly'">
+                        <p class="text-muted">Which days?</p>
+                        <weekdays ng-model="schedule.schedule.frequency.exclude.exclude"></weekdays>
+                    </div>
+
+                    <div ng-if="schedule.selectedFrequency === 'monthly'">
+                        <p class="text-muted">Which days?</p>
+                        <calendar ng-model="schedule.schedule.frequency.start"></calendar>
+                    </div>
+                </ion-item>
+
+                <ion-item class="item-footer">
+                    <p class="text-muted">How many times a day do you take this medicine?</p>
+                    <label class="item-input">
+                        <input type="number" ng-model="schedule.eventsCount" placeholder="Number"/>
+                    </label>
+                </ion-item>
             </div>
-        </div>
+        </ion-list>
     </ion-content>
     <div class="bottom-buttons">
-        <button class="button button-full button-orange" ng-click="meds.setupEvents()">Continue</button>
+        <button class="button button-full col col-no-padding button-orange" ng-click="schedule.continue()" ng-bind="schedule.buttonText"></button>
     </div>
 </ion-view>
