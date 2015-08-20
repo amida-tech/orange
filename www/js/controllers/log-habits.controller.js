@@ -38,6 +38,7 @@
             } else {
                 vm.errors.push('Please fill all habits');
             }
+        }
 
         function getTZName() {
             var tz = jstz.determine();
