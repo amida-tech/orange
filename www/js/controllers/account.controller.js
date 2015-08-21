@@ -4,10 +4,10 @@
         .module('orange')
         .controller('AccountCtrl', AccountCtrl);
 
-    AccountCtrl.$inject = ['$scope', '$state', 'Auth', 'OrangeApi', 'Patient'];
+    AccountCtrl.$inject = ['$scope', '$state', 'Auth', 'OrangeApi', 'Patient', 'notifications'];
 
     /* @ngInject */
-    function AccountCtrl($scope, $state, Auth, OrangeApi, Patient) {
+    function AccountCtrl($scope, $state, Auth, OrangeApi, Patient, notify) {
 
         $scope.login = login;
         $scope.signUp = signUp;
@@ -48,6 +48,7 @@
                                 $scope.user = [];
 
                                 Patient.changeStateByPatient();
+                                notify.updateNotify();
                             } else {
                                 $scope.error = true;
                                 $scope.errors = [];
@@ -81,6 +82,7 @@
                         $scope.errors = [];
                         $scope.user = [];
                         Patient.changeStateByPatient();
+                        notify.updateNotify();
                     } else {
                         $scope.error = true;
                         $scope.errors = [];

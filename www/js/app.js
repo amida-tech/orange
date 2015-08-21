@@ -1,6 +1,6 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch', 'ngPDFViewer'])
 
-    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient) {
+    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications) {
 
              // Initializing app
              $rootScope.initialized = false;
@@ -18,6 +18,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                      }
 
                      Patient.changeStateByPatient();
+                     notifications.updateNotify();
                  } else {
                      // Not authorized
                      $state.go('onboarding');
@@ -62,6 +63,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
 
 
                 $ionicConfigProvider.backButton.previousTitleText('').text('').icon('ion-arrow-left-c');
+                // disable swipe back
+                $ionicConfigProvider.views.swipeBackEnabled(false);
                 // Native scrolling on Android
                 // $ionicConfigProvider.platform.android.scrolling.jsScrolling(false);
 
@@ -169,21 +172,17 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     })
                     .state('app.medications', {
                         url: '/medications',
-                        abstract: true,
+                        //abstract: true,
                         views: {
                             'menuContent': {
-                                template: '<ion-nav-view></ion-nav-view>'
+                                templateUrl: 'templates/app.medications.html',
+                                controller: 'MedicationsCtrl as medications'
                             }
                         }
                     })
-                    .state('app.medications.list', {
-                        url: '',
-                        templateUrl: 'templates/app.medications.html',
-                        controller: 'MedicationsCtrl as medications'
-                    })
                     .state('app.medication', {
                         url: '/medication/{id}',
-                        abstract: true,
+                        //abstract: true,
                         cache: false,
                         params: {
                             id: {value: null, squash: true}
@@ -448,7 +447,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         template: '<ion-nav-view></ion-nav-view>',
                         resolve: {
-                            log: ['$stateParams', 'OrangeApi', function($stateParams, OrangeApi) {
+                            patient: ['$stateParams', 'OrangeApi', function($stateParams, OrangeApi) {
                                 var id = $stateParams.id;
                                 return OrangeApi.patients.get(id);
                             }]
@@ -459,8 +458,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/logs.setup.habits.html',
                         controller: 'LogHabitsCtrl as habits',
                         resolve: {
-                            'habits': ['log', function (log) {
-                                return log.one('habits').get('');
+                            'habits': ['patient', function (patient) {
+                                return patient.one('habits').get('');
                             }]
                         }
                     })
@@ -469,13 +468,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         template: '<ion-nav-view></ion-nav-view>',
                         templateUrl: 'templates/logs.setup.medications.html',
-                        controller: 'LogMedicationsCtrl as meds',
-                        cache: false,
-                        resolve: {
-                            medications: ['log', function(log) {
-                                return log.all('medications').getList();
-                            }]
-                        }
+                        controller: 'LogMedicationsCtrl as medications',
+                        cache: false
                     })
 
                     .state('onboarding-log.medications.list', {
@@ -485,16 +479,19 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
 
                     .state('onboarding-log.medications.search', {
                         url: '/search',
-                        templateUrl: 'templates/logs.setup.medications.search.html'
+                        templateUrl: 'templates/logs.setup.medications.search.html',
+                        controller: 'MedicationSearchCtrl as search'
                     })
 
                     .state('onboarding-log.medications.schedule', {
                         url: '/schedule',
-                        templateUrl: 'templates/logs.setup.medications.schedule.html'
+                        templateUrl: 'templates/logs.setup.medications.schedule.html',
+                        controller: 'MedicationScheduleCtrl as schedule'
                     })
                     .state('onboarding-log.medications.events', {
                         url: '/events',
-                        templateUrl: 'templates/logs.setup.medications.events.html'
+                        templateUrl: 'templates/logs.setup.medications.events.html',
+                        controller: 'MedicationEventsCtrl as events'
                     })
                     .state('logs-setup-medications-review', {
                         url: '/onboarding/logs/setup/medications/events',

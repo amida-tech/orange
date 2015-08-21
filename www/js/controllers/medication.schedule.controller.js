@@ -5,10 +5,10 @@
         .module('orange')
         .controller('MedicationScheduleCtrl', MedicationScheduleCtrl);
 
-    MedicationScheduleCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'medications'];
+    MedicationScheduleCtrl.$inject = ['$scope', '$state', '$ionicPopup', '$ionicLoading', 'medications'];
 
     /* @ngInject */
-    function MedicationScheduleCtrl($scope, $state, $ionicLoading, medications) {
+    function MedicationScheduleCtrl($scope, $state, $ionicPopup, $ionicLoading, medications) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -17,6 +17,9 @@
         vm.buttonText = null;
         vm.schedule = null;
         vm.eventsCount = null;
+
+        vm.nextUrl = $state.current.name === 'onboarding-log.medications.schedule' ? 'onboarding-log.medications.events' : 'app.medication.events';
+        vm.returnUrl = $state.current.name === 'onboarding-log.medications.schedule' ? 'onboarding-log.medications.list' : 'app.medications';
 
 
         vm.selectedRegularity = undefined;
@@ -59,10 +62,22 @@
                 $ionicLoading.show({
                     template: 'Saving…'
                 });
-                medications.saveMedication().finally(
+                medications.saveMedication().then(
+                    function(data) {
+                        $ionicLoading.hide();
+                        if (!data.success) {
+                            $ionicPopup.alert({
+                                title: 'Error',
+                                template: data.data.errors,
+                                okType: 'button-dark-orange'
+                            });
+                        }
+                        $state.go(vm.returnUrl);
+                    }
+                ).finally(
                     function() {
                         $ionicLoading.hide();
-                        $state.go('app.medications.list');
+                        $state.go(vm.returnUrl);
                     }
                 );
             } else {
@@ -78,7 +93,7 @@
                 }
                 vm.schedule.times = events;
                 medications.setMedicationSchedule(vm.schedule);
-                $state.go('app.medication.events');
+                $state.go(vm.nextUrl);
             }
             //console.log(vm.schedule);
             //console.log(vm.eventsCount);
@@ -208,6 +223,7 @@
                 case 'monthly':
                     console.log('monthly');
                     frequency = {
+                        n: 1,
                         unit: 'month',
                         start: (_.isArray(vm.schedule.frequency.start) && vm.schedule.frequency.start) || [moment().month(0).format('YYYY-MM-DD')]
                     };

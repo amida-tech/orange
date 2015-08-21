@@ -6,11 +6,11 @@
         .controller('AddLogCtrl', AddLogCtrl);
 
     AddLogCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', '$cordovaCamera', 'OrangeApi',
-                          'Avatar', 'LogService', 'settings', 'patient'];
+                          'Avatar', 'LogService', 'settings', 'patient', 'notifications', '$localstorage'];
 
     /* @ngInject */
     function AddLogCtrl($scope, $state, $ionicLoading, $ionicModal, $cordovaCamera, OrangeApi, Avatar,
-                        LogService, settings, patient) {
+                        LogService, settings, patient, notify, $localstorage) {
 
         $scope.editMode = !!$state.params['editMode'];
         $scope.log = $scope.editMode ? LogService.getDetailLog(): patient;
@@ -73,8 +73,12 @@
                 template: 'Saving...'
             });
             if ($scope.log.habits) {
-                $scope.log.habits.save().then(
-                    saveLog,
+                $scope.log.habits.save().then(function() {
+                    if ($scope.log.id == $localstorage.get('currentPatient')) {
+                        notify.updateNotify();
+                    }
+                    saveLog()
+                },
                     function (error) {
                         $ionicLoading.hide();
                         alert(error.data.errors);

@@ -1,63 +1,76 @@
-<ion-view title="New Medication">
+<ion-view title="{{events.title}}">
     <ion-nav-bar class="bar-orange" align-title="center">
-        <ion-nav-back-button>
-        </ion-nav-back-button>
+        <ion-nav-buttons side="left">
+            <button ui-sref="onboarding-log.medications.schedule" class="button back-button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="light-bg">
-        <div class="list orange-list has-bottom-buttons">
-            <div class="item item-title med-title">
-                <p class="med-name" ng-bind="meds.medication.name"></p>
+    <ion-content class="light-bg has-footer">
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="medications.medication === null"></ion-spinner>
+        </div>
+        <ion-list ng-if="medications.medication" class="list orange-list accordion-list">
 
-                <p class="med-rx" ng-bind="meds.medication.brand"></p>
-            </div>
+            <ion-item class="item-title">
+                <div class="row row-no-padding">
+                    <div class="med-title col col-66">
+                        <p class="med-name" ng-bind="medications.medication.name"></p>
 
-            <div class="item item-text-wrap" ng-repeat="event in meds.events">
-                <h2 class="text-title" ng-bind="(event.n|toWords:true) + ' event'"></h2>
+                        <p class="med-rx" ng-bind="medications.medication.brand"></p>
+                    </div>
+                </div>
+            </ion-item>
 
-                <p class="info" ng-bind="meds.getEventText(event)"></p>
-            </div>
-            <div class="item item-text-wrap orange-form" ng-if="meds.event">
-                <h2 class="text-title" ng-bind="(meds.event.n|toWords:true) + ' event'"></h2>
+            <ion-item ng-repeat="event in events.events" class="accordion-item">
+                <div class="accordion-title" ng-click="events.toggleEvent(event)">
+                    <h2 class="text-title" ng-bind="($index + 1|toWords:true) + ' event'"></h2>
+                    <p class="info" ng-bind="event.text"></p>
+                </div>
 
-                <p class="text-muted">When do you take this medication the second time?</p>
+                <div ng-show="event.show" class="orange-form accordion-body">
+                    <p class="text-muted">When do you take this medication the {{$index + 1|toWords:true}} time?</p>
 
-                <div button-bar="meds.eventTypes" data-ng-model="meds.event.eventType"></div>
+                    <div button-bar="events.eventTypes" data-ng-model="event.eventType"></div>
 
-                <div ng-if="meds.event.eventType === 'time'">
-                    <p class="text-muted">At what time?</p>
-                    <label class="item-input">
-                        <input type="text" placeholder="Time" ng-model="meds.event.time" timefield/>
+                    <div ng-if="event.eventType === 'meal'">
+                        <p class="text-muted">Select event</p>
+
+                        <div button-bar="events.when" data-ng-model="event.when"></div>
+
+                        <p class="text-muted">Select event</p>
+
+                        <div button-bar="events.meals" data-ng-model="event.event"></div>
+                    </div>
+
+                    <div ng-if="event.eventType === 'exact'">
+                        <p class="text-muted">At what time?</p>
+                        <label class="item-input">
+                            <input type="text" placeholder="Time" ng-model="event.time" timefield/>
+                        </label>
+                    </div>
+
+                    <div ng-if="event.eventType === 'sleep'">
+                        <p class="text-muted">Select event</p>
+
+                        <div button-bar="events.sleep" data-ng-model="event.event"></div>
+                    </div>
+
+                    <p class="text-muted">Send a reminder notification?</p>
+                    <label class="item-input item-select">
+                        <select data-ng-model="events.notifications[$index]">
+                            <option value="never" disabled>Never</option>
+                            <option value="15">15 Minutes Before</option>
+                            <option value="30">30 Minutes Before</option>
+                            <option value="60">1 Hour Before</option>
+                        </select>
                     </label>
                 </div>
-                <div ng-if="meds.event.eventType === 'meal'">
-                    <p class="text-muted">Select event</p>
-
-                    <div button-bar="meds.when" data-ng-model="meds.event.when"></div>
-
-                    <p class="text-muted">Select event</p>
-
-                    <div button-bar="meds.meals" data-ng-model="meds.event.event"></div>
-                </div>
-                <div ng-if="meds.event.eventType === 'sleep'">
-                    <p class="text-muted">Select event</p>
-
-                    <div button-bar="meds.sleep" data-ng-model="meds.event.event"></div>
-                </div>
-
-                <p class="text-muted">Send a reminder notification?</p>
-                <label class="item-input item-select">
-                    <select data-ng-model="meds.event.notification">
-                        <option value="never" selected>Never</option>
-                        <option value="15">15 Minutes Before</option>
-                        <option value="30">30 Minutes Before</option>
-                        <option value="60">1 Hour Before</option>
-                    </select>
-                </label>
-            </div>
-        </div>
+            </ion-item>
+        </ion-list>
     </ion-content>
     <div class="bottom-buttons">
-        <button class="button button-full button-orange" ng-click="meds.scheduleEvent()"
-                ng-bind="meds.event ? 'Schedule': 'Save'"></button>
+        <button class="button button-full col col-no-padding button-orange" ng-click="events.save()" ng-bind="events.buttonText"></button>
     </div>
 </ion-view>

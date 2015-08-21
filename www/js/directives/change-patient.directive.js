@@ -5,9 +5,11 @@
         .module('orange')
         .directive('changePatient', changePatient);
 
-    changePatient.$inject = ['OrangeApi', '$ionicModal', '$localstorage', '$state', '$stateParams', 'Patient'];
+    changePatient.$inject = ['$state', '$stateParams', '$ionicModal',
+        '$localstorage',  'Patient', 'notifications'];
 
-    function changePatient(OrangeApi, $ionicModal, $localstorage, $state, $stateParams, Patient) {
+    function changePatient($state, $stateParams, $ionicModal,
+                           $localstorage, Patient, notify) {
         return {
             scope: {
                 options: "=changePatient"
@@ -43,6 +45,7 @@
                         reload: true
                     });
 
+                    notify.updateNotify();
                     scope.modal.hide();
                 };
 

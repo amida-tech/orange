@@ -21,6 +21,7 @@
 
         if (!('parentResponse' in $rootScope)) {
             $state.go('onboarding');
+            return;
         }
 
         vm.messageText = !$rootScope.parentResponse.status ? 'Connection Lost' : 'API not available yet.';

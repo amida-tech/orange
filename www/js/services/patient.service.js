@@ -5,10 +5,10 @@
         .module('orange')
         .factory('Patient', Patient);
 
-    Patient.$inject = ['OrangeApi', '$state', '$localstorage', '$q', '$ionicLoading'];
+    Patient.$inject = ['$state', '$q', '$ionicLoading', 'OrangeApi', '$localstorage'];
 
     /* @ngInject */
-    function Patient(OrangeApi, $state, $localstorage, $q, $ionicLoading) {
+    function Patient($state, $q, $ionicLoading, OrangeApi, $localstorage) {
         var patient = null;
         var patients = [];
 
@@ -42,9 +42,14 @@
         }
 
         function getPatient() {
+            //Patient promise
+            var deffered = $q.defer();
+
+
             //Get patient from cache
             if (patient != null && !$state.reload) {
-                return patient
+                deffered.resolve(patient);
+                return deffered
             }
 
             $ionicLoading.show({
@@ -52,8 +57,6 @@
             });
 
             var currentPatient = $localstorage.get('currentPatient', null);
-            //Patient promise
-            var deffered = $q.defer();
 
             //Get patient by id
             if (currentPatient) {
