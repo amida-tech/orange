@@ -34,7 +34,7 @@
                         'X-Client-Secret': clientSecret,
                         'Authorization': 'Bearer ' + accessToken
                     });
-                    RestangularConfigurer.setDefaultHttpFields({timeout: 10 * 2000});
+                    RestangularConfigurer.setDefaultHttpFields({timeout: 30 * 1000});
 
                     RestangularConfigurer.addRequestInterceptor(function (element) {
                         if (element && element.hasOwnProperty('success')) {

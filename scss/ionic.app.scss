@@ -1011,6 +1011,12 @@ ion-content {
           border-bottom: 1px solid $gray;
         }
 
+        &.active {
+          .item-content {
+            color: $light;
+          }
+        }
+
         .item-content, &.item-email {
 
           background-color: $dark;
