@@ -5,9 +5,9 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal', 'n2w', 'patient'];
+    TodayCtrl.$inject = ['$rootScope', '$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal', 'n2w', 'patient'];
 
-    function TodayCtrl($q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, patient) {
+    function TodayCtrl($rootScope, $q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, patient) {
         var vm = this;
         var doseModal = null;
 
@@ -316,5 +316,13 @@
                     $ionicLoading.hide();
                 })
         }
+
+        $rootScope.$on('$cordovaLocalNotification:click', function (ev, notification, state) {
+            var event = JSON.parse(notification.data).event;
+            event.medication = _.find(vm.medications, {id: event.medication_id});
+            event.event = _.find(event.medication.schedule.times, {id: event.scheduled});
+            console.log(event);
+            showModal(event);
+        })
     }
 })();

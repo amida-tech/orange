@@ -5,10 +5,10 @@
         .module('orange')
         .factory('medications', medications);
 
-    medications.$inject = ['$q', 'n2w'];
+    medications.$inject = ['$q', 'n2w', 'notifications'];
 
     /* @ngInject */
-    function medications($q, n2w) {
+    function medications($q, n2w, notify) {
         var vm = this;
         var service = {
             setMedicationSchedule: setMedicationSchedule,
@@ -45,6 +45,7 @@
                 return medication.save().then(
                     function(medication) {
                         vm.medication = medication;
+                        notify.updateNotify();
                         return medication;
                     },
                     function(error) {
@@ -58,6 +59,7 @@
                         if (!(medication.import_id && _.find(vm.medications, {import_id: medication.import_id}))) {
                             vm.medications.push(medication);
                         }
+                        notify.addNotifyByMedication(medication);
                         return medication;
                     },
                     function (error) {
@@ -157,6 +159,8 @@
                     }
                     vm.medication = null;
                     deffered.resolve();
+
+                    notify.updateNotify();
                 },
                 function (error) {
                     deffered.reject(error);

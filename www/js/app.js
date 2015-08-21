@@ -1,6 +1,6 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch'])
 
-    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient) {
+    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications) {
 
              // Initializing app
              $rootScope.initialized = false;
@@ -18,6 +18,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                      }
 
                      Patient.changeStateByPatient();
+                     notifications.updateNotify();
                  } else {
                      // Not authorized
                      $state.go('onboarding');
