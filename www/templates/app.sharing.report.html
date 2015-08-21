@@ -1,0 +1,32 @@
+<ion-view view-title="REPORT">
+    <ion-nav-bar class="bar-orange orange-light" align-title="center">
+        <ion-nav-buttons side="left" >
+            <button ui-sref="app.sharing" class="button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-content class="light-bg" padding="true" scroll="true">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="setReport(true)">
+        </ion-refresher>
+        <div class="text-center">
+            <ion-spinner class="orange-loading-spinner" icon="dots"
+                         ng-if="loading"></ion-spinner>
+        </div>
+        <div class="report-pdf-panel" ng-show="totalPages">
+            <div class="btn-group">
+                <i class="icon ion-ios-skipbackward" ng-click="viewer.gotoPage(1)"></i>
+                <i class="icon ion-arrow-left-b" ng-click="viewer.prevPage()"></i>
+                <i class="icon ion-arrow-right-b" ng-click="viewer.nextPage()"></i>
+                <i class="icon ion-ios-skipforward" ng-click="viewer.gotoPage(totalPages)"></i>
+            </div>
+            <div class="page-group">
+                <span class="label">Pages: {{ currentPage }}/{{ totalPages }}</span>
+            </div>
+        </div>
+        <div class="row" ng-show="totalPages">
+            <pdfviewer src="{{ pdfURL }}" on-page-load='pageLoaded(page,total)' id="viewer"
+                       load-progress='loadProgress(loaded, total, state)'></pdfviewer>
+        </div>
+    </ion-content>
+</ion-view>

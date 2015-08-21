@@ -15,6 +15,7 @@
         return {
             set: set,
             api: api,
+            getReport: getReport,
             getPatient: getPatient,
             getPatients: getPatients,
             changeStateByPatient: changeStateByPatient
@@ -133,6 +134,12 @@
                  }
                  $state.go('logs');
             });
+        }
+
+        function getReport(patientId) {
+            return OrangeApi.patients.withHttpConfig({
+                responseType: 'arraybuffer'
+            }).get(patientId + '.pdf');
         }
     }
 })();

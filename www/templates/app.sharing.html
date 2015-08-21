@@ -59,12 +59,13 @@
                     <span class="input-label input-label-wo-margin">Select Log</span>
                 </label>
                 <label class="item item-input item-select">
-                    <select>
+                    <select data-ng-model="sharing.log">
                         <option ng-repeat="log in sharing.logs" value="{{ log.id }}">{{ log.first_name + ' ' + log.last_name }}</option>
                     </select>
                 </label>
-                    <button class="button button-full button-orange">Get Report</button>
+                    <button class="button button-full button-orange" ui-sref="app.sharing-report({id: sharing.log})">Get Report</button>
             </form>
+
         </div>
     </ion-content>
 </ion-view>

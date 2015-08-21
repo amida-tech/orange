@@ -33,7 +33,8 @@
       "variables": {
         "URL_SCHEME": "orangeapp"
       }
-    }
+    },
+    "org.apache.cordova.file"
   ],
   "cordovaPlatforms": [
     "ios",

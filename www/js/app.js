@@ -1,4 +1,4 @@
-angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch'])
+angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch', 'ngPDFViewer'])
 
     .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient) {
 
@@ -371,6 +371,16 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                                 templateUrl: 'templates/app.sharing.accept.html',
                                 cache: false,
                                 controller: 'SharingAcceptCtrl as sharing_accept'
+                            }
+                        }
+                    })
+                    .state('app.sharing-report', {
+                        url: '/sharing/report/:id',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.sharing.report.html',
+                                cache: false,
+                                controller: 'SharingReportCtrl as sharing_report'
                             }
                         }
                     })

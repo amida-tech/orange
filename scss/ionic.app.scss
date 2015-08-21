@@ -1187,3 +1187,18 @@ ion-option-button.option-control.button {
   background-color: $dark;
   padding-top: 10px;
 }
+
+.report-pdf-panel {
+
+  .btn-group {
+    font-size: 48px;
+    color: $orange;
+    float: left;
+  }
+
+  .page-group {
+    font-size: 20px;
+    float: right;
+    padding-top: 5px;
+  }
+}
