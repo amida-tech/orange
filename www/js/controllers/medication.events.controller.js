@@ -20,7 +20,7 @@
         vm.title = 'Events';
         vm.buttonText = 'Schedule';
 
-        vm.nextUrl = $state.current.name === 'onboarding-log.medications.events' ? 'onboarding-log.medications.list' : 'app.medication';
+        vm.nextUrl = $state.current.name === 'onboarding-log.medications.events' ? 'onboarding-log.medications.list' : 'app.medications';
         vm.returnUrl = $state.current.name === 'onboarding-log.medications.events' ? 'onboarding-log.medications.list' : 'app.medications';
 
 
