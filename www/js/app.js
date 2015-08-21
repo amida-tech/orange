@@ -376,7 +376,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '/settings',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.settings.html'
+                                templateUrl: 'templates/app.settings.html',
+                                controller: 'SettingsCtrl as settings'
                             }
                         }
                     })
