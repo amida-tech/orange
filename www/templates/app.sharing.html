@@ -51,8 +51,8 @@
                     <span class="input-label input-label-wo-margin">Select Month</span>
                 </label>
                 <label class="item item-input item-select">
-                    <select>
-                        <option ng-repeat="month in sharing.months" value="{{ month.toLowerCase() }}">{{ month }}</option>
+                    <select data-ng-model="sharing.month">
+                        <option ng-repeat="month in sharing.months" value="{{ sharing.months.indexOf(month) }}">{{ month }}</option>
                     </select>
                 </label>
                 <label class="item-input">
@@ -63,7 +63,8 @@
                         <option ng-repeat="log in sharing.logs" value="{{ log.id }}">{{ log.first_name + ' ' + log.last_name }}</option>
                     </select>
                 </label>
-                    <button class="button button-full button-orange" ui-sref="app.sharing-report({id: sharing.log})">Get Report</button>
+                    <button class="button button-full button-orange"
+                            ui-sref="app.sharing-report({id: sharing.log, month: sharing.month})">Get Report</button>
             </form>
 
         </div>

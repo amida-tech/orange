@@ -1186,7 +1186,7 @@ ion-option-button.option-control.button {
 }
 
 .icon-log-checked {
-  color:white;
+  color: white;
   position: absolute;
   font-size: 60px;
   opacity: 0.7;
@@ -1198,8 +1198,13 @@ ion-option-button.option-control.button {
 
   .btn-group {
     font-size: 48px;
-    color: $orange;
-    float: left;
+    color: white;
+    text-align: center;
+
+    i {
+      margin-left: 10px;
+      margin-right: 10px;
+    };
   }
 
   .page-group {

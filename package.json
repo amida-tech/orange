@@ -38,7 +38,8 @@
       "locator": "https://github.com/katzer/cordova-plugin-local-notifications",
       "id": "de.appplant.cordova.plugin.local-notification"
     },
-    "org.apache.cordova.file"
+    "org.apache.cordova.file",
+    "nl.x-services.plugins.socialsharing"
   ],
   "cordovaPlatforms": [
     "ios",

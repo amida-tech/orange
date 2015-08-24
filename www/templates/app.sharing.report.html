@@ -5,28 +5,35 @@
                 <i class="icon ion-arrow-left-c"></i>
             </button>
         </ion-nav-buttons>
+        <ion-nav-buttons side="right" >
+            <button class="button button-clear button-small" ng-show="totalPages" ng-click="share()">Share</button>
+        </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="light-bg" padding="true" scroll="true">
-        <ion-refresher pulling-text="Pull to refresh" on-refresh="setReport(true)">
+    <ion-content class="light-bg has-footer">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="getReport()">
         </ion-refresher>
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots"
                          ng-if="loading"></ion-spinner>
         </div>
         <div class="report-pdf-panel" ng-show="totalPages">
-            <div class="btn-group">
-                <i class="icon ion-ios-skipbackward" ng-click="viewer.gotoPage(1)"></i>
-                <i class="icon ion-arrow-left-b" ng-click="viewer.prevPage()"></i>
-                <i class="icon ion-arrow-right-b" ng-click="viewer.nextPage()"></i>
-                <i class="icon ion-ios-skipforward" ng-click="viewer.gotoPage(totalPages)"></i>
-            </div>
             <div class="page-group">
                 <span class="label">Pages: {{ currentPage }}/{{ totalPages }}</span>
             </div>
         </div>
         <div class="row" ng-show="totalPages">
+            <ion-scroll zooming="true" direction="xy" style="height: {{ pdfHeight + 'px' }};">
             <pdfviewer src="{{ pdfURL }}" on-page-load='pageLoaded(page,total)' id="viewer"
                        load-progress='loadProgress(loaded, total, state)'></pdfviewer>
+            </ion-scroll>
         </div>
     </ion-content>
+    <div class="bottom-buttons report-pdf-panel">
+        <div class="btn-group">
+            <i class="icon ion-ios-skipbackward" ng-click="viewer.gotoPage(1)"></i>
+            <i class="icon ion-arrow-left-b" ng-click="viewer.prevPage()"></i>
+            <i class="icon ion-arrow-right-b" ng-click="viewer.nextPage()"></i>
+            <i class="icon ion-ios-skipforward" ng-click="viewer.gotoPage(totalPages)"></i>
+        </div>
+    </div>
 </ion-view>
