@@ -112,20 +112,40 @@
             });
 
             //Schedule
-            var allNotifyPromises = [];
-            _.each(notifications, function(notify) {
-                allNotifyPromises.push($cordovaLocalNotification.schedule(notify));
-            });
+            //var allNotifyPromises = [];
+            //_.each(notifications, function(notify) {
+            //    $cordovaLocalNotification.schedule(notify).then(function() {
+            //        $cordovaLocalNotification.getAllScheduled().then(function(result) {
+            //            console.log(result);
+            //            _.each(result, function(n) {
+            //                console.log('Scheduled fact', n.at);
+            //            })
+            //        })
+            //    });
+            //});
 
-            $q.all(allNotifyPromises).then(function(){
-                console.log('Promises complete.');
-                $cordovaLocalNotification.getAllScheduled().then(function(result) {
-                    console.log(result);
-                    _.each(result, function(n) {
-                        console.log('Scheduled fact', n.at);
+            _schNotify(notifications);
+            //$q.all(allNotifyPromises).then(function(){
+            //    console.log('Promises complete.');
+            //});
+        }
+
+        function _schNotify(notifications) {
+            var firstKey = _.keys(notifications)[0];
+            if (firstKey) {
+                $cordovaLocalNotification.schedule(notifications[firstKey]).then(function() {
+                    console.log('Schedule');
+                    delete notifications[firstKey];
+                    _schNotify(notifications);
+                    $cordovaLocalNotification.getAllScheduled().then(function(result) {
+                        console.log(result);
+                        _.each(result, function(n) {
+                            console.log('Scheduled fact', n.at);
+                        })
                     })
                 })
-            });
+            }
+
         }
 
         //Clear All Notifications
