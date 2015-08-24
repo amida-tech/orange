@@ -39,7 +39,11 @@
       "id": "de.appplant.cordova.plugin.local-notification"
     },
     "org.apache.cordova.file",
-    "nl.x-services.plugins.socialsharing"
+    "nl.x-services.plugins.socialsharing",
+    {
+      "locator": "https://github.com/EddyVerbruggen/cordova-plugin-actionsheet.git",
+      "id": "nl.x-services.plugins.actionsheet"
+    }
   ],
   "cordovaPlatforms": [
     "ios",

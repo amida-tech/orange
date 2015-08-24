@@ -5,10 +5,10 @@
         .module('orange')
         .controller('SharingReportCtrl', SharingReportCtrl);
 
-    SharingReportCtrl.$inject = ['$scope', '$stateParams', '$ionicActionSheet', '$cordovaFile',
-                                 '$timeout', 'PDFViewerService', 'Patient'];
+    SharingReportCtrl.$inject = ['$scope', '$stateParams', '$cordovaActionSheet', '$cordovaFile',
+                                 'PDFViewerService', 'Patient'];
 
-    function SharingReportCtrl($scope, $stateParams, $ionicActionSheet, $cordovaFile, $timeout, pdf, Patient) {
+    function SharingReportCtrl($scope, $stateParams, $cordovaActionSheet, $cordovaFile, pdf, Patient) {
         var reportDir = cordova.file.externalCacheDirectory || cordova.file.cacheDirectory,
             fileName = $stateParams.id + '.pdf';
 
@@ -55,20 +55,18 @@
         }
 
         function share() {
-
-            var hideSheet = $ionicActionSheet.show({
-                buttons: [{text: 'by Email'}],
-                cancelText: 'Cancel',
-                buttonClicked: function (index) {
-                    switch (index) {
-                        case 0:
-                            window.plugins.socialsharing.shareViaEmail('', 'Orange Report', null, null, null, $scope.pdfURL);
-                            break;
-                    }
+            $cordovaActionSheet.show({
+                title: 'Select service for share',
+                buttonLabels: ['by Email'],
+                addCancelButtonWithLabel: 'Cancel',
+                androidEnableCancelButton: true
+            }).then(function (index) {
+                switch (index) {
+                    case 1:
+                        window.plugins.socialsharing.shareViaEmail('', 'Orange Report', null, null, null, $scope.pdfURL);
+                        break;
                 }
             });
-
-            $timeout(hideSheet, 3000);
         }
     }
 })();
