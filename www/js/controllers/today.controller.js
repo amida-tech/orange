@@ -319,6 +319,14 @@
 
         $rootScope.$on('$cordovaLocalNotification:click', function (ev, notification, state) {
             var event = JSON.parse(notification.data).event;
+
+            //Check notify date
+            var notifyDate = moment(event.date);
+            var currentDate = moment();
+            if (notifyDate.date() != currentDate.date() || notifyDate.month() != currentDate.month) {
+                return;
+            }
+
             event.medication = _.find(vm.medications, {id: event.medication_id});
             event.event = _.find(event.medication.schedule.times, {id: event.scheduled});
             console.log(event);

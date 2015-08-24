@@ -28,6 +28,14 @@
                 return;
             }
 
+            if ($rootScope.isIOS && !$cordovaLocalNotification.hasPermission()) {
+                var registerPromise = $cordovaLocalNotification.promptForPermission();
+                registerPromise.then(function() {
+                    updateNotify();
+                });
+                return;
+            }
+
             $cordovaLocalNotification.clearAll();
             var patient = Patient.getPatient();
             patient.then(_fetchPatientData);
@@ -48,7 +56,7 @@
             var notifications = {};
             _.each(schedule, function(item) {
                 var date = moment(item.date);
-                if (date < moment()) {
+                if (date < moment() || item.dose_id) {
                     return;
                 }
 
@@ -124,8 +132,7 @@
                 return;
             }
 
-            var todayPromise = $state.go('app.today.schedule');
-            console.log(todayPromise)
+            $state.go('app.today.schedule');
         }
 
     }
