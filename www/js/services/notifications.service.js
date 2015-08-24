@@ -30,8 +30,10 @@
 
             if ($rootScope.isAndroid) {
                 $cordovaLocalNotification.clearAll();
-                var patient = Patient.getPatient();
-                patient.then(_fetchPatientData);
+                $cordovaLocalNotification.cancelAll().then(function() {
+                    var patient = Patient.getPatient();
+                    patient.then(_fetchPatientData);
+                });
                 return;
             }
 
@@ -55,7 +57,9 @@
         }
 
         function _fetchPatientData(patient) {
-            var schedulePromise = patient.all('schedule').getList();
+            var schedulePromise = patient.all('schedule').getList({
+                end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')
+            });
             var medPromise = patient.all('medications').getList();
 
             $q.all([medPromise, schedulePromise]).then(function(data) {
@@ -110,24 +114,17 @@
             //Schedule
             var allNotifyPromises = [];
             _.each(notifications, function(notify) {
-                if (allNotifyPromises.length < 10) {
-                    console.log(notify);
-                    $cordovaLocalNotification.schedule(notify).then(function() {
-                        console.log('Promises complete.')
-                        $cordovaLocalNotification.getAllScheduled().then(function(result) {
-                            console.log(result);
-                            _.each(result, function(n) {
-                                console.log('Scheduled fact', n.at);
-                            })
-                        })
-                    });
-                    allNotifyPromises.push(1);
-                }
+                allNotifyPromises.push($cordovaLocalNotification.schedule(notify));
             });
 
-            $rootScope.$on('$cordovaLocalNotification:trigger', function(event, notification, state) {
-                console.log('Triggered!!');
-                console.log(notification)
+            $q.all(allNotifyPromises).then(function(){
+                console.log('Promises complete.');
+                $cordovaLocalNotification.getAllScheduled().then(function(result) {
+                    console.log(result);
+                    _.each(result, function(n) {
+                        console.log('Scheduled fact', n.at);
+                    })
+                })
             });
         }
 
@@ -147,7 +144,10 @@
 
             var patient = Patient.getPatient();
             patient.then(function(pat) {
-                pat.all('schedule').getList().then(function(schedule) {
+                pat.all('schedule').getList({
+                    medication_id: medication.id,
+                    end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')
+                }).then(function(schedule) {
                     _scheduleNotify([medication], schedule)
                 });
             })
