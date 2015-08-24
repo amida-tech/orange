@@ -28,17 +28,30 @@
                 return;
             }
 
-            if ($rootScope.isIOS && !$cordovaLocalNotification.hasPermission()) {
-                var registerPromise = $cordovaLocalNotification.promptForPermission();
-                registerPromise.then(function() {
-                    updateNotify();
-                });
+            if ($rootScope.isAndroid) {
+                $cordovaLocalNotification.clearAll();
+                var patient = Patient.getPatient();
+                patient.then(_fetchPatientData);
                 return;
             }
 
-            $cordovaLocalNotification.clearAll();
-            var patient = Patient.getPatient();
-            patient.then(_fetchPatientData);
+            $cordovaLocalNotification.hasPermission().then(function(result) {
+                if (!result) {
+                    var registerPromise = $cordovaLocalNotification.promptForPermission();
+                    registerPromise.then(function() {
+                        updateNotify();
+                    });
+                    return;
+                }
+
+
+
+                $cordovaLocalNotification.clearAll();
+                $cordovaLocalNotification.cancelAll().then(function() {
+                    var patient = Patient.getPatient();
+                    patient.then(_fetchPatientData);
+                });
+            });
         }
 
         function _fetchPatientData(patient) {
@@ -76,11 +89,12 @@
                   event: item
                 };
 
+                var schDate = new Date(item.notification);
                 var scheduleOptions = {
                     id: id,
                     title: 'Take ' + medication.name,
                     text: messageText,
-                    at: new Date(item.notification),
+                    at: schDate,
                     data: JSON.stringify(data)
                 };
 
@@ -94,8 +108,26 @@
             });
 
             //Schedule
+            var allNotifyPromises = [];
             _.each(notifications, function(notify) {
-                $cordovaLocalNotification.schedule(notify);
+                if (allNotifyPromises.length < 10) {
+                    console.log(notify);
+                    $cordovaLocalNotification.schedule(notify).then(function() {
+                        console.log('Promises complete.')
+                        $cordovaLocalNotification.getAllScheduled().then(function(result) {
+                            console.log(result);
+                            _.each(result, function(n) {
+                                console.log('Scheduled fact', n.at);
+                            })
+                        })
+                    });
+                    allNotifyPromises.push(1);
+                }
+            });
+
+            $rootScope.$on('$cordovaLocalNotification:trigger', function(event, notification, state) {
+                console.log('Triggered!!');
+                console.log(notification)
             });
         }
 
