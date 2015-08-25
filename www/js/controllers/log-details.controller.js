@@ -49,16 +49,17 @@
         }
 
         function call() {
+            var phone = vm.currentLog.phone.match(/[\d\+]*/g).join('');
+            if (phone[0] !== '+') {
+                phone = '+1' + phone;
+            }
+
             $cordovaActionSheet.show({
-                title: 'Select call method',
-                buttonLabels: ['Phone', 'SMS'],
+                title: 'Select action',
+                buttonLabels: ['Call ' + phone, 'Message ' + phone],
                 addCancelButtonWithLabel: 'Cancel',
                 androidEnableCancelButton: true
             }).then(function (index) {
-                var phone = vm.currentLog.phone.match(/[\d\+]*/g).join('');
-                if (phone[0] !== '+') {
-                    phone = '+1' + phone;
-                }
                 switch (index) {
                     case 1:
                         document.location.href = 'tel:' + phone;
