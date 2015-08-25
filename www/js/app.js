@@ -509,6 +509,15 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         templateUrl: 'templates/account_login.html',
                         controller: 'AccountCtrl'
                     })
+                    .state('account-reset', {
+                        url: '/reset',
+                        templateUrl: 'templates/logs.request.html',
+                        controller: 'RequestLogsCtrl',
+                        cache: false,
+                        params: {
+                            nextState: 'onboarding'
+                        }
+                    })
                     .state('onboarding', {
                         url: '/onboarding',
                         templateUrl: 'templates/onboarding.html'
