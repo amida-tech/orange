@@ -5,12 +5,14 @@
         .module('orange')
         .factory('Patient', Patient);
 
-    Patient.$inject = ['$state', '$q', '$ionicLoading', 'OrangeApi', '$localstorage'];
+    Patient.$inject = ['$rootScope', '$q', '$state', '$ionicLoading', 'OrangeApi', '$localstorage'];
 
     /* @ngInject */
-    function Patient($state, $q, $ionicLoading, OrangeApi, $localstorage) {
+    function Patient($rootScope, $q, $state, $ionicLoading, OrangeApi, $localstorage) {
         var patient = null;
         var patients = [];
+
+        $rootScope.$on('auth:user:logout', clean);
 
         return {
             set: set,
@@ -22,6 +24,13 @@
         };
 
         ////////////////
+
+        function clean() {
+            console.log('User logged out, cleaning patient service data...');
+            patient = null;
+            patients = [];
+            $localstorage.remove('currentPatient');
+        }
 
         //Cache patients list
         function getPatients() {

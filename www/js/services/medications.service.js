@@ -5,10 +5,10 @@
         .module('orange')
         .factory('medications', medications);
 
-    medications.$inject = ['$q', 'n2w', 'notifications'];
+    medications.$inject = ['$rootScope', '$q', 'n2w', 'notifications'];
 
     /* @ngInject */
-    function medications($q, n2w, notify) {
+    function medications($rootScope, $q, n2w, notify) {
         var vm = this;
         var service = {
             setMedicationSchedule: setMedicationSchedule,
@@ -34,10 +34,19 @@
         vm.medication = null;
         vm.log = null;
 
+        $rootScope.$on('auth:user:logout', clean);
+
 
         return service;
 
         ////////////////
+
+        function clean() {
+            console.log('User logged out, cleaning medications service data...');
+            vm.medications = null;
+            vm.medication = null;
+            vm.log = null;
+        }
 
         function saveMedication(medication) {
             medication = medication || vm.medication;
