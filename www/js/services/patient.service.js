@@ -33,8 +33,9 @@
         }
 
         //Cache patients list
-        function getPatients() {
-            if (!_.isEmpty(patients)) {
+        function getPatients(force) {
+            force = force || false;
+            if (!_.isEmpty(patients) && !force) {
                 return patients
             }
             var promise = OrangeApi.patients.getList();
