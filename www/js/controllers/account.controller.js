@@ -4,13 +4,15 @@
         .module('orange')
         .controller('AccountCtrl', AccountCtrl);
 
-    AccountCtrl.$inject = ['$scope', '$state', 'Auth', 'OrangeApi', 'Patient', 'notifications'];
+    AccountCtrl.$inject = ['$scope', '$cordovaInAppBrowser', 'Auth', 'OrangeApi',
+                           'Patient', 'notifications'];
 
     /* @ngInject */
-    function AccountCtrl($scope, $state, Auth, OrangeApi, Patient, notify) {
+    function AccountCtrl($scope, $cordovaInAppBrowser, Auth, OrangeApi, Patient, notify) {
 
         $scope.login = login;
         $scope.signUp = signUp;
+        $scope.goToTerms = goToTerms;
         $scope.error = false;
         $scope.errors = [];
         $scope.user = {};
@@ -90,6 +92,10 @@
                     }
                 })
             }
+        }
+
+        function goToTerms() {
+            $cordovaInAppBrowser.open('http://google.com', '_blank');
         }
     }
 })();

@@ -389,6 +389,7 @@ dl.dl-worksheet {
     background: $orange;
     border-color: $orange;
   }
+  float: left;
 }
 
 .button.button-dark-orange {
@@ -1211,5 +1212,17 @@ ion-option-button.option-control.button {
     font-size: 20px;
     float: right;
     padding-top: 5px;
+  }
+}
+
+.agree-div {
+  display: flex;
+  padding-top: 5px;
+
+  p {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0 0 3px;
+    text-decoration: underline;
   }
 }
