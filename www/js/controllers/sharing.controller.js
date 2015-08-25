@@ -16,6 +16,8 @@
         vm.decline = decline;
         vm.cancel = cancel;
         vm.update = update;
+        vm.log = null;
+        vm.month = 0;
 
         LogService.getLogs().then(function (items) {
             vm.logs = items;

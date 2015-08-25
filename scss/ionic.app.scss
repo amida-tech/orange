@@ -1186,10 +1186,30 @@ ion-option-button.option-control.button {
 }
 
 .icon-log-checked {
-  color:white;
+  color: white;
   position: absolute;
   font-size: 60px;
   opacity: 0.7;
   background-color: $dark;
   padding-top: 10px;
+}
+
+.report-pdf-panel {
+
+  .btn-group {
+    font-size: 48px;
+    color: white;
+    text-align: center;
+
+    i {
+      margin-left: 10px;
+      margin-right: 10px;
+    };
+  }
+
+  .page-group {
+    font-size: 20px;
+    float: right;
+    padding-top: 5px;
+  }
 }

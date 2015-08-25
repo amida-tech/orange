@@ -15,6 +15,7 @@
         return {
             set: set,
             api: api,
+            getReport: getReport,
             getPatient: getPatient,
             getPatients: getPatients,
             changeStateByPatient: changeStateByPatient
@@ -136,6 +137,20 @@
                  }
                  $state.go('logs');
             });
+        }
+
+        function getReport(patientId, month) {
+            var year = (new Date()).getFullYear(),
+                startDate = new Date(Date.UTC(year, month, 1)),
+                endDate = new Date(Date.UTC(year, parseInt(month) + 1, 0));
+            return OrangeApi.patients.withHttpConfig({
+                responseType: 'arraybuffer'
+            }).get(
+                patientId + '.pdf', {
+                    start_date: startDate.toISOString().split('T')[0],
+                    end_date: endDate.toISOString().split('T')[0]
+                }
+            );
         }
     }
 })();
