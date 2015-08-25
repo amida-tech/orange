@@ -64,7 +64,7 @@
                         document.location.href = 'tel:' + phone;
                         break;
                     case 2:
-                        window.plugins.socialsharing.shareViaSMS('', [phone]).then(
+                        window.plugins.socialsharing.shareViaSMS('', phone).then(
                             function (success) {
                                 console.log('Success SMS: ' + success);
                             },
