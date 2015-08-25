@@ -507,7 +507,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('account-login', {
                         url: '/login',
                         templateUrl: 'templates/account_login.html',
-                        controller: 'AccountCtrl'
+                        controller: 'AccountCtrl',
+                        cache: false
                     })
                     .state('account-reset', {
                         url: '/reset',

@@ -82,7 +82,6 @@
                     if (status === true) {
                         $scope.error = false;
                         $scope.errors = [];
-                        $scope.user = [];
                         Patient.changeStateByPatient();
                         notify.updateNotify();
                     } else {
