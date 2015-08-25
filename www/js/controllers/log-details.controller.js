@@ -6,10 +6,10 @@
         .controller('LogDetailsCtrl', LogDetailsCtrl);
 
     LogDetailsCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading',
-                              '$cordovaActionSheet', '$cordovaSms', 'LogService'];
+                              '$cordovaActionSheet', 'LogService'];
 
     function LogDetailsCtrl($scope, $state, $stateParams, $ionicPopup, $ionicLoading, $cordovaActionSheet,
-                            $cordovaSms, LogService) {
+                            LogService) {
 
         var vm = this;
 
@@ -64,7 +64,7 @@
                         document.location.href = 'tel:' + phone;
                         break;
                     case 2:
-                        $cordovaSms.send(phone, '', {android: {intent: 'INTENT'}}).then(
+                        window.plugins.socialsharing.shareViaSMS('', [phone]).then(
                             function (success) {
                                 console.log('Success SMS: ' + success);
                             },
