@@ -1103,7 +1103,12 @@ ion-content {
   p {
     font-weight: bold;
     margin: 0 10px 0 0;
-    float: left;
+    display: inline-block;
+  }
+
+  .phone {
+    text-decoration: underline;
+    font-weight: bold;
   }
 }
 

@@ -6,13 +6,15 @@
         .controller('LogDetailsCtrl', LogDetailsCtrl);
 
     LogDetailsCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading',
-                              'LogService'];
+                              '$cordovaActionSheet', 'LogService'];
 
-    function LogDetailsCtrl($scope, $state, $stateParams, $ionicPopup, $ionicLoading, LogService) {
+    function LogDetailsCtrl($scope, $state, $stateParams, $ionicPopup, $ionicLoading, $cordovaActionSheet,
+                            LogService) {
 
         var vm = this;
 
         vm.deleteLog = deleteLog;
+        vm.call = call;
 
         vm.currentLog = LogService.setDetailLog($stateParams.id);
         vm.title = vm.currentLog.first_name + ' ' + vm.currentLog.last_name;
@@ -44,6 +46,36 @@
                     }
                 }
             );
+        }
+
+        function call() {
+            var phone = vm.currentLog.phone.match(/[\d\+]*/g).join('');
+            if (phone[0] !== '+') {
+                phone = '+1' + phone;
+            }
+
+            $cordovaActionSheet.show({
+                title: 'Select action',
+                buttonLabels: ['Call ' + phone, 'Message ' + phone],
+                addCancelButtonWithLabel: 'Cancel',
+                androidEnableCancelButton: true
+            }).then(function (index) {
+                switch (index) {
+                    case 1:
+                        document.location.href = 'tel:' + phone;
+                        break;
+                    case 2:
+                        window.plugins.socialsharing.shareViaSMS('', phone).then(
+                            function (success) {
+                                console.log('Success SMS: ' + success);
+                            },
+                            function (error) {
+                                console.log('Error SMS: ' + error);
+                            }
+                        );
+                        break;
+                }
+            });
         }
     }
 })();
