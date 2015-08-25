@@ -15,7 +15,7 @@
         var vm = this,
             is_edit = 'id' in $stateParams;
         vm.title = ((is_edit) ? 'Edit': 'Add') + ' Pharmacy';
-        vm.pharmacy = {};
+        vm.pharmacy = {hours: {}};
         vm.days = $locale.DATETIME_FORMATS.DAY;
         vm.save = save;
 
@@ -29,6 +29,10 @@
         if (is_edit) {
             vm.pharmacy = _.find($scope.pharmacies.$object, function (item) {
                 return item.id == $stateParams.id;
+            });
+        } else {
+            _.each(vm.days, function (day) {
+                vm.pharmacy.hours[day.toLowerCase()] = {open: '09:00', close: '17:00'}
             });
         }
 
