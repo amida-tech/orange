@@ -118,13 +118,14 @@
                     moment(item.date).format('hh:mm A');
 
                 var data = {
-                  event: item
+                    event: item,
+                    id: id
                 };
 
                 var schDate = new Date(item.notification);
                 var scheduleOptions = {
                     id: id,
-                    title: 'Take ' + medication.name,
+                    title: 'Take at ' + moment(item.date).format('hh:mm A'),
                     text: messageText,
                     at: schDate,
                     data: JSON.stringify(data)
@@ -158,7 +159,9 @@
             if (!_.isUndefined(notifications[0])) {
                 var notify = notifications.shift();
                 $cordovaLocalNotification.schedule(notify).finally(function() {
-                    _schNotify(notifications);
+                    $timeout(function() {
+                        _schNotify(notifications);
+                    });
                 })
             }
         }
@@ -189,6 +192,10 @@
         }
 
         function _clickNotifyEvent (ev, notification, state) {
+            $cordovaLocalNotification.getAllTriggered().then(function(sch) {
+                console.log('Current Id', notification.id);
+                console.log('Triggered: ', sch);
+            });
             $cordovaLocalNotification.clear([notification.id]);
 
             if (!$rootScope.initialized) {
@@ -267,8 +274,6 @@
             alertPromise.then(_alertConfirm);
         }
         function _alertConfirm() {
-            console.log('Stack alerts', stackAlerts);
-
             if (stackAlerts.length) {
                 var alertObj = stackAlerts.shift();
                 var alertPromise = $ionicPopup.alert(alertObj);

@@ -329,8 +329,6 @@
 
             medService.setLog(patient);
             medService.getAll().then(function(medications) {
-                console.log('Medicatons', medications);
-                console.log('ID', event.medication_id);
                 event.medication = _.find(medications, {id: event.medication_id});
                 event.event = _.find(event.medication.schedule.times, {id: event.scheduled});
                 showModal(event);
