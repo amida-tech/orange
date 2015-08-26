@@ -5,9 +5,11 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$rootScope', '$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal', 'n2w', 'patient'];
+    TodayCtrl.$inject = ['$rootScope', '$q', '$scope', '$ionicLoading',
+        '$ionicPopup', '$ionicModal', 'n2w', 'patient', 'medications'];
 
-    function TodayCtrl($rootScope, $q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, patient) {
+    function TodayCtrl($rootScope, $q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, patient, medService) {
+        console.log('Init Today');
         var vm = this;
         var doseModal = null;
 
@@ -317,20 +319,21 @@
                 })
         }
 
-        $rootScope.$on('$cordovaLocalNotification:click', function (ev, notification, state) {
+        $rootScope.$on('today:click:notification', function (ev, notification) {
             var event = JSON.parse(notification.data).event;
-
             //Check notify date
             var notifyDate = moment(event.date);
             var currentDate = moment();
-            if (notifyDate.date() != currentDate.date() || notifyDate.month() != currentDate.month) {
+            if (notifyDate.date() != currentDate.date() || notifyDate.month() != currentDate.month()) {
                 return;
             }
 
-            event.medication = _.find(vm.medications, {id: event.medication_id});
-            event.event = _.find(event.medication.schedule.times, {id: event.scheduled});
-            console.log(event);
-            showModal(event);
-        })
+            medService.setLog(patient);
+            medService.getAll().then(function(medications) {
+                event.medication = _.find(medications, {id: event.medication_id});
+                event.event = _.find(event.medication.schedule.times, {id: event.scheduled});
+                showModal(event);
+            });
+        });
     }
 })();

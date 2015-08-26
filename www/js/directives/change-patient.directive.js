@@ -45,6 +45,7 @@
                         reload: true
                     });
 
+                    $localstorage.remove('triggeredEvents');
                     notify.updateNotify();
                     scope.modal.hide();
                 };

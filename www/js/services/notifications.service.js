@@ -5,13 +5,14 @@
         .module('orange')
         .factory('notifications', notifications);
 
-    notifications.$inject = ['$rootScope', '$q', '$state', '$cordovaLocalNotification', 'Patient'];
+    notifications.$inject = ['$rootScope', '$q', '$timeout', '$state', '$cordovaLocalNotification', 'Patient', '$localstorage'];
 
     /* @ngInject */
-    function notifications($rootScope, $q, $state, $cordovaLocalNotification, Patient) {
+    function notifications($rootScope, $q, $timeout, $state, $cordovaLocalNotification, Patient, $localstorage) {
         var id = 0;
 
         $rootScope.$on('$cordovaLocalNotification:click', _clickNotifyEvent);
+        $rootScope.$on('$cordovaLocalNotification:trigger', _triggerNotifyEvent);
         $rootScope.$on('auth:user:logout', clearNotify);
 
         return {
@@ -28,12 +29,29 @@
                 return;
             }
 
-            if ($rootScope.isAndroid) {
-                $cordovaLocalNotification.clearAll();
-                $cordovaLocalNotification.cancelAll().then(function() {
-                    var patient = Patient.getPatient();
-                    patient.then(_fetchPatientData);
+            function _cancelCurrent() {
+                var patient = Patient.getPatient();
+                patient.then(_fetchPatientData);
+
+                var triggeredEvents = $localstorage.getObject('triggeredEvents');
+                $cordovaLocalNotification.getAllIds().then(function(ids) {
+                    var clearIds = ids;
+                    if (!_.isUndefined(triggeredEvents)) {
+                        clearIds = _.filter(ids, function(id) {
+                            return _.isUndefined(_.find(triggeredEvents, function(event) {
+                                return event.id == id
+                            }))
+                        });
+                    }
+
+                    $cordovaLocalNotification.clear(clearIds);
+                    $cordovaLocalNotification.cancel(clearIds).then(function() {
+                    });
                 });
+            }
+
+            if ($rootScope.isAndroid) {
+                _cancelCurrent();
                 return;
             }
 
@@ -46,13 +64,7 @@
                     return;
                 }
 
-
-
-                $cordovaLocalNotification.clearAll();
-                $cordovaLocalNotification.cancelAll().then(function() {
-                    var patient = Patient.getPatient();
-                    patient.then(_fetchPatientData);
-                });
+                _cancelCurrent();
             });
         }
 
@@ -77,6 +89,7 @@
                     return;
                 }
 
+                //Check medication
                 var medication = _.find(medications, function(med) {
                     return med.id == item.medication_id
                 });
@@ -85,7 +98,12 @@
                     return;
                 }
 
+                //Check if already triggered
+                if (_checkTriggered(item)) {
+                    return;
+                }
 
+                //Set Text
                 var messageText = 'You need to take ' + medication.name + ' at ' +
                     moment(item.date).format('hh:mm A');
 
@@ -112,40 +130,33 @@
             });
 
             //Schedule
-            //var allNotifyPromises = [];
-            //_.each(notifications, function(notify) {
-            //    $cordovaLocalNotification.schedule(notify).then(function() {
-            //        $cordovaLocalNotification.getAllScheduled().then(function(result) {
-            //            console.log(result);
-            //            _.each(result, function(n) {
-            //                console.log('Scheduled fact', n.at);
-            //            })
-            //        })
-            //    });
-            //});
+            if ($rootScope.isIOS) {
+                _schNotify(notifications);
+                return;
+            }
 
-            _schNotify(notifications);
-            //$q.all(allNotifyPromises).then(function(){
-            //    console.log('Promises complete.');
-            //});
+            _.each(notifications, function(notify) {
+                $cordovaLocalNotification.schedule(notify)
+            });
+        }
+
+        function _checkTriggered(event) {
+            var triggeredEvents = $localstorage.getObject('triggeredEvents');
+            return !_.isUndefined(_.find(triggeredEvents, function(triggered) {
+                return triggered.date == event.date &&
+                    triggered.scheduled == event.scheduled &&
+                    triggered.medication_id == event.medication_id
+            }))
         }
 
         function _schNotify(notifications) {
             var firstKey = _.keys(notifications)[0];
-            if (firstKey) {
-                $cordovaLocalNotification.schedule(notifications[firstKey]).then(function() {
-                    console.log('Schedule');
+            if (!_.isUndefined(firstKey)) {
+                $cordovaLocalNotification.schedule(notifications[firstKey]).finally(function() {
                     delete notifications[firstKey];
                     _schNotify(notifications);
-                    $cordovaLocalNotification.getAllScheduled().then(function(result) {
-                        console.log(result);
-                        _.each(result, function(n) {
-                            console.log('Scheduled fact', n.at);
-                        })
-                    })
                 })
             }
-
         }
 
         //Clear All Notifications
@@ -174,17 +185,50 @@
         }
 
         function _clickNotifyEvent (ev, notification, state) {
+            $cordovaLocalNotification.clear([notification.id]);
+
             if (!$rootScope.initialized) {
                 $rootScope.$watch('initialized', function(newValue, oldValue) {
                     if (newValue) {
                         $state.go('app.today.schedule');
+
+                        //Success init today listener
+                        $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
+                            if (toState.name == 'app.today.schedule') {
+                                //Delay for init today
+                                $timeout(function() {
+                                    $rootScope.$emit('today:click:notification', notification);
+                                    $rootScope.$$listeners['action2@$stateChangeSuccess'] = [];
+                                })
+                            }
+                        })
                     }
 
                 });
                 return;
             }
 
-            $state.go('app.today.schedule');
+            $state.go('app.today.schedule').finally(function() {
+                $rootScope.$emit('today:click:notification', notification);
+            });
+        }
+
+        function _triggerNotifyEvent (ev, notification, state) {
+            console.log('Triggered:', notification);
+            var event = JSON.parse(notification.data).event;
+            var triggered = [{
+                id: notification.id,
+                date: event.date,
+                scheduled: event.scheduled,
+                medication_id: event.medication_id
+            }];
+
+           var triggeredEvents = $localstorage.getObject('triggeredEvents');
+            if (_.isUndefined(triggeredEvents)) {
+                $localstorage.setObject('triggeredEvents', triggered);
+                return;
+            }
+            $localstorage.setObject('triggeredEvents', _.union(triggered, triggeredEvents));
         }
 
     }
