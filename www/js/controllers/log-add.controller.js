@@ -148,7 +148,8 @@
         }
 
         function goToNextState() {
-            $state.go($state.params['nextState'] || 'logs');
+            var options = {reload: $scope.log.id == $localstorage.get('currentPatient')};
+            $state.go($state.params['nextState'] || 'logs', {}, options);
             $ionicLoading.hide();
         }
     }
