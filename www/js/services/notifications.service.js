@@ -92,7 +92,7 @@
         }
 
         function _scheduleNotify(medications, schedule) {
-            var notifications = {};
+            var notifications = [];
             _.each(schedule, function(item) {
                 var date = moment(item.date);
                 if (date < moment() || item.dose_id) {
@@ -131,10 +131,10 @@
                 };
 
                 //Combine notify by date
-                if (!(date.format() in notifications)) {
-                    notifications[date.format()] = [];
+                notifications.push(scheduleOptions);
+                if ($rootScope.isAndroid) {
+                    $cordovaLocalNotification.schedule(scheduleOptions)
                 }
-                notifications[date.format()].push(scheduleOptions);
 
                 id++;
             });
@@ -142,12 +142,7 @@
             //Schedule
             if ($rootScope.isIOS) {
                 _schNotify(notifications);
-                return;
             }
-
-            _.each(notifications, function(notify) {
-                $cordovaLocalNotification.schedule(notify)
-            });
         }
 
         function _checkTriggered(event) {
@@ -160,10 +155,9 @@
         }
 
         function _schNotify(notifications) {
-            var firstKey = _.keys(notifications)[0];
-            if (!_.isUndefined(firstKey)) {
-                $cordovaLocalNotification.schedule(notifications[firstKey]).finally(function() {
-                    delete notifications[firstKey];
+            if (!_.isUndefined(notifications[0])) {
+                $cordovaLocalNotification.schedule(notifications[0]).finally(function() {
+                    delete notifications[0];
                     _schNotify(notifications);
                 })
             }
@@ -208,7 +202,7 @@
                                 //Delay for init today
                                 $timeout(function() {
                                     $rootScope.$emit('today:click:notification', notification);
-                                    $rootScope.$$listeners['action2@$stateChangeSuccess'] = [];
+                                    $rootScope.$$listeners['$stateChangeSuccess'] = [];
                                 })
                             }
                         })
@@ -218,13 +212,26 @@
                 return;
             }
 
-            $state.go('app.today.schedule').finally(function() {
+            if ($state.name != 'app.today.schedule') {
+                $state.go('app.today.schedule').finally(function() {
+                    $timeout(function() {
+                        $rootScope.$emit('today:click:notification', notification);
+                    });
+                });
+                return;
+            }
+
+            $timeout(function() {
                 $rootScope.$emit('today:click:notification', notification);
             });
         }
 
         function _triggerNotifyEvent (ev, notification, state) {
-            if ($rootScope.isIOS && $rootScope.appOpen) {
+            if (_checkTriggered(JSON.parse(notification.data).event)) {
+                return;
+            }
+
+            if ($rootScope.isAndroid && $rootScope.appOpen) {
                 var notifyAlertObject = {
                     title: notification.title,
                     template: notification.text
@@ -255,6 +262,7 @@
                 stackAlerts.push(alertObj);
                 return;
             }
+
             var alertPromise = $ionicPopup.alert(alertObj);
             alertPromise.then(_alertConfirm);
         }
