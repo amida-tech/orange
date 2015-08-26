@@ -5,15 +5,24 @@
         .module('orange')
         .factory('notifications', notifications);
 
-    notifications.$inject = ['$rootScope', '$q', '$timeout', '$state', '$cordovaLocalNotification', 'Patient', '$localstorage'];
+    notifications.$inject = ['$rootScope', '$q', '$timeout', '$state',
+        '$cordovaLocalNotification', '$ionicPopup', 'Patient', '$localstorage'];
 
     /* @ngInject */
-    function notifications($rootScope, $q, $timeout, $state, $cordovaLocalNotification, Patient, $localstorage) {
+    function notifications($rootScope, $q, $timeout, $state,
+                           $cordovaLocalNotification, $ionicPopup, Patient, $localstorage) {
         var id = 0;
 
         $rootScope.$on('$cordovaLocalNotification:click', _clickNotifyEvent);
         $rootScope.$on('$cordovaLocalNotification:trigger', _triggerNotifyEvent);
         $rootScope.$on('auth:user:logout', clearNotify);
+
+        $rootScope.$on('onResume', function(ev) {
+            $rootScope.appOpen = true;
+        });
+        $rootScope.$on('onPause', function(ev) {
+            $rootScope.appOpen = false;
+        });
 
         return {
             updateNotify: updateNotify,
@@ -215,6 +224,17 @@
 
         function _triggerNotifyEvent (ev, notification, state) {
             console.log('Triggered:', notification);
+            if ($rootScope.isIOS && $rootScope.appOpen) {
+                console.log('iOS Open');
+                var notifyAlert = $ionicPopup.alert({title: notification.message});
+                notifyAlert.then(function() {
+                    $state.go('app.today.schedule').finally(function() {
+                        console.log('iOS Open alert confirm!');
+                        $rootScope.$emit('today:click:notification', notification);
+                    });
+                });
+            }
+
             var event = JSON.parse(notification.data).event;
             var triggered = [{
                 id: notification.id,

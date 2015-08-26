@@ -4,6 +4,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
 
              // Initializing app
              $rootScope.initialized = false;
+             $rootScope.appOpen = true;
              Auth.init().then(function (status) {
                  $rootScope.initialized = true;
                  $ionicHistory.nextViewOptions({
@@ -48,11 +49,24 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                      cordova.plugins.Keyboard.disableScroll(true);
                      //
                  }
+
+                 _listeners();
                  //if (window.StatusBar) {
                  //    // org.apache.cordova.statusbar required
                  //    StatusBar.styleLightContent();
                  //}
              });
+
+            function _listeners() {
+                //Resume/Pause
+                document.addEventListener('resume', function() {
+                    $rootScope.$broadcast('onResume');
+                }, false);
+                document.addEventListener('pause', function() {
+                    $rootScope.$broadcast('onPause');
+                }, false);
+            }
+
      })
 
     .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, OrangeApiProvider, settings) {

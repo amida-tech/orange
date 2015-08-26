@@ -9,7 +9,6 @@
         '$ionicPopup', '$ionicModal', 'n2w', 'patient', 'medications'];
 
     function TodayCtrl($rootScope, $q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, patient, medService) {
-        console.log('Init Today');
         var vm = this;
         var doseModal = null;
 
