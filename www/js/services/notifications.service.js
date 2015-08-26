@@ -132,17 +132,17 @@
 
                 //Combine notify by date
                 notifications.push(scheduleOptions);
-                if ($rootScope.isAndroid) {
-                    $cordovaLocalNotification.schedule(scheduleOptions)
-                }
+                //if ($rootScope.isAndroid) {
+                //    $cordovaLocalNotification.schedule(scheduleOptions)
+                //}
 
                 id++;
             });
 
             //Schedule
-            if ($rootScope.isIOS) {
-                _schNotify(notifications);
-            }
+            //if ($rootScope.isIOS) {
+            _schNotify(notifications);
+            //}
         }
 
         function _checkTriggered(event) {
@@ -156,8 +156,8 @@
 
         function _schNotify(notifications) {
             if (!_.isUndefined(notifications[0])) {
-                $cordovaLocalNotification.schedule(notifications[0]).finally(function() {
-                    delete notifications[0];
+                var notify = notifications.shift();
+                $cordovaLocalNotification.schedule(notify).finally(function() {
                     _schNotify(notifications);
                 })
             }
@@ -231,7 +231,7 @@
                 return;
             }
 
-            if ($rootScope.isAndroid && $rootScope.appOpen) {
+            if ($rootScope.isIOS && $rootScope.appOpen) {
                 var notifyAlertObject = {
                     title: notification.title,
                     template: notification.text
