@@ -10,7 +10,7 @@
         <div class="card orange-card">
             <form name="doctorSearchForm" class="orange-form">
                 <div class="item item-error"
-                     ng-show="doctorSearchForm.$submitted && !doctorSearchForm.$valid">
+                     ng-if="doctorSearchForm.$submitted && !doctorSearchForm.$valid">
                     <div ng-messages="doctorSearchForm.first.$error">
                         <p ng-message="required">First Name is required</p>
                     </div>
