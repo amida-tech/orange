@@ -318,7 +318,7 @@
                 })
         }
 
-        $rootScope.$on('today:click:notification', function (ev, notification) {
+        $scope.$on('today:click:notification', function (ev, notification) {
             var event = JSON.parse(notification.data).event;
             //Check notify date
             var notifyDate = moment(event.date);

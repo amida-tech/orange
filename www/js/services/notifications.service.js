@@ -201,7 +201,7 @@
                             if (toState.name == 'app.today.schedule') {
                                 //Delay for init today
                                 $timeout(function() {
-                                    $rootScope.$emit('today:click:notification', notification);
+                                    $rootScope.$broadcast('today:click:notification', notification);
                                     $rootScope.$$listeners['$stateChangeSuccess'] = [];
                                 })
                             }
@@ -215,14 +215,14 @@
             if ($state.name != 'app.today.schedule') {
                 $state.go('app.today.schedule').finally(function() {
                     $timeout(function() {
-                        $rootScope.$emit('today:click:notification', notification);
+                        $rootScope.$broadcast('today:click:notification', notification);
                     });
                 });
                 return;
             }
 
             $timeout(function() {
-                $rootScope.$emit('today:click:notification', notification);
+                $rootScope.$broadcast('today:click:notification', notification);
             });
         }
 

@@ -137,6 +137,9 @@
 
         function setLog(log) {
             vm.log = log;
+            vm.medications = null;
+            vm.medication = null;
+
         }
 
         function getAll() {
