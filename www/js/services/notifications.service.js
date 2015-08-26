@@ -192,10 +192,6 @@
         }
 
         function _clickNotifyEvent (ev, notification, state) {
-            $cordovaLocalNotification.getAllTriggered().then(function(sch) {
-                console.log('Current Id', notification.id);
-                console.log('Triggered: ', sch);
-            });
             $cordovaLocalNotification.clear([notification.id]);
 
             if (!$rootScope.initialized) {
