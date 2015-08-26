@@ -14,9 +14,9 @@
         $scope.logs = [];
         $scope.logList = [];
         $scope.update = update;
+        $scope.withMe = false;
 
         vm.editMode = false;
-        vm.withMe = false;
         vm.setEditMode = setEditMode;
 
         getPatients();
@@ -24,7 +24,7 @@
         function getPatients(force) {
             $scope.logs = LogService.getLogs(force).then(function (patients) {
                 $scope.logList = _.chunk(patients, 3);
-                vm.withMe = _.filter(patients, function (item) {
+                $scope.withMe = _.filter(patients, function (item) {
                     return item['me'] === true;
                 });
                 if (force) {
