@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="row row-no-padding" ng-show="menu_logs.editMode">
-                    <div class="col col-33" ng-show="!menu_logs.withMe">
+                    <div class="col col-33" ng-if="!withMe">
                         <div class="item-log" ui-sref="app.logs.add_my">
                             <div class="log-avatar">
                             </div>

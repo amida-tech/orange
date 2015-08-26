@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta name="format-detection" content="telephone=no">
     <title></title>
 
     <!-- compiled css output -->
@@ -19,6 +20,8 @@
     <script src="lib/angular-messages/angular-messages.min.js"></script>
     <script src="lib/ngCordova/dist/ng-cordova.min.js"></script>
     <script src="lib/moment/min/moment-with-locales.min.js"></script>
+    <script src="lib/ng-pdfviewer/lib/pdf.js"></script>
+    <script src="lib/ng-pdfviewer/ng-pdfviewer.js"></script>
 
     <script>
         var handleOpenURL = function(url) {
@@ -63,6 +66,8 @@
     <script src="js/controllers/pharmacy.add.controller.js"></script>
     <script src="js/controllers/pharmacy.details.controller.js"></script>
 
+    <script src="js/controllers/settings.controller.js"></script>
+
     <script src="js/controllers/account.controller.js"></script>
     <script src="js/controllers/menu.controller.js"></script>
     <script src="js/controllers/logs.controller.js"></script>
@@ -74,6 +79,7 @@
     <script src="js/controllers/log-medications.controller.js"></script>
     <script src="js/controllers/sharing.controller.js"></script>
     <script src="js/controllers/sharing.accept.controller.js"></script>
+    <script src="js/controllers/sharing.report.controller.js"></script>
 
     <!-- services -->
     <script src="js/services/settings.js"></script>
@@ -100,6 +106,7 @@
     <script src="js/directives/calendar.directive.js"></script>
     <script src="js/directives/weekdays.directive.js"></script>
     <script src="js/directives/change-patient.directive.js"></script>
+    <script src="js/directives/validate.email.directive.js"></script>
 
     <!-- filters -->
     <script src="js/filters/to-words.filter.js"></script>

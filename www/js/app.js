@@ -1,4 +1,4 @@
-angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch'])
+angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch', 'ngPDFViewer'])
 
     .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications) {
 
@@ -387,11 +387,22 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                             }
                         }
                     })
+                    .state('app.sharing-report', {
+                        url: '/sharing/report/:id?month',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/app.sharing.report.html',
+                                cache: false,
+                                controller: 'SharingReportCtrl as sharing_report'
+                            }
+                        }
+                    })
                     .state('app.settings', {
                         url: '/settings',
                         views: {
                             'menuContent': {
-                                templateUrl: 'templates/app.settings.html'
+                                templateUrl: 'templates/app.settings.html',
+                                controller: 'SettingsCtrl as settings'
                             }
                         }
                     })
@@ -510,7 +521,17 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('account-login', {
                         url: '/login',
                         templateUrl: 'templates/account_login.html',
-                        controller: 'AccountCtrl'
+                        controller: 'AccountCtrl',
+                        cache: false
+                    })
+                    .state('account-reset', {
+                        url: '/reset',
+                        templateUrl: 'templates/logs.request.html',
+                        controller: 'RequestLogsCtrl',
+                        cache: false,
+                        params: {
+                            nextState: 'onboarding'
+                        }
                     })
                     .state('onboarding', {
                         url: '/onboarding',

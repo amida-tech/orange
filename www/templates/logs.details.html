@@ -9,7 +9,7 @@
             <button class="button button-clear button-small button-dose" ng-click="log_details.deleteLog()">Delete</button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="light-bg" overflow-scroll="true">
+    <ion-content class="light-bg has-footer">
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots" ng-show="!log_details.currentLog"></ion-spinner>
         </div>
@@ -26,7 +26,7 @@
                 <p>Birth Date: </p>{{ log_details.currentLog.birthdate }}
             </div>
             <div class="text-container" ng-if="log_details.currentLog.phone">
-                <p>Phone: </p>{{ log_details.currentLog.phone }}
+                <p>Phone: </p><span class="phone" ng-click="log_details.call()">{{ log_details.currentLog.phone }}</span>
             </div>
             <div class="text-container" ng-if="log_details.currentLog.sex">
                 <p>Sex: </p>{{ log_details.currentLog.sex }}

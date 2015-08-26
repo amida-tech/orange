@@ -9,7 +9,9 @@
 
     function datefield($cordovaDatePicker) {
         return {
-            scope: {},
+            scope: {
+                'maxDateNow': '='
+            },
             require: 'ngModel',
             link: function (scope, elem, attrs, ngModel) {
 
@@ -29,6 +31,9 @@
                             allowFutureDates: true,
                             androidTheme: $cordovaDatePicker.THEME_DEVICE_DEFAULT_DARK
                         };
+                        if (scope.maxDateNow) {
+                            options['maxDate'] = device.platform === 'Android' ? Date.now() : new Date();
+                        }
                         $cordovaDatePicker.show(options).then(function (date) {
                             var newValue = date.toJSON().slice(0, 10);
                             //alert(newDate);

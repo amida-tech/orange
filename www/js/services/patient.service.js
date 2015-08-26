@@ -5,16 +5,19 @@
         .module('orange')
         .factory('Patient', Patient);
 
-    Patient.$inject = ['$state', '$q', '$ionicLoading', 'OrangeApi', '$localstorage'];
+    Patient.$inject = ['$rootScope', '$q', '$state', '$ionicLoading', 'OrangeApi', '$localstorage'];
 
     /* @ngInject */
-    function Patient($state, $q, $ionicLoading, OrangeApi, $localstorage) {
+    function Patient($rootScope, $q, $state, $ionicLoading, OrangeApi, $localstorage) {
         var patient = null;
         var patients = [];
+
+        $rootScope.$on('auth:user:logout', clean);
 
         return {
             set: set,
             api: api,
+            getReport: getReport,
             getPatient: getPatient,
             getPatients: getPatients,
             changeStateByPatient: changeStateByPatient
@@ -22,9 +25,17 @@
 
         ////////////////
 
+        function clean() {
+            console.log('User logged out, cleaning patient service data...');
+            patient = null;
+            patients = [];
+            $localstorage.remove('currentPatient');
+        }
+
         //Cache patients list
-        function getPatients() {
-            if (!_.isEmpty(patients)) {
+        function getPatients(force) {
+            force = force || false;
+            if (!_.isEmpty(patients) && !force) {
                 return patients
             }
             var promise = OrangeApi.patients.getList();
@@ -136,6 +147,20 @@
                  }
                  $state.go('logs');
             });
+        }
+
+        function getReport(patientId, month) {
+            var year = (new Date()).getFullYear(),
+                startDate = new Date(Date.UTC(year, month, 1)),
+                endDate = new Date(Date.UTC(year, parseInt(month) + 1, 0));
+            return OrangeApi.patients.withHttpConfig({
+                responseType: 'arraybuffer'
+            }).get(
+                patientId + '.pdf', {
+                    start_date: startDate.toISOString().split('T')[0],
+                    end_date: endDate.toISOString().split('T')[0]
+                }
+            );
         }
     }
 })();

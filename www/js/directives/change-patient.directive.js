@@ -5,10 +5,10 @@
         .module('orange')
         .directive('changePatient', changePatient);
 
-    changePatient.$inject = ['$state', '$stateParams', '$ionicModal',
+    changePatient.$inject = ['$rootScope', '$state', '$stateParams', '$ionicModal',
         '$localstorage',  'Patient', 'notifications'];
 
-    function changePatient($state, $stateParams, $ionicModal,
+    function changePatient($rootScope, $state, $stateParams, $ionicModal,
                            $localstorage, Patient, notify) {
         return {
             scope: {
@@ -19,15 +19,6 @@
             link: function (scope, element, attributes) {
                 scope.patient = scope.$parent.patient;
                 scope.patients = [];
-
-                var patients = Patient.getPatients();
-                if (patients.$$state) {
-                    patients.then(function(pats) {
-                        scope.patients = _.chunk(pats, 3);
-                    })
-                } else {
-                    scope.patients = _.chunk(patients, 3);
-                }
 
                 $ionicModal.fromTemplateUrl('templates/partial/change-patient.modal.html', {
                     scope: scope,
@@ -49,6 +40,21 @@
                     notify.updateNotify();
                     scope.modal.hide();
                 };
+
+                scope.setPatients = function (force) {
+                    var patients = Patient.getPatients(force);
+                    if (patients.$$state) {
+                        patients.then(function(pats) {
+                            scope.patients = _.chunk(pats, 3);
+                            $rootScope.$broadcast('scroll.refreshComplete');
+                        })
+                    } else {
+                        scope.patients = _.chunk(patients, 3);
+                        $rootScope.$broadcast('scroll.refreshComplete');
+                    }
+                };
+
+                scope.setPatients();
 
             }
         }

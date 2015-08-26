@@ -38,7 +38,7 @@
                     var shares = [],
                         postObject = {
                             email: vm.request.email,
-                            access: 'default',
+                            access: 'write',
                             group: 'anyone'
                         };
 

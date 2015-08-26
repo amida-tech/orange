@@ -13,7 +13,6 @@
         var vm = this;
         vm.refresh = refresh;
         vm.shouldShowDelete = false;
-        vm.noteLimit = 208;
         vm.notesPromise = $scope.notes;
         vm.notes = $scope.notes.$object;
 

@@ -389,6 +389,7 @@ dl.dl-worksheet {
     background: $orange;
     border-color: $orange;
   }
+  float: left;
 }
 
 .button.button-dark-orange {
@@ -1101,9 +1102,13 @@ ion-content {
 
   p {
     font-weight: bold;
-    margin-top: 0;
-    float: left;
-    margin-right: 10px;
+    margin: 0 10px 0 0;
+    display: inline-block;
+  }
+
+  .phone {
+    text-decoration: underline;
+    font-weight: bold;
   }
 }
 
@@ -1186,10 +1191,42 @@ ion-option-button.option-control.button {
 }
 
 .icon-log-checked {
-  color:white;
+  color: white;
   position: absolute;
   font-size: 60px;
   opacity: 0.7;
   background-color: $dark;
   padding-top: 10px;
+}
+
+.report-pdf-panel {
+
+  .btn-group {
+    font-size: 48px;
+    color: white;
+    text-align: center;
+
+    i {
+      margin-left: 10px;
+      margin-right: 10px;
+    };
+  }
+
+  .page-group {
+    font-size: 20px;
+    float: right;
+    padding-top: 5px;
+  }
+}
+
+.agree-div {
+  display: flex;
+  padding-top: 5px;
+
+  p {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0 0 3px;
+    text-decoration: underline;
+  }
 }

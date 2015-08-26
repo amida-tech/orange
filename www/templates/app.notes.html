@@ -23,7 +23,7 @@
                 <div class="block-with-subscribe">
                     <span class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></span>
                     <span class="text-basic">
-                        {{ note.text | limitTo:notes_list.noteLimit }}{{ note.text.length > notes_list.noteLimit ? '...' : ''}}
+                        {{ note.text }}
                     </span>
                 </div>
 
