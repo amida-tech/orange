@@ -11,7 +11,7 @@
             <div class="item item-error" ng-if="error">
                 <p ng-repeat="error in errors" ng-bind="error"></p>
                 <div ng-messages="signUpForm.email.$error">
-                    <p ng-message="email">Invalid email address</p>
+                    <p ng-message="email || validateEmail">Invalid email address</p>
                     <p ng-message="required">Email address is required</p>
                 </div>
 
@@ -31,7 +31,7 @@
                         <input type="text" name="fullName" ng-model="user.fullName" placeholder="Full Name"/>
                     </label>
                     <label class="item-input">
-                        <input type="email" name="email" ng-model="user.email" placeholder="Email" required/>
+                        <input type="email" name="email" ng-model="user.email" placeholder="Email" required validate-email />
                     </label>
                     <label class="item-input">
                         <input type="tel" name="phone" ng-model="user.phone" placeholder="Phone Number" required/>

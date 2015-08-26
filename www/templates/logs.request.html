@@ -21,7 +21,7 @@
                            class="icon ion-ios-checkmark-outline icon-right"></i>
                         <i ng-show="requestForm.email.$dirty && !requestForm.email.$valid"
                            class="icon ion-ios-close-outline icon-right icon-red"></i>
-                        <input type="email" placeholder="Account Email" ng-model="data.email" name="email" required/>
+                        <input type="email" placeholder="Account Email" ng-model="data.email" name="email" required validate-email />
                     </label>
 
                 </div>
