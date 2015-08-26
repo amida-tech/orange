@@ -12,6 +12,7 @@
     function notifications($rootScope, $q, $timeout, $state,
                            $cordovaLocalNotification, $ionicPopup, Patient, $localstorage) {
         var id = 0;
+        var stackAlerts = [];
 
         $rootScope.$on('$cordovaLocalNotification:click', _clickNotifyEvent);
         $rootScope.$on('$cordovaLocalNotification:trigger', _triggerNotifyEvent);
@@ -223,16 +224,13 @@
         }
 
         function _triggerNotifyEvent (ev, notification, state) {
-            console.log('Triggered:', notification);
             if ($rootScope.isIOS && $rootScope.appOpen) {
-                console.log('iOS Open');
-                var notifyAlert = $ionicPopup.alert({title: notification.message});
-                notifyAlert.then(function() {
-                    $state.go('app.today.schedule').finally(function() {
-                        console.log('iOS Open alert confirm!');
-                        $rootScope.$emit('today:click:notification', notification);
-                    });
-                });
+                var notifyAlertObject = {
+                    title: notification.title,
+                    template: notification.text
+                };
+
+                _notificationAlert(notifyAlertObject);
             }
 
             var event = JSON.parse(notification.data).event;
@@ -251,15 +249,28 @@
             $localstorage.setObject('triggeredEvents', _.union(triggered, triggeredEvents));
         }
 
-    }
-
-    function guid() {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16).substring(1);
+        //Alert in ios open app
+        function _notificationAlert(alertObj) {
+            if ($ionicPopup._popupStack.length) {
+                stackAlerts.push(alertObj);
+                return;
+            }
+            var alertPromise = $ionicPopup.alert(alertObj);
+            alertPromise.then(_alertConfirm);
         }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-            s4() + '-' + s4() + s4() + s4();
+        function _alertConfirm() {
+            console.log('Stack alerts', stackAlerts);
+
+            if (stackAlerts.length) {
+                var alertObj = stackAlerts.shift();
+                var alertPromise = $ionicPopup.alert(alertObj);
+                alertPromise.then(_alertConfirm);
+            }
+
+            if ($state.name != 'app.today.schedule') {
+                $state.go('app.today.schedule');
+            }
+        }
     }
 
 })();
