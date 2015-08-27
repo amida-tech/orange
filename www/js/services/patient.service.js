@@ -63,7 +63,7 @@
             }
 
             $ionicLoading.show({
-                template: 'Load patient...'
+                template: 'Loading patient data...'
             });
 
             var currentPatient = $localstorage.get('currentPatient', null);

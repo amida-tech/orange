@@ -10,7 +10,9 @@
 
     function SharingReportCtrl($scope, $stateParams, $cordovaActionSheet, $cordovaFile, pdf, Patient) {
         var reportDir = cordova.file.externalCacheDirectory || cordova.file.cacheDirectory,
-            fileName = $stateParams.id + '.pdf';
+            fileName = $stateParams.id + '.pdf',
+            printPdf = window.plugins.PrintPDF,
+            pdfData;
 
         $scope.pdfURL = '';
         $scope.viewer = pdf.Instance('viewer');
@@ -39,6 +41,7 @@
             $scope.pdfURL = '';
             Patient.getReport($stateParams.id, $stateParams.month).then(
                 function (data) {
+                    pdfData = data;
                     $cordovaFile.writeFile(reportDir, fileName, data, true).then(
                         setPfdUrl,
                         function (error) {
@@ -57,13 +60,22 @@
         function share() {
             $cordovaActionSheet.show({
                 title: 'Select service for share',
-                buttonLabels: ['by Email'],
+                buttonLabels: ['by Email', 'Print'],
                 addCancelButtonWithLabel: 'Cancel',
                 androidEnableCancelButton: true
             }).then(function (index) {
                 switch (index) {
                     case 1:
                         window.plugins.socialsharing.shareViaEmail('', 'Orange Report', null, null, null, $scope.pdfURL);
+                        break;
+                    case 2:
+                        printPdf.isPrintingAvailable(function (success) {
+                            if (success) {
+                                printPdf.print({data: pdfData, title: 'Report'});
+                            } else {
+                                console.log('print is not available');
+                            }
+                        });
                         break;
                 }
             });
