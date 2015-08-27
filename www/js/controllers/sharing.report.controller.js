@@ -5,10 +5,10 @@
         .module('orange')
         .controller('SharingReportCtrl', SharingReportCtrl);
 
-    SharingReportCtrl.$inject = ['$scope', '$stateParams', '$cordovaActionSheet', '$cordovaFile',
+    SharingReportCtrl.$inject = ['$scope', '$stateParams', '$ionicPopup', '$cordovaActionSheet', '$cordovaFile',
                                  'PDFViewerService', 'Patient'];
 
-    function SharingReportCtrl($scope, $stateParams, $cordovaActionSheet, $cordovaFile, pdf, Patient) {
+    function SharingReportCtrl($scope, $stateParams, $ionicPopup, $cordovaActionSheet, $cordovaFile, pdf, Patient) {
         var reportDir = cordova.file.externalCacheDirectory || cordova.file.cacheDirectory,
             fileName = $stateParams.id + '.pdf',
             printPdf = window.plugins.PrintPDF,
@@ -21,6 +21,7 @@
         $scope.getReport = getReport;
         $scope.share = share;
         $scope.pdfHeight = window.innerHeight - 120;
+        $scope.pdfWidth = window.innerWidth;
 
         $scope.pageLoaded = function(currentPage, totalPages) {
             $scope.currentPage = currentPage;
@@ -71,7 +72,16 @@
                     case 2:
                         printPdf.isPrintingAvailable(function (success) {
                             if (success) {
-                                printPdf.print({data: pdfData, title: 'Report'});
+                                printPdf.print({
+                                    data: _arrayBufferToBase64(pdfData),
+                                    title: 'Report',
+                                    success: function () {
+                                        $ionicPopup.alert({
+                                            title: 'Report',
+                                            template: 'Your report sent to printer'
+                                        });
+                                    }
+                                });
                             } else {
                                 console.log('print is not available');
                             }
@@ -79,6 +89,16 @@
                         break;
                 }
             });
+        }
+
+        function _arrayBufferToBase64( buffer ) {
+            var binary = '';
+            var bytes = new Uint8Array( buffer );
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; i++) {
+                binary += String.fromCharCode( bytes[ i ] );
+            }
+            return window.btoa( binary );
         }
     }
 })();
