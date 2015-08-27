@@ -145,7 +145,7 @@ $log-size: 80px;
 $avatar-size: 60px;
 $profile-button-max-width: 120px;
 $small-btn-icon-line-height: 15px;
-$bottom-menu-heght: 150px;
+$bottom-menu-height: 150px;
 
 body {
   background-color: $orange;
@@ -223,13 +223,13 @@ body {
 }
 
 .block-with-subscribe {
-  font-size: 0;
+  font-size: $font-size-base + 1;
   span {
     line-height: 1.1;
   }
   span:first-child {
     display: block;
-    line-height: 1.17;
+    line-height: 1.2;
     margin-bottom: 0;
     padding-bottom: 0;
     overflow: hidden;
