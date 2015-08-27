@@ -43,6 +43,10 @@
     {
       "locator": "https://github.com/EddyVerbruggen/cordova-plugin-actionsheet.git",
       "id": "nl.x-services.plugins.actionsheet"
+    },
+    {
+      "locator": "https://github.com/sarahgoldman/cordova-print-pdf-plugin.git",
+      "id": "cordova-plugin-print-pdf"
     }
   ],
   "cordovaPlatforms": [
