@@ -145,6 +145,7 @@ $log-size: 80px;
 $avatar-size: 60px;
 $profile-button-max-width: 120px;
 $small-btn-icon-line-height: 15px;
+$bottom-menu-heght: 150px;
 
 body {
   background-color: $orange;
@@ -975,10 +976,17 @@ ion-content {
   background: $dark;
   font-family: 'OpenSans', sans-serif;
   font-size: $font-size-base + 2;
+  .push-bottom-menu {
+    height: $bottom-menu-height;
+  }
   .menu.menu-left {
     background-color: $dark;
+    overflow: auto;
+    max-height: none;
     .scroll-content, .scroll {
-      height: 100%;
+      min-height: 100%;
+      position: relative;
+      display: block;
     }
     .avatar {
       padding-top: $padding-large-vertical * 3;
