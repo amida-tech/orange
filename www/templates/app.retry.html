@@ -5,7 +5,7 @@
                 <h2 ng-bind="retry.messageText"></h2>
             </div>
             <div class="item item-button">
-                <button type="submit" class="button button-full button-orange"
+                <button type="submit" class="button button-full button-orange" ng-disabled="disabled"
                         ng-click="retry.retryEvent()">Retry</button>
             </div>
         </div>
