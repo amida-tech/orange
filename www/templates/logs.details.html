@@ -26,7 +26,7 @@
                 <p>Birth Date: </p>{{ log_details.currentLog.birthdate }}
             </div>
             <div class="text-container" ng-if="log_details.currentLog.phone">
-                <p>Phone: </p><span class="phone" ng-click="log_details.call()">{{ log_details.currentLog.phone }}</span>
+                <p>Phone: </p><span class="phone" call-phone>{{ log_details.currentLog.phone }}</span>
             </div>
             <div class="text-container" ng-if="log_details.currentLog.sex">
                 <p>Sex: </p>{{ log_details.currentLog.sex }}
