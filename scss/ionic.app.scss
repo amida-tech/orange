@@ -1234,3 +1234,8 @@ ion-option-button.option-control.button {
     text-decoration: underline;
   }
 }
+
+.platform-ios textarea::-webkit-input-placeholder {
+  // Safari placeholder margin issue
+  text-indent: 3px !important;
+}
