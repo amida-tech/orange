@@ -145,10 +145,11 @@
         }
 
         function setLog(log) {
+            if (vm.log && log.id !== vm.log.id) {
+                vm.medications = null;
+                vm.medication = null;
+            }
             vm.log = log;
-            vm.medications = null;
-            vm.medication = null;
-
         }
 
         function getAll() {
