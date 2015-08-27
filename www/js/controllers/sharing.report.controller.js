@@ -71,7 +71,7 @@
                     case 2:
                         printPdf.isPrintingAvailable(function (success) {
                             if (success) {
-                                printPdf.print({data: pdfData, title: 'Report'});
+                                printPdf.print({data: _arrayBufferToBase64(pdfData), title: 'Report'});
                             } else {
                                 console.log('print is not available');
                             }
@@ -79,6 +79,16 @@
                         break;
                 }
             });
+        }
+
+        function _arrayBufferToBase64( buffer ) {
+            var binary = '';
+            var bytes = new Uint8Array( buffer );
+            var len = bytes.byteLength;
+            for (var i = 0; i < len; i++) {
+                binary += String.fromCharCode( bytes[ i ] );
+            }
+            return window.btoa( binary );
         }
     }
 })();
