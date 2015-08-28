@@ -6,11 +6,11 @@
         .controller('AddLogCtrl', AddLogCtrl);
 
     AddLogCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', '$cordovaCamera', 'OrangeApi',
-                          'Avatar', 'LogService', 'settings', 'patient', 'notifications', '$localstorage'];
+                          'Avatar', 'LogService', 'patient', 'notifications', '$localstorage'];
 
     /* @ngInject */
     function AddLogCtrl($scope, $state, $ionicLoading, $ionicModal, $cordovaCamera, OrangeApi, Avatar,
-                        LogService, settings, patient, notify, $localstorage) {
+                        LogService, patient, notify, $localstorage) {
 
         $scope.editMode = !!$state.params['editMode'];
         $scope.log = $scope.editMode ? LogService.getDetailLog(): patient;
@@ -19,7 +19,7 @@
         $scope.isDevice = ionic.Platform.isWebView();
         $scope.title = $scope.editMode ? 'Edit Log' : patient.me ? 'Add My Log' : 'Add New Log';
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
-        $scope.iconItems = _.chunk(settings.avatars, 3);
+        $scope.iconItems = _.chunk($scope.$root.settings.avatars, 3);
 
         $ionicModal.fromTemplateUrl('templates/partial/logs.icon.modal.html', {
             scope: $scope

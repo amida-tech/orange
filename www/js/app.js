@@ -1,10 +1,12 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch', 'ngPDFViewer'])
 
-    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications) {
+    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications, settings) {
 
              // Initializing app
              $rootScope.initialized = false;
              $rootScope.appOpen = true;
+             $rootScope.settings = settings;
+
              Auth.init().then(function (status) {
                  $rootScope.initialized = true;
                  $ionicHistory.nextViewOptions({
