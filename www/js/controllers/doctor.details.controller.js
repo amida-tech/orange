@@ -15,12 +15,6 @@
         vm.doctorsPromise = DoctorService.getItems();
         vm.doctor = DoctorService.getItem();
 
-        $scope.$watch('doctors.$$state.status', function(newValue, oldValue) {
-            if (newValue) {
-                vm.doctor = DoctorService.getItem();
-            }
-        });
-
         vm.callDoctor = function(phone) {
             document.location.href = 'tel:+1' + phone;
         };

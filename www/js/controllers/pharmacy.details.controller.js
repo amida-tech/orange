@@ -14,11 +14,5 @@
         vm.days = $locale.DATETIME_FORMATS.DAY;
         vm.pharmacy = PharmacyService.getItem();
 
-        /* For refresh details page */
-        $scope.$watch('pharmacies.$$state.status', function (newValue, oldValue) {
-            if (newValue) {
-                vm.pharmacy = PharmacyService.getItem();
-            }
-        });
     }
 })();

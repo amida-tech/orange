@@ -16,6 +16,8 @@
             this.count = 0;
             this.offset = 0;
             this.limit = $rootScope.settings.defaultLimit;
+            this.sortBy = 'id';
+            this.sortOrder = 'asc';
 
             this.getItems = getItems;
             this.isInfinite = isInfinite;
@@ -50,12 +52,14 @@
             }
         }
 
-        function fetchItems(offset, limit) {
+        function fetchItems(offset, limit, sortBy, sortOrder) {
             var that = this,
                 options = {
-                limit: limit || this.limit,
-                offset: offset || this.offset
-            };
+                    limit: limit || this.limit,
+                    offset: offset || this.offset,
+                    sort_by: sortBy || this.sortBy,
+                    sort_order: sortOrder || this.sortOrder
+                };
             return Patient.getPatient().then(function (patient) {
                 return patient.all(that.apiUrl).getList(options).then(function (response) {
                     that.count = response.meta['count'];
@@ -110,7 +114,7 @@
                     return patient.all(that.apiUrl).post(savedItem).then(
                         function (newItem) {
                             if (!isInfinite.apply(that)) {
-                                that.items.push(newItem);
+                                that.items[that.sortOrder !== 'desc' ? 'push' : 'unshift'](newItem);
                                 that.offset += 1;
                             }
                             that.count += 1;

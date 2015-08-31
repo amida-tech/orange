@@ -7,12 +7,12 @@
 
     NoteAddCtrl.$inject = [
         '$scope', '$filter', '$state', '$stateParams',
-        '$ionicLoading', '$ionicModal', '$cordovaDialogs',  'patient'
+        '$ionicLoading', '$ionicModal', '$cordovaDialogs', 'NoteService', 'medications'
     ];
 
     /* @ngInject */
     function NoteAddCtrl($scope, $filter, $state, $stateParams,
-                         $ionicLoading, $ionicModal, $cordovaDialogs,  patient) {
+                         $ionicLoading, $ionicModal, $cordovaDialogs,  NoteService, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
         //Check "id" param in url
@@ -23,29 +23,14 @@
 
         vm.title = (is_edit) ? 'Edit Note' : 'Add Note';
         vm.backState = (is_edit) ? 'app.notes.details({id: '+id+'})' : 'app.notes.list';
-        vm.note = {} ;
-        vm.notesPromise = $scope.notes;
-        vm.medicationsPromise = $scope.medications;
+        vm.note = NoteService.getItem();
+        vm.notesPromise = NoteService.getItems();
+        vm.medicationsPromise = MedicationService.getAll();
 
         //Medications to add model
         vm.medications = [];
 
-        //Init data
-        $scope.$watchGroup(['notes.$$state.status', 'medications.$$state.status'], function(newValues, oldValues, group) {
-            if (newValues[0] && newValues[1]) {
-                setData($scope.notes.$object, $scope.medications.$object)
-            }
-        });
-
-        if ($scope.notes.$$state.status && $scope.medications.$$state.status) {
-            if (is_edit) {
-                setData($scope.notes.$object, $scope.medications.$object)
-            }
-        }
-
-        function setData(notes, medications) {
-            if (is_edit)
-                setNote(notes, medications);
+        vm.medicationsPromise.then(function (medications) {
 
             vm.medications = _.map(medications, function(medication) {
                 medication.checked = false;
@@ -61,22 +46,7 @@
 
                 return medication
             });
-
-        }
-
-        function setNote(notes, medications) {
-            var note = _.find(notes, function(nt) {
-                return nt.id == id;
-            });
-
-            note.medications = _.map(note.medication_ids, function(id) {
-                return _.find(medications, function(medication) {
-                    return medication.id == id;
-                })
-            });
-
-            vm.note = note;
-        }
+        });
 
         //Save note
         vm.save = function (form) {
@@ -89,12 +59,10 @@
                 template: 'Saving...'
             });
 
-            if (is_edit) {
-                vm.note.save().then(updateSuccess, saveError);
-            } else {
+            if (!is_edit) {
                 vm.note.date = $filter('date')(new Date(), 'yyyy-MM-ddTHH:mm:ssZ');
-                patient.all('journal').post(vm.note).then(saveSuccess, saveError);
             }
+            NoteService.saveItem(vm.note).then(saveSuccess, saveError);
         };
 
         //Medications List
@@ -126,19 +94,6 @@
 
         function saveSuccess(note) {
             $ionicLoading.hide();
-            $scope.notes.$object.unshift(note);
-            $state.go('app.notes.list');
-        }
-
-        function updateSuccess(note) {
-            $ionicLoading.hide();
-            _.each($scope.notes.$object, function(nt, i) {
-                if (nt.id != note.id) {
-                    return;
-                }
-
-                $scope.notes.$object[i] = note;
-            });
             $state.go('app.notes.list');
         }
 

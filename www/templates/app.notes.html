@@ -9,7 +9,7 @@
             <button class="button button-icon button-clear button-small ion-plus button-dose" ui-sref="app.notes.add"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="light-bg" overflow-scroll="true">
+    <ion-content class="light-bg">
         <ion-refresher pulling-text="Pull to refresh" on-refresh="notes_list.refresh()"></ion-refresher>
 
         <div class="text-center">
@@ -19,7 +19,7 @@
 
 
         <ion-list class="list-clean" can-swipe="true" show-delete="notes_list.shouldShowDelete">
-            <ion-item class="item-text-wrap" ng-repeat="note in notes_list.notes" ui-sref="app.notes.details({id: note.id})">
+            <ion-item class="item-text-wrap" ng-repeat="note in notes_list.notes" ng-click="notes_list.details(note)">
                 <div class="block-with-subscribe">
                     <span class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></span>
                     <span class="text-basic">
@@ -27,12 +27,14 @@
                     </span>
                 </div>
 
-                <ion-option-button class="button-assertive option-control" ng-click="notes_list.removeNote(note)">
+                <ion-option-button class="button-assertive option-control" ng-click="notes_list.remove(note)">
                     <i class="icon ion-trash-a"></i>
                 </ion-option-button>
 
             </ion-item>
         </ion-list>
+        <ion-infinite-scroll ng-if="notes_list.isInfinite()" distance="{{ settings.defaultScrollDistance }}" on-infinite="notes_list.loadMore()">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>
 

@@ -155,19 +155,14 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         cache: false,
                         views: {
                             menuContent: {
-                                template: '<ion-nav-view/>',
-                                controller: function($scope, patient) {
-                                    $scope.medications = patient.all('medications').getList();
-                                    $scope.notes = patient.all('journal').getList({sort_order: 'desc', sort_by: 'date'});
-                                }
+                                template: '<ion-nav-view/>'
                             }
                         }
                     })
                     .state('app.notes.list', {
                         url: '',
                         templateUrl: 'templates/app.notes.html',
-                        controller: 'NotesCtrl as notes_list',
-                        cache: false
+                        controller: 'NotesCtrl as notes_list'
                     })
 
                     .state('app.notes.details', {

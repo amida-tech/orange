@@ -5,10 +5,10 @@
         .module('orange')
         .factory('medications', medications);
 
-    medications.$inject = ['$rootScope', '$q', 'n2w', 'notifications'];
+    medications.$inject = ['$rootScope', '$q', 'n2w', 'notifications', 'Patient'];
 
     /* @ngInject */
-    function medications($rootScope, $q, n2w, notify) {
+    function medications($rootScope, $q, n2w, notify, Patient) {
         var vm = this;
         var service = {
             setMedicationSchedule: setMedicationSchedule,
@@ -185,17 +185,27 @@
         function fetchAll() {
             var deffered = $q.defer();
 
-            vm.log.all('medications').getList().then(
-                function (medications) {
-                    vm.medications = medications;
-                    vm.medication = null;
-                    deffered.resolve(medications);
-                },
-                function (error) {
-                    deffered.reject(error);
-                }
-            );
-            return deffered.promise;
+            if (vm.log) {
+                vm.log.all('medications').getList().then(
+                    function (medications) {
+                        vm.medications = medications;
+                        vm.medication = null;
+                        deffered.resolve(medications);
+                    },
+                    function (error) {
+                        deffered.reject(error);
+                    }
+                );
+                return deffered.promise;
+            } else {
+                return Patient.getPatient().then(function (patient) {
+                    return patient.all('medications').getList().then(function (items) {
+                        vm.medications = items;
+                        return items;
+                    });
+                });
+            }
+
         }
 
         function getEventText(event) {

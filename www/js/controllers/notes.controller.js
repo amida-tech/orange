@@ -5,29 +5,31 @@
         .module('orange')
         .controller('NotesCtrl', NotesCtrl);
 
-    NotesCtrl.$inject = ['$scope', '$ionicLoading', 'patient'];
+    NotesCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$cordovaDialogs', 'NoteService'];
 
     /* @ngInject */
-    function NotesCtrl($scope, $ionicLoading, patient) {
-        //OrangeApi.notes.
+    function NotesCtrl($scope, $state, $ionicLoading, $cordovaDialogs, NoteService) {
         var vm = this;
         vm.refresh = refresh;
         vm.shouldShowDelete = false;
-        vm.notesPromise = $scope.notes;
-        vm.notes = $scope.notes.$object;
+        vm.remove = remove;
+        vm.loadMore = loadMore;
+        vm.details = noteDetails;
+        vm.notes = null;
+        vm.isInfinite = NoteService.isInfinite;
 
-        vm.removeNote = function(note) {
+        refresh();
+
+        function remove(note) {
             $ionicLoading.show({
                 template: 'Deleting...'
             });
 
-            note.remove().then(function() {
-                _.remove(vm.notes, function(elem) {
-                    return elem.id == note.id;
-                });
+            NoteService.removeItem(note).then(function (items) {
                 $ionicLoading.hide();
+                vm.notes = items;
             }, removeError);
-        };
+        }
 
         function removeError (error) {
             $ionicLoading.hide();
@@ -42,12 +44,28 @@
         }
 
         function refresh() {
-            vm.notes.getList({sort_order: 'desc', sort_by: 'date'}).then(
-                function(notes) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                    vm.notes = notes;
-                }
-            )
+            vm.notesPromise = NoteService.getItems(true);
+            vm.notesPromise.then(function (notes) {
+                $scope.$broadcast('scroll.refreshComplete');
+                vm.notes = notes;
+            });
+        }
+
+        function loadMore() {
+            var morePromise = NoteService.moreItems();
+            if (vm.notes !== null && morePromise) {
+                morePromise.then(function (items) {
+                    vm.notes = items;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+            } else {
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+        }
+
+        function noteDetails(note) {
+            NoteService.setItem(note);
+            $state.go('app.notes.details', {id: note.id});
         }
     }
 })();
