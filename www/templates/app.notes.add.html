@@ -16,7 +16,7 @@
 
             <form class="orange-form" name="noteAdd">
                 <div class="item item-error"
-                     ng-show="noteAdd.$submitted && !noteAdd.$valid">
+                     ng-if="noteAdd.$submitted && !noteAdd.$valid">
                     <div ng-messages="noteAdd.text.$error">
                         <p ng-message="required">Note text is required</p>
                     </div>
