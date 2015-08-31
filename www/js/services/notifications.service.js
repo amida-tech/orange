@@ -200,13 +200,14 @@
                         $state.go('app.today.schedule');
 
                         //Success init today listener
-                        $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
+                        var stateChangeEvent = $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
                             if (toState.name == 'app.today.schedule') {
                                 //Delay for init today
                                 $timeout(function() {
                                     $rootScope.$broadcast('today:click:notification', notification);
-                                    $rootScope.$$listeners['$stateChangeSuccess'] = [];
-                                })
+                                });
+                                //Remove Event
+                                stateChangeEvent();
                             }
                         })
                     }

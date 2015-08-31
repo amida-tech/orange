@@ -1,6 +1,6 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch', 'ngPDFViewer'])
 
-    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications, settings) {
+    .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications, settings) {
 
              // Initializing app
              $rootScope.initialized = false;
@@ -41,6 +41,47 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                  }
              });
 
+             //Fix for Android back button
+             if ($rootScope.isAndroid) {
+                 $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                     var menuMap = [
+                         'app.today.schedule',
+                         'app.notes.list',
+                         'app.medications',
+                         'app.doctors.list',
+                         'app.pharmacies.list',
+                         'app.logs.list',
+                         'app.sharing',
+                         'app.settings'
+                     ];
+
+                     $ionicHistory.nextViewOptions({
+                         historyRoot: false
+                     });
+
+                     $timeout(function () {
+                         var currentView = $ionicHistory.currentView();
+                         var currentHistoryId = $ionicHistory.currentHistoryId();
+                         var history = $ionicHistory.viewHistory();
+
+                         //Save today view
+                         if (toState.name == 'app.today.schedule') {
+                             $rootScope.todayHistoryId = currentView.id;
+                             $rootScope.todayHistoryView = currentView;
+                         }
+
+                         //Set history
+                         if (toState.name != 'app.today.schedule' && _.indexOf(menuMap, toState.name) != -1) {
+                             currentView.backViewId = $rootScope.todayHistoryId;
+                             history.backView = $rootScope.todayHistoryView;
+                             currentView.index = 1;
+                             history.histories[currentHistoryId].stack = [$rootScope.todayHistoryView, currentView]
+                         }
+                     }, 300)
+                 });
+             }
+             ////////////////////////////////////
+
              $ionicPlatform.ready(function () {
                  // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                  // for form inputs)
@@ -59,17 +100,17 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                  //}
              });
 
-            function _listeners() {
-                //Resume/Pause
-                document.addEventListener('resume', function() {
-                    $rootScope.$broadcast('onResume');
-                }, false);
-                document.addEventListener('pause', function() {
-                    $rootScope.$broadcast('onPause');
-                }, false);
-            }
+             function _listeners() {
+                 //Resume/Pause
+                 document.addEventListener('resume', function () {
+                     $rootScope.$broadcast('onResume');
+                 }, false);
+                 document.addEventListener('pause', function () {
+                     $rootScope.$broadcast('onPause');
+                 }, false);
+             }
 
-     })
+         })
 
     .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, OrangeApiProvider, settings) {
 
@@ -107,7 +148,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                             patient: ['Patient', function (Patient) {
                                 return Patient.getPatient();
                             }]
-                                    },
+                        },
                         cache: false
                     })
                     .state('app.today', {
@@ -116,7 +157,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>',
-                                controller: function($scope, patient) {
+                                controller: function ($scope, patient) {
                                     $scope.medications = patient.all('medications').getList();
                                 }
                             }
@@ -168,7 +209,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('app.notes.details', {
                         url: '/:id/details',
                         templateUrl: 'templates/app.notes.details.html',
-                        controller:'NoteDetailsCtrl as note_details',
+                        controller: 'NoteDetailsCtrl as note_details',
                         cache: false
                     })
                     .state('app.notes.add', {
@@ -345,7 +386,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         params: {
                             nextState: 'app.logs.list',
                             editMode: true
-                            }
+                        }
                     })
                     .state('app.logs.request', {
                         url: '/request',
@@ -419,10 +460,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         controller: 'AddLogCtrl',
                         resolve: {
                             log: ['OrangeApi', '$q', getMyProfile]
-                                    },
+                        },
                         params: {
                             nextState: 'logs'
-                                    }
+                        }
                     })
                     .state('logs-request', {
                         url: '/onboarding/logs/request',
@@ -450,7 +491,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         template: '<ion-nav-view></ion-nav-view>',
                         resolve: {
-                            patient: ['$stateParams', 'OrangeApi', function($stateParams, OrangeApi) {
+                            patient: ['$stateParams', 'OrangeApi', function ($stateParams, OrangeApi) {
                                 var id = $stateParams.id;
                                 return OrangeApi.patients.get(id);
                             }]

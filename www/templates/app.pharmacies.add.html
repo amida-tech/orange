@@ -9,7 +9,7 @@
             <form class="orange-form" name="pharmacyAdd">
 
                 <div class="item item-error"
-                     ng-show="pharmacyAdd.$submitted && !pharmacyAdd.$valid">
+                     ng-if="pharmacyAdd.$submitted && !pharmacyAdd.$valid">
                     <div ng-messages="pharmacyAdd.name.$error">
                         <p ng-message="required">Name is required</p>
                     </div>

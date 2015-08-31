@@ -5,10 +5,10 @@
         .module('orange')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$scope', '$state', 'Auth', 'patient', '$ionicHistory', '$timeout'];
+    MenuCtrl.$inject = ['$scope', '$timeout', '$state', 'Auth', 'patient', '$ionicHistory'];
 
     /* @ngInject */
-    function MenuCtrl($scope, $state, Auth, patient, $ionicHistory, $timeout) {
+    function MenuCtrl($scope, $timeout, $state, Auth, patient, $ionicHistory) {
         $scope.profile = Auth.userInfo();
         $scope.log = patient;
         $scope.patient = patient;
