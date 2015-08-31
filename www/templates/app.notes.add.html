@@ -30,16 +30,18 @@
                     </label>
 
                     <div class="medication-container">
-                        <ion-header-bar class="bar-small bar-orange bar-static">
-                            <div class="buttons">
-                                <button class="button button-icon icon ion-ios-minus-outline"
-                                        ng-click="notes_add.medicationShowDelete = !notes_add.medicationShowDelete;">
-                                </button>
-                            </div>
-                            <h1 class="title">Medications</h1>
-                            <button class="button button-icon button-clear button-small ion-plus button-dose"
+                        <div class="bar-list text-center">
+                            <button class="button button-icon icon ion-ios-minus-outline pull-left"
+                                    ng-click="notes_add.medicationShowDelete = !notes_add.medicationShowDelete;">
+                            </button>
+
+                            <span>Medications</span>
+
+                            <button class="button button-icon button-clear button-small ion-plus button-dose pull-right"
                                     ng-click="notes_add.modal.show()"></button>
-                        </ion-header-bar>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="clearfix"></div>
 
                         <ion-list class="list-clean note-medications-list" show-delete="notes_add.medicationShowDelete">
                             <ion-item class="medication-item" ng-repeat="med in notes_add.medications | filter: { checked: true }">

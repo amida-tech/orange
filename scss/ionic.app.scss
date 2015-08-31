@@ -146,6 +146,7 @@ $avatar-size: 60px;
 $profile-button-max-width: 120px;
 $small-btn-icon-line-height: 15px;
 $bottom-menu-height: 150px;
+$list-bar-size: 40px;
 
 body {
   background-color: $orange;
@@ -699,6 +700,26 @@ ion-content {
         color: $stable;
       }
     }
+  }
+}
+
+.bar-list {
+  background: #ddd;
+  span {
+    line-height: $list-bar-size;
+    vertical-align: middle;
+    font-size: $orange-font-base-size + 3;
+  }
+  .button {
+    min-height: $list-bar-size;
+  }
+  .button.button-icon {
+    font-size: $orange-font-head-size + 4;
+    color: $dark;
+    opacity: 0.8;
+  }
+  div {
+    height: 1px;
   }
 }
 

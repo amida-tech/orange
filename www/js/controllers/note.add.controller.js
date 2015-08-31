@@ -102,6 +102,10 @@
 
         vm.onMedicationRemove = function(item) {
             item.checked = false;
+            vm.note.medication_ids = _.compact(_.map(vm.medications, function(medication) {
+                if (medication.checked)
+                    return medication.id
+            }));
         };
 
         //Medication Modal
