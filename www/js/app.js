@@ -277,18 +277,14 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         views: {
                             'menuContent': {
-                                template: '<ion-nav-view></ion-nav-view>',
-                                controller: function ($scope, $ionicLoading, patient) {
-                                    $scope.pharmacies = patient.all('pharmacies').getList();
-                                }
+                                template: '<ion-nav-view></ion-nav-view>'
                             }
                         }
                     })
                     .state('app.pharmacies.list', {
                         url: '',
                         templateUrl: 'templates/app.pharmacies.html',
-                        controller: 'PharmaciesCtrl as pharmacies',
-                        cache: false
+                        controller: 'PharmaciesCtrl as pharmacies'
                     })
                     .state('app.pharmacies.add', {
                         url: '/add',

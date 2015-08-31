@@ -19,7 +19,7 @@
         $scope.isDevice = ionic.Platform.isWebView();
         $scope.title = $scope.editMode ? 'Edit Log' : patient.me ? 'Add My Log' : 'Add New Log';
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
-        $scope.iconItems = _.chunk($scope.$root.settings.avatars, 3);
+        $scope.iconItems = _.chunk($scope.settings.avatars, 3);
 
         $ionicModal.fromTemplateUrl('templates/partial/logs.icon.modal.html', {
             scope: $scope

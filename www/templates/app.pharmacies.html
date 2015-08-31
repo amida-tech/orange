@@ -19,7 +19,7 @@
         </div>
         <ion-list class="list-clean list-inset padding" can-swipe="true" show-delete="shouldShowDelete">
             <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies"
-                      ui-sref="app.pharmacies.details({id: pharmacy.id})">
+                      ng-click="pharmacies.pharmacyDetails(pharmacy)">
                 <p><strong ng-bind="pharmacy.name"></strong></p>
                 <p ng-bind="pharmacy.address"></p>
 
@@ -28,5 +28,7 @@
                 </ion-option-button>
             </ion-item>
         </ion-list>
+        <ion-infinite-scroll ng-if="pharmacies.isInfinite()" distance="{{ settings.defaultScrollDistance }}" on-infinite="pharmacies.loadMore()">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

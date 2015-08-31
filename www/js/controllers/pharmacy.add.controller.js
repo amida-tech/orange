@@ -6,12 +6,12 @@
         .controller('PharmacyAddCtrl', PharmacyAddCtrl);
 
     PharmacyAddCtrl.$inject = [
-        '$scope', '$ionicLoading', 'patient', '$cordovaDialogs', '$state', '$locale', '$ionicModal',
-        '$stateParams'
+        '$scope', '$ionicLoading', '$cordovaDialogs', '$state', '$locale', '$ionicModal',
+        '$stateParams', 'PharmacyService'
     ];
 
-    function PharmacyAddCtrl($scope, $ionicLoading, patient, $cordovaDialogs, $state, $locale,
-                             $ionicModal, $stateParams) {
+    function PharmacyAddCtrl($scope, $ionicLoading, $cordovaDialogs, $state, $locale,
+                             $ionicModal, $stateParams, PharmacyService) {
         var vm = this,
             is_edit = 'id' in $stateParams;
         vm.title = ((is_edit) ? 'Edit': 'Add') + ' Pharmacy';
@@ -27,9 +27,7 @@
         });
 
         if (is_edit) {
-            vm.pharmacy = _.find($scope.pharmacies.$object, function (item) {
-                return item.id == $stateParams.id;
-            });
+            vm.pharmacy = PharmacyService.getPharmacy();
         } else {
             _.each(vm.days, function (day) {
                 vm.pharmacy.hours[day.toLowerCase()] = {open: '09:00', close: '17:00'}
@@ -42,24 +40,16 @@
          */
         function save(form) {
             form.$submitted = true;
-            console.log(vm.pharmacy);
             if (_.isEmpty(form.$error)) {
                 $ionicLoading.show({
                     template: 'Saving...'
                 });
-                if (is_edit) {
-                    vm.pharmacy.save().then(saveSuccess, saveError);
-                } else {
-                    patient.all('pharmacies').post(vm.pharmacy).then(saveSuccess, saveError);
-                }
+                PharmacyService.savePharmacy(vm.pharmacy).then(saveSuccess, saveError);
             }
         }
 
-        function saveSuccess(pharmacy) {
+        function saveSuccess() {
             $ionicLoading.hide();
-            if (!is_edit) {
-                $scope.pharmacies.$object.push(pharmacy);
-            }
             $state.go('app.pharmacies.list');
         }
 
