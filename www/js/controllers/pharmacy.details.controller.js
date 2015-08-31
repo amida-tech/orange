@@ -10,14 +10,14 @@
     function PharmacyDetailsCtrl($scope, $locale, PharmacyService) {
         var vm = this;
 
-        vm.pharmacyPromise = PharmacyService.getPharmacies();
+        vm.pharmacyPromise = PharmacyService.getItems();
         vm.days = $locale.DATETIME_FORMATS.DAY;
-        vm.pharmacy = PharmacyService.getPharmacy();
+        vm.pharmacy = PharmacyService.getItem();
 
         /* For refresh details page */
         $scope.$watch('pharmacies.$$state.status', function (newValue, oldValue) {
             if (newValue) {
-                vm.pharmacy = PharmacyService.getPharmacy();
+                vm.pharmacy = PharmacyService.getItem();
             }
         });
     }

@@ -15,11 +15,12 @@
         vm.loadMore = loadMore;
         vm.isInfinite = PharmacyService.isInfinite;
         vm.pharmacyDetails = pharmacyDetails;
+        vm.pharmacies = null;
 
         refresh();
 
         function refresh() {
-            vm.pharmaciesPromise = PharmacyService.getPharmacies(true);
+            vm.pharmaciesPromise = PharmacyService.getItems(true);
             vm.pharmaciesPromise.then(function (items) {
                 vm.pharmacies = items;
                 $scope.$broadcast('scroll.refreshComplete');
@@ -30,7 +31,7 @@
             $ionicLoading.show({
                 template: 'Deleting...'
             });
-            PharmacyService.removePharmacy(pharmacy).then(function (items) {
+            PharmacyService.removeItem(pharmacy).then(function (items) {
                 $ionicLoading.hide();
                 vm.pharmacies = items;
             }, removeFailure);
@@ -42,14 +43,18 @@
         }
 
         function loadMore() {
-            PharmacyService.morePharmacies().then(function (items) {
-                vm.pharmacies = items;
+            if (vm.pharmacies !== null) {
+                PharmacyService.moreItems().then(function (items) {
+                    vm.pharmacies = items;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+            } else {
                 $scope.$broadcast('scroll.infiniteScrollComplete');
-            });
+            }
         }
 
         function pharmacyDetails(pharmacy) {
-            PharmacyService.setPharmacy(pharmacy);
+            PharmacyService.setItem(pharmacy);
             $state.go('app.pharmacies.details', {id: pharmacy.id});
         }
     }

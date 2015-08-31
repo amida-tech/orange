@@ -27,7 +27,7 @@
         });
 
         if (is_edit) {
-            vm.pharmacy = PharmacyService.getPharmacy();
+            vm.pharmacy = PharmacyService.getItem();
         } else {
             _.each(vm.days, function (day) {
                 vm.pharmacy.hours[day.toLowerCase()] = {open: '09:00', close: '17:00'}
@@ -44,7 +44,7 @@
                 $ionicLoading.show({
                     template: 'Saving...'
                 });
-                PharmacyService.savePharmacy(vm.pharmacy).then(saveSuccess, saveError);
+                PharmacyService.saveItem(vm.pharmacy).then(saveSuccess, saveError);
             }
         }
 
