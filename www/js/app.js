@@ -1,45 +1,86 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch', 'ngPDFViewer'])
 
-    .run(function ($ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications) {
+    .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications) {
 
-             // Initializing app
-             $rootScope.initialized = false;
-             $rootScope.appOpen = true;
-             Auth.init().then(function (status) {
-                 $rootScope.initialized = true;
-                 $ionicHistory.nextViewOptions({
-                     disableBack: true,
-                     historyRoot: true
-                 });
-                 if (status === true) {
-                     // User authorized
-                     if ($rootScope.cachedState) {
-                         $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
-                         return status;
-                     }
+            // Initializing app
+            $rootScope.initialized = false;
+            $rootScope.appOpen = true;
+            Auth.init().then(function (status) {
+                $rootScope.initialized = true;
+                $ionicHistory.nextViewOptions({
+                    disableBack: true,
+                    historyRoot: true
+                });
+                if (status === true) {
+                    // User authorized
+                    if ($rootScope.cachedState) {
+                        $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
+                        return status;
+                    }
 
-                     Patient.changeStateByPatient();
-                     notifications.updateNotify();
-                 } else {
-                     // Not authorized
-                     $state.go('onboarding');
-                 }
-             });
+                    Patient.changeStateByPatient();
+                    notifications.updateNotify();
+                } else {
+                    // Not authorized
+                    $state.go('onboarding');
+                }
+            });
 
-             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                 if (!$rootScope.initialized && toState.name !== 'loading') {
-                     $rootScope.cachedState = {
-                         toState: toState,
-                         toParams: toParams
-                     };
-                     event.preventDefault();
-                     $state.go('loading');
-                 } else if ($rootScope.initialized && toState.name === 'loading') {
-                     event.preventDefault();
-                 }
-             });
+            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+                if (!$rootScope.initialized && toState.name !== 'loading') {
+                    $rootScope.cachedState = {
+                        toState: toState,
+                        toParams: toParams
+                    };
+                    event.preventDefault();
+                    $state.go('loading');
+                } else if ($rootScope.initialized && toState.name === 'loading') {
+                    event.preventDefault();
+                }
+            });
 
-             $ionicPlatform.ready(function () {
+            //Fix for Android back button
+            if ($rootScope.isAndroid) {
+                $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                    var menuMap = [
+                        'app.today.schedule',
+                        'app.notes.list',
+                        'app.medications',
+                        'app.doctors.list',
+                        'app.pharmacies.list',
+                        'app.logs.list',
+                        'app.sharing',
+                        'app.settings'
+                    ];
+
+                    $ionicHistory.nextViewOptions({
+                        historyRoot: false
+                    });
+
+                    $timeout(function() {
+                        var currentView = $ionicHistory.currentView();
+                        var currentHistoryId = $ionicHistory.currentHistoryId();
+                        var history = $ionicHistory.viewHistory();
+
+                        //Save today view
+                        if (toState.name == 'app.today.schedule') {
+                            $rootScope.todayHistoryId = currentView.id;
+                            $rootScope.todayHistoryView = currentView;
+                        }
+
+                        //Set history
+                        if (toState.name != 'app.today.schedule' && _.indexOf(menuMap, toState.name) != -1) {
+                            currentView.backViewId = $rootScope.todayHistoryId;
+                            history.backView = $rootScope.todayHistoryView;
+                            currentView.index = 1;
+                            history.histories[currentHistoryId].stack = [$rootScope.todayHistoryView, currentView]
+                        }
+                    }, 300)
+                });
+            }
+            ////////////////////////////////////
+
+            $ionicPlatform.ready(function () {
                  // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                  // for form inputs)
                  $rootScope.isAndroid = ionic.Platform.isAndroid();
