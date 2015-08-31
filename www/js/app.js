@@ -1,86 +1,88 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch', 'ngPDFViewer'])
 
-    .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications) {
+    .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications, settings) {
 
-            // Initializing app
-            $rootScope.initialized = false;
-            $rootScope.appOpen = true;
-            Auth.init().then(function (status) {
-                $rootScope.initialized = true;
-                $ionicHistory.nextViewOptions({
-                    disableBack: true,
-                    historyRoot: true
-                });
-                if (status === true) {
-                    // User authorized
-                    if ($rootScope.cachedState) {
-                        $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
-                        return status;
-                    }
+             // Initializing app
+             $rootScope.initialized = false;
+             $rootScope.appOpen = true;
+             $rootScope.settings = settings;
 
-                    Patient.changeStateByPatient();
-                    notifications.updateNotify();
-                } else {
-                    // Not authorized
-                    $state.go('onboarding');
-                }
-            });
+             Auth.init().then(function (status) {
+                 $rootScope.initialized = true;
+                 $ionicHistory.nextViewOptions({
+                     disableBack: true,
+                     historyRoot: true
+                 });
+                 if (status === true) {
+                     // User authorized
+                     if ($rootScope.cachedState) {
+                         $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
+                         return status;
+                     }
 
-            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                if (!$rootScope.initialized && toState.name !== 'loading') {
-                    $rootScope.cachedState = {
-                        toState: toState,
-                        toParams: toParams
-                    };
-                    event.preventDefault();
-                    $state.go('loading');
-                } else if ($rootScope.initialized && toState.name === 'loading') {
-                    event.preventDefault();
-                }
-            });
+                     Patient.changeStateByPatient();
+                     notifications.updateNotify();
+                 } else {
+                     // Not authorized
+                     $state.go('onboarding');
+                 }
+             });
 
-            //Fix for Android back button
-            if ($rootScope.isAndroid) {
-                $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-                    var menuMap = [
-                        'app.today.schedule',
-                        'app.notes.list',
-                        'app.medications',
-                        'app.doctors.list',
-                        'app.pharmacies.list',
-                        'app.logs.list',
-                        'app.sharing',
-                        'app.settings'
-                    ];
+             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+                 if (!$rootScope.initialized && toState.name !== 'loading') {
+                     $rootScope.cachedState = {
+                         toState: toState,
+                         toParams: toParams
+                     };
+                     event.preventDefault();
+                     $state.go('loading');
+                 } else if ($rootScope.initialized && toState.name === 'loading') {
+                     event.preventDefault();
+                 }
+             });
 
-                    $ionicHistory.nextViewOptions({
-                        historyRoot: false
-                    });
+             //Fix for Android back button
+             if ($rootScope.isAndroid) {
+                 $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                     var menuMap = [
+                         'app.today.schedule',
+                         'app.notes.list',
+                         'app.medications',
+                         'app.doctors.list',
+                         'app.pharmacies.list',
+                         'app.logs.list',
+                         'app.sharing',
+                         'app.settings'
+                     ];
 
-                    $timeout(function() {
-                        var currentView = $ionicHistory.currentView();
-                        var currentHistoryId = $ionicHistory.currentHistoryId();
-                        var history = $ionicHistory.viewHistory();
+                     $ionicHistory.nextViewOptions({
+                         historyRoot: false
+                     });
 
-                        //Save today view
-                        if (toState.name == 'app.today.schedule') {
-                            $rootScope.todayHistoryId = currentView.id;
-                            $rootScope.todayHistoryView = currentView;
-                        }
+                     $timeout(function () {
+                         var currentView = $ionicHistory.currentView();
+                         var currentHistoryId = $ionicHistory.currentHistoryId();
+                         var history = $ionicHistory.viewHistory();
 
-                        //Set history
-                        if (toState.name != 'app.today.schedule' && _.indexOf(menuMap, toState.name) != -1) {
-                            currentView.backViewId = $rootScope.todayHistoryId;
-                            history.backView = $rootScope.todayHistoryView;
-                            currentView.index = 1;
-                            history.histories[currentHistoryId].stack = [$rootScope.todayHistoryView, currentView]
-                        }
-                    }, 300)
-                });
-            }
-            ////////////////////////////////////
+                         //Save today view
+                         if (toState.name == 'app.today.schedule') {
+                             $rootScope.todayHistoryId = currentView.id;
+                             $rootScope.todayHistoryView = currentView;
+                         }
 
-            $ionicPlatform.ready(function () {
+                         //Set history
+                         if (toState.name != 'app.today.schedule' && _.indexOf(menuMap, toState.name) != -1) {
+                             currentView.backViewId = $rootScope.todayHistoryId;
+                             history.backView = $rootScope.todayHistoryView;
+                             currentView.index = 1;
+                             history.histories[currentHistoryId].stack = [$rootScope.todayHistoryView, currentView]
+                         }
+                     }, 300)
+                 });
+             }
+             ////////////////////////////////////
+
+             $ionicPlatform.ready(function () {
                  // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                  // for form inputs)
                  $rootScope.isAndroid = ionic.Platform.isAndroid();
@@ -98,17 +100,17 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                  //}
              });
 
-            function _listeners() {
-                //Resume/Pause
-                document.addEventListener('resume', function() {
-                    $rootScope.$broadcast('onResume');
-                }, false);
-                document.addEventListener('pause', function() {
-                    $rootScope.$broadcast('onPause');
-                }, false);
-            }
+             function _listeners() {
+                 //Resume/Pause
+                 document.addEventListener('resume', function () {
+                     $rootScope.$broadcast('onResume');
+                 }, false);
+                 document.addEventListener('pause', function () {
+                     $rootScope.$broadcast('onPause');
+                 }, false);
+             }
 
-     })
+         })
 
     .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider, OrangeApiProvider, settings) {
 
@@ -146,7 +148,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                             patient: ['Patient', function (Patient) {
                                 return Patient.getPatient();
                             }]
-                                    },
+                        },
                         cache: false
                     })
                     .state('app.today', {
@@ -155,7 +157,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>',
-                                controller: function($scope, patient) {
+                                controller: function ($scope, patient) {
                                     $scope.medications = patient.all('medications').getList();
                                 }
                             }
@@ -195,9 +197,12 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             menuContent: {
                                 template: '<ion-nav-view/>',
-                                controller: function($scope, patient) {
+                                controller: function ($scope, patient) {
                                     $scope.medications = patient.all('medications').getList();
-                                    $scope.notes = patient.all('journal').getList({sort_order: 'desc', sort_by: 'date'});
+                                    $scope.notes = patient.all('journal').getList({
+                                        sort_order: 'desc',
+                                        sort_by: 'date'
+                                    });
                                 }
                             }
                         }
@@ -212,7 +217,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                     .state('app.notes.details', {
                         url: '/:id/details',
                         templateUrl: 'templates/app.notes.details.html',
-                        controller:'NoteDetailsCtrl as note_details',
+                        controller: 'NoteDetailsCtrl as note_details',
                         cache: false
                     })
                     .state('app.notes.add', {
@@ -275,7 +280,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>',
-                                controller: function($scope, patient) {
+                                controller: function ($scope, patient) {
                                     $scope.doctorToAdd = null;
                                     $scope.doctors = patient.all('doctors').getList();
                                 }
@@ -316,18 +321,14 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         views: {
                             'menuContent': {
-                                template: '<ion-nav-view></ion-nav-view>',
-                                controller: function ($scope, $ionicLoading, patient) {
-                                    $scope.pharmacies = patient.all('pharmacies').getList();
-                                }
+                                template: '<ion-nav-view></ion-nav-view>'
                             }
                         }
                     })
                     .state('app.pharmacies.list', {
                         url: '',
                         templateUrl: 'templates/app.pharmacies.html',
-                        controller: 'PharmaciesCtrl as pharmacies',
-                        cache: false
+                        controller: 'PharmaciesCtrl as pharmacies'
                     })
                     .state('app.pharmacies.add', {
                         url: '/add',
@@ -398,7 +399,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         params: {
                             nextState: 'app.logs.list',
                             editMode: true
-                            }
+                        }
                     })
                     .state('app.logs.request', {
                         url: '/request',
@@ -472,10 +473,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         controller: 'AddLogCtrl',
                         resolve: {
                             log: ['OrangeApi', '$q', getMyProfile]
-                                    },
+                        },
                         params: {
                             nextState: 'logs'
-                                    }
+                        }
                     })
                     .state('logs-request', {
                         url: '/onboarding/logs/request',
@@ -503,7 +504,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         abstract: true,
                         template: '<ion-nav-view></ion-nav-view>',
                         resolve: {
-                            patient: ['$stateParams', 'OrangeApi', function($stateParams, OrangeApi) {
+                            patient: ['$stateParams', 'OrangeApi', function ($stateParams, OrangeApi) {
                                 var id = $stateParams.id;
                                 return OrangeApi.patients.get(id);
                             }]

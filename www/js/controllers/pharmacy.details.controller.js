@@ -5,31 +5,20 @@
         .module('orange')
         .controller('PharmacyDetailsCtrl', PharmacyDetailsCtrl);
 
-    PharmacyDetailsCtrl.$inject = [
-        '$scope', '$stateParams', '$locale'
-    ];
+    PharmacyDetailsCtrl.$inject = ['$scope', '$locale', 'PharmacyService'];
 
-    function PharmacyDetailsCtrl($scope, $stateParams, $locale) {
+    function PharmacyDetailsCtrl($scope, $locale, PharmacyService) {
         var vm = this;
 
-        vm.pharmacyPromise = $scope.pharmacies;
+        vm.pharmacyPromise = PharmacyService.getItems();
         vm.days = $locale.DATETIME_FORMATS.DAY;
-        vm.pharmacy = getPharmacy($stateParams.id);
+        vm.pharmacy = PharmacyService.getItem();
 
         /* For refresh details page */
         $scope.$watch('pharmacies.$$state.status', function (newValue, oldValue) {
             if (newValue) {
-                vm.pharmacy = getPharmacy($stateParams.id);
+                vm.pharmacy = PharmacyService.getItem();
             }
         });
-
-        /**
-         * Return pharmacy by id
-         */
-        function getPharmacy(pharmacyId) {
-            return _.find($scope.pharmacies.$object, function (item) {
-                return item.id == pharmacyId;
-            });
-        }
     }
 })();

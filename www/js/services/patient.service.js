@@ -62,10 +62,6 @@
                 return deffered
             }
 
-            $ionicLoading.show({
-                template: 'Loading patient data...'
-            });
-
             var currentPatient = $localstorage.get('currentPatient', null);
 
             //Get patient by id
@@ -81,6 +77,9 @@
                 return deffered.promise;
             }
 
+            $ionicLoading.show({
+                template: 'Loading patient data...'
+            });
 
             //Get first patient with medication
             OrangeApi.patients.getList().then(checkMedication, errorGetPatients);
