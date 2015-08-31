@@ -235,11 +235,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         cache: false,
                         views: {
                             'menuContent': {
-                                template: '<ion-nav-view></ion-nav-view>',
-                                controller: function($scope, patient) {
-                                    $scope.doctorToAdd = null;
-                                    $scope.doctors = patient.all('doctors').getList();
-                                }
+                                template: '<ion-nav-view></ion-nav-view>'
                             }
                         }
 
@@ -248,7 +244,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                         url: '',
                         templateUrl: 'templates/app.doctors.html',
                         controller: 'DoctorsCtrl as doctors',
-                        cache: false
                     })
                     .state('app.doctors.search', {
                         url: '/search',

@@ -5,34 +5,24 @@
         .module('orange')
         .controller('DoctorDetailsCtrl', DoctorDetailsCtrl);
 
-    DoctorDetailsCtrl.$inject = ['$scope', '$state', '$stateParams', '$rootScope'];
+    DoctorDetailsCtrl.$inject = ['$scope', 'DoctorService'];
 
     /* @ngInject */
-    function DoctorDetailsCtrl($scope, $state, $stateParams, $rootScope) {
+    function DoctorDetailsCtrl($scope, DoctorService) {
         var vm = this;
 
         vm.title = 'Doctor Details';
-        vm.doctorsPromise = $scope.doctors;
-        vm.doctor = {};
-
-        vm.doctor = _.find($scope.doctors.$object, function(doctor) {
-            return doctor.id == $stateParams.id
-        });
+        vm.doctorsPromise = DoctorService.getItems();
+        vm.doctor = DoctorService.getItem();
 
         $scope.$watch('doctors.$$state.status', function(newValue, oldValue) {
             if (newValue) {
-                vm.doctor = _.find($scope.doctors.$object, function(doctor) {
-                    return doctor.id == $stateParams.id
-                })
+                vm.doctor = DoctorService.getItem();
             }
         });
 
         vm.callDoctor = function(phone) {
             document.location.href = 'tel:+1' + phone;
         };
-        function saveError(error) {
-            alert(error);
-            $ionicLoading.hide();
-        }
     }
 })();

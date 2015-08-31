@@ -5,10 +5,11 @@
         .module('orange')
         .controller('DoctorSearchCtrl', DoctorSearchCtrl);
 
-    DoctorSearchCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'OrangeApi', '$ionicModal', '$ionicPopup'];
+    DoctorSearchCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'OrangeApi', '$ionicModal', '$ionicPopup',
+                                'DoctorService'];
 
     /* @ngInject */
-    function DoctorSearchCtrl($scope, $state, $ionicLoading, OrangeApi, $ionicModal, $ionicPopup) {
+    function DoctorSearchCtrl($scope, $state, $ionicLoading, OrangeApi, $ionicModal, $ionicPopup, DoctorService) {
         var vm = this;
 
         vm.title = 'Find Doctor';
@@ -16,6 +17,7 @@
         vm.address = {};
         vm.doctors = [];
 
+        DoctorService.setItem(null);
 
         vm.search = function (form) {
             form.$submitted = true;
@@ -36,21 +38,12 @@
             OrangeApi.npi.post(query).then(searchSuccess);
         };
 
-        function NamePartFormatter(part){
-            if (_.isUndefined(part))
-                return part;
-
-            part = part.toLowerCase();
-            part = part.charAt(0).toUpperCase() + part.slice(1);
-            return part;
-        }
-
         function searchSuccess(doctors) {
             $ionicLoading.hide();
 
             vm.doctors = [];
 
-            _.each(doctors.providers, function(provider) {
+            _.each(doctors['providers'], function (provider) {
                 var doctor = {};
 
                 doctor['name'] = _.startCase(
@@ -87,13 +80,8 @@
             vm.modal.show();
         }
 
-        function saveError(error) {
-            alert(error);
-            $ionicLoading.hide();
-        }
-
         vm.addGo = function(doctor) {
-            $scope.$parent.doctorToAdd = doctor;
+            DoctorService.setItem(doctor);
             $state.go('app.doctors.add');
             vm.modal.hide();
         };
