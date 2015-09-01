@@ -21,7 +21,7 @@
         medications.setLog(patient);
         refresh(true);
 
-        $ionicModal.fromTemplateUrl('templates/partial/medications.search.modal.html', {
+        $ionicModal.fromTemplateUrl('templates/medications/medications.search.modal.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {

@@ -43,8 +43,9 @@
         }
 
         function loadMore() {
-            if (vm.pharmacies !== null) {
-                PharmacyService.moreItems().then(function (items) {
+            var morePromise = PharmacyService.moreItems();
+            if (vm.pharmacies !== null && morePromise) {
+                morePromise.then(function (items) {
                     vm.pharmacies = items;
                     $scope.$broadcast('scroll.infiniteScrollComplete');
                 });

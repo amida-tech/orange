@@ -86,7 +86,7 @@
             vm.modal.hide();
         };
 
-        $ionicModal.fromTemplateUrl('templates/partial/doctors.search_list.modal.html', {
+        $ionicModal.fromTemplateUrl('templates/doctors/doctors.search_list.modal.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {

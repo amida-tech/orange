@@ -9,7 +9,7 @@
         return {
             require: 'ngModel',
             replace: true,
-            templateUrl: 'templates/partial/calendar.html',
+            templateUrl: 'templates/core/calendar.html',
             link: function (scope, element, attributes, ngModel) {
                 scope.days = [];
                 scope.selectedDays = [];

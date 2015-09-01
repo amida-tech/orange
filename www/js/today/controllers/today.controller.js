@@ -184,7 +184,7 @@
 
         refresh();
 
-        $ionicModal.fromTemplateUrl('templates/partial/dose.today.modal.html', {
+        $ionicModal.fromTemplateUrl('templates/today/dose.today.modal.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {

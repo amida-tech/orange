@@ -15,7 +15,7 @@
                 options: "=changePatient"
             },
             replace: true,
-            templateUrl: 'templates/partial/change-patient.html',
+            templateUrl: 'templates/core/change-patient.html',
             link: function (scope, element, attributes) {
                 scope.patient = scope.$parent.patient;
                 scope.patients = [];
@@ -51,7 +51,7 @@
 
 
                 $timeout(function() {
-                    $ionicModal.fromTemplateUrl('templates/partial/change-patient.modal.html', {
+                    $ionicModal.fromTemplateUrl('templates/core/change-patient.modal.html', {
                         scope: scope,
                         animation: 'slide-in-up'
                     }).then(function(modal) {

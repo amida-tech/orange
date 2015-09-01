@@ -14,7 +14,7 @@
                 options: "=buttonBar"
             },
             replace: true,
-            templateUrl: 'templates/partial/button-bar.html',
+            templateUrl: 'templates/core/button-bar.html',
             link: function (scope, element, attributes, ngModel) {
 
                 scope.value = scope.options[0].key;

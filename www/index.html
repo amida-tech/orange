@@ -40,84 +40,84 @@
     <!-- your app's js -->
     <script src="js/app.js"></script>
 
+    <!-- CORE -->
     <!-- controllers -->
-    <script src="js/controllers/components.controller.js"></script>
-    <script src="js/controllers/retry.controller.js"></script>
-    <script src="js/controllers/today.controller.js"></script>
-    <script src="js/controllers/today.as_needed.controller.js"></script>
-    <script src="js/controllers/today.as_needed.add.controller.js"></script>
-
-    <script src="js/controllers/notes.controller.js"></script>
-    <script src="js/controllers/note.add.controller.js"></script>
-    <script src="js/controllers/note.details.controller.js"></script>
-
-    <script src="js/controllers/medications.controller.js"></script>
-    <script src="js/controllers/medication.controller.js"></script>
-    <script src="js/controllers/medication.search.controller.js"></script>
-    <script src="js/controllers/medication.schedule.controller.js"></script>
-    <script src="js/controllers/medication.events.controller.js"></script>
-
-    <script src="js/controllers/doctors.controller.js"></script>
-    <script src="js/controllers/doctor.search.controller.js"></script>
-    <script src="js/controllers/doctor.details.controller.js"></script>
-    <script src="js/controllers/doctor.controller.js"></script>
-
-    <script src="js/controllers/pharmacies.controller.js"></script>
-    <script src="js/controllers/pharmacy.add.controller.js"></script>
-    <script src="js/controllers/pharmacy.details.controller.js"></script>
-
-    <script src="js/controllers/settings.controller.js"></script>
-
-    <script src="js/controllers/account.controller.js"></script>
-    <script src="js/controllers/menu.controller.js"></script>
-    <script src="js/controllers/logs.controller.js"></script>
-    <script src="js/controllers/log-add.controller.js"></script>
-    <script src="js/controllers/log-details.controller.js"></script>
-    <script src="js/controllers/log-request.controller.js"></script>
-    <script src="js/controllers/log-habits.controller.js"></script>
-    <script src="js/controllers/log-medications-search.controller.js"></script>
-    <script src="js/controllers/log-medications.controller.js"></script>
-    <script src="js/controllers/sharing.controller.js"></script>
-    <script src="js/controllers/sharing.accept.controller.js"></script>
-    <script src="js/controllers/sharing.report.controller.js"></script>
-
-    <!-- services -->
-    <script src="js/services/settings.js"></script>
-    <script src="js/services/localstorage.js"></script>
-    <script src="js/services/orange-api.js"></script>
-    <script src="js/services/paging.service.js"></script>
-    <script src="js/services/auth.service.js"></script>
-    <script src="js/services/log.service.js"></script>
-    <script src="js/services/patient.service.js"></script>
-    <script src="js/services/oauth.service.js"></script>
-    <script src="js/services/token.service.js"></script>
-    <script src="js/services/avatar.service.js"></script>
-    <script src="js/services/doctor.service.js"></script>
-    <script src="js/services/number-to-words.service.js"></script>
-    <script src="js/services/note.service.js"></script>
-    <script src="js/services/medications.service.js"></script>
-    <script src="js/services/pharmacy.service.js"></script>
-    <script src="js/services/requests.service.js"></script>
-    <script src="js/services/notifications.service.js"></script>
-
+    <script src="js/core/controllers/menu.controller.js"></script>
+    <script src="js/core/controllers/retry.controller.js"></script>
 
     <!-- directives -->
-    <script src="js/directives/compare-to.directive.js"></script>
-    <script src="js/directives/datefield.directive.js"></script>
-    <script src="js/directives/timefield.directive.js"></script>
-    <script src="js/directives/avatar.directive.js"></script>
-    <script src="js/directives/button-bar.directive.js"></script>
-    <script src="js/directives/calendar.directive.js"></script>
-    <script src="js/directives/weekdays.directive.js"></script>
-    <script src="js/directives/change-patient.directive.js"></script>
-    <script src="js/directives/validate.email.directive.js"></script>
-    <script src="js/directives/callPhone.directive.js"></script>
+    <script src="js/core/directives/avatar.directive.js"></script>
+    <script src="js/core/directives/button-bar.directive.js"></script>
+    <script src="js/core/directives/calendar.directive.js"></script>
+    <script src="js/core/directives/callPhone.directive.js"></script>
+    <script src="js/core/directives/change-patient.directive.js"></script>
+    <script src="js/core/directives/compare-to.directive.js"></script>
+    <script src="js/core/directives/datefield.directive.js"></script>
+    <script src="js/core/directives/timefield.directive.js"></script>
+    <script src="js/core/directives/validate.email.directive.js"></script>
+    <script src="js/core/directives/weekdays.directive.js"></script>
 
     <!-- filters -->
-    <script src="js/filters/to-words.filter.js"></script>
-    <script src="js/filters/trusted.filter.js"></script>
+    <script src="js/core/filters/to-words.filter.js"></script>
+    <script src="js/core/filters/trusted.filter.js"></script>
 
+    <!-- services -->
+    <script src="js/core/services/auth.service.js"></script>
+    <script src="js/core/services/avatar.service.js"></script>
+    <script src="js/core/services/localstorage.js"></script>
+    <script src="js/core/services/number-to-words.service.js"></script>
+    <script src="js/core/services/notifications.service.js"></script>
+    <script src="js/core/services/oauth.service.js"></script>
+    <script src="js/core/services/orange-api.js"></script>
+    <script src="js/core/services/paging.service.js"></script>
+    <script src="js/core/services/token.service.js"></script>
 
+    <!-- APP -->
+    <script src="js/today/controllers/today.controller.js"></script>
+    <script src="js/today/controllers/today.as_needed.controller.js"></script>
+    <script src="js/today/controllers/today.as_needed.add.controller.js"></script>
+
+    <script src="js/notes/controllers/notes.controller.js"></script>
+    <script src="js/notes/controllers/note.add.controller.js"></script>
+    <script src="js/notes/controllers/note.details.controller.js"></script>
+    <script src="js/notes/services/note.service.js"></script>
+
+    <script src="js/medications/controllers/medications.controller.js"></script>
+    <script src="js/medications/controllers/medication.controller.js"></script>
+    <script src="js/medications/controllers/medication.search.controller.js"></script>
+    <script src="js/medications/controllers/medication.schedule.controller.js"></script>
+    <script src="js/medications/controllers/medication.events.controller.js"></script>
+    <script src="js/medications/services/medications.service.js"></script>
+
+    <script src="js/doctors/controllers/doctors.controller.js"></script>
+    <script src="js/doctors/controllers/doctor.search.controller.js"></script>
+    <script src="js/doctors/controllers/doctor.details.controller.js"></script>
+    <script src="js/doctors/controllers/doctor.controller.js"></script>
+    <script src="js/doctors/services/doctor.service.js"></script>
+
+    <script src="js/pharmacies/controllers/pharmacies.controller.js"></script>
+    <script src="js/pharmacies/controllers/pharmacy.add.controller.js"></script>
+    <script src="js/pharmacies/controllers/pharmacy.details.controller.js"></script>
+    <script src="js/pharmacies/services/pharmacy.service.js"></script>
+
+    <script src="js/logs/controllers/account.controller.js"></script>
+    <script src="js/logs/controllers/logs.controller.js"></script>
+    <script src="js/logs/controllers/log-add.controller.js"></script>
+    <script src="js/logs/controllers/log-details.controller.js"></script>
+    <script src="js/logs/controllers/log-request.controller.js"></script>
+    <script src="js/logs/controllers/log-habits.controller.js"></script>
+    <script src="js/logs/controllers/log-medications-search.controller.js"></script>
+    <script src="js/logs/controllers/log-medications.controller.js"></script>
+    <script src="js/logs/services/log.service.js"></script>
+    <script src="js/logs/services/patient.service.js"></script>
+
+    <script src="js/sharing/controllers/sharing.controller.js"></script>
+    <script src="js/sharing/controllers/sharing.accept.controller.js"></script>
+    <script src="js/sharing/controllers/sharing.report.controller.js"></script>
+    <script src="js/sharing/services/requests.service.js"></script>
+
+    <script src="js/settings/controllers/settings.controller.js"></script>
+    <script src="js/settings/services/settings.js"></script>
 
 </head>
 <body ng-app="orange">

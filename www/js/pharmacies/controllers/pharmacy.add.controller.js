@@ -19,7 +19,7 @@
         vm.days = $locale.DATETIME_FORMATS.DAY;
         vm.save = save;
 
-        $ionicModal.fromTemplateUrl('templates/partial/hours.modal.html', {
+        $ionicModal.fromTemplateUrl('templates/pharmacies/hours.modal.html', {
             scope: $scope
         }).then(function (modal) {
             vm.hoursModal = modal;

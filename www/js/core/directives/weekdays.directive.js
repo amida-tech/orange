@@ -9,7 +9,7 @@
         return {
             require: 'ngModel',
             replace: true,
-            templateUrl: 'templates/partial/weekdays.html',
+            templateUrl: 'templates/core/weekdays.html',
             link: function (scope, element, attributes, ngModel) {
 
                 scope.weekDays = _.map(moment.weekdaysShort(), function (day, index) {

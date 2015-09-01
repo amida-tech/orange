@@ -21,13 +21,13 @@
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
         $scope.iconItems = _.chunk($scope.settings.avatars, 3);
 
-        $ionicModal.fromTemplateUrl('templates/partial/logs.icon.modal.html', {
+        $ionicModal.fromTemplateUrl('templates/logs/logs.icon.modal.html', {
             scope: $scope
         }).then(function (modal) {
             $scope.iconModal = modal;
         });
 
-        $ionicModal.fromTemplateUrl('templates/partial/logs.habits.modal.html', {
+        $ionicModal.fromTemplateUrl('templates/logs/logs.habits.modal.html', {
             scope: $scope
         }).then(function (modal) {
             $scope.habitsModal = modal;

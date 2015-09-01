@@ -14,7 +14,7 @@
                 'patient': '=',
                 'withCheck': '='
             },
-            templateUrl: 'templates/partial/avatar.html',
+            templateUrl: 'templates/core/avatar.html',
             replace: true,
             link: function (scope) {
                 scope.imageSrc = null;
