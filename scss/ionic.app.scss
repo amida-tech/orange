@@ -461,6 +461,13 @@ dl.dl-worksheet {
   }
 }
 
+.form-label {
+  text-transform: uppercase;
+  color: $gray;
+  font-weight: bold;
+  font-size: $font-size-base;
+}
+
 .orange-form {
   p.item-input {
     padding-left: $padding-base-horizontal;

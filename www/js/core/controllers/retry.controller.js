@@ -48,6 +48,7 @@
                     $state.go($rootScope.currentState);
                     delete $rootScope.currentState;
                 }
+                return response;
             }).finally(function(res) {
                 $ionicLoading.hide();
                 vm.disabled = false;
