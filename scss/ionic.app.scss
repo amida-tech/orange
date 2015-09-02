@@ -1253,7 +1253,6 @@ ion-option-button.option-control.button {
 }
 
 .agree-div {
-  display: flex;
   padding-top: 5px;
 
   p {
@@ -1261,6 +1260,7 @@ ion-option-button.option-control.button {
     font-weight: bold;
     margin: 0 0 0 3px;
     text-decoration: underline;
+    display: inline-block;
   }
 }
 
