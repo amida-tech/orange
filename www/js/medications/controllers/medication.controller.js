@@ -13,7 +13,7 @@
         var vm = this;
         var id = $stateParams.id;
 
-        vm.title = 'Medication Detail';
+        vm.title = 'Medication Details';
         vm.medication = null;
         vm.getEventText = medications.getEventText;
         vm.remove = remove;
