@@ -22,7 +22,8 @@
         getPatients();
 
         function getPatients(force) {
-            $scope.logs = LogService.getLogs(force).then(function (patients) {
+            LogService.getLogs(force).then(function (patients) {
+                $scope.logs = patients;
                 $scope.logList = _.chunk(patients, 3);
                 $scope.withMe = _.filter(patients, function (item) {
                     return item['me'] === true;

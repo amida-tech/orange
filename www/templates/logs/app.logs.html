@@ -5,10 +5,9 @@
             </button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right" >
-            <button class="button button-clear button-small button-dose" ng-click="menu_logs.setEditMode(true)"
-                    ng-show="!menu_logs.editMode">Edit</button>
-            <button class="button button-clear button-small button-dose" ng-click="menu_logs.setEditMode(false)"
-                    ng-show="menu_logs.editMode">Done</button>
+            <button class="button button-clear button-small button-dose"
+                    ng-click="menu_logs.setEditMode(!menu_logs.editMode)"
+                    ng-bind="menu_logs.editMode ? 'Done': 'Edit'"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
@@ -19,16 +18,19 @@
         </div>
         <div class="list list-clean">
             <div class="orange-logs item item-text-wrap">
-                <div class="row row-no-padding" ng-repeat="row in logList">
-                    <div class="col col-33" ng-repeat="log in row">
+                <div class="row row-no-padding" ng-repeat="item in logList">
+                    <div class="col col-33" ng-repeat="log in item">
                         <div class="item-log" ui-sref="app.logs.details({id: log.id})">
                             <avatar patient="log"></avatar>
-                            <div class="log-title">{{ log.first_name }}<br/>{{ log.last_name }}</div>
+                            <div class="log-title">
+                                <p ng-bind="log.first_name"></p>
+                                <p ng-bind="log.last_name"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="row row-no-padding" ng-show="menu_logs.editMode">
-                    <div class="col col-33" ng-if="!withMe">
+                    <div class="col col-33" ng-show="!withMe">
                         <div class="item-log" ui-sref="app.logs.add_my">
                             <div class="log-avatar">
                             </div>

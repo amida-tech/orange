@@ -11,9 +11,6 @@
     function changePatient($rootScope, $timeout, $state, $stateParams, $ionicModal,
                            $localstorage, Patient, notify) {
         return {
-            scope: {
-                options: "=changePatient"
-            },
             replace: true,
             templateUrl: 'templates/core/change-patient.html',
             link: function (scope, element, attributes) {
