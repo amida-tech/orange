@@ -5,10 +5,9 @@
             </button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right" >
-            <button class="button button-clear button-small button-dose" ng-click="menu_logs.setEditMode(true)"
-                    ng-show="!menu_logs.editMode">Edit</button>
-            <button class="button button-clear button-small button-dose" ng-click="menu_logs.setEditMode(false)"
-                    ng-show="menu_logs.editMode">Done</button>
+            <button class="button button-clear button-small button-dose"
+                    ng-click="menu_logs.setEditMode(!menu_logs.editMode)"
+                    ng-bind="menu_logs.editMode ? 'Done': 'Edit'"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
