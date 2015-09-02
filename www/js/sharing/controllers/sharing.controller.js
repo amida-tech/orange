@@ -23,6 +23,7 @@
             vm.logs = items;
             vm.logList = _.chunk(items, 3);
             vm.log = vm.logs && vm.logs[0].id.toString();
+            vm.month = (new Date()).getMonth().toString();
         });
 
         update();
