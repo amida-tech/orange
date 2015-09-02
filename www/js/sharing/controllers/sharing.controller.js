@@ -17,11 +17,12 @@
         vm.cancel = cancel;
         vm.update = update;
         vm.log = null;
-        vm.month = 0;
+        vm.month = '0';
 
         LogService.getLogs().then(function (items) {
             vm.logs = items;
             vm.logList = _.chunk(items, 3);
+            vm.log = vm.logs && vm.logs[0].id.toString();
         });
 
         update();

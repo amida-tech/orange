@@ -180,7 +180,7 @@
         function update(events) {
             vm.notifications = [];
             vm.events = _.map(events, function (event, index) {
-                vm.notifications[index] = 30;
+                vm.notifications[index] = '30';
                 return prepareEvent(event);
             });
 
