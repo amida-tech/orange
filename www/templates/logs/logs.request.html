@@ -1,4 +1,4 @@
-<ion-view title="Add Existing Logs">
+<ion-view title="{{ title }}">
     <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-back-button>
         </ion-nav-back-button>
@@ -11,11 +11,7 @@
                 </div>
                 <div class="item item-body">
 
-                    <p>To add logs from an existing account, please
-                        begin by sending a request to the account holder.</p>
-
-                    <p>Once approved, the account holder can choose
-                        which logs to share with you.</p>
+                    <p ng-bind="description"></p>
                     <label class="item item-input">
                         <i ng-show="requestForm.email.$valid"
                            class="icon ion-ios-checkmark-outline icon-right"></i>
@@ -29,7 +25,7 @@
                     <input type="submit"
                            class="button button-block button-orange"
                            ng-click="sendRequest(requestForm)"
-                           value="Request Access"/>
+                           value="{{ buttonTitle }}" />
                 </div>
             </form>
         </div>
