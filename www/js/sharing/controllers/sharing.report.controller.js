@@ -12,7 +12,15 @@
         var reportDir = cordova.file.externalCacheDirectory || cordova.file.cacheDirectory,
             fileName = $stateParams.id + '.pdf',
             printPdf = window.plugins.PrintPDF,
-            pdfData;
+            pdfData,
+            buttonLabels = ['by Email'],
+            deviceVersion = _.map(device.version.split('.'), Number);
+
+        // Only for iOS & Android 4.4+
+        if (!(device.platform === 'Android' && (
+                deviceVersion[0] < 4 || deviceVersion[0] === 4 && deviceVersion[1] < 4))) {
+            buttonLabels.push('Print');
+        }
 
         $scope.pdfURL = '';
         $scope.viewer = pdf.Instance('viewer');
@@ -61,7 +69,7 @@
         function share() {
             $cordovaActionSheet.show({
                 title: 'Select service for share',
-                buttonLabels: ['by Email', 'Print'],
+                buttonLabels: buttonLabels,
                 addCancelButtonWithLabel: 'Cancel',
                 androidEnableCancelButton: true
             }).then(function (index) {
