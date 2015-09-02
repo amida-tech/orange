@@ -1,4 +1,4 @@
-angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'issue-9128-patch', 'ngPDFViewer'])
+angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ngPDFViewer'])
 
     .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications, settings) {
 
