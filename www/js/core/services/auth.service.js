@@ -17,7 +17,9 @@
             init: init,
             logout: logout,
             userInfo: userInfo,
-            isAuthorized: isAuthorized
+            isAuthorized: isAuthorized,
+            checkPassword: checkPassword,
+            update: update
         };
 
         function isAuthorized() {
@@ -26,6 +28,45 @@
 
         function userInfo() {
             return user;
+        }
+
+        /**
+         * Password validation.
+         * @param password string
+         * @returns Promise object
+         */
+        function checkPassword(password) {
+            var tmpUser = {
+                email: user.email,
+                password: password
+            };
+
+            return OrangeApi.auth.all('token').post(tmpUser)
+        }
+
+        /**
+         * @param userPut User object
+         * @returns Promise object
+         */
+        function update(userPut) {
+            return OrangeApi.user.get('').then(function(response) {
+                //Set new data
+                response.phone = userPut.phone;
+                response.first_name = userPut.first_name;
+                response.last_name = userPut.last_name;
+                if ('password' in userPut) {
+                    response.password = userPut.password;
+                }
+
+                //Update user
+                response.put(userPut).then( function (response) {
+                    //Take new token, if password is updated
+                    if ('password' in userPut) {
+                        response.password = userPut.password;
+                        auth(response).then(function (status) {})
+                    }
+                });
+            });
         }
 
         function init() {

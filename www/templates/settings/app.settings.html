@@ -8,7 +8,63 @@
             <button class="button button-clear button-small" ng-click="settings.logout()">Sign Out</button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="light-bg">
+    <ion-content class="light-bg padding">
 
+        <span class="form-label">Account Settings</span>
+        <form class="orange-form" name="accountUpdate" ng-init="settings.setFormScope(this)">
+            <div class="item item-error"
+                 ng-if="accountUpdate.$submitted && !accountUpdate.$valid">
+                <div ng-messages="accountUpdate.full_name.$error">
+                    <p ng-message="required">Full Name is required</p>
+                </div>
+            </div>
+
+            <label class="item-input">
+                <input name="full_name" type="text" ng-model="settings.user_model.full_name"
+                       placeholder="Full Name" required/>
+            </label>
+            <label class="item-input">
+                <input name="phone" type="text" ng-model="settings.user_model.phone"
+                       placeholder="Phone (Optional)"/>
+            </label>
+            <label class="item-input">
+                <input type="text" ng-model="settings.email"
+                       placeholder="E-mail" disabled/>
+            </label>
+        </form>
+
+        <span class="form-label">Password Reset</span>
+        <form class="orange-form" name="passwordReset" ng-init="settings.setFormScope(this)">
+            <div class="item item-error"
+                 ng-if="passwordReset.$submitted && !passwordReset.$valid">
+                <div ng-messages="passwordReset.old.$error">
+                    <p ng-message="required">Current password is required</p>
+                    <p ng-message="checkPassword">Invalid current password</p>
+                </div>
+                <div ng-messages="passwordReset.new.$error">
+                    <p ng-message="required">New password is required</p>
+                </div>
+                <div ng-messages="passwordReset.confirm.$error">
+                    <p ng-message="required">Confirm password is required</p>
+                    <p ng-message="compareTo">New and Confirmed password must be equal</p>
+                </div>
+            </div>
+
+            <label class="item-input">
+                <input name="old" type="password" ng-model="settings.password_model.old"
+                       placeholder="Current Password" required/>
+            </label>
+            <label class="item-input">
+                <input name="new" type="password" ng-model="settings.password_model.new"
+                       placeholder="New Password" required/>
+            </label>
+            <label class="item-input">
+                <input name="confirm" type="password" ng-model="settings.password_model.confirm"
+                       placeholder="Confirm New Password" required compare-to="settings.password_model.new"/>
+            </label>
+         </form>
     </ion-content>
+    <div class="bottom-buttons">
+        <button type="submit" class="button button-full button-orange" ng-click="settings.update()">Update</button>
+    </div>
 </ion-view>
