@@ -5,24 +5,14 @@
         .module('orange')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$scope', '$timeout', '$state', 'Auth', 'patient', '$ionicHistory'];
+    MenuCtrl.$inject = ['$scope', '$state', 'Auth', 'patient'];
 
-    /* @ngInject */
-    function MenuCtrl($scope, $timeout, $state, Auth, patient, $ionicHistory) {
+    function MenuCtrl($scope, $state, Auth, patient) {
         $scope.profile = Auth.userInfo();
         $scope.log = patient;
         $scope.patient = patient;
-        if (patient == null) {
+        if (patient === null) {
             $state.go('logs')
-        }
-
-        $scope.fixHistory = function() {
-            $timeout( function() {
-                $ionicHistory.nextViewOptions({
-                    historyRoot: false,
-                    disableAnimate: false
-                });
-            }, 300);
         }
     }
 })();
