@@ -6,28 +6,32 @@
         </ion-nav-buttons>
         <ion-nav-buttons side="right">            
             <change-patient></change-patient>
-<button class="button button-icon button-clear button-small ion-plus button-dose" ng-click="medications.openModal()"></button>
-                   </ion-nav-buttons>
+            <button class="button button-icon button-clear button-small ion-plus button-dose"
+                    ng-click="medications.searchModal.show()"></button>
+        </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
         <ion-refresher pulling-text="Pull to refresh" on-refresh="medications.refresh()"></ion-refresher>
 
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots"
-                         ng-if="medications.medications === null"></ion-spinner>
+                         ng-if="!medications.medicationsPromise.$$state.status"></ion-spinner>
         </div>
 
         <ion-list can-swipe="true">
-            <ion-item ng-repeat="medication in medications.medications" ui-sref="app.medication.details({id: medication.id})">
+            <ion-item ng-repeat="medication in medications.medications" ng-click="medications.details(medication)">
                 <div class="med-title">
                     <p class="med-name" ng-bind="medication.name"></p>
                     <p class="med-rx" ng-bind="medication.brand"></p>
                 </div>
 
                 <ion-option-button class="button-assertive option-control" ng-click="medications.remove(medication)">
-                   Delete
+                    <i class="icon ion-trash-a"></i>
                 </ion-option-button>
             </ion-item>
         </ion-list>
+        <ion-infinite-scroll ng-if="medications.hasMore()" distance="{{ settings.defaultScrollDistance }}"
+                             on-infinite="medications.loadMore()">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

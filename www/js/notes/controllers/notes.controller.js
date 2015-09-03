@@ -11,12 +11,11 @@
     function NotesCtrl($scope, $state, $ionicLoading, $cordovaDialogs, NoteService) {
         var vm = this;
         vm.refresh = refresh;
-        vm.shouldShowDelete = false;
         vm.remove = remove;
         vm.loadMore = loadMore;
         vm.details = noteDetails;
         vm.notes = null;
-        vm.isInfinite = NoteService.isInfinite;
+        vm.hasMore = NoteService.hasMore;
 
         refresh();
 

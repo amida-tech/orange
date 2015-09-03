@@ -13,7 +13,7 @@
         vm.refresh = refresh;
         vm.remove = remove;
         vm.loadMore = loadMore;
-        vm.isInfinite = PharmacyService.isInfinite;
+        vm.hasMore = PharmacyService.hasMore;
         vm.pharmacyDetails = pharmacyDetails;
         vm.pharmacies = null;
 

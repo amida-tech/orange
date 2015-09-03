@@ -7,7 +7,7 @@
 
     NoteAddCtrl.$inject = [
         '$scope', '$filter', '$state', '$stateParams',
-        '$ionicLoading', '$ionicModal', '$cordovaDialogs', 'NoteService', 'medications'
+        '$ionicLoading', '$ionicModal', '$cordovaDialogs', 'NoteService', 'MedicationService'
     ];
 
     /* @ngInject */
@@ -23,9 +23,9 @@
 
         vm.title = (is_edit) ? 'Edit Note' : 'Add Note';
         vm.backState = (is_edit) ? 'app.notes.details({id: '+id+'})' : 'app.notes.list';
-        vm.note = NoteService.getItem();
+        vm.note = NoteService.getItem() || {};
         vm.notesPromise = NoteService.getItems();
-        vm.medicationsPromise = MedicationService.getAll();
+        vm.medicationsPromise = MedicationService.getItems();
 
         //Medications to add model
         vm.medications = [];

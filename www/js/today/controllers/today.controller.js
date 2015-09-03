@@ -5,10 +5,10 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$rootScope', '$q', '$scope', '$ionicLoading',
-        '$ionicPopup', '$ionicModal', 'n2w', 'patient', 'medications'];
+    TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading',
+        '$ionicPopup', '$ionicModal', 'n2w', 'patient', 'MedicationService'];
 
-    function TodayCtrl($rootScope, $q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, patient, medService) {
+    function TodayCtrl($q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, patient, MedicationService) {
         var vm = this;
         var doseModal = null;
 
@@ -287,7 +287,7 @@
             };
             $q.all([
                 patient.all('schedule').getList(filter),
-                patient.all('medications').getList(),
+                MedicationService.getItems(true),
                 patient.one('habits').get('')
             ]).then(
                 function (data) {
@@ -327,8 +327,7 @@
                 return;
             }
 
-            medService.setLog(patient);
-            medService.getAll().then(function(medications) {
+            MedicationService.getItems().then(function(medications) {
                 event.medication = _.find(medications, {id: event.medication_id});
                 event.event = _.find(event.medication.schedule.times, {id: event.scheduled});
                 showModal(event);

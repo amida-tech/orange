@@ -4,64 +4,44 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', 'medications', 'patient'];
+    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', 'MedicationService'];
 
     /* @ngInject */
-    function MedicationsCtrl($scope, $state, $ionicLoading, $ionicModal, medications, patient) {
+    function MedicationsCtrl($scope, $state, $ionicLoading, $ionicModal, MedicationService) {
         var vm = this;
-        var searchModal = null;
 
         vm.medications = null;
         vm.refresh = refresh;
         vm.remove = remove;
-        vm.openModal = openModal;
-        vm.closeModal = closeModal;
+        vm.loadMore = loadMore;
+        vm.details = details;
         vm.pickMedication = pickMedication;
 
-        medications.setLog(patient);
-        refresh(true);
+        refresh();
 
         $ionicModal.fromTemplateUrl('templates/medications/medications.search.modal.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
-            searchModal = modal
+            vm.searchModal = modal
         });
-
-        function openModal() {
-            searchModal.show();
-        }
-
-        function closeModal() {
-            searchModal.hide();
-        }
 
         function pickMedication(medication) {
             console.log('Medication picked:', medication);
-            closeModal();
-            medications.setMedication(medication);
+            vm.searchModal.hide();
+            MedicationService.setItem(medication);
             $state.go('app.medication.schedule');
         }
 
-        $scope.$watch(medications.getMedications, function(medications) {
-            if (medications !== vm.medications) {
-                vm.medications = medications;
-            }
-        });
-
-        ///////////////////////////////////
-
-        function refresh(force) {
-            force = force === undefined ? true : force;
-
-            var method = force ? 'fetchAll' : 'getAll';
-
-            medications[method]().then(
-                function(medications) {
-                    vm.medications = medications;
+        function refresh() {
+            vm.medicationsPromise = MedicationService.getItems(true);
+            vm.medicationsPromise.then(
+                function (medications) {
                     $scope.$broadcast('scroll.refreshComplete');
+                    vm.medications = medications;
                 },
-                function(error) {
+                function (error) {
+                    $scope.$broadcast('scroll.refreshComplete');
                     console.log(error);
                 }
             )
@@ -71,14 +51,32 @@
             $ionicLoading.show({
                 template: 'Deleting…'
             });
-            medications.remove(medication).then(
-                undefined,
-                function(error) {
+            MedicationService.removeItem(medication).then(
+                function (items) {
+                    vm.medications = items;
+                },
+                function (error) {
                     console.log(error);
                 }
             ).finally($ionicLoading.hide);
         }
 
+        function loadMore() {
+            var morePromise = MedicationService.moreItems();
+            if (vm.medications !== null && morePromise) {
+                morePromise.then(function (items) {
+                    vm.medications = items;
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+            } else {
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+        }
+
+        function details(medication) {
+            MedicationService.setItem(medication);
+            $state.go('app.medication.details', {id: medication.id})
+        }
     }
 })();
 

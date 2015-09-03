@@ -5,14 +5,14 @@
         .module('orange')
         .controller('NoteDetailsCtrl', NoteDetailsCtrl);
 
-    NoteDetailsCtrl.$inject = ['$scope', '$stateParams', 'NoteService', 'medications'];
+    NoteDetailsCtrl.$inject = ['NoteService', 'MedicationService'];
 
-    function NoteDetailsCtrl($scope, $stateParams, NoteService, MedicationService) {
+    function NoteDetailsCtrl(NoteService, MedicationService) {
         var vm = this;
 
         vm.title = 'Note Details';
         vm.notesPromise = NoteService.getItems();
-        vm.medicationsPromise = MedicationService.getAll();
+        vm.medicationsPromise = MedicationService.getItems();
         vm.note = NoteService.getItem();
 
         vm.medicationsPromise.then(function (medications) {

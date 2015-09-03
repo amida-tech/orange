@@ -5,11 +5,9 @@
         .module('orange')
         .controller('MedicationSearchCtrl', MedicationSearchCtrl);
 
-    MedicationSearchCtrl.$inject = ['$q', '$timeout', '$state', '$ionicPopup', 'OrangeApi', 'medications'];
+    MedicationSearchCtrl.$inject = ['$timeout', '$ionicPopup', 'OrangeApi'];
 
-    /* @ngInject */
-    function MedicationSearchCtrl($q, $timeout, $state, $ionicPopup, OrangeApi, medications) {
-        /* jshint validthis: true */
+    function MedicationSearchCtrl($timeout, $ionicPopup, OrangeApi) {
         var vm = this;
 
         var alertOptions = {

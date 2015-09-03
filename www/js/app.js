@@ -528,11 +528,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         templateUrl: 'templates/logs/logs.setup.medications.events.html',
                         controller: 'MedicationEventsCtrl as events'
                     })
-                    .state('logs-setup-medications-review', {
-                        url: '/onboarding/logs/setup/medications/events',
-                        templateUrl: 'templates/logs/logs.setup.medications.review.html'
-                    })
-
                     .state('account-create', {
                         url: '/onboarding/signup',
                         templateUrl: 'templates/logs/account_create.html',

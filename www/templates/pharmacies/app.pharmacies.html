@@ -17,7 +17,7 @@
             <ion-spinner class="orange-loading-spinner" icon="dots"
                          ng-if="!pharmacies.pharmaciesPromise.$$state.status"></ion-spinner>
         </div>
-        <ion-list class="list-clean list-inset padding" can-swipe="true" show-delete="shouldShowDelete">
+        <ion-list class="list-clean list-inset padding" can-swipe="true">
             <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies"
                       ng-click="pharmacies.pharmacyDetails(pharmacy)">
                 <p><strong ng-bind="pharmacy.name"></strong></p>
@@ -28,7 +28,7 @@
                 </ion-option-button>
             </ion-item>
         </ion-list>
-        <ion-infinite-scroll ng-if="pharmacies.isInfinite()" distance="{{ settings.defaultScrollDistance }}" on-infinite="pharmacies.loadMore()">
+        <ion-infinite-scroll ng-if="pharmacies.hasMore()" distance="{{ settings.defaultScrollDistance }}" on-infinite="pharmacies.loadMore()">
         </ion-infinite-scroll>
     </ion-content>
 </ion-view>

@@ -10,7 +10,7 @@
     function NoteService(PagingService) {
         var Service = function () {
             PagingService.constructor.call(this);
-            this.apiUrl = 'journal';
+            this.apiEndpoint = 'journal';
             this.sortBy = 'date';
             this.sortOrder = 'desc';
         };

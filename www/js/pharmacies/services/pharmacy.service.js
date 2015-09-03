@@ -10,7 +10,7 @@
     function PharmacyService(PagingService) {
         var Service = function () {
             PagingService.constructor.call(this);
-            this.apiUrl = 'pharmacies';
+            this.apiEndpoint = 'pharmacies';
         };
 
         Service.prototype = PagingService;

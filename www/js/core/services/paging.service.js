@@ -10,7 +10,7 @@
     function PagingService($rootScope, $q, Patient) {
         var Service = function () {
 
-            this.apiUrl = '';
+            this.apiEndpoint = '';
             this.items = null;
             this.item = null;
             this.count = 0;
@@ -20,25 +20,35 @@
             this.sortOrder = 'asc';
 
             this.getItems = getItems;
-            this.isInfinite = isInfinite;
+            this.hasMore = hasMore;
             this.moreItems = moreItems;
             this.setItem = setItem;
             this.getItem = getItem;
             this.removeItem = removeItem;
             this.saveItem = saveItem;
 
+            this.newItemSuccess = newItemSuccess;
+
+            $rootScope.$on('auth:user:logout', clear.bind(this));
         };
 
         return new Service();
 
         function initItems() {
-            var that = this;
+            var self = this;
             this.offset = 0;
             return fetchItems.apply(this).then(function (items) {
-                that.items = items;
-                that.offset = that.limit;
-                return that.items;
+                self.items = items;
+                self.offset = self.limit;
+                return self.items;
             });
+        }
+
+        function clear() {
+            this.items = null;
+            this.item = null;
+            this.count = 0;
+            this.offset = 0;
         }
 
         function getItems(force) {
@@ -53,7 +63,7 @@
         }
 
         function fetchItems(offset, limit, sortBy, sortOrder) {
-            var that = this,
+            var self = this,
                 options = {
                     limit: limit || this.limit,
                     offset: offset || this.offset,
@@ -61,32 +71,33 @@
                     sort_order: sortOrder || this.sortOrder
                 };
             return Patient.getPatient().then(function (patient) {
-                return patient.all(that.apiUrl).getList(options).then(function (response) {
-                    that.count = response.meta['count'];
+                return patient.all(self.apiEndpoint).getList(options).then(function (response) {
+                    self.count = response.meta['count'];
                     return response;
                 });
             });
         }
 
         function moreItems() {
-            var that = this;
-            if (isInfinite.apply(this)) {
+            var self = this;
+            if (this.hasMore()) {
                 return fetchItems.apply(this, [this.offset]).then(
                     function (items) {
-                        that.items = _.union(that.items, items);
-                        that.offset += that.limit;
-                        return that.items;
+                        self.items = _.union(self.items, items);
+                        self.offset += self.limit;
+                        return self.items;
                     }
                 )
             }
         }
 
-        function isInfinite() {
+        function hasMore() {
             return this.count === undefined || this.count > this.offset;
         }
 
         function setItem(item) {
             this.item = item;
+            console.log('Set item ' + this.item.id);
         }
 
         function getItem() {
@@ -94,34 +105,40 @@
         }
         
         function removeItem(removedItem){
-            var that = this;
+            var self = this;
             return removedItem.remove().then(function () {
-                _.remove(that.items, function (item) {
+                _.remove(self.items, function (item) {
                     return removedItem.id == item.id;
                 });
-                that.count -= 1;
-                that.offset -= 1;
-                return that.items;
+                self.count -= 1;
+                self.offset -= 1;
+                return self.items;
             });
         }
 
         function saveItem(savedItem) {
-            var that = this;
+            var self = this;
             if (savedItem.id) {
                 return savedItem.save();
             } else {
                 return Patient.getPatient().then(function (patient) {
-                    return patient.all(that.apiUrl).post(savedItem).then(
-                        function (newItem) {
-                            if (!isInfinite.apply(that)) {
-                                that.items[that.sortOrder !== 'desc' ? 'push' : 'unshift'](newItem);
-                                that.offset += 1;
-                            }
-                            that.count += 1;
-                        }
+                    return patient.all(self.apiEndpoint).post(savedItem).then(
+                        self.newItemSuccess.bind(self)
                     );
                 });
             }
+        }
+
+        function newItemSuccess(newItem, addCondition) {
+            if (addCondition === undefined) {
+                addCondition = true;
+            }
+            if (!this.hasMore() && addCondition) {
+                this.items[this.sortOrder !== 'desc' ? 'push' : 'unshift'](newItem);
+                this.offset += 1;
+            }
+            this.count += 1;
+            this.item = newItem;
         }
     }
 })();
