@@ -105,11 +105,12 @@
         }
         
         function removeItem(removedItem){
-            var self = this;
+            var self = this,
+                itemIndex = this.items.indexOf(removedItem);
             return removedItem.remove().then(function () {
-                _.remove(self.items, function (item) {
-                    return removedItem.id == item.id;
-                });
+                if (itemIndex > -1) {
+                    self.items.splice(itemIndex, 1);
+                }
                 self.count -= 1;
                 self.offset -= 1;
                 return self.items;
