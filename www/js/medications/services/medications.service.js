@@ -5,12 +5,12 @@
         .module('orange')
         .factory('MedicationService', MedicationService);
 
-    MedicationService.$inject = ['$q', 'n2w', 'notifications', 'PagingService'];
+    MedicationService.$inject = ['$q', 'n2w', 'notifications', 'PatientPagingService'];
 
     /* @ngInject */
-    function MedicationService($q, n2w, notify, PagingService) {
+    function MedicationService($q, n2w, notify, PatientPagingService) {
         var Service = function () {
-            PagingService.constructor.call(this);
+            PatientPagingService.call(this);
 
             this.apiEndpoint = 'medications';
             this.removeItem = removeItem;
@@ -23,13 +23,13 @@
             this.setMedicationEvents = setMedicationEvents;
             this.setNotifications = setNotifications;
         };
-        Service.prototype = PagingService;
+        Service.prototype = PatientPagingService;
 
         return new Service();
 
 
         function saveItem(savedItem) {
-            var promise = PagingService.saveItem.call(this, savedItem);
+            var promise = PatientPagingService.saveItem.call(this, savedItem);
             if (savedItem.id) {
                 promise = promise.then(function () {
                     notify.updateNotify();
@@ -40,7 +40,7 @@
 
         function removeItem(removedItem) {
             var self = this;
-            return PagingService.removeItem.call(this, removedItem).then(function () {
+            return PatientPagingService.removeItem.call(this, removedItem).then(function () {
                 notify.updateNotify();
                 return self.items;
             });
@@ -51,7 +51,7 @@
                 addCondition = true;
             }
             var importCondition = !newItem['import_id'] || !_.find(this.items, {import_id: newItem['import_id']});
-            PagingService.newItemSuccess.call(this, newItem, addCondition && importCondition);
+            PatientPagingService.newItemSuccess.call(this, newItem, addCondition && importCondition);
             notify.addNotifyByMedication(newItem);
         }
 

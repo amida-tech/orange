@@ -3,11 +3,16 @@
 
     angular
         .module('orange')
-        .factory('PagingService', PagingService);
+        .factory('BasePagingService', BasePagingService)
+        .factory('PatientPagingService', PatientPagingService);
 
-    PagingService.$inject = ['$rootScope', '$q', 'Patient'];
+    BasePagingService.$inject = ['$rootScope', '$q', 'OrangeApi'];
+    PatientPagingService.$inject = ['BasePagingService', 'Patient'];
 
-    function PagingService($rootScope, $q, Patient) {
+    /**
+     * Base Paging service works through OrangeApi
+     */
+    function BasePagingService($rootScope, $q, OrangeApi) {
         var Service = function () {
 
             this.apiEndpoint = '';
@@ -27,12 +32,15 @@
             this.removeItem = removeItem;
             this.saveItem = saveItem;
 
+            this.getNewItemPromise = getNewItemPromise;
             this.newItemSuccess = newItemSuccess;
+            this.getFetchPromise = getFetchPromise;
+            this.fetchItemsSuccess = fetchItemsSuccess;
 
             $rootScope.$on('auth:user:logout', clear.bind(this));
         };
 
-        return new Service();
+        return Service;
 
         function initItems() {
             var self = this;
@@ -62,26 +70,31 @@
             }
         }
 
-        function fetchItems(offset, limit, sortBy, sortOrder) {
-            var self = this,
-                options = {
-                    limit: limit || this.limit,
-                    offset: offset || this.offset,
-                    sort_by: sortBy || this.sortBy,
-                    sort_order: sortOrder || this.sortOrder
+        function fetchItems(options) {
+            options = options || {};
+            var opts = {
+                    limit: options['limit'] || this.limit,
+                    offset: options['offset'] || this.offset,
+                    sort_by: options['sortBy'] || this.sortBy,
+                    sort_order: options['sortOrder'] || this.sortOrder
                 };
-            return Patient.getPatient().then(function (patient) {
-                return patient.all(self.apiEndpoint).getList(options).then(function (response) {
-                    self.count = response.meta['count'];
-                    return response;
-                });
-            });
+
+            return this.getFetchPromise(opts);
+        }
+
+        function getFetchPromise(options) {
+            return OrangeApi[this.apiEndpoint].getList(options).then(this.fetchItemsSuccess);
+        }
+
+        function fetchItemsSuccess(response) {
+            this.count = response.meta['count'];
+            return response;
         }
 
         function moreItems() {
             var self = this;
             if (this.hasMore()) {
-                return fetchItems.apply(this, [this.offset]).then(
+                return fetchItems.call(this, {offset: this.offset}).then(
                     function (items) {
                         self.items = _.union(self.items, items);
                         self.offset += self.limit;
@@ -118,16 +131,15 @@
         }
 
         function saveItem(savedItem) {
-            var self = this;
             if (savedItem.id) {
                 return savedItem.save();
             } else {
-                return Patient.getPatient().then(function (patient) {
-                    return patient.all(self.apiEndpoint).post(savedItem).then(
-                        self.newItemSuccess.bind(self)
-                    );
-                });
+                return this.getNewItemPromise(savedItem);
             }
+        }
+        
+        function getNewItemPromise(savedItem) {
+            return OrangeApi[this.apiEndpoint].post(savedItem).then(this.newItemSuccess.bind(this));
         }
 
         function newItemSuccess(newItem, addCondition) {
@@ -140,6 +152,39 @@
             }
             this.count += 1;
             this.item = newItem;
+        }
+    }
+
+
+    /**
+     * Paging service for patient endpoints
+     */
+    function PatientPagingService(BasePagingService, Patient) {
+        var Service = function () {
+            BasePagingService.call(this);
+
+            this.getNewItemPromise = getNewItemPromise;
+            this.getFetchPromise = getFetchPromise;
+        };
+        Service.prototype = BasePagingService;
+
+        return Service;
+
+
+        function getNewItemPromise(savedItem) {
+            var self = this;
+            return Patient.getPatient().then(function (patient) {
+                return patient.all(self.apiEndpoint).post(savedItem).then(
+                    self.newItemSuccess.bind(self)
+                );
+            });
+        }
+
+        function getFetchPromise(options) {
+            var self = this;
+            return Patient.getPatient().then(function (patient) {
+                return patient.all(self.apiEndpoint).getList(options).then(self.fetchItemsSuccess.bind(self));
+            });
         }
     }
 })();

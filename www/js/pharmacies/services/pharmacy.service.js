@@ -5,15 +5,15 @@
         .module('orange')
         .factory('PharmacyService', PharmacyService);
 
-    PharmacyService.$inject = ['PagingService'];
+    PharmacyService.$inject = ['PatientPagingService'];
 
-    function PharmacyService(PagingService) {
+    function PharmacyService(PatientPagingService) {
         var Service = function () {
-            PagingService.constructor.call(this);
+            PatientPagingService.call(this);
             this.apiEndpoint = 'pharmacies';
         };
 
-        Service.prototype = PagingService;
+        Service.prototype = PatientPagingService;
 
         return new Service();
     }
