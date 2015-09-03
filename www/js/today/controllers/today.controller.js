@@ -5,10 +5,11 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$rootScope', '$q', '$scope', '$ionicLoading',
-        '$ionicPopup', '$ionicModal', 'n2w', 'patient', 'medications'];
+    TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal',
+        'n2w', 'patient', 'medications', 'settings'];
 
-    function TodayCtrl($rootScope, $q, $scope, $ionicLoading, $ionicPopup, $ionicModal, n2w, patient, medService) {
+    function TodayCtrl($q, $scope, $ionicLoading, $ionicPopup, $ionicModal,
+                       n2w, patient, medService, settings) {
         var vm = this;
         var doseModal = null;
 
@@ -36,7 +37,7 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, 'HH:mm');
+                        var breakfast = moment(vm.habits.breakfast, settings.timeFormat);
                         var time = moment(elem.date);
                         return time <= breakfast;
                     }
@@ -74,8 +75,8 @@
                 name: 'two hours ago',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, 'HH:mm');
-                        var lunch = moment(vm.habits.lunch, 'HH:mm');
+                        var breakfast = moment(vm.habits.breakfast, settings.timeFormat);
+                        var lunch = moment(vm.habits.lunch, settings.timeFormat);
                         var time = moment(elem.date);
                         return (time > breakfast) && (time <= lunch);
                     }
@@ -113,8 +114,8 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var lunch = moment(vm.habits.lunch, 'HH:mm');
-                        var dinner = moment(vm.habits.dinner, 'HH:mm');
+                        var lunch = moment(vm.habits.lunch, settings.timeFormat);
+                        var dinner = moment(vm.habits.dinner, settings.timeFormat);
                         var time = moment(elem.date);
                         return (time > lunch) && (time <= dinner);
                     }
@@ -152,7 +153,7 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var dinner = moment(vm.habits.dinner, 'HH:mm');
+                        var dinner = moment(vm.habits.dinner, settings.timeFormat);
                         var time = moment(elem.date);
                         return (time > dinner);
                     }

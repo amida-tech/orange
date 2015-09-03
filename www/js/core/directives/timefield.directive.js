@@ -11,7 +11,7 @@
         return {
             scope: {},
             require: 'ngModel',
-            link: function (scope, elem, attrs, ngModel) {
+            link: function (scope, elem, attrs, ngModel, settings) {
 
                 if (ionic.Platform.isWebView()) {
                     // Add readonly attribute to input to not display keyboard on iOS devices
@@ -26,9 +26,7 @@
                         var date = new Date();
 
                         if (!!time) {
-                            var parts = time.split(':');
-                            date.setHours(parts.shift());
-                            date.setMinutes(parts.shift());
+                            date = moment(time, settings.timeFormat).toDate();
                         }
 
                         var options = {
@@ -40,14 +38,9 @@
                         };
                         $cordovaDatePicker.show(options).then(function (date) {
 
-                            var hours = date.getHours();
-                            hours = (hours < 10 ? '0' : '') + hours;
-                            var minutes = date.getMinutes();
-                            minutes = (minutes < 10 ? '0' : '') + minutes;
-
-                            var newValue = hours + ':' + minutes;
-                            ngModel.$setViewValue(newValue);
-                            elem.val(newValue);
+                            var time = moment(date).format(settings.timeFormat);
+                            ngModel.$setViewValue(time);
+                            elem.val(time);
                         });
                     } else {
                         // Steps for web app here
