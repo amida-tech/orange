@@ -188,7 +188,7 @@
         $ionicModal.fromTemplateUrl('templates/today/dose.today.modal.html', {
             scope: $scope,
             animation: 'slide-in-up'
-        }).then(function(modal) {
+        }).then(function (modal) {
             doseModal = modal
         });
 
@@ -196,10 +196,21 @@
         function createDose(skipped) {
             skipped = skipped || false;
             vm.dose.taken = !skipped;
-            patient.all('doses').post(vm.dose).finally(function() {
-                refresh();
-                hideModal();
-            });
+            patient.all('doses').post(vm.dose)
+                .then(
+                undefined,
+                function (data) {
+                    $ionicPopup.alert({
+                        title: 'Error',
+                        template: data.data.errors,
+                        okType: 'button-dark-orange'
+                    });
+                })
+                .finally(
+                function () {
+                    refresh();
+                    hideModal();
+                });
         }
 
         function showModal(event) {
@@ -226,7 +237,7 @@
 
             $ionicPopup.confirm({
                 title: event.medication.name,
-                template: '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped': ' taken') + '?</p>',
+                template: '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>',
                 okText: '<b>Yes</b>',
                 okType: 'button-dark-orange'
             }).then(
@@ -241,7 +252,18 @@
                         $ionicLoading.show({
                             template: 'Saving...'
                         });
-                        patient.all('doses').post(dose).finally(function() {
+                        patient.all('doses').post(dose)
+                            .then(
+                            undefined,
+                            function (data) {
+                                $ionicLoading.hide();
+                                $ionicPopup.alert({
+                                    title: 'Error',
+                                    template: data.data.errors,
+                                    okType: 'button-dark-orange'
+                                });
+                            })
+                            .finally(function () {
                             refresh();
                         })
                     }
@@ -258,7 +280,7 @@
                 result += ' ' + event.event.when + ' ' + event.event.event;
             }
             if (event.take_with_food !== null) {
-                result += ', taken ' + (event.take_with_food ? 'with': 'without') + ' food'
+                result += ', taken ' + (event.take_with_food ? 'with' : 'without') + ' food'
             }
             return result;
         }
@@ -329,7 +351,7 @@
             }
 
             medService.setLog(patient);
-            medService.getAll().then(function(medications) {
+            medService.getAll().then(function (medications) {
                 event.medication = _.find(medications, {id: event.medication_id});
                 event.event = _.find(event.medication.schedule.times, {id: event.scheduled});
                 showModal(event);

@@ -5,13 +5,13 @@
         .directive('timefield', timefield);
 
 
-    timefield.$inject = ['$cordovaDatePicker'];
+    timefield.$inject = ['$cordovaDatePicker', 'settings'];
 
-    function timefield($cordovaDatePicker) {
+    function timefield($cordovaDatePicker, settings) {
         return {
             scope: {},
             require: 'ngModel',
-            link: function (scope, elem, attrs, ngModel, settings) {
+            link: function (scope, elem, attrs, ngModel) {
 
                 if (ionic.Platform.isWebView()) {
                     // Add readonly attribute to input to not display keyboard on iOS devices
