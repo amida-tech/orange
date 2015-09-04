@@ -51,6 +51,8 @@
             {name: 'Doesn\'t Matter', key: null}
         ];
 
+        vm.goBack = goBack;
+
         activate();
 
         vm.continue = function () {
@@ -101,6 +103,16 @@
         };
 
         ////////////////
+
+        function goBack(medication_id) {
+            if (medication_id) {
+                $state.go('app.medication.details');
+            } else {
+                $state.go('app.medications');
+            }
+
+
+        }
 
         function activate() {
             $scope.$watch(medications.getMedication, function (medication) {
