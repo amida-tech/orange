@@ -53,6 +53,9 @@
 
         function getPatient(force) {
             force = force || false;
+            if (force) {
+                $localstorage.remove('currentPatient');
+            }
 
             //Patient promise
             var deffered = $q.defer();
@@ -87,7 +90,7 @@
 
             function checkMedication(patients) {
                 if (patients[0]) {
-                    if (currentPatient == null || force) {
+                    if (currentPatient == null) {
                         currentPatient = patients[0];
                     }
                     patients[0].all('medications').getList({limit: 1}).then(function(medication) {
