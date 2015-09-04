@@ -6,10 +6,10 @@
         .controller('LogDetailsCtrl', LogDetailsCtrl);
 
     LogDetailsCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading',
-                              '$cordovaActionSheet', 'LogService'];
+                              '$cordovaActionSheet', 'LogService', 'Patient', 'patient'];
 
     function LogDetailsCtrl($scope, $state, $stateParams, $ionicPopup, $ionicLoading, $cordovaActionSheet,
-                            LogService) {
+                            LogService, Patient, patient) {
 
         var vm = this;
 
@@ -32,7 +32,12 @@
                         LogService.removeLog(vm.currentLog).then(
                             function () {
                                 $ionicLoading.hide();
-                                $state.go('app.logs.list');
+                                Patient.getPatient(true).then(function(pat) {
+                                    patient = pat;
+                                    $state.go('app.logs.list').then(function() {
+                                        $state.go('app.logs.list', {}, {reload: true});
+                                    });
+                                });
                             },
                             function (error) {
                                 $ionicLoading.hide();

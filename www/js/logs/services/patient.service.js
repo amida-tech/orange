@@ -51,13 +51,14 @@
             return promise
         }
 
-        function getPatient() {
+        function getPatient(force) {
+            force = force || false;
+
             //Patient promise
             var deffered = $q.defer();
 
-
             //Get patient from cache
-            if (patient != null && !$state.reload) {
+            if (patient != null && !$state.reload && !force) {
                 deffered.resolve(patient);
                 return deffered
             }
@@ -65,7 +66,7 @@
             var currentPatient = $localstorage.get('currentPatient', null);
 
             //Get patient by id
-            if (currentPatient) {
+            if (currentPatient  && !force) {
                 OrangeApi.patients.get(currentPatient).then(function(currentPatient) {
                     $ionicLoading.hide();
                     deffered.resolve(currentPatient)
@@ -86,7 +87,7 @@
 
             function checkMedication(patients) {
                 if (patients[0]) {
-                    if (currentPatient == null) {
+                    if (currentPatient == null || force) {
                         currentPatient = patients[0];
                     }
                     patients[0].all('medications').getList({limit: 1}).then(function(medication) {
