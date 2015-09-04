@@ -514,7 +514,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('account-create', {
                         url: '/onboarding/signup',
                         templateUrl: 'templates/logs/account_create.html',
-                        controller: 'AccountCtrl'
+                        controller: 'AccountCtrl',
+                        cache: false
                     })
                     .state('account-login', {
                         url: '/login',

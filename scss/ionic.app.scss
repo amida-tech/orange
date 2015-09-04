@@ -548,6 +548,10 @@ dl.dl-worksheet {
       }
     }
 
+    textarea {
+      padding-left: $padding-base-horizontal - 3px;
+    }
+
     input[readonly].not-readonly {
       background-color: $light;
     }

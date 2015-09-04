@@ -30,7 +30,7 @@
             vm.pharmacy = PharmacyService.getItem();
         } else {
             _.each(vm.days, function (day) {
-                vm.pharmacy.hours[day.toLowerCase()] = {open: '09:00', close: '17:00'}
+                vm.pharmacy.hours[day.toLowerCase()] = {open: '09:00 am', close: '05:00 pm'}
             });
         }
 
