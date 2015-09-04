@@ -41,45 +41,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                  }
              });
 
-             //Fix for Android back button
-             if ($rootScope.isAndroid) {
-                 $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-                     var menuMap = [
-                         'app.today.schedule',
-                         'app.notes.list',
-                         'app.medications',
-                         'app.doctors.list',
-                         'app.pharmacies.list',
-                         'app.logs.list',
-                         'app.sharing',
-                         'app.settings'
-                     ];
-
-                     $ionicHistory.nextViewOptions({
-                         historyRoot: false
-                     });
-
-                     $timeout(function () {
-                         var currentView = $ionicHistory.currentView();
-                         var currentHistoryId = $ionicHistory.currentHistoryId();
-                         var history = $ionicHistory.viewHistory();
-
-                         //Save today view
-                         if (toState.name == 'app.today.schedule') {
-                             $rootScope.todayHistoryId = currentView.id;
-                             $rootScope.todayHistoryView = currentView;
-                         }
-
-                         //Set history
-                         if (toState.name != 'app.today.schedule' && _.indexOf(menuMap, toState.name) != -1) {
-                             currentView.backViewId = $rootScope.todayHistoryId;
-                             history.backView = $rootScope.todayHistoryView;
-                             currentView.index = 1;
-                             history.histories[currentHistoryId].stack = [$rootScope.todayHistoryView, currentView]
-                         }
-                     }, 300)
-                 });
-             }
              ////////////////////////////////////
 
              $ionicPlatform.ready(function () {
@@ -108,6 +69,48 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                  document.addEventListener('pause', function () {
                      $rootScope.$broadcast('onPause');
                  }, false);
+
+                 //Fix for Android back button
+                 if ($rootScope.isAndroid) {
+                     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                         var menuMap = [
+                             'app.today.schedule',
+                             'app.notes.list',
+                             'app.medications',
+                             'app.doctors.list',
+                             'app.pharmacies.list',
+                             'app.logs.list',
+                             'app.sharing',
+                             'app.settings'
+                         ];
+
+                         $ionicHistory.nextViewOptions({
+                             historyRoot: false
+                         });
+
+                         $timeout(function () {
+                             var currentView = $ionicHistory.currentView();
+                             var currentHistoryId = $ionicHistory.currentHistoryId();
+                             var history = $ionicHistory.viewHistory();
+
+                             //Save today view
+                             if (toState.name == 'app.today.schedule') {
+                                 $rootScope.todayHistoryId = currentView.id;
+                                 $rootScope.todayHistoryView = currentView;
+                             }
+
+                             //Set history
+                             if (toState.name != 'app.today.schedule' && _.indexOf(menuMap, toState.name) != -1) {
+                                 currentView.backViewId = $rootScope.todayHistoryId;
+                                 history.backView = $rootScope.todayHistoryView;
+                                 currentView.index = 1;
+                                 history.histories[currentHistoryId].stack = [$rootScope.todayHistoryView, currentView];
+                                 console.log(history)
+                             }
+                         }, 300)
+                     });
+                 }
+
              }
 
          })
