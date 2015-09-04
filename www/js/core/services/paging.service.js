@@ -28,6 +28,7 @@
         };
 
         Service.prototype.getItems = getItems;
+        Service.prototype.getAllItems = getAllItems;
         Service.prototype.hasMore = hasMore;
         Service.prototype.moreItems = moreItems;
         Service.prototype.setItem = setItem;
@@ -43,12 +44,16 @@
 
         return Service;
 
-        function initItems() {
-            var self = this;
+        function initItems(all) {
+            all = all || false;
+            var self = this,
+                options = {
+                    limit: all ? 0 : this.limit
+                };
             this.offset = 0;
-            return fetchItems.apply(this).then(function (items) {
+            return fetchItems.call(this, options).then(function (items) {
                 self.items = items;
-                self.offset = self.limit;
+                self.offset = all ? items.meta['count'] : self.limit;
                 return self.items;
             });
         }
@@ -71,11 +76,19 @@
             }
         }
 
+        function getAllItems(force) {
+            if (force || this.count === 0 || this.count > this.offset) {
+                return initItems.call(this, true);
+            } else {
+                return this.getItems();
+            }
+        }
+
         function fetchItems(options) {
             options = options || {};
             var opts = {
-                    limit: options['limit'] || this.limit,
-                    offset: options['offset'] || this.offset,
+                    limit: options['limit'] !== undefined ? options['limit'] : this.limit,
+                    offset: options['offset'] !== undefined ? options['offset'] : this.offset,
                     sort_by: options['sortBy'] || this.sortBy,
                     sort_order: options['sortOrder'] || this.sortOrder
                 };
