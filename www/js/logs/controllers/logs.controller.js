@@ -15,6 +15,8 @@
         $scope.logList = [];
         $scope.update = update;
         $scope.habits = habits;
+        $scope.hasMore = PatientService.hasMore;
+        $scope.loadMore = loadMore;
         $scope.withMe = false;
 
         vm.editMode = false;
@@ -26,11 +28,7 @@
         function update(force) {
             force = force || false;
             PatientService.getItems(force).then(function (patients) {
-                $scope.logs = patients;
-                $scope.logList = _.chunk(patients, 3);
-                $scope.withMe = !!_.find(patients, function (item) {
-                    return item['me'] === true;
-                });
+                setPatients(patients);
                 if (force) {
                     $scope.$broadcast('scroll.refreshComplete');
                 }
@@ -49,6 +47,26 @@
         function details(patient) {
             PatientService.setItem(patient);
             $state.go('app.logs.details', {id: patient.id});
+        }
+
+        function loadMore() {
+            var morePromise = PatientService.moreItems();
+            if ($scope.logs.length && morePromise) {
+                morePromise.then(function (items) {
+                    setPatients(items);
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+            } else {
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+        }
+
+        function setPatients(patients) {
+            $scope.logs = patients;
+            $scope.logList = _.chunk(patients, 3);
+            $scope.withMe = !!_.find(patients, function (item) {
+                return item['me'] === true;
+            });
         }
     }
 })();

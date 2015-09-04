@@ -35,14 +35,30 @@
                 };
 
                 scope.setPatients = function (force) {
-                    PatientService.getPatients(force).then(function (patients) {
+                    PatientService.getItems(force).then(function (patients) {
                         scope.patients = _.chunk(patients, 3);
                         $rootScope.$broadcast('scroll.refreshComplete');
                     });
                 };
 
-                scope.setPatients();
+                scope.hasMore = PatientService.hasMore;
 
+                scope.loadMore = function () {
+                    var morePromise = PatientService.moreItems();
+                    if (scope.patients.length && morePromise) {
+                        morePromise.then(function (items) {
+                            scope.patients = _.chunk(items, 3);
+                            $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                        });
+                    } else {
+                        $rootScope.$broadcast('scroll.infiniteScrollComplete');
+                    }
+                };
+
+                scope.showModal = function () {
+                    scope.setPatients();
+                    scope.modal.show();
+                };
 
                 $timeout(function() {
                     $ionicModal.fromTemplateUrl('templates/core/change-patient.modal.html', {

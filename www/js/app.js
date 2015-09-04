@@ -336,11 +336,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/add',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
-                        resolve: {
-                            patient: function () {
-                                return {};
-                            }
-                        },
                         params: {
                             nextState: 'app.logs.list'
                         }
@@ -349,9 +344,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/my',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
-                        resolve: {
-                            log: ['OrangeApi', '$q', getMyProfile]
-                        },
                         params: {
                             nextState: 'app.logs.list'
                         }
@@ -429,11 +421,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/onboarding/logs/add',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
-                        resolve: {
-                            patient: function () {
-                                return {};
-                            }
-                        },
                         params: {
                             nextState: 'logs'
                         }
@@ -442,9 +429,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/onboarding/logs/add/my',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
-                        resolve: {
-                            log: ['OrangeApi', '$q', getMyProfile]
-                        },
                         params: {
                             nextState: 'logs'
                         }
@@ -468,13 +452,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('onboarding-log', {
                         url: '/onboarding/log/:id',
                         abstract: true,
-                        template: '<ion-nav-view></ion-nav-view>',
-                        resolve: {
-                            patient: ['$stateParams', 'OrangeApi', function ($stateParams, OrangeApi) {
-                                var id = $stateParams.id;
-                                return OrangeApi.patients.get(id);
-                            }]
-                        }
+                        template: '<ion-nav-view></ion-nav-view>'
                     })
                     .state('onboarding-log.habits', {
                         url: '/habits/',
@@ -539,27 +517,4 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
 
                 // if none of the above states are matched, use this as the fallback
                 $urlRouterProvider.otherwise('/loading');
-
             });
-
-function getMyProfile(OrangeApi, $q) {
-    var deffered = $q.defer();
-    OrangeApi.patients.getList().then(
-        function (patients) {
-            var result = {};
-            //patients = patients.plain();
-            for (var i = 0, len = patients.length; i < len; i++) {
-                var patient = patients[i];
-                if (patient.me) {
-                    result = patient;
-                    break;
-                }
-            }
-            deffered.resolve(result);
-        },
-        function (error) {
-            deffered.resolve({})
-        }
-    );
-    return deffered.promise;
-}
