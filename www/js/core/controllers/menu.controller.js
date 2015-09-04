@@ -5,14 +5,15 @@
         .module('orange')
         .controller('MenuCtrl', MenuCtrl);
 
-    MenuCtrl.$inject = ['$scope', '$state', 'Auth', 'patient'];
+    MenuCtrl.$inject = ['$scope', '$state', 'Auth', 'PatientService'];
 
-    function MenuCtrl($scope, $state, Auth, patient) {
+    function MenuCtrl($scope, $state, Auth, PatientService) {
         $scope.profile = Auth.userInfo();
-        $scope.log = patient;
-        $scope.patient = patient;
-        if (patient === null) {
-            $state.go('logs')
-        }
+        PatientService.getPatient().then(function (patient) {
+            $scope.log = patient;
+            if (patient === null) {
+                $state.go('logs')
+            }
+        });
     }
 })();

@@ -5,10 +5,10 @@
         .controller('AccountCtrl', AccountCtrl);
 
     AccountCtrl.$inject = ['$scope', '$cordovaInAppBrowser', 'Auth', 'OrangeApi',
-                           'Patient', 'notifications'];
+                           'PatientService', 'notifications'];
 
     /* @ngInject */
-    function AccountCtrl($scope, $cordovaInAppBrowser, Auth, OrangeApi, Patient, notify) {
+    function AccountCtrl($scope, $cordovaInAppBrowser, Auth, OrangeApi, PatientService, notify) {
 
         $scope.login = login;
         $scope.signUp = signUp;
@@ -48,7 +48,7 @@
                                 $scope.error = false;
                                 $scope.errors = [];
 
-                                Patient.changeStateByPatient();
+                                PatientService.changeStateByPatient();
                                 notify.updateNotify();
                             } else {
                                 $scope.error = true;
@@ -81,7 +81,7 @@
                     if (status === true) {
                         $scope.error = false;
                         $scope.errors = [];
-                        Patient.changeStateByPatient();
+                        PatientService.changeStateByPatient();
                         notify.updateNotify();
                     } else {
                         $scope.error = true;

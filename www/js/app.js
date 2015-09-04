@@ -1,6 +1,7 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ngPDFViewer'])
 
-    .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, Patient, notifications, settings) {
+    .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, PatientService,
+                   notifications, settings) {
 
              // Initializing app
              $rootScope.initialized = false;
@@ -20,7 +21,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                          return status;
                      }
 
-                     Patient.changeStateByPatient();
+                     PatientService.changeStateByPatient();
                      notifications.updateNotify();
                  } else {
                      // Not authorized
@@ -144,11 +145,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         abstract: true,
                         templateUrl: 'templates/core/app.menu.html',
                         controller: 'MenuCtrl',
-                        resolve: {
-                            patient: ['Patient', function (Patient) {
-                                return Patient.getPatient();
-                            }]
-                        },
                         cache: false
                     })
                     .state('app.today', {
@@ -156,10 +152,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         abstract: true,
                         views: {
                             'menuContent': {
-                                template: '<ion-nav-view></ion-nav-view>',
-                                controller: function ($scope, patient) {
-                                    $scope.medications = patient.all('medications').getList();
-                                }
+                                template: '<ion-nav-view></ion-nav-view>'
                             }
                         }
                     })
@@ -469,12 +462,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/onboarding/logs/setup',
                         templateUrl: 'templates/logs/logs.setup.html',
                         cache: false,
-                        controller: 'LogsCtrl',
-                        resolve: {
-                            'logs': ['Patient', function (Patient) {
-                                return Patient.getPatients();
-                            }]
-                        }
+                        controller: 'LogsCtrl'
                     })
 
                     .state('onboarding-log', {
@@ -491,12 +479,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('onboarding-log.habits', {
                         url: '/habits/',
                         templateUrl: 'templates/logs/logs.setup.habits.html',
-                        controller: 'LogHabitsCtrl as habits',
-                        resolve: {
-                            'habits': ['patient', function (patient) {
-                                return patient.one('habits').get('');
-                            }]
-                        }
+                        controller: 'LogHabitsCtrl as habits'
                     })
                     .state('onboarding-log.medications', {
                         url: '/medications',

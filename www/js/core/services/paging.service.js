@@ -6,13 +6,13 @@
         .factory('BasePagingService', BasePagingService)
         .factory('PatientPagingService', PatientPagingService);
 
-    BasePagingService.$inject = ['$rootScope', '$q', 'OrangeApi'];
-    PatientPagingService.$inject = ['BasePagingService', 'Patient'];
+    BasePagingService.$inject = ['$rootScope', '$q', 'OrangeApi', 'settings'];
+    PatientPagingService.$inject = ['$rootScope', 'BasePagingService', 'PatientService'];
 
     /**
      * Base Paging service works through OrangeApi
      */
-    function BasePagingService($rootScope, $q, OrangeApi) {
+    function BasePagingService($rootScope, $q, OrangeApi, settings) {
         var Service = function () {
 
             this.apiEndpoint = '';
@@ -20,25 +20,26 @@
             this.item = null;
             this.count = 0;
             this.offset = 0;
-            this.limit = $rootScope.settings.defaultLimit;
+            this.limit = settings.defaultLimit;
             this.sortBy = 'id';
             this.sortOrder = 'asc';
 
-            this.getItems = getItems;
-            this.hasMore = hasMore;
-            this.moreItems = moreItems;
-            this.setItem = setItem;
-            this.getItem = getItem;
-            this.removeItem = removeItem;
-            this.saveItem = saveItem;
-
-            this.getNewItemPromise = getNewItemPromise;
-            this.newItemSuccess = newItemSuccess;
-            this.getFetchPromise = getFetchPromise;
-            this.fetchItemsSuccess = fetchItemsSuccess;
-
-            $rootScope.$on('auth:user:logout', clear.bind(this));
+            $rootScope.$on('auth:user:logout', this.clear.bind(this));
         };
+
+        Service.prototype.getItems = getItems;
+        Service.prototype.hasMore = hasMore;
+        Service.prototype.moreItems = moreItems;
+        Service.prototype.setItem = setItem;
+        Service.prototype.getItem = getItem;
+        Service.prototype.removeItem = removeItem;
+        Service.prototype.saveItem = saveItem;
+        Service.prototype.clear = clear;
+
+        Service.prototype.getNewItemPromise = getNewItemPromise;
+        Service.prototype.newItemSuccess = newItemSuccess;
+        Service.prototype.getFetchPromise = getFetchPromise;
+        Service.prototype.fetchItemsSuccess = fetchItemsSuccess;
 
         return Service;
 
@@ -83,7 +84,9 @@
         }
 
         function getFetchPromise(options) {
-            return OrangeApi[this.apiEndpoint].getList(options).then(this.fetchItemsSuccess);
+            return OrangeApi[this.apiEndpoint].getList(options).then(
+                this.fetchItemsSuccess.bind(this)
+            );
         }
 
         function fetchItemsSuccess(response) {
@@ -139,7 +142,9 @@
         }
         
         function getNewItemPromise(savedItem) {
-            return OrangeApi[this.apiEndpoint].post(savedItem).then(this.newItemSuccess.bind(this));
+            return OrangeApi[this.apiEndpoint].post(savedItem).then(
+                this.newItemSuccess.bind(this)
+            );
         }
 
         function newItemSuccess(newItem, addCondition) {
@@ -152,6 +157,7 @@
             }
             this.count += 1;
             this.item = newItem;
+            return newItem;
         }
     }
 
@@ -159,21 +165,22 @@
     /**
      * Paging service for patient endpoints
      */
-    function PatientPagingService(BasePagingService, Patient) {
+    function PatientPagingService($rootScope, BasePagingService, PatientService) {
         var Service = function () {
             BasePagingService.call(this);
-
-            this.getNewItemPromise = getNewItemPromise;
-            this.getFetchPromise = getFetchPromise;
+            $rootScope.$on('changePatient', this.clear.bind(this));
         };
-        Service.prototype = BasePagingService;
+
+        Service.prototype = Object.create(BasePagingService.prototype);
+        Service.prototype.getNewItemPromise = getNewItemPromise;
+        Service.prototype.getFetchPromise = getFetchPromise;
 
         return Service;
 
 
         function getNewItemPromise(savedItem) {
             var self = this;
-            return Patient.getPatient().then(function (patient) {
+            return PatientService.getPatient().then(function (patient) {
                 return patient.all(self.apiEndpoint).post(savedItem).then(
                     self.newItemSuccess.bind(self)
                 );
@@ -182,8 +189,10 @@
 
         function getFetchPromise(options) {
             var self = this;
-            return Patient.getPatient().then(function (patient) {
-                return patient.all(self.apiEndpoint).getList(options).then(self.fetchItemsSuccess.bind(self));
+            return PatientService.getPatient().then(function (patient) {
+                return patient.all(self.apiEndpoint).getList(options).then(
+                    self.fetchItemsSuccess.bind(self)
+                );
             });
         }
     }

@@ -4,7 +4,7 @@
     </ion-side-menu-content>
     <ion-side-menu side="left">
         <ion-content scroll="false">
-            <div class="avatar">
+            <div class="avatar" ng-if="log">
                 <avatar patient="log"></avatar>
                 <p>{{ log.first_name }} {{ log.last_name }}</p>
                 <p class="phone" ng-if="log.phone" call-phone>{{ log.phone }}</p>

@@ -5,18 +5,16 @@
         .module('orange')
         .controller('LogDetailsCtrl', LogDetailsCtrl);
 
-    LogDetailsCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading',
-                              '$cordovaActionSheet', 'LogService'];
+    LogDetailsCtrl.$inject = ['$state', '$ionicPopup', '$ionicLoading', 'PatientService'];
 
-    function LogDetailsCtrl($scope, $state, $stateParams, $ionicPopup, $ionicLoading, $cordovaActionSheet,
-                            LogService) {
+    function LogDetailsCtrl($state, $ionicPopup, $ionicLoading, PatientService) {
 
         var vm = this;
 
         vm.deleteLog = deleteLog;
 
-        vm.currentLog = LogService.setDetailLog($stateParams.id);
-        vm.title = vm.currentLog.first_name + ' ' + vm.currentLog.last_name;
+        vm.currentLog = PatientService.getItem();
+        vm.title = vm.currentLog.fullName;
 
         function deleteLog() {
             $ionicPopup.confirm({
@@ -29,7 +27,7 @@
                         $ionicLoading.show({
                             template: 'Deleting...'
                         });
-                        LogService.removeLog(vm.currentLog).then(
+                        PatientService.removeItem(vm.currentLog).then(
                             function () {
                                 $ionicLoading.hide();
                                 $state.go('app.logs.list');

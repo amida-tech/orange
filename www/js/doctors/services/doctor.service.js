@@ -13,7 +13,7 @@
             this.apiEndpoint = 'doctors';
         };
 
-        Service.prototype = PatientPagingService;
+        Service.prototype = Object.create(PatientPagingService.prototype);
 
         return new Service();
     }

@@ -13,23 +13,24 @@
             PatientPagingService.call(this);
 
             this.apiEndpoint = 'medications';
-            this.removeItem = removeItem;
-            this.newItemSuccess = newItemSuccess;
-            this.saveItem = saveItem;
-
-            this.getEventText = getEventText;
-            this.getMedicationText = getMedicationText;
-            this.setMedicationSchedule = setMedicationSchedule;
-            this.setMedicationEvents = setMedicationEvents;
-            this.setNotifications = setNotifications;
         };
-        Service.prototype = PatientPagingService;
+
+        Service.prototype = Object.create(PatientPagingService.prototype);
+        Service.prototype.removeItem = removeItem;
+        Service.prototype.newItemSuccess = newItemSuccess;
+        Service.prototype.saveItem = saveItem;
+
+        Service.prototype.getEventText = getEventText;
+        Service.prototype.getMedicationText = getMedicationText;
+        Service.prototype.setMedicationSchedule = setMedicationSchedule;
+        Service.prototype.setMedicationEvents = setMedicationEvents;
+        Service.prototype.setNotifications = setNotifications;
 
         return new Service();
 
 
         function saveItem(savedItem) {
-            var promise = PatientPagingService.saveItem.call(this, savedItem);
+            var promise = PatientPagingService.prototype.saveItem.call(this, savedItem);
             if (savedItem.id) {
                 promise = promise.then(function () {
                     notify.updateNotify();
@@ -40,7 +41,7 @@
 
         function removeItem(removedItem) {
             var self = this;
-            return PatientPagingService.removeItem.call(this, removedItem).then(function () {
+            return PatientPagingService.prototype.removeItem.call(this, removedItem).then(function () {
                 notify.updateNotify();
                 return self.items;
             });
@@ -51,7 +52,7 @@
                 addCondition = true;
             }
             var importCondition = !newItem['import_id'] || !_.find(this.items, {import_id: newItem['import_id']});
-            PatientPagingService.newItemSuccess.call(this, newItem, addCondition && importCondition);
+            PatientPagingService.prototype.newItemSuccess.call(this, newItem, addCondition && importCondition);
             notify.addNotifyByMedication(newItem);
         }
 

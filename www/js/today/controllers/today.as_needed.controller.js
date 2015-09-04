@@ -5,9 +5,9 @@
         .module('orange')
         .controller('TodayAsNeededCtrl', TodayAsNeededCtrl);
 
-    TodayAsNeededCtrl.$inject = ['$scope', '$state', 'patient'];
+    TodayAsNeededCtrl.$inject = ['$scope', 'MedicationService'];
 
-    function TodayAsNeededCtrl($scope, $state, patient) {
+    function TodayAsNeededCtrl($scope, MedicationService) {
         var vm = this;
 
         var _filterMedications = function(medications) {
@@ -26,8 +26,8 @@
         });
 
         vm.refresh = function() {
-            patient.all('medications').getList().then(
-                function(medications) {
+            MedicationService.getItems().then(
+                function (medications) {
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.medications = _filterMedications(medications);
                     vm.medications = $scope.medications;

@@ -6,10 +6,10 @@
         .directive('changePatient', changePatient);
 
     changePatient.$inject = ['$rootScope', '$timeout', '$state', '$stateParams', '$ionicModal',
-        '$localstorage',  'Patient', 'notifications'];
+        'PatientService', 'notifications'];
 
     function changePatient($rootScope, $timeout, $state, $stateParams, $ionicModal,
-                           $localstorage, Patient, notify) {
+                           PatientService, notify) {
         return {
             scope: {
                 options: "=changePatient"
@@ -17,34 +17,28 @@
             replace: true,
             templateUrl: 'templates/core/change-patient.html',
             link: function (scope, element, attributes) {
-                scope.patient = scope.$parent.patient;
+                PatientService.getPatient().then(function (patient) {
+                    scope.patient = patient;
+                });
                 scope.patients = [];
 
                 scope.screenWidth = screen.width;
                 scope.changePatient = function(newPatient) {
-                    $localstorage.set('currentPatient', newPatient.id);
-
-                    scope.$parent.patient = newPatient;
+                    PatientService.setCurrentPatient(newPatient);
                     $state.go($state.current, $stateParams, {
                         reload: true
                     });
 
-                    $localstorage.remove('triggeredEvents');
-                    notify.updateNotify();
+                    notify.updateNotify(true);
+                    $rootScope.$broadcast('changePatient');
                     scope.modal.hide();
                 };
 
                 scope.setPatients = function (force) {
-                    var patients = Patient.getPatients(force);
-                    if (patients.$$state) {
-                        patients.then(function(pats) {
-                            scope.patients = _.chunk(pats, 3);
-                            $rootScope.$broadcast('scroll.refreshComplete');
-                        })
-                    } else {
+                    PatientService.getPatients(force).then(function (patients) {
                         scope.patients = _.chunk(patients, 3);
                         $rootScope.$broadcast('scroll.refreshComplete');
-                    }
+                    });
                 };
 
                 scope.setPatients();

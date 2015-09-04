@@ -6,12 +6,13 @@
         .controller('TodayCtrl', TodayCtrl);
 
     TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal',
-        'n2w', 'patient', 'MedicationService', 'settings'];
+        'n2w', 'PatientService', 'MedicationService'];
 
     function TodayCtrl($q, $scope, $ionicLoading, $ionicPopup, $ionicModal,
-                       n2w, patient, MedicationService, settings) {
-        var vm = this;
-        var doseModal = null;
+                       n2w, PatientService, MedicationService) {
+        var vm = this,
+            doseModal = null,
+            patient = null;
 
         vm.schedule = null;
         vm.medications = null;
@@ -37,7 +38,7 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, settings.timeFormat);
+                        var breakfast = moment(vm.habits.breakfast, $scope.timeFormat);
                         var time = moment(elem.date);
                         return time <= breakfast;
                     }
@@ -75,8 +76,8 @@
                 name: 'two hours ago',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, settings.timeFormat);
-                        var lunch = moment(vm.habits.lunch, settings.timeFormat);
+                        var breakfast = moment(vm.habits.breakfast, $scope.timeFormat);
+                        var lunch = moment(vm.habits.lunch, $scope.timeFormat);
                         var time = moment(elem.date);
                         return (time > breakfast) && (time <= lunch);
                     }
@@ -114,8 +115,8 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var lunch = moment(vm.habits.lunch, settings.timeFormat);
-                        var dinner = moment(vm.habits.dinner, settings.timeFormat);
+                        var lunch = moment(vm.habits.lunch, $scope.timeFormat);
+                        var dinner = moment(vm.habits.dinner, $scope.timeFormat);
                         var time = moment(elem.date);
                         return (time > lunch) && (time <= dinner);
                     }
@@ -153,7 +154,7 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var dinner = moment(vm.habits.dinner, settings.timeFormat);
+                        var dinner = moment(vm.habits.dinner, $scope.timeFormat);
                         var time = moment(elem.date);
                         return (time > dinner);
                     }
@@ -183,7 +184,10 @@
         vm.closeModal = hideModal;
         vm.createDose = createDose;
 
-        refresh();
+        PatientService.getPatient().then(function (item) {
+            patient = item;
+            refresh();
+        });
 
         $ionicModal.fromTemplateUrl('templates/today/dose.today.modal.html', {
             scope: $scope,
@@ -289,7 +293,7 @@
             $q.all([
                 patient.all('schedule').getList(filter),
                 MedicationService.getItems(true),
-                patient.one('habits').get('')
+                PatientService.getHabits(patient)
             ]).then(
                 function (data) {
                     vm.schedule = data[0].plain();

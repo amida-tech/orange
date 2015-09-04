@@ -11,7 +11,7 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
-        <ion-refresher pulling-text="Pull to refresh" on-refresh="update()">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="update(true)">
         </ion-refresher>
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots" ng-show="!logList.length"></ion-spinner>
@@ -20,7 +20,7 @@
             <div class="orange-logs item item-text-wrap">
                 <div class="row row-no-padding" ng-repeat="item in logList">
                     <div class="col col-33" ng-repeat="log in item">
-                        <div class="item-log" ui-sref="app.logs.details({id: log.id})">
+                        <div class="item-log" ng-click="menu_logs.details(log)">
                             <avatar patient="log"></avatar>
                             <div class="log-title">
                                 <p ng-bind="log.first_name"></p>

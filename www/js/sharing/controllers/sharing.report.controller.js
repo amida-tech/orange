@@ -6,9 +6,9 @@
         .controller('SharingReportCtrl', SharingReportCtrl);
 
     SharingReportCtrl.$inject = ['$scope', '$stateParams', '$ionicPopup', '$cordovaActionSheet', '$cordovaFile',
-                                 'PDFViewerService', 'Patient'];
+                                 'PDFViewerService', 'PatientService'];
 
-    function SharingReportCtrl($scope, $stateParams, $ionicPopup, $cordovaActionSheet, $cordovaFile, pdf, Patient) {
+    function SharingReportCtrl($scope, $stateParams, $ionicPopup, $cordovaActionSheet, $cordovaFile, pdf, PatientService) {
         var reportDir = cordova.file.externalCacheDirectory || cordova.file.cacheDirectory,
             fileName = $stateParams.id + '.pdf',
             printPdf = window.plugins.PrintPDF,
@@ -48,7 +48,7 @@
             $scope.$broadcast('scroll.refreshComplete');
             $scope.totalPages = 0;
             $scope.pdfURL = '';
-            Patient.getReport($stateParams.id, $stateParams.month).then(
+            PatientService.getReport($stateParams.id, $stateParams.month).then(
                 function (data) {
                     pdfData = data;
                     $cordovaFile.writeFile(reportDir, fileName, data, true).then(

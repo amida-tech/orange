@@ -6,18 +6,18 @@
         .controller('LogMedicationsCtrl', LogMedicationsCtrl);
 
     LogMedicationsCtrl.$inject = [
-        '$scope', '$q', '$state', '$ionicLoading', 'TokenService', 'Oauth', 'patient', 'MedicationService'
+        '$scope', '$q', '$state', '$ionicLoading', 'TokenService', 'Oauth', 'PatientService', 'MedicationService'
     ];
 
     /* @ngInject */
-    function LogMedicationsCtrl($scope, $q, $state, $ionicLoading, TokenService, Oauth, patient, MedicationService) {
+    function LogMedicationsCtrl($scope, $q, $state, $ionicLoading, TokenService, Oauth, PatientService, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
 
         vm.importComplete = false;
         vm.hasImported = false;
         vm.medications = null;
-        vm.log = patient;
+        vm.log = PatientService.getItem();
 
         vm.pickMedication = pickMedication;
         vm.getSMARTToken = getSMARTToken;

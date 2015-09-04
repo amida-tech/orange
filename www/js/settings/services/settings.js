@@ -4,7 +4,7 @@
     angular
         .module('orange')
         .constant('settings', {
-            'orangeApiUrl': 'http://orange-api.amida-demo.com/api/v1',
+            'orangeApiUrl': 'http://orange2.amida-demo.com/api/v1',
             'clientSecret': 'testsecret',
             'avatars': [
                 {path: 'img/avatars/Option1.png', path2x: 'img/avatars/Option1@2x.png'},

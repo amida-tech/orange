@@ -5,7 +5,7 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg padding-top">
-        <ion-refresher pulling-text="Pull to refresh" on-refresh="update()">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="update(true)">
         </ion-refresher>
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots" ng-show="!logList.length"></ion-spinner>
