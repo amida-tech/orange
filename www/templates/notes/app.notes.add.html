@@ -46,8 +46,8 @@
                         <ion-list class="list-clean note-medications-list" show-delete="notes_add.medicationShowDelete">
                             <ion-item class="medication-item" ng-repeat="med in notes_add.medications | filter: { checked: true }">
                                 <div class="block-with-subscribe">
-                                    <span class="text-basic" ng-bind="med.name"></span>
-                                    <span class="text-medication-brand" ng-bind="med.brand"></span>
+                                    <span class="text-basic" ng-bind="med.brand"></span>
+                                    <span class="text-medication-brand" ng-bind="med.name"></span>
                                 </div>
 
                                 <ion-delete-button class="ion-minus-circled"

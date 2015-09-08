@@ -20,8 +20,8 @@
         <ion-list>
             <ion-item ng-repeat="medication in medications.medications" ui-sref="app.medication.details({id: medication.id})">
                 <div class="med-title">
-                    <p class="med-name" ng-bind="medication.name"></p>
-                    <p class="med-rx" ng-bind="medication.brand"></p>
+                    <p class="med-name" ng-bind="medication.brand"></p>
+                    <p class="med-rx" ng-bind="medication.name"></p>
                 </div>
             </ion-item>
         </ion-list>
