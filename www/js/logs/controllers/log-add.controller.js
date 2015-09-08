@@ -14,6 +14,7 @@
 
         $scope.editMode = !!$state.params['editMode'];
         $scope.saveLog = $scope.editMode ? saveLogWithHabits: addLog;
+        $scope.checkForm = checkForm;
         $scope.selectPhoto = selectPhoto;
         $scope.isDevice = ionic.Platform.isWebView();
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
@@ -68,6 +69,11 @@
             $scope.log.avatar = null;
             $scope.log.avatarUrl = data;
             $scope.iconModal.hide();
+        }
+
+        function checkForm(form) {
+            form.$submitted = true;
+            return _.isEmpty(form.$error);
         }
 
         function addLog() {
