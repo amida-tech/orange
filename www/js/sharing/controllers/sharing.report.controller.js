@@ -5,10 +5,10 @@
         .module('orange')
         .controller('SharingReportCtrl', SharingReportCtrl);
 
-    SharingReportCtrl.$inject = ['$scope', '$stateParams', '$ionicPopup', '$cordovaActionSheet', '$cordovaFile',
+    SharingReportCtrl.$inject = ['$scope', '$stateParams', '$cordovaActionSheet', '$cordovaFile',
                                  'PDFViewerService', 'PatientService'];
 
-    function SharingReportCtrl($scope, $stateParams, $ionicPopup, $cordovaActionSheet, $cordovaFile, pdf, PatientService) {
+    function SharingReportCtrl($scope, $stateParams, $cordovaActionSheet, $cordovaFile, pdf, PatientService) {
         var reportDir = cordova.file.externalCacheDirectory || cordova.file.cacheDirectory,
             fileName = $stateParams.id + '.pdf',
             printPdf = window.plugins.PrintPDF,
@@ -85,13 +85,7 @@
                             if (success) {
                                 printPdf.print({
                                     data: _arrayBufferToBase64(pdfData),
-                                    title: 'Report',
-                                    success: function () {
-                                        $ionicPopup.alert({
-                                            title: 'Report',
-                                            template: 'Your report sent to printer'
-                                        });
-                                    }
+                                    title: 'Report'
                                 });
                             } else {
                                 console.log('print is not available');
