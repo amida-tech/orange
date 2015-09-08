@@ -43,7 +43,7 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, $scope.timeFormat);
+                        var breakfast = moment(vm.habits.breakfast, $scope.settings.timeFormat);
                         var time = moment(elem.date);
                         return time <= breakfast;
                     }
@@ -87,8 +87,8 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, $scope.timeFormat);
-                        var lunch = moment(vm.habits.lunch, $scope.timeFormat);
+                        var breakfast = moment(vm.habits.breakfast, $scope.settings.timeFormat);
+                        var lunch = moment(vm.habits.lunch, $scope.settings.timeFormat);
                         var time = moment(elem.date);
                         return (time > breakfast) && (time <= lunch);
                     }
@@ -132,8 +132,8 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var lunch = moment(vm.habits.lunch, $scope.timeFormat);
-                        var dinner = moment(vm.habits.dinner, $scope.timeFormat);
+                        var lunch = moment(vm.habits.lunch, $scope.settings.timeFormat);
+                        var dinner = moment(vm.habits.dinner, $scope.settings.timeFormat);
                         var time = moment(elem.date);
                         return (time > lunch) && (time <= dinner);
                     }
@@ -177,7 +177,7 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var dinner = moment(vm.habits.dinner, $scope.timeFormat);
+                        var dinner = moment(vm.habits.dinner, $scope.settings.timeFormat);
                         var time = moment(elem.date);
                         return (time > dinner);
                     }
