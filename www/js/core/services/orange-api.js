@@ -73,11 +73,11 @@
                             return false;
                         }
 
-                        if (response.status == 404) {
-                            $ionicLoading.hide();
-                            $cordovaDialogs.alert('Item not found', 'Error', 'OK');
-                            return false;
-                        }
+                        //if (response.status == 404) {
+                        //    $ionicLoading.hide();
+                        //    $cordovaDialogs.alert('Item not found', 'Error', 'OK');
+                        //    return false;
+                        //}
 
                         if (response.status == 502 || !response.status) {
                             $ionicLoading.hide();

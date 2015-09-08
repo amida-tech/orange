@@ -102,7 +102,6 @@
 
         function getPatient() {
             var self = this;
-
             //Get patient from cache
             if (this.currentPatient != null) {
                 var deferred = $q.defer();
@@ -120,7 +119,7 @@
                         self.currentPatient = currentPatient;
                         return currentPatient;
                     },
-                    errorGetPatients
+                    errorGetPatient
                 );
             }
 
@@ -144,6 +143,17 @@
                 },
                 errorGetPatients
             );
+
+            function errorGetPatient(response) {
+                console.log('Error response: ', response);
+                if (response.status === 404 && response.data.errors.indexOf('invalid_patient_id') !== -1) {
+                    $localstorage.remove('currentPatient');
+                    return self.getPatient()
+                }
+
+                $ionicLoading.hide();
+                return null;
+            }
 
             function errorGetPatients(response) {
                 console.log('error get patients');
