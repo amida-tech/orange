@@ -15,7 +15,6 @@
         var vm = this,
             is_edit = 'id' in $stateParams;
         vm.title = ((is_edit) ? 'Edit': 'Add') + ' Pharmacy';
-        vm.pharmacy = {hours: {}};
         vm.days = $locale.DATETIME_FORMATS.DAY;
         vm.save = save;
 
@@ -27,8 +26,11 @@
         });
 
         if (is_edit) {
-            vm.pharmacy = PharmacyService.getItem();
+            PharmacyService.getItem($stateParams.id).then(function (pharmacy) {
+                vm.pharmacy = pharmacy;
+            });
         } else {
+            vm.pharmacy = {hours: {}};
             _.each(vm.days, function (day) {
                 vm.pharmacy.hours[day.toLowerCase()] = {open: '09:00 am', close: '05:00 pm'}
             });

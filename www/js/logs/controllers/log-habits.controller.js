@@ -11,7 +11,9 @@
     function LogHabitsCtrl($ionicLoading, $state, $stateParams, PatientService) {
 
         var vm = this;
-        vm.log = PatientService.getItem();
+        PatientService.getItem($stateParams['id']).then(function (patient) {
+            vm.log = patient;
+        });
 
         vm.habitsForm = {};
         vm.submit = submit;

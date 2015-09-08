@@ -5,16 +5,18 @@
         .module('orange')
         .controller('LogDetailsCtrl', LogDetailsCtrl);
 
-    LogDetailsCtrl.$inject = ['$state', '$ionicPopup', '$ionicLoading', 'PatientService'];
+    LogDetailsCtrl.$inject = ['$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'PatientService'];
 
-    function LogDetailsCtrl($state, $ionicPopup, $ionicLoading, PatientService) {
+    function LogDetailsCtrl($state, $stateParams, $ionicPopup, $ionicLoading, PatientService) {
 
         var vm = this;
 
         vm.deleteLog = deleteLog;
 
-        vm.currentLog = PatientService.getItem();
-        vm.title = vm.currentLog.fullName;
+        PatientService.getItem($stateParams['id']).then(function (patient) {
+            vm.currentLog = patient;
+            vm.title = vm.currentLog.fullName;
+        });
 
         function deleteLog() {
             $ionicPopup.confirm({

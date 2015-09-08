@@ -6,47 +6,51 @@
         .controller('NoteAddCtrl', NoteAddCtrl);
 
     NoteAddCtrl.$inject = [
-        '$scope', '$filter', '$state', '$stateParams',
+        '$q', '$scope', '$filter', '$state', '$stateParams',
         '$ionicLoading', '$ionicModal', '$cordovaDialogs', 'NoteService', 'MedicationService'
     ];
 
     /* @ngInject */
-    function NoteAddCtrl($scope, $filter, $state, $stateParams,
+    function NoteAddCtrl($q, $scope, $filter, $state, $stateParams,
                          $ionicLoading, $ionicModal, $cordovaDialogs,  NoteService, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
         //Check "id" param in url
         var is_edit = 'id' in $stateParams;
-        if (is_edit) {
-            var id = $stateParams.id;
-        }
 
         vm.title = (is_edit) ? 'Edit Note' : 'Add Note';
         vm.backState = (is_edit) ? 'app.notes.details({id: '+id+'})' : 'app.notes.list';
-        vm.note = NoteService.getItem() || {};
         vm.notesPromise = NoteService.getItems();
         vm.medicationsPromise = MedicationService.getItems();
 
         //Medications to add model
         vm.medications = [];
 
-        vm.medicationsPromise.then(function (medications) {
+        if (is_edit) {
+            var id = $stateParams.id;
+            $q.all([
+                NoteService.getItem(id),
+                vm.medicationsPromise
+            ]).then(function (data) {
+                vm.note = data[0];
+                vm.medications = _.map(data[1], function(medication) {
+                    medication.checked = false;
 
-            vm.medications = _.map(medications, function(medication) {
-                medication.checked = false;
+                    if (is_edit) {
+                        var has_medication = _.find(vm.note.medications, function(med) {
+                            return med.id == medication.id
+                        });
 
-                if (is_edit) {
-                    var has_medication = _.find(vm.note.medications, function(med) {
-                       return med.id == medication.id
-                    });
+                        medication.checked = !_.isUndefined(has_medication);
+                        return medication
+                    }
 
-                    medication.checked = !_.isUndefined(has_medication);
                     return medication
-                }
-
-                return medication
+                });
             });
-        });
+        } else {
+            vm.note = {};
+        }
 
         //Save note
         vm.save = function (form) {

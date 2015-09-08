@@ -5,14 +5,16 @@
         .module('orange')
         .controller('MedicationCtrl', MedicationCtrl);
 
-    MedicationCtrl.$inject = ['$state', '$ionicLoading', 'MedicationService'];
+    MedicationCtrl.$inject = ['$state', '$stateParams', '$ionicLoading', 'MedicationService'];
 
-    function MedicationCtrl($state, $ionicLoading, MedicationService) {
+    function MedicationCtrl($state, $stateParams, $ionicLoading, MedicationService) {
         var vm = this;
 
         vm.title = 'Medication Details';
-        vm.medication = MedicationService.getItem();
-        vm.eventsText = MedicationService.getMedicationText(vm.medication);
+        MedicationService.getItem($stateParams['id']).then(function (medication) {
+            vm.medication = medication;
+            vm.eventsText = MedicationService.getMedicationText(vm.medication);
+        });
         vm.getEventText = MedicationService.getEventText.bind(MedicationService);
         vm.remove = remove;
 

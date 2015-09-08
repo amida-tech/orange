@@ -358,7 +358,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         cache: false
                     })
                     .state('app.logs.edit', {
-                        url: '/edit',
+                        url: '/edit/:id',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
                         cache: false,

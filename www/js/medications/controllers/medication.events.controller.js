@@ -5,10 +5,10 @@
         .module('orange')
         .controller('MedicationEventsCtrl', MedicationEventsCtrl);
 
-    MedicationEventsCtrl.$inject = ['$state', '$ionicPopup', '$ionicLoading', 'MedicationService'];
+    MedicationEventsCtrl.$inject = ['$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'MedicationService'];
 
     /* @ngInject */
-    function MedicationEventsCtrl($state, $ionicPopup, $ionicLoading, MedicationService) {
+    function MedicationEventsCtrl($state, $stateParams, $ionicPopup, $ionicLoading, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -165,13 +165,14 @@
 
         function activate() {
             console.log('MedicationEventsController activated!');
-            var medication = MedicationService.getItem();
-            if (medication && medication.schedule && medication.schedule.times !== vm.events) {
-                console.log('Events changed', medication.schedule.times);
-                update(angular.copy(medication.schedule.times));
-            } else {
-                update([]);
-            }
+            MedicationService.getItem($stateParams['id']).then(function (medication) {
+                if (medication && medication.schedule && medication.schedule.times !== vm.events) {
+                    console.log('Events changed', medication.schedule.times);
+                    update(angular.copy(medication.schedule.times));
+                } else {
+                    update([]);
+                }
+            });
         }
 
         function update(events) {

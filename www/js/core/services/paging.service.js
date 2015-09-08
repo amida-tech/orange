@@ -33,6 +33,7 @@
         Service.prototype.moreItems = moreItems;
         Service.prototype.setItem = setItem;
         Service.prototype.getItem = getItem;
+        Service.prototype.getItemPromise = getItemPromise;
         Service.prototype.removeItem = removeItem;
         Service.prototype.saveItem = saveItem;
         Service.prototype.clear = clear;
@@ -126,11 +127,28 @@
 
         function setItem(item) {
             this.item = item;
-            console.log('Set item ' + this.item.id);
+            item && console.log('Set item ' + item['id']);
         }
 
-        function getItem() {
-            return this.item;
+        function getItem(itemId) {
+            var deferred = $q.defer();
+
+            if (this.item && this.item.id == itemId) {
+                deferred.resolve(this.item);
+                return deferred.promise;
+            //} else if (!itemId) {
+            //
+            } else {
+                return this.getItemPromise(itemId);
+            }
+        }
+
+        function getItemPromise(itemId) {
+            var self = this;
+            return OrangeApi[this.apiEndpoint].get(itemId).then(function (item) {
+                self.setItem(item);
+                return item;
+            })
         }
         
         function removeItem(removedItem) {
@@ -187,6 +205,7 @@
         Service.prototype = Object.create(BasePagingService.prototype);
         Service.prototype.getNewItemPromise = getNewItemPromise;
         Service.prototype.getFetchPromise = getFetchPromise;
+        Service.prototype.getItemPromise = getItemPromise;
 
         return Service;
 
@@ -206,6 +225,16 @@
                 return patient.all(self.apiEndpoint).getList(options).then(
                     self.fetchItemsSuccess.bind(self)
                 );
+            });
+        }
+
+        function getItemPromise(itemId) {
+            var self = this;
+            return PatientService.getPatient().then(function (patient) {
+                return patient.all(self.apiEndpoint).get(itemId).then(function (item) {
+                    self.setItem(item);
+                    return item;
+                });
             });
         }
     }

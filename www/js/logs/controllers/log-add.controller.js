@@ -5,23 +5,30 @@
         .module('orange')
         .controller('AddLogCtrl', AddLogCtrl);
 
-    AddLogCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', '$cordovaCamera',
+    AddLogCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', '$ionicModal', '$cordovaCamera',
         'PatientService', 'notifications'];
 
     /* @ngInject */
-    function AddLogCtrl($scope, $state, $ionicLoading, $ionicModal, $cordovaCamera,
+    function AddLogCtrl($scope, $state, $stateParams, $ionicLoading, $ionicModal, $cordovaCamera,
                         PatientService, notify) {
 
-        var patient = PatientService.getItem() || {};
-
         $scope.editMode = !!$state.params['editMode'];
-        $scope.log = $scope.editMode ? patient : {};
         $scope.saveLog = $scope.editMode ? saveLogWithHabits: addLog;
         $scope.selectPhoto = selectPhoto;
         $scope.isDevice = ionic.Platform.isWebView();
-        $scope.title = $scope.editMode ? 'Edit Log' : patient['me'] ? 'Add My Log' : 'Add New Log';
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
         $scope.iconItems = _.chunk($scope.settings.avatars, 3);
+
+        if ('id' in $stateParams) {
+            PatientService.getItem($stateParams['id']).then(function (patient) {
+                $scope.log = $scope.editMode ? patient : {};
+                $scope.title = 'Edit Log';
+            })
+        } else {
+            $scope.log = {};
+            $scope.title = 'Add New Log';
+        }
+
 
         $ionicModal.fromTemplateUrl('templates/logs/logs.icon.modal.html', {
             scope: $scope
