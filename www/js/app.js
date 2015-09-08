@@ -100,7 +100,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'is
                              }
 
                              //Set history
-                             if (toState.name != 'app.today.schedule' && _.indexOf(menuMap, toState.name) != -1) {
+                             if (toState.name != 'app.today.schedule' && _.indexOf(menuMap, toState.name) != -1 && !_.isUndefined($rootScope.todayHistoryId)) {
                                  currentView.backViewId = $rootScope.todayHistoryId;
                                  history.backView = $rootScope.todayHistoryView;
                                  currentView.index = 1;
