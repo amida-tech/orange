@@ -1,9 +1,11 @@
-<ion-view view-title="Today" hide-nav-bar="false">
+<ion-view hide-nav-bar="false">
     <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
+
+        <ion-nav-title ng-click="today.changeDate()" ng-bind="today.title"></ion-nav-title>
 
         <ion-nav-buttons side="right">
             <change-patient></change-patient>

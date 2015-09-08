@@ -5,14 +5,17 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal',
-        'n2w', 'patient', 'medications', 'settings'];
+    TodayCtrl.$inject = ['$q', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicModal',
+        '$cordovaDatePicker', 'n2w', 'patient', 'medications', 'settings'];
 
-    function TodayCtrl($q, $scope, $ionicLoading, $ionicPopup, $ionicModal,
-                       n2w, patient, medService, settings) {
+    function TodayCtrl($q, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicModal,
+                       $cordovaDatePicker, n2w, patient, medService, settings) {
+
         var vm = this;
         var doseModal = null;
 
+        vm.scheduleDate = $stateParams.date || moment().format('YYYY-MM-DD');
+        vm.title = moment().format('YYYY-MM-DD') === vm.scheduleDate ? 'Today' : moment(vm.scheduleDate, 'YYYY-MM-DD').format('MMMM Do YYYY');
         vm.schedule = null;
         vm.medications = null;
         vm.habits = null;
@@ -182,6 +185,7 @@
         vm.openModal = showModal;
         vm.closeModal = hideModal;
         vm.createDose = createDose;
+        vm.changeDate = changeDate;
 
         refresh();
 
@@ -191,6 +195,30 @@
         }).then(function (modal) {
             doseModal = modal
         });
+
+        function changeDate() {
+
+            var startDate = moment(vm.scheduleDate, 'YYYY-MM-DD').toDate();
+            var options = {
+                date: moment(vm.scheduleDate, 'YYYY-MM-DD').toDate(),
+                mode: 'date',
+                allowOldDates: true,
+                allowFutureDates: true,
+                androidTheme: $cordovaDatePicker.THEME_DEVICE_DEFAULT_DARK
+            };
+
+            $cordovaDatePicker.show(options).then(function (date) {
+
+                if (date) {
+                    vm.scheduleDate = moment(date).format('YYYY-MM-DD');
+                    vm.title = moment().format('YYYY-MM-DD') === vm.scheduleDate ? 'Today' : moment(vm.scheduleDate, 'YYYY-MM-DD').format('MMMM Do YYYY');
+                    $ionicLoading.show({
+                        template: 'Loading...'
+                    });
+                    refresh();
+                }
+            });
+        }
 
 
         function createDose(skipped) {
@@ -264,8 +292,8 @@
                                 });
                             })
                             .finally(function () {
-                            refresh();
-                        })
+                                         refresh();
+                                     })
                     }
                 });
         }
@@ -303,10 +331,9 @@
         }
 
         function refresh() {
-            var date = moment();
             var filter = {
-                //start_date: date.format('YYYY-MM-DD'),
-                end_date: date.format('YYYY-MM-DD')
+                start_date: vm.scheduleDate,
+                end_date: vm.scheduleDate
             };
             $q.all([
                 patient.all('schedule').getList(filter),
