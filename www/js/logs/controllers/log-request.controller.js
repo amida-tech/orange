@@ -26,7 +26,7 @@
         } else {
             service = OrangeApi.requested;
             $scope.resetPassword = false;
-            $scope.title = 'Add Existing Logs';
+            $scope.title = 'Add Existing Log';
             $scope.description = 'To add logs from an existing account, please ' +
                 'begin by sending a request to the account holder. ' +
                 'Once approved, the account holder can choose ' +
