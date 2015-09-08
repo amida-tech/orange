@@ -13,7 +13,7 @@
             fileName = $stateParams.id + '.pdf',
             printPdf = window.plugins.PrintPDF,
             pdfData,
-            buttonLabels = ['by Email'],
+            buttonLabels = ['Email'],
             deviceVersion = _.map(device.version.split('.'), Number);
 
         // Only for iOS & Android 4.4+
