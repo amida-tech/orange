@@ -5,10 +5,10 @@
         .module('orange')
         .controller('MedicationCtrl', MedicationCtrl);
 
-    MedicationCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', 'medications', 'patient'];
+    MedicationCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'medications', 'patient'];
 
     /* @ngInject */
-    function MedicationCtrl($scope, $state, $stateParams, $ionicLoading, medications, log) {
+    function MedicationCtrl($scope, $state, $stateParams, $ionicPopup, $ionicLoading, medications, log) {
         /* jshint validthis: true */
         var vm = this;
         var id = $stateParams.id;
@@ -45,21 +45,30 @@
         }
 
         function remove() {
-            $ionicLoading.show({
-                template: 'Deleting…'
+            $ionicPopup.confirm({
+                title: 'Delete Medication',
+                template: 'Are you sure you want to delete this medication?',
+                okType: 'button-orange'
+            }).then(function (confirm) {
+                if (confirm) {
+
+                    $ionicLoading.show({
+                        template: 'Deleting…'
+                    });
+
+                    medications.remove(vm.medication).then(
+                        undefined,
+                        function (error) {
+                            console.log(error);
+                        }
+                    ).finally(
+                        function () {
+                            $ionicLoading.hide();
+                            $state.go('app.medications');
+                        })
+                }
             });
 
-
-            medications.remove(vm.medication).then(
-                undefined,
-                function (error) {
-                    console.log(error);
-                }
-            ).finally(
-                function () {
-                    $ionicLoading.hide();
-                    $state.go('app.medications');
-                })
         }
 
     }
