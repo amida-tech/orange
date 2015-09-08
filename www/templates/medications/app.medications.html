@@ -19,7 +19,7 @@
         </div>
 
         <ion-list>
-            <ion-item ng-repeat="medication in medications.medications" ui-sref="app.medication.details({id: medication.id})">
+            <ion-item ng-repeat="medication in medications.medications" ng-click="medications.details(medication)">
                 <div class="med-title">
                     <p class="med-name" ng-bind="medication.brand"></p>
                     <p class="med-rx" ng-bind="medication.name"></p>

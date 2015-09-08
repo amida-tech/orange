@@ -133,7 +133,7 @@
         function getItem(itemId) {
             var deferred = $q.defer();
 
-            if (this.item && this.item.id == itemId) {
+            if (this.item && (this.item.id == itemId || itemId === undefined)) {
                 deferred.resolve(this.item);
                 return deferred.promise;
             } else if (!itemId) {
@@ -166,8 +166,18 @@
         }
 
         function saveItem(savedItem) {
+            var self = this;
             if (savedItem.id) {
-                return savedItem.save();
+                return savedItem.save().then(function (newItem) {
+                    var listItem = _.find(self.items, function (item) {
+                        return item.id === newItem.id;
+                    });
+                    listItem = _.extend(listItem, newItem);
+                    if (listItem.id === self.item.id) {
+                        self.setItem(listItem);
+                    }
+                    return listItem;
+                });
             } else {
                 return this.getNewItemPromise(savedItem);
             }
