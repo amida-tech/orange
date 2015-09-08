@@ -40,6 +40,7 @@
 
         function clear() {
             BasePagingService.prototype.clear.call(this);
+            this.currentPatient = null;
             $localstorage.remove('currentPatient');
         }
 
@@ -103,10 +104,10 @@
             var self = this;
 
             //Get patient from cache
-            if (this.currentPatient != null && !$state.reload) {
+            if (this.currentPatient != null) {
                 var deferred = $q.defer();
                 deferred.resolve(this.currentPatient);
-                return deferred
+                return deferred.promise;
             }
 
             var patientID = $localstorage.get('currentPatient', null);

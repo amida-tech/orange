@@ -4,11 +4,11 @@
         .module('orange')
         .controller('AccountCtrl', AccountCtrl);
 
-    AccountCtrl.$inject = ['$scope', '$cordovaInAppBrowser', 'Auth', 'OrangeApi',
+    AccountCtrl.$inject = ['$rootScope', '$scope', '$cordovaInAppBrowser', 'Auth', 'OrangeApi',
                            'PatientService', 'notifications'];
 
     /* @ngInject */
-    function AccountCtrl($scope, $cordovaInAppBrowser, Auth, OrangeApi, PatientService, notify) {
+    function AccountCtrl($rootScope, $scope, $cordovaInAppBrowser, Auth, OrangeApi, PatientService, notify) {
 
         $scope.login = login;
         $scope.signUp = signUp;
@@ -16,6 +16,10 @@
         $scope.error = false;
         $scope.errors = [];
         $scope.user = {};
+
+        $rootScope.$on('auth:user:logout', function () {
+            $scope.user = {};
+        });
 
         function signUp(form) {
             $scope.errors = [];

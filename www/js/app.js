@@ -17,7 +17,9 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                  if (status === true) {
                      // User authorized
                      if ($rootScope.cachedState) {
-                         $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
+                         PatientService.getPatient().then(function () {
+                             $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
+                         });
                          return status;
                      }
 
@@ -501,8 +503,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('account-login', {
                         url: '/login',
                         templateUrl: 'templates/logs/account_login.html',
-                        controller: 'AccountCtrl',
-                        cache: false
+                        controller: 'AccountCtrl'
                     })
                     .state('account-reset', {
                         url: '/reset',
