@@ -32,6 +32,7 @@
 
         vm.when = [
             {name: 'Before', key: 'before'},
+            {name: 'During', key: 'during'},
             {name: 'After', key: 'after'}
         ];
 

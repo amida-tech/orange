@@ -17,12 +17,13 @@
             <ion-spinner class="orange-loading-spinner" icon="dots"
                          ng-if="!pharmacies.pharmaciesPromise.$$state.status"></ion-spinner>
         </div>
-        <ion-list class="list-clean list-inset padding" can-swipe="true">
+        <ion-list class="list-clean" can-swipe="true">
             <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies"
                       ng-click="pharmacies.pharmacyDetails(pharmacy)">
-                <p><strong ng-bind="pharmacy.name"></strong></p>
-                <p ng-bind="pharmacy.address"></p>
-
+                <div class="block-with-subscribe">
+                    <span class="text-basic-bold" ng-bind="pharmacy.name"></span>
+                    <span class="text-basic" ng-bind="pharmacy.address"></span>
+                </div>
                 <ion-option-button class="button-assertive option-control" ng-click="pharmacies.remove(pharmacy)">
                     <i class="icon ion-trash-a"></i>
                 </ion-option-button>
