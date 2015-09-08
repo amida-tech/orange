@@ -38,7 +38,10 @@
                 dose: {
                     quantity: 1,
                     unit: 'mg'
-                }
+                },
+                access_prime: 'write',
+                access_family: 'write',
+                access_anyone: 'write'
             }
         }
 

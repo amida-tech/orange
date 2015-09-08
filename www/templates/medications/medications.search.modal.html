@@ -10,7 +10,8 @@
         <p class="form-title">Search</p>
         <form class="orange-form" name="searchForm">
             <label class="item-input">
-                <input type="search" placeholder="Medication" ng-model="search.term" ng-change="search.search()"/>
+                <input type="search" placeholder="Medication" ng-model="search.term" ng-change="search.search()"
+                        autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
         </form>
         <ion-list class="list-clean">
