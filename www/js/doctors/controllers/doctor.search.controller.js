@@ -73,7 +73,7 @@
                 vm.doctors.push(doctor)
             });
             if (!vm.doctors.length) {
-                $ionicPopup.alert({ title: 'Doctors not found.' });
+                $ionicPopup.alert({ title: 'No Doctors Found.' });
                 return;
             }
 

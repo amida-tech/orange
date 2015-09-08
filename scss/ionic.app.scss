@@ -788,6 +788,9 @@ ion-content {
     .title {
       text-transform: uppercase;
     }
+    .title.title-left {
+      margin-left: -10px;
+    }
   }
 
   &.bar-static {
