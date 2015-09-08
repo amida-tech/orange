@@ -28,8 +28,8 @@
         <div ng-if="today.schedule.length && filter.events.length" ng-repeat="filter in today.filters"
              class="schedule-item">
             <div class="row row-bottom schedule-header">
-                <div class="col col-50 schedule-header-left" ng-bind="filter.title"></div>
-                <div class="col col-50 schedule-header-right" ng-bind="filter.name"></div>
+                <div class="col col-66 schedule-header-left" ng-bind="filter.title"></div>
+                <div class="col col-33 schedule-header-right" ng-bind="filter.name"></div>
             </div>
             <div class="list list-inset list-schedule">
                 <div class="item item-schedule"

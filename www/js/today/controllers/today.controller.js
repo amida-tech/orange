@@ -25,13 +25,16 @@
 
         vm.filters = [
             {
-                title: 'After Wake',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
                         elem.event.type === 'event' &&
                         elem.event.when === 'after' &&
                         elem.event.event === 'sleep';
+                },
+                getTitle: function() {
+                  return 'After Wake (' + vm.habits.wake + ')';
                 },
                 events: []
             },
@@ -52,7 +55,7 @@
 
             },
             {
-                title: 'Before Breakfast',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
@@ -60,10 +63,13 @@
                         elem.event.when === 'before' &&
                         elem.event.event === 'breakfast';
                 },
+                getTitle: function() {
+                    return 'Before Breakfast (' + vm.habits.breakfast + ')';
+                },
                 events: []
             },
             {
-                title: 'After Breakfast',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
@@ -71,11 +77,14 @@
                         elem.event.when === 'after' &&
                         elem.event.event === 'breakfast';
                 },
+                getTitle: function() {
+                    return 'After Breakfast (' + vm.habits.breakfast + ')';
+                },
                 events: []
             },
             {
                 title: 'Exact Time',
-                name: 'two hours ago',
+                name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
                         var breakfast = moment(vm.habits.breakfast, settings.timeFormat);
@@ -91,7 +100,7 @@
 
             },
             {
-                title: 'Before Lunch',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
@@ -99,16 +108,22 @@
                         elem.event.when === 'before' &&
                         elem.event.event === 'lunch';
                 },
+                getTitle: function() {
+                    return 'Before Lunch (' + vm.habits.lunch + ')';
+                },
                 events: []
             },
             {
-                title: 'After Lunch',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
                         elem.event.type === 'event' &&
                         elem.event.when === 'after' &&
                         elem.event.event === 'lunch';
+                },
+                getTitle: function() {
+                    return 'After Lunch (' + vm.habits.lunch + ')';
                 },
                 events: []
             },
@@ -130,13 +145,16 @@
 
             },
             {
-                title: 'Before Dinner',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
                         elem.event.type === 'event' &&
                         elem.event.when === 'before' &&
                         elem.event.event === 'dinner';
+                },
+                getTitle: function() {
+                    return 'Before Dinner (' + vm.habits.dinner + ')';
                 },
                 events: []
             },
@@ -148,6 +166,9 @@
                         elem.event.type === 'event' &&
                         elem.event.when === 'after' &&
                         elem.event.event === 'dinner';
+                },
+                getTitle: function() {
+                    return 'After Dinner (' + vm.habits.dinner + ')';
                 },
                 events: []
             },
@@ -168,13 +189,16 @@
 
             },
             {
-                title: 'Before Sleep',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
                         elem.event.type === 'event' &&
                         elem.event.when === 'before' &&
                         elem.event.event === 'sleep';
+                },
+                getTitle: function() {
+                    return 'Before Sleep (' + vm.habits.sleep + ')';
                 },
                 events: []
             }
@@ -198,7 +222,6 @@
 
         function changeDate() {
 
-            var startDate = moment(vm.scheduleDate, 'YYYY-MM-DD').toDate();
             var options = {
                 date: moment(vm.scheduleDate, 'YYYY-MM-DD').toDate(),
                 mode: 'date',
@@ -358,6 +381,9 @@
                     vm.filters.forEach(function (filter) {
                         filter.events = _.filter(vm.schedule, filter.f);
                         filter.name = getFilterName(filter.events);
+                        if (filter.getTitle) {
+                            filter.title = filter.getTitle();
+                        }
                     })
                 },
                 function (error) {
