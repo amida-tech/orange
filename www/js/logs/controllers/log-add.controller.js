@@ -116,7 +116,7 @@
         }
 
         function goToNextState() {
-            var options = {reload: $scope.log === PatientService.currentPatient};
+            var options = {reload: $scope.log['id'] === PatientService.currentPatient['id']};
             $state.go($state.params['nextState'] || 'logs', {}, options);
             $ionicLoading.hide();
         }

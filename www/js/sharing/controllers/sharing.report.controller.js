@@ -78,6 +78,9 @@
                         window.plugins.socialsharing.shareViaEmail('', 'Orange Report', null, null, null, $scope.pdfURL);
                         break;
                     case 2:
+                        if (buttonLabels.length !== index) {
+                            break;
+                        }
                         printPdf.isPrintingAvailable(function (success) {
                             if (success) {
                                 printPdf.print({
