@@ -33,8 +33,8 @@
                         elem.event.when === 'after' &&
                         elem.event.event === 'sleep';
                 },
-                getTitle: function() {
-                  return 'After Wake (' + vm.habits.wake + ')';
+                getTitle: function () {
+                    return 'After Wake (' + vm.habits.wake + ')';
                 },
                 events: []
             },
@@ -63,7 +63,7 @@
                         elem.event.when === 'before' &&
                         elem.event.event === 'breakfast';
                 },
-                getTitle: function() {
+                getTitle: function () {
                     return 'Before Breakfast (' + vm.habits.breakfast + ')';
                 },
                 events: []
@@ -77,7 +77,7 @@
                         elem.event.when === 'after' &&
                         elem.event.event === 'breakfast';
                 },
-                getTitle: function() {
+                getTitle: function () {
                     return 'After Breakfast (' + vm.habits.breakfast + ')';
                 },
                 events: []
@@ -108,7 +108,7 @@
                         elem.event.when === 'before' &&
                         elem.event.event === 'lunch';
                 },
-                getTitle: function() {
+                getTitle: function () {
                     return 'Before Lunch (' + vm.habits.lunch + ')';
                 },
                 events: []
@@ -122,7 +122,7 @@
                         elem.event.when === 'after' &&
                         elem.event.event === 'lunch';
                 },
-                getTitle: function() {
+                getTitle: function () {
                     return 'After Lunch (' + vm.habits.lunch + ')';
                 },
                 events: []
@@ -153,7 +153,7 @@
                         elem.event.when === 'before' &&
                         elem.event.event === 'dinner';
                 },
-                getTitle: function() {
+                getTitle: function () {
                     return 'Before Dinner (' + vm.habits.dinner + ')';
                 },
                 events: []
@@ -167,7 +167,7 @@
                         elem.event.when === 'after' &&
                         elem.event.event === 'dinner';
                 },
-                getTitle: function() {
+                getTitle: function () {
                     return 'After Dinner (' + vm.habits.dinner + ')';
                 },
                 events: []
@@ -197,7 +197,7 @@
                         elem.event.when === 'before' &&
                         elem.event.event === 'sleep';
                 },
-                getTitle: function() {
+                getTitle: function () {
                     return 'Before Sleep (' + vm.habits.sleep + ')';
                 },
                 events: []
@@ -247,22 +247,37 @@
         function createDose(skipped) {
             skipped = skipped || false;
             vm.dose.taken = !skipped;
-            patient.all('doses').post(vm.dose)
-                .then(
-                undefined,
-                function (data) {
-                    var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
-                    $ionicPopup.alert({
-                        title: 'Error',
-                        template: template,
-                        okType: 'button-dark-orange'
-                    });
-                })
-                .finally(
-                function () {
-                    refresh();
-                    hideModal();
+
+            $ionicPopup.confirm({
+                title: vm.event.medication.name,
+                template: '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>',
+                okText: '<b>Yes</b>',
+                okType: 'button-dark-orange'
+            }).then(
+                function (confirm) {
+                    if (confirm) {
+                        $ionicLoading.show({
+                            template: 'Saving...'
+                        });
+                        patient.all('doses').post(vm.dose)
+                            .then(
+                            undefined,
+                            function (data) {
+                                var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
+                                $ionicPopup.alert({
+                                    title: 'Error',
+                                    template: template,
+                                    okType: 'button-dark-orange'
+                                });
+                            })
+                            .finally(
+                            function () {
+                                refresh();
+                                hideModal();
+                            });
+                    }
                 });
+
         }
 
         function showModal(event) {
