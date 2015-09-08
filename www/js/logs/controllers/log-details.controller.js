@@ -24,13 +24,14 @@
             }).then(
                 function (confirm) {
                     if (confirm) {
+                        var isCurrent = vm.currentLog.id === PatientService.currentPatient.id;
                         $ionicLoading.show({
                             template: 'Deleting...'
                         });
                         PatientService.removeItem(vm.currentLog).then(
                             function () {
                                 $ionicLoading.hide();
-                                $state.go('app.logs.list');
+                                $state.go('app.logs.list', {}, {reload: isCurrent});
                             },
                             function (error) {
                                 $ionicLoading.hide();

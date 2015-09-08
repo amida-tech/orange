@@ -33,6 +33,7 @@
         Service.prototype.clear = clear;
         Service.prototype.saveItem = saveItem;
         Service.prototype.setItem = setItem;
+        Service.prototype.removeItem = removeItem;
 
         return new Service();
 
@@ -83,6 +84,19 @@
                     self.item.habits = habits;
                 });
             }
+        }
+
+        function removeItem(removedItem) {
+            var isCurrent = this.currentPatient['id'] === removedItem.id,
+                self = this;
+            return BasePagingService.prototype.removeItem.call(this, removedItem).then(function (items) {
+                if (isCurrent) {
+                    $localstorage.remove('currentPatient');
+                    self.currentPatient = null;
+                    self.getPatient();
+                }
+                return items;
+            });
         }
 
         function getPatient() {

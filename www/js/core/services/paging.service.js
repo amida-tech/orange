@@ -133,7 +133,7 @@
             return this.item;
         }
         
-        function removeItem(removedItem){
+        function removeItem(removedItem) {
             var self = this,
                 itemIndex = this.items.indexOf(removedItem);
             return removedItem.remove().then(function () {
