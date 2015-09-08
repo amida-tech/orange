@@ -9,42 +9,46 @@
         <ion-refresher pulling-text="Pull to refresh" on-refresh="sharing.update(true)">
         </ion-refresher>
         <div class="list orange-list">
-            <p class="form-title with-padding">Requests</p>
-            <form class="orange-form with-bottom-border">
-                <ul class="list">
-                    <li class="sharing-list" ng-repeat="request in sharing.requests">
-                        <div class="item-input item-input-wo-margin">
-                            <div class="input-label input-label-wo-margin sharing-email">
-                                <strong>{{ request.email }}</strong>
-                                has requested access to your logs
-                            </div>
-                        </div>
-                        <div class="sharing-status">
-                            <button class="button" ng-click="sharing.accept(request)">Accept</button><br>
-                        </div>
-                        <div class="sharing-status">
-                            <button class="button" ng-click="sharing.decline(request)">Decline</button>
-                        </div>
-                    </li>
-                </ul>
-            </form>
-            <p class="form-title">My requests</p>
-            <form class="orange-form with-bottom-border">
-                <ul class="list">
-                    <li class="sharing-list" ng-repeat="request in sharing.requested">
-                        <div class="item-input item-input-wo-margin">
-                            <span class="input-label input-label-wo-margin">
-                                <div class="sharing-email"><strong>{{ request.email }}</strong></div>
-                                <div class="sharing-status">
-                                    {{ request.status }}<br>
-                                    <button class="button" ng-if="request.status=='pending'"
-                                            ng-click="sharing.cancel(request)">Cancel</button>
+            <div ng-if="sharing.requests && sharing.requests.length > 0">
+                <p class="form-title with-padding">Requests</p>
+                <form class="orange-form with-bottom-border">
+                    <ul class="list">
+                        <li class="sharing-list" ng-repeat="request in sharing.requests">
+                            <div class="item-input item-input-wo-margin">
+                                <div class="input-label input-label-wo-margin sharing-email">
+                                    <strong>{{ request.email }}</strong>
+                                    has requested access to your logs
                                 </div>
-                            </span>
-                        </div>
-                    </li>
-                </ul>
-            </form>
+                            </div>
+                            <div class="sharing-status">
+                                <button class="button" ng-click="sharing.accept(request)">Accept</button><br>
+                            </div>
+                            <div class="sharing-status">
+                                <button class="button" ng-click="sharing.decline(request)">Decline</button>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <div ng-if="sharing.requested && sharing.requested.length > 0">
+                <p class="form-title">My requests</p>
+                <form class="orange-form with-bottom-border">
+                    <ul class="list">
+                        <li class="sharing-list" ng-repeat="request in sharing.requested">
+                            <div class="item-input item-input-wo-margin">
+                                <div class="input-label input-label-wo-margin">
+                                    <div class="sharing-email"><strong>{{ request.email }}</strong>
+                                        <div style="float: right">{{ request.status }}</div></div>
+                                    <div class="sharing-status">
+                                        <button class="button" ng-if="request.status=='pending'"
+                                                ng-click="sharing.cancel(request)">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </form>
+            </div>
             <p class="form-title">Reports</p>
             <form class="orange-form with-bottom-border">
                 <label class="item-input">

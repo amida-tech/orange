@@ -5,9 +5,9 @@
         .module('orange')
         .factory('RequestsService', RequestsService);
 
-    RequestsService.$inject = ['$q', 'OrangeApi'];
+    RequestsService.$inject = ['$q', '$rootScope', 'OrangeApi'];
 
-    function RequestsService($q, OrangeApi) {
+    function RequestsService($q, $rootScope, OrangeApi) {
         var vm = this,
             service = {
                 acceptRequest: acceptRequest,
@@ -22,6 +22,11 @@
         vm.requested = null;
         vm.requests = null;
         vm.acceptingRequest = null;
+
+        $rootScope.$on('auth:user:logout', function () {
+            vm.requested = null;
+            vm.requests = null;
+        });
 
         return service;
 
@@ -42,7 +47,6 @@
         }
 
         function getRequests(force) {
-            force = force || false;
             var deferred = $q.defer();
             if (vm.requests !== null && !force) {
                 deferred.resolve(vm.requests);
