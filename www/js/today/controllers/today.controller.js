@@ -363,17 +363,23 @@
             $q.all([
                 patient.all('schedule').getList(filter),
                 patient.all('medications').getList(),
-                patient.one('habits').get('')
+                patient.one('habits').get(''),
+                patient.all('doses').getList()
             ]).then(
                 function (data) {
                     vm.schedule = data[0].plain();
                     vm.medications = data[1].plain();
                     vm.habits = data[2].plain();
+                    vm.doses = data[3].plain();
                     vm.schedule.forEach(function (elem) {
                         elem.medication = _.find(vm.medications, {id: elem.medication_id});
 
                         if (!_.isUndefined(elem.scheduled)) {
                             elem.event = _.find(elem.medication.schedule.times, {id: elem.scheduled});
+                        }
+
+                        if (elem.dose_id) {
+                            elem.dose = _.find(vm.doses, {id: elem.dose_id});
                         }
                         elem.status = getEventStatus(elem);
                     });
