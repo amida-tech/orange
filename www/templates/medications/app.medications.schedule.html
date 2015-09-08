@@ -22,12 +22,12 @@
                 </div>
             </ion-item>
 
-            <ion-item>
+            <ion-item class="item-text-wrap">
                 <p class="text-muted">When is this medication taken?</p>
                 <div button-bar="schedule.regularity" data-ng-model="schedule.selectedRegularity"></div>
             </ion-item>
 
-            <ion-item class="orange-form">
+            <ion-item class="orange-form item-text-wrap">
                 <p class="text-muted">Take with food?</p>
                 <div button-bar="schedule.withFood" data-ng-model="schedule.schedule.take_with_food"></div>
                 <p class="text-muted">How many units?</p>
@@ -37,8 +37,8 @@
             </ion-item>
 
             <div ng-if="schedule.schedule.regularly" class="orange-form">
-                <ion-item>
-                    <p class="text-muted">For how long</p>
+                <ion-item class="item-text-wrap">
+                    <p class="text-muted">For how long?</p>
                     <div button-bar="schedule.duration" data-ng-model="schedule.schedule.until.type"></div>
 
                     <div ng-if="schedule.schedule.until.type === 'number'" class="item-input">
@@ -55,8 +55,8 @@
                     </div>
                 </ion-item>
 
-                <ion-item>
-                    <p class="text-muted">How often</p>
+                <ion-item class="item-text-wrap">
+                    <p class="text-muted">How often?</p>
                     <div button-bar="schedule.frequency" data-ng-model="schedule.selectedFrequency"></div>
 
                     <div ng-if="schedule.selectedFrequency === 'daily'">
@@ -80,7 +80,7 @@
                     </div>
                 </ion-item>
 
-                <ion-item class="item-footer">
+                <ion-item class="item-footer item-text-wrap">
                     <p class="text-muted">How many times a day do you take this medicine?</p>
                     <label class="item-input">
                         <input type="number" ng-model="schedule.eventsCount" placeholder="Number"/>
