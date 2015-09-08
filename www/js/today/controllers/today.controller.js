@@ -14,6 +14,8 @@
             doseModal = null,
             patient = null;
 
+        vm.scheduleDate = $stateParams.date || moment().format('YYYY-MM-DD');
+        vm.title = moment().format('YYYY-MM-DD') === vm.scheduleDate ? 'Today' : moment(vm.scheduleDate, 'YYYY-MM-DD').format('MMMM Do YYYY');
         vm.schedule = null;
         vm.medications = null;
         vm.habits = null;
@@ -23,13 +25,16 @@
 
         vm.filters = [
             {
-                title: 'After Wake',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
                         elem.event.type === 'event' &&
                         elem.event.when === 'after' &&
                         elem.event.event === 'sleep';
+                },
+                getTitle: function() {
+                  return 'After Wake (' + vm.habits.wake + ')';
                 },
                 events: []
             },
@@ -50,7 +55,7 @@
 
             },
             {
-                title: 'Before Breakfast',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
@@ -58,10 +63,13 @@
                         elem.event.when === 'before' &&
                         elem.event.event === 'breakfast';
                 },
+                getTitle: function() {
+                    return 'Before Breakfast (' + vm.habits.breakfast + ')';
+                },
                 events: []
             },
             {
-                title: 'After Breakfast',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
@@ -69,11 +77,14 @@
                         elem.event.when === 'after' &&
                         elem.event.event === 'breakfast';
                 },
+                getTitle: function() {
+                    return 'After Breakfast (' + vm.habits.breakfast + ')';
+                },
                 events: []
             },
             {
                 title: 'Exact Time',
-                name: 'two hours ago',
+                name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
                         var breakfast = moment(vm.habits.breakfast, $scope.timeFormat);
@@ -89,7 +100,7 @@
 
             },
             {
-                title: 'Before Lunch',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
@@ -97,16 +108,22 @@
                         elem.event.when === 'before' &&
                         elem.event.event === 'lunch';
                 },
+                getTitle: function() {
+                    return 'Before Lunch (' + vm.habits.lunch + ')';
+                },
                 events: []
             },
             {
-                title: 'After Lunch',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
                         elem.event.type === 'event' &&
                         elem.event.when === 'after' &&
                         elem.event.event === 'lunch';
+                },
+                getTitle: function() {
+                    return 'After Lunch (' + vm.habits.lunch + ')';
                 },
                 events: []
             },
@@ -128,13 +145,16 @@
 
             },
             {
-                title: 'Before Dinner',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
                         elem.event.type === 'event' &&
                         elem.event.when === 'before' &&
                         elem.event.event === 'dinner';
+                },
+                getTitle: function() {
+                    return 'Before Dinner (' + vm.habits.dinner + ')';
                 },
                 events: []
             },
@@ -146,6 +166,9 @@
                         elem.event.type === 'event' &&
                         elem.event.when === 'after' &&
                         elem.event.event === 'dinner';
+                },
+                getTitle: function() {
+                    return 'After Dinner (' + vm.habits.dinner + ')';
                 },
                 events: []
             },
@@ -166,13 +189,16 @@
 
             },
             {
-                title: 'Before Sleep',
+                title: '',
                 name: '',
                 f: function (elem) {
                     return elem.event &&
                         elem.event.type === 'event' &&
                         elem.event.when === 'before' &&
                         elem.event.event === 'sleep';
+                },
+                getTitle: function() {
+                    return 'Before Sleep (' + vm.habits.sleep + ')';
                 },
                 events: []
             }
@@ -183,6 +209,7 @@
         vm.openModal = showModal;
         vm.closeModal = hideModal;
         vm.createDose = createDose;
+        vm.changeDate = changeDate;
 
         PatientService.getPatient().then(function (item) {
             patient = item;
@@ -196,6 +223,29 @@
             doseModal = modal
         });
 
+        function changeDate() {
+
+            var options = {
+                date: moment(vm.scheduleDate, 'YYYY-MM-DD').toDate(),
+                mode: 'date',
+                allowOldDates: true,
+                allowFutureDates: true,
+                androidTheme: $cordovaDatePicker.THEME_DEVICE_DEFAULT_DARK
+            };
+
+            $cordovaDatePicker.show(options).then(function (date) {
+
+                if (date) {
+                    vm.scheduleDate = moment(date).format('YYYY-MM-DD');
+                    vm.title = moment().format('YYYY-MM-DD') === vm.scheduleDate ? 'Today' : moment(vm.scheduleDate, 'YYYY-MM-DD').format('MMMM Do YYYY');
+                    $ionicLoading.show({
+                        template: 'Loading...'
+                    });
+                    refresh();
+                }
+            });
+        }
+
 
         function createDose(skipped) {
             skipped = skipped || false;
@@ -204,9 +254,10 @@
                 .then(
                 undefined,
                 function (data) {
+                    var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
                     $ionicPopup.alert({
                         title: 'Error',
-                        template: data.data.errors,
+                        template: template,
                         okType: 'button-dark-orange'
                     });
                 })
@@ -261,15 +312,16 @@
                             undefined,
                             function (data) {
                                 $ionicLoading.hide();
+                                var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
                                 $ionicPopup.alert({
                                     title: 'Error',
-                                    template: data.data.errors,
+                                    template: template,
                                     okType: 'button-dark-orange'
                                 });
                             })
                             .finally(function () {
-                            refresh();
-                        })
+                                         refresh();
+                                     })
                     }
                 });
         }
@@ -307,25 +359,30 @@
         }
 
         function refresh() {
-            var date = moment();
             var filter = {
-                //start_date: date.format('YYYY-MM-DD'),
-                end_date: date.format('YYYY-MM-DD')
+                start_date: vm.scheduleDate,
+                end_date: vm.scheduleDate
             };
             $q.all([
                 patient.all('schedule').getList(filter),
                 MedicationService.getItems(true),
-                PatientService.getHabits(patient)
+                PatientService.getHabits(patient),
+                patient.all('doses').getList()
             ]).then(
                 function (data) {
                     vm.schedule = data[0].plain();
                     vm.medications = data[1].plain();
                     vm.habits = data[2].plain();
+                    vm.doses = data[3].plain();
                     vm.schedule.forEach(function (elem) {
                         elem.medication = _.find(vm.medications, {id: elem.medication_id});
 
                         if (!_.isUndefined(elem.scheduled)) {
                             elem.event = _.find(elem.medication.schedule.times, {id: elem.scheduled});
+                        }
+
+                        if (elem.dose_id) {
+                            elem.dose = _.find(vm.doses, {id: elem.dose_id});
                         }
                         elem.status = getEventStatus(elem);
                     });
@@ -333,6 +390,9 @@
                     vm.filters.forEach(function (filter) {
                         filter.events = _.filter(vm.schedule, filter.f);
                         filter.name = getFilterName(filter.events);
+                        if (filter.getTitle) {
+                            filter.title = filter.getTitle();
+                        }
                     })
                 },
                 function (error) {

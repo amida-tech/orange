@@ -87,7 +87,12 @@
             if (event.type == 'exact') {
                 result += ' at ' + event.time;
             } else {
-                result += ' ' + event.when + ' ' + event.event;
+                if (event.when === 'after' && event.event === 'sleep') {
+                    result += ' ' + 'after wake';
+                } else {
+                    result += ' ' + event.when + ' ' + event.event;
+                }
+
             }
             return result;
         }

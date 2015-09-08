@@ -5,9 +5,9 @@
         .module('orange')
         .controller('MedicationCtrl', MedicationCtrl);
 
-    MedicationCtrl.$inject = ['$state', '$stateParams', '$ionicLoading', 'MedicationService'];
+    MedicationCtrl.$inject = ['$state', '$stateParams', '$ionicLoading', '$ionicPopup', 'MedicationService'];
 
-    function MedicationCtrl($state, $stateParams, $ionicLoading, MedicationService) {
+    function MedicationCtrl($state, $stateParams, $ionicLoading, $ionicPopup, MedicationService) {
         var vm = this;
 
         vm.title = 'Medication Details';
@@ -19,17 +19,27 @@
         vm.remove = remove;
 
         function remove(medication) {
-            $ionicLoading.show({
-                template: 'Deleting…'
-            });
-            MedicationService.removeItem(medication).then(
-                undefined,
-                function (error) {
-                    console.log(error);
+            $ionicPopup.confirm({
+                title: 'Delete Medication',
+                template: 'Are you sure you want to delete this medication?',
+                okType: 'button-orange'
+            }).then(function (confirm) {
+                if (confirm) {
+                    $ionicLoading.show({
+                        template: 'Deleting…'
+                    });
+
+                    MedicationService.removeItem(medication).then(
+                        undefined,
+                        function (error) {
+                            console.log(error);
+                        }
+                    ).finally(
+                        function () {
+                            $ionicLoading.hide();
+                            $state.go('app.medications');
+                        })
                 }
-            ).finally(function () {
-                $ionicLoading.hide();
-                $state.go('app.medications');
             });
         }
     }

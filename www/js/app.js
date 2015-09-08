@@ -160,7 +160,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         }
                     })
                     .state('app.today.schedule', {
-                        url: '',
+                        url: '?date',
                         templateUrl: 'templates/today/app.today.html',
                         controller: 'TodayCtrl as today',
                         cache: false

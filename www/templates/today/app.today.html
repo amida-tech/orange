@@ -1,9 +1,11 @@
-<ion-view view-title="Today" hide-nav-bar="false">
+<ion-view hide-nav-bar="false">
     <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
+
+        <ion-nav-title ng-click="today.changeDate()" ng-bind="today.title"></ion-nav-title>
 
         <ion-nav-buttons side="right">
             <change-patient></change-patient>
@@ -26,8 +28,8 @@
         <div ng-if="today.schedule.length && filter.events.length" ng-repeat="filter in today.filters"
              class="schedule-item">
             <div class="row row-bottom schedule-header">
-                <div class="col col-50 schedule-header-left" ng-bind="filter.title"></div>
-                <div class="col col-50 schedule-header-right" ng-bind="filter.name"></div>
+                <div class="col col-66 schedule-header-left" ng-bind="filter.title"></div>
+                <div class="col col-33 schedule-header-right" ng-bind="filter.name"></div>
             </div>
             <div class="list list-inset list-schedule">
                 <div class="item item-schedule"
@@ -37,12 +39,13 @@
                     <div class="row row-center row-no-padding">
 
                         <div class="col col-75 med-title" ng-click="today.openModal(event)">
-                            <p class="muted">
-                                <small ng-bind="event.date|date:'hh:mm a'"></small>
-                            </p>
-                            <p class="med-name" ng-bind="event.medication.name + ' (' + event.medication_id + ')'"></p>
+
+                            <p class="med-name" ng-bind="event.medication.name"></p>
 
                             <p class="med-rx" ng-bind="event.medication.brand"></p>
+                            <p class="muted" ng-if="event.dose_id">
+                                <small ng-bind="(event.took_medication ? 'Taken: ' : 'Skipped: ') + (event.dose.date|date:'hh:mm a'|lowercase)"></small>
+                            </p>
 
                         </div>
                         <!--<div class="col col-25 actions" ng-bind-html="filter.buttons | trusted">-->
