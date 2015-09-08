@@ -284,9 +284,10 @@
         }
 
         function showModal(event) {
-            if (!_.isUndefined(event.dose_id)) return;
             vm.event = event;
             vm.event.text = getEventText(event);
+            vm.showDetails = !!event.dose_id;
+
             vm.dose = {
                 medication_id: event.medication_id,
                 date: moment().format(),

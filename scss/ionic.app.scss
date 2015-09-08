@@ -1283,3 +1283,13 @@ ion-option-button.option-control.button {
   // Safari placeholder margin issue
   text-indent: 3px !important;
 }
+
+.detail-item {
+}
+
+.detail-item:before {
+  content: "";
+  display: block;
+  border-top: 1px solid $gray;
+  padding: 2px 0;
+}
