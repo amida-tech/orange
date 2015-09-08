@@ -5,10 +5,10 @@
         .module('orange')
         .controller('MedicationEventsCtrl', MedicationEventsCtrl);
 
-    MedicationEventsCtrl.$inject = ['$scope', '$state', '$ionicPopup', '$ionicLoading', 'medications'];
+    MedicationEventsCtrl.$inject = ['$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'MedicationService'];
 
     /* @ngInject */
-    function MedicationEventsCtrl($scope, $state, $ionicPopup, $ionicLoading, medications) {
+    function MedicationEventsCtrl($state, $stateParams, $ionicPopup, $ionicLoading, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -67,7 +67,7 @@
             }
         }
 
-        function save() {
+        function save(medication) {
             var switched = nextEvent();
             if (vm.buttonText === 'Save') {
                 $ionicLoading.show({
@@ -75,28 +75,26 @@
                 });
 
                 var events = _.map(angular.copy(vm.events), cleanEvent);
-                medications.setMedicationEvents(events);
+                MedicationService.setMedicationEvents(events);
 
 
-                medications.saveMedication().then(
-                    function (data) {
-                        //console.log(data);
-                        if (data.success) {
-                            medications.setNotifications(_.map(vm.notifications, Number)).finally(
-                                function () {
-                                    $ionicLoading.hide();
-                                    $state.go(vm.nextUrl);
-                                }
-                            )
-                        } else {
-                            $ionicLoading.hide();
-                            $ionicPopup.alert({
-                                title: 'Error',
-                                template: data.data.errors,
-                                okType: 'button-dark-orange'
-                            });
-                            $state.go(vm.nextUrl);
-                        }
+                MedicationService.saveItem(medication).then(
+                    function () {
+                        MedicationService.setNotifications(_.map(vm.notifications, Number)).finally(
+                            function () {
+                                $ionicLoading.hide();
+                                $state.go(vm.nextUrl);
+                            }
+                        )
+                    },
+                    function (error) {
+                        $ionicLoading.hide();
+                        $ionicPopup.alert({
+                            title: 'Error',
+                            template: error.data.errors,
+                            okType: 'button-dark-orange'
+                        });
+                        $state.go(vm.nextUrl);
                     }
                 )
             }
@@ -146,7 +144,7 @@
         }
 
         function prepareEvent(event) {
-            event.text = medications.getEventText(event);
+            event.text = MedicationService.getEventText(event);
             event.notification = 30;
             if (event.type === 'event' && ['breakfast', 'lunch', 'dinner'].indexOf(event.event) !== -1) {
                 event.eventType = 'meal';
@@ -167,7 +165,7 @@
 
         function activate() {
             console.log('MedicationEventsController activated!');
-            $scope.$watch(medications.getMedication, function (medication) {
+            MedicationService.getItem($stateParams['id']).then(function (medication) {
                 if (medication && medication.schedule && medication.schedule.times !== vm.events) {
                     console.log('Events changed', medication.schedule.times);
                     update(angular.copy(medication.schedule.times));
@@ -180,7 +178,7 @@
         function update(events) {
             vm.notifications = [];
             vm.events = _.map(events, function (event, index) {
-                vm.notifications[index] = 30;
+                vm.notifications[index] = '30';
                 return prepareEvent(event);
             });
 

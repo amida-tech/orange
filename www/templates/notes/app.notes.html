@@ -18,7 +18,7 @@
         </div>
 
 
-        <ion-list class="list-clean" can-swipe="true" show-delete="notes_list.shouldShowDelete">
+        <ion-list class="list-clean" can-swipe="true">
             <ion-item class="item-text-wrap" ng-repeat="note in notes_list.notes" ng-click="notes_list.details(note)">
                 <div class="block-with-subscribe">
                     <span class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></span>
@@ -33,7 +33,7 @@
 
             </ion-item>
         </ion-list>
-        <ion-infinite-scroll ng-if="notes_list.isInfinite()" distance="{{ settings.defaultScrollDistance }}" on-infinite="notes_list.loadMore()">
+        <ion-infinite-scroll ng-if="notes_list.hasMore()" distance="{{ settings.defaultScrollDistance }}" on-infinite="notes_list.loadMore()">
         </ion-infinite-scroll>
     </ion-content>
 </ion-view>

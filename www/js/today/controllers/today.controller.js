@@ -6,13 +6,13 @@
         .controller('TodayCtrl', TodayCtrl);
 
     TodayCtrl.$inject = ['$q', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicModal',
-        '$cordovaDatePicker', 'n2w', 'patient', 'medications', 'settings'];
+        'n2w', 'PatientService', 'MedicationService'];
 
     function TodayCtrl($q, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicModal,
-                       $cordovaDatePicker, n2w, patient, medService, settings) {
-
-        var vm = this;
-        var doseModal = null;
+                       n2w, PatientService, MedicationService) {
+        var vm = this,
+            doseModal = null,
+            patient = null;
 
         vm.scheduleDate = $stateParams.date || moment().format('YYYY-MM-DD');
         vm.title = moment().format('YYYY-MM-DD') === vm.scheduleDate ? 'Today' : moment(vm.scheduleDate, 'YYYY-MM-DD').format('MMMM Do YYYY');
@@ -43,7 +43,7 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, settings.timeFormat);
+                        var breakfast = moment(vm.habits.breakfast, $scope.timeFormat);
                         var time = moment(elem.date);
                         return time <= breakfast;
                     }
@@ -87,8 +87,8 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, settings.timeFormat);
-                        var lunch = moment(vm.habits.lunch, settings.timeFormat);
+                        var breakfast = moment(vm.habits.breakfast, $scope.timeFormat);
+                        var lunch = moment(vm.habits.lunch, $scope.timeFormat);
                         var time = moment(elem.date);
                         return (time > breakfast) && (time <= lunch);
                     }
@@ -132,8 +132,8 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var lunch = moment(vm.habits.lunch, settings.timeFormat);
-                        var dinner = moment(vm.habits.dinner, settings.timeFormat);
+                        var lunch = moment(vm.habits.lunch, $scope.timeFormat);
+                        var dinner = moment(vm.habits.dinner, $scope.timeFormat);
                         var time = moment(elem.date);
                         return (time > lunch) && (time <= dinner);
                     }
@@ -177,7 +177,7 @@
                 name: '',
                 f: function (elem) {
                     if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var dinner = moment(vm.habits.dinner, settings.timeFormat);
+                        var dinner = moment(vm.habits.dinner, $scope.timeFormat);
                         var time = moment(elem.date);
                         return (time > dinner);
                     }
@@ -211,7 +211,10 @@
         vm.createDose = createDose;
         vm.changeDate = changeDate;
 
-        refresh();
+        PatientService.getPatient().then(function (item) {
+            patient = item;
+            refresh();
+        });
 
         $ionicModal.fromTemplateUrl('templates/today/dose.today.modal.html', {
             scope: $scope,
@@ -377,8 +380,8 @@
             };
             $q.all([
                 patient.all('schedule').getList(filter),
-                patient.all('medications').getList(),
-                patient.one('habits').get(''),
+                MedicationService.getItems(true),
+                PatientService.getHabits(patient),
                 patient.all('doses').getList()
             ]).then(
                 function (data) {
@@ -426,8 +429,7 @@
                 return;
             }
 
-            medService.setLog(patient);
-            medService.getAll().then(function (medications) {
+            MedicationService.getItems().then(function (medications) {
                 event.medication = _.find(medications, {id: event.medication_id});
                 event.event = _.find(event.medication.schedule.times, {id: event.scheduled});
                 showModal(event);

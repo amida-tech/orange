@@ -5,58 +5,31 @@
         .module('orange')
         .controller('MedicationCtrl', MedicationCtrl);
 
-    MedicationCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'medications', 'patient'];
+    MedicationCtrl.$inject = ['$state', '$stateParams', '$ionicLoading', '$ionicPopup', 'MedicationService'];
 
-    /* @ngInject */
-    function MedicationCtrl($scope, $state, $stateParams, $ionicPopup, $ionicLoading, medications, log) {
-        /* jshint validthis: true */
+    function MedicationCtrl($state, $stateParams, $ionicLoading, $ionicPopup, MedicationService) {
         var vm = this;
-        var id = $stateParams.id;
 
         vm.title = 'Medication Details';
-        vm.medication = null;
-        vm.getEventText = medications.getEventText;
+        MedicationService.getItem($stateParams['id']).then(function (medication) {
+            vm.medication = medication;
+            vm.eventsText = MedicationService.getMedicationText(vm.medication);
+        });
+        vm.getEventText = MedicationService.getEventText.bind(MedicationService);
         vm.remove = remove;
 
-
-        medications.setLog(log);
-        medications.get(id);
-
-        $scope.$watch(medications.getMedication, function (medication) {
-
-            if (medication !== vm.medication) {
-                console.log('Medication changed', medication);
-                vm.medication = medication;
-                vm.eventsText = getMedicationText(medication);
-            }
-        });
-
-        ////////////////
-
-        function getMedicationText(medication) {
-            var text = '';
-            if (medication && medication.schedule.times && medication.schedule.times.length) {
-                var eventsCount = medication.schedule.times.length;
-                text += eventsCount;
-                text += ' event' + (eventsCount > 1 ? 's' : '') + ' per day'
-            }
-
-            return text;
-        }
-
-        function remove() {
+        function remove(medication) {
             $ionicPopup.confirm({
                 title: 'Delete Medication',
                 template: 'Are you sure you want to delete this medication?',
                 okType: 'button-orange'
             }).then(function (confirm) {
                 if (confirm) {
-
                     $ionicLoading.show({
                         template: 'Deleting…'
                     });
 
-                    medications.remove(vm.medication).then(
+                    MedicationService.removeItem(medication).then(
                         undefined,
                         function (error) {
                             console.log(error);
@@ -68,8 +41,6 @@
                         })
                 }
             });
-
         }
-
     }
 })();

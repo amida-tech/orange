@@ -6,38 +6,38 @@
         .controller('NoteAddCtrl', NoteAddCtrl);
 
     NoteAddCtrl.$inject = [
-        '$scope', '$filter', '$state', '$stateParams',
-        '$ionicLoading', '$ionicModal', '$cordovaDialogs', 'NoteService', 'medications'
+        '$q', '$scope', '$filter', '$state', '$stateParams',
+        '$ionicLoading', '$ionicModal', '$cordovaDialogs', 'NoteService', 'MedicationService'
     ];
 
     /* @ngInject */
-    function NoteAddCtrl($scope, $filter, $state, $stateParams,
+    function NoteAddCtrl($q, $scope, $filter, $state, $stateParams,
                          $ionicLoading, $ionicModal, $cordovaDialogs,  NoteService, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
         //Check "id" param in url
         var is_edit = 'id' in $stateParams;
-        if (is_edit) {
-            var id = $stateParams.id;
-        }
 
         vm.title = (is_edit) ? 'Edit Note' : 'Add Note';
         vm.backState = (is_edit) ? 'app.notes.details({id: '+id+'})' : 'app.notes.list';
-        vm.note = NoteService.getItem();
         vm.notesPromise = NoteService.getItems();
-        vm.medicationsPromise = MedicationService.getAll();
+        vm.medicationsPromise = MedicationService.getItems();
 
         //Medications to add model
         vm.medications = [];
 
-        vm.medicationsPromise.then(function (medications) {
-
-            vm.medications = _.map(medications, function(medication) {
+        var id = $stateParams.id;
+        $q.all([
+            NoteService.getItem(id),
+            vm.medicationsPromise
+        ]).then(function (data) {
+            vm.note = data[0] || {};
+            vm.medications = _.map(data[1], function(medication) {
                 medication.checked = false;
 
                 if (is_edit) {
                     var has_medication = _.find(vm.note.medications, function(med) {
-                       return med.id == medication.id
+                        return med.id == medication.id
                     });
 
                     medication.checked = !_.isUndefined(has_medication);

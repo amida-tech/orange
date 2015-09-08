@@ -6,56 +6,28 @@
         .controller('LogMedicationsCtrl', LogMedicationsCtrl);
 
     LogMedicationsCtrl.$inject = [
-        '$scope',
-        '$q',
-        '$state',
-        '$ionicLoading',
-        'TokenService',
-        'Oauth',
-        'patient',
-        'medications'
+        '$scope', '$q', '$state', '$stateParams', '$ionicLoading', 'TokenService', 'Oauth',
+        'PatientService', 'MedicationService'
     ];
 
     /* @ngInject */
-    function LogMedicationsCtrl($scope, $q, $state, $ionicLoading, TokenService, Oauth, patient, medications) {
+    function LogMedicationsCtrl($scope, $q, $state, $stateParams,
+                                $ionicLoading, TokenService, Oauth, PatientService, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
 
         vm.importComplete = false;
         vm.hasImported = false;
         vm.medications = null;
-        vm.medication = null;
-        vm.log = patient;
-
+        PatientService.getItem($stateParams['patient_id']).then(function (patient) {
+            vm.log = patient;
+        });
 
         vm.pickMedication = pickMedication;
         vm.getSMARTToken = getSMARTToken;
         vm.editMedication = editMedication;
 
-        activate();
-
-        //////////////////////
-
-        function activate() {
-            console.log('LogMedicationsCtrl activated');
-            medications.setLog(patient);
-            refresh();
-            $scope.$watch(medications.getMedications, function (medications) {
-                console.log('Medications Changed', medications);
-                if (medications !== vm.medications) {
-                    update(medications);
-                }
-            });
-
-            $scope.$watch(medications.getMedication, function (medication) {
-
-                if (medication !== vm.medication) {
-                    console.log('Medication changed', medication);
-                    vm.medication = medication;
-                    vm.eventsText = getMedicationText(medication);
-                }
-            });
-        }
+        refresh();
 
         function prepareMedication(medication) {
             return {
@@ -130,7 +102,7 @@
                             console.log(vm.importedMedications);
                             var promises = [];
                             vm.importedMedications.forEach(function (elem) {
-                                promises.push(medications.saveMedication(elem));
+                                promises.push(MedicationService.saveItem(elem));
                             });
 
                             $q.all().finally(
@@ -152,42 +124,30 @@
 
         function pickMedication(medication) {
             console.log('Medication picked:', medication);
-            medications.setMedication(medication);
+            MedicationService.setItem(medication);
+            vm.medication = medication;
             $state.go('onboarding-log.medications.schedule');
         }
 
         function refresh() {
-            medications.fetchAll().then(
+            MedicationService.getItems(true).then(
                 function (medications) {
-                    update(medications);
+                    vm.medications = medications;
+                    vm.hasImported = !!(_.find(vm.medications, {origin: 'imported'}));
                     $scope.$broadcast('scroll.refreshComplete');
                 },
                 function (error) {
+                    $scope.$broadcast('scroll.refreshComplete');
                     console.log(error);
 
                 }
             );
         }
 
-        function update(medications) {
-            vm.medications = medications;
-            vm.hasImported = !!(_.find(vm.medications, {origin: 'imported'}));
-        }
-
         function editMedication(medication) {
-            medications.setMedication(medication);
+            MedicationService.setItem(medication);
+            vm.medication = medication;
             $state.go('onboarding-log.medications.schedule')
-        }
-
-        function getMedicationText(medication) {
-            var text = '';
-            if (medication && medication.schedule.times && medication.schedule.times.length) {
-                var eventsCount = medication.schedule.times.length;
-                text += eventsCount;
-                text += ' event' + (eventsCount > 1 ? 's' : '') + ' per day'
-            }
-
-            return text;
         }
     }
 

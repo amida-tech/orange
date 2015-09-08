@@ -5,10 +5,10 @@
         .module('orange')
         .controller('MedicationScheduleCtrl', MedicationScheduleCtrl);
 
-    MedicationScheduleCtrl.$inject = ['$scope', '$state', '$ionicPopup', '$ionicLoading', 'medications'];
+    MedicationScheduleCtrl.$inject = ['$scope', '$stateParams', '$state', '$ionicLoading', 'MedicationService'];
 
     /* @ngInject */
-    function MedicationScheduleCtrl($scope, $state, $ionicPopup, $ionicLoading, medications) {
+    function MedicationScheduleCtrl($scope, $stateParams, $state, $ionicLoading, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -55,28 +55,16 @@
 
         activate();
 
-        vm.continue = function () {
+        vm.continue = function (medication) {
             if (vm.schedule.regularly === false) {
                 delete vm.schedule.until;
                 delete vm.schedule.frequency;
                 // save and go to medication details
-                medications.setMedicationSchedule(vm.schedule);
+                MedicationService.setMedicationSchedule(vm.schedule);
                 $ionicLoading.show({
                     template: 'Saving…'
                 });
-                medications.saveMedication().then(
-                    function(data) {
-                        $ionicLoading.hide();
-                        if (!data.success) {
-                            $ionicPopup.alert({
-                                title: 'Error',
-                                template: data.data.errors,
-                                okType: 'button-dark-orange'
-                            });
-                        }
-                        $state.go(vm.returnUrl);
-                    }
-                ).finally(
+                MedicationService.saveItem(medication).finally(
                     function() {
                         $ionicLoading.hide();
                         $state.go(vm.returnUrl);
@@ -94,7 +82,7 @@
                     });
                 }
                 vm.schedule.times = events;
-                medications.setMedicationSchedule(vm.schedule);
+                MedicationService.setMedicationSchedule(vm.schedule);
                 $state.go(vm.nextUrl);
             }
             //console.log(vm.schedule);
@@ -115,7 +103,7 @@
         }
 
         function activate() {
-            $scope.$watch(medications.getMedication, function (medication) {
+            MedicationService.getItem($stateParams['id']).then(function (medication) {
                 if (medication && medication.schedule !== vm.schedule) {
                     console.log('Schedule changed', medication.schedule);
                     update(angular.copy(medication.schedule));

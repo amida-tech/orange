@@ -5,7 +5,7 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg padding-top">
-        <ion-refresher pulling-text="Pull to refresh" on-refresh="update()">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="update(true)">
         </ion-refresher>
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots" ng-show="!logList.length"></ion-spinner>
@@ -20,6 +20,8 @@
                         </div>
                     </div>
                 </div>
+                <ion-infinite-scroll ng-if="hasMore()" distance="{{ settings.defaultScrollDistance }}" on-infinite="loadMore()">
+                </ion-infinite-scroll>
                 <div class="row row-no-padding">
                     <div class="col col-33" ng-if="!withMe">
                         <div class="item-log" ui-sref="logs-add-my">

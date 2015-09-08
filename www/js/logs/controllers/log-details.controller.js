@@ -5,18 +5,18 @@
         .module('orange')
         .controller('LogDetailsCtrl', LogDetailsCtrl);
 
-    LogDetailsCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicLoading',
-                              '$cordovaActionSheet', 'LogService', 'Patient', 'patient'];
+    LogDetailsCtrl.$inject = ['$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'PatientService'];
 
-    function LogDetailsCtrl($scope, $state, $stateParams, $ionicPopup, $ionicLoading, $cordovaActionSheet,
-                            LogService, Patient, patient) {
+    function LogDetailsCtrl($state, $stateParams, $ionicPopup, $ionicLoading, PatientService) {
 
         var vm = this;
 
         vm.deleteLog = deleteLog;
 
-        vm.currentLog = LogService.setDetailLog($stateParams.id);
-        vm.title = vm.currentLog.first_name + ' ' + vm.currentLog.last_name;
+        PatientService.getItem($stateParams['id']).then(function (patient) {
+            vm.currentLog = patient;
+            vm.title = vm.currentLog.fullName;
+        });
 
         function deleteLog() {
             $ionicPopup.confirm({
@@ -26,18 +26,14 @@
             }).then(
                 function (confirm) {
                     if (confirm) {
+                        var isCurrent = vm.currentLog.id === PatientService.currentPatient.id;
                         $ionicLoading.show({
                             template: 'Deleting...'
                         });
-                        LogService.removeLog(vm.currentLog).then(
+                        PatientService.removeItem(vm.currentLog).then(
                             function () {
                                 $ionicLoading.hide();
-                                Patient.getPatient(true).then(function(pat) {
-                                    patient = pat;
-                                    $state.go('app.logs.list').then(function() {
-                                        $state.go('app.logs.list', {}, {reload: true});
-                                    });
-                                });
+                                $state.go('app.logs.list', {}, {reload: isCurrent});
                             },
                             function (error) {
                                 $ionicLoading.hide();

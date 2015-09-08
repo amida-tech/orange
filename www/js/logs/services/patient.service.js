@@ -3,142 +3,160 @@
 
     angular
         .module('orange')
-        .factory('Patient', Patient);
+        .factory('PatientService', PatientService);
 
-    Patient.$inject = ['$rootScope', '$q', '$state', '$ionicLoading', 'OrangeApi', '$localstorage'];
+    PatientService.$inject = ['$q', '$state', '$ionicLoading', 'OrangeApi', '$localstorage',
+        'BasePagingService', 'Avatar'];
 
     /* @ngInject */
-    function Patient($rootScope, $q, $state, $ionicLoading, OrangeApi, $localstorage) {
-        var patient = null;
-        var patients = [];
+    function PatientService($q, $state, $ionicLoading, OrangeApi, $localstorage, BasePagingService, Avatar) {
 
-        $rootScope.$on('auth:user:logout', clean);
-
-        return {
-            set: set,
-            api: api,
-            getReport: getReport,
-            getPatient: getPatient,
-            getPatients: getPatients,
-            changeStateByPatient: changeStateByPatient
+        var Service = function () {
+            BasePagingService.call(this);
+            this.apiEndpoint = 'patients';
+            this.currentPatient = null;
+            this.limit = 30;
         };
 
-        ////////////////
+        Service.prototype = Object.create(BasePagingService.prototype);
+        Service.prototype.getPatient = getPatient;
+        Service.prototype.getHabits = getHabits;
+        Service.prototype.getTZName = getTZName;
+        Service.prototype.setCurrentPatient = setCurrentPatient;
 
-        function clean() {
-            console.log('User logged out, cleaning patient service data...');
-            patient = null;
-            patients = [];
+        // TODO: temporary alias
+        Service.prototype.getPatients = Service.prototype.getItems;
+
+        Service.prototype.changeStateByPatient = changeStateByPatient;
+        Service.prototype.getReport = getReport;
+
+        Service.prototype.clear = clear;
+        Service.prototype.saveItem = saveItem;
+        Service.prototype.setItem = setItem;
+        Service.prototype.removeItem = removeItem;
+
+        return new Service();
+
+
+        function clear() {
+            BasePagingService.prototype.clear.call(this);
             $localstorage.remove('currentPatient');
         }
 
-        //Cache patients list
-        function getPatients(force) {
-            force = force || false;
-            if (!_.isEmpty(patients) && !force) {
-                return patients
+        function saveItem(savedItem) {
+            var avatarUrl = savedItem.avatarUrl,
+                parts = savedItem.fullName ? savedItem.fullName.split(' ') : [],
+                isNew = !savedItem.id;
+
+            savedItem.first_name = parts.shift() || savedItem.first_name;
+            savedItem.last_name = parts.join(' ') || savedItem.last_name;
+            savedItem.birthdate = savedItem.birthdate || null;
+            if (savedItem.birthdate instanceof Date) {
+                savedItem.birthdate = savedItem.birthdate.toJSON().slice(0, 10);
             }
-            var promise = OrangeApi.patients.getList();
 
-            promise.then(function(pats) {
-                if (!pats.length) {
-                    $state.go('logs');
-                    return pats;
+            return BasePagingService.prototype.saveItem.call(this, savedItem).then(function (item) {
+                console.log('Begin patient.saveItem callback');
+                setFullName(item);
+                if (avatarUrl) {
+                    item.avatarUrl = avatarUrl;
+                    return Avatar.upload(item).then(function () {
+                        console.log('Avatar callback');
+                        if (!isNew) {
+                            Avatar.cleanCache(item.id);
+                        }
+                        return item;
+                    });
                 }
-                patients = pats;
+                return item;
             });
-
-            return promise
         }
 
-        function getPatient(force) {
-            force = force || false;
-            if (force) {
-                $localstorage.remove('currentPatient');
+        function setItem(item) {
+            var self = this;
+            BasePagingService.prototype.setItem.call(this, item);
+            setFullName(this.item);
+            if (this.item) {
+                return this.getHabits(this.item).then(function (habits) {
+                    if (!habits.tz || habits.tz === 'Etc/UTC') {
+                        habits.tz = self.getTZName();
+                    }
+                    self.item.habits = habits;
+                });
             }
+        }
 
-            //Patient promise
-            var deffered = $q.defer();
+        function removeItem(removedItem) {
+            var isCurrent = this.currentPatient['id'] === removedItem.id,
+                self = this;
+            return BasePagingService.prototype.removeItem.call(this, removedItem).then(function (items) {
+                if (isCurrent) {
+                    $localstorage.remove('currentPatient');
+                    self.currentPatient = null;
+                    self.getPatient();
+                }
+                return items;
+            });
+        }
+
+        function getPatient() {
+            var self = this;
 
             //Get patient from cache
-            if (patient != null && !$state.reload && !force) {
-                deffered.resolve(patient);
-                return deffered
+            if (this.currentPatient != null && !$state.reload) {
+                var deferred = $q.defer();
+                deferred.resolve(this.currentPatient);
+                return deferred
             }
 
-            var currentPatient = $localstorage.get('currentPatient', null);
+            var patientID = $localstorage.get('currentPatient', null);
 
             //Get patient by id
-            if (currentPatient  && !force) {
-                OrangeApi.patients.get(currentPatient).then(function(currentPatient) {
-                    $ionicLoading.hide();
-                    deffered.resolve(currentPatient)
-                }, errorGetPatients);
-
-                deffered.promise.then(function(pat) {
-                    patient = pat;
-                });
-                return deffered.promise;
+            if (patientID) {
+                return OrangeApi.patients.get(patientID).then(
+                    function (currentPatient) {
+                        $ionicLoading.hide();
+                        self.currentPatient = currentPatient;
+                        return currentPatient;
+                    },
+                    errorGetPatients
+                );
             }
 
             $ionicLoading.show({
                 template: 'Loading patient data...'
             });
 
-            //Get first patient with medication
-            OrangeApi.patients.getList().then(checkMedication, errorGetPatients);
+            return this.getItems().then(
 
-            function checkMedication(patients) {
-                if (patients[0]) {
-                    if (currentPatient == null) {
-                        currentPatient = patients[0];
+                function (patients) {
+                    var patient = _.find(patients, function (item) {
+                            return item['me'] === true;
+                        });
+                    if (patient === undefined && patients.length > 0) {
+                        patient = patients[0];
                     }
-                    patients[0].all('medications').getList({limit: 1}).then(function(medication) {
-                        if (!_.isUndefined(medication[0])) {
-                            $ionicLoading.hide();
-                            $localstorage.set('currentPatient', patients[0].id);
-                            deffered.resolve(patients[0]);
-                            return;
-                        }
 
-                        checkMedication(patients.slice(1));
-                    });
-                }
-
-                if (currentPatient != null)
-                    $localstorage.set('currentPatient', currentPatient.id);
-
-                deffered.resolve(currentPatient);
-            }
+                    patient && self.setCurrentPatient(patient);
+                    $ionicLoading.hide();
+                    return patient;
+                },
+                errorGetPatients
+            );
 
             function errorGetPatients(response) {
                 console.log('error get patients');
+                console.log(response);
                 $ionicLoading.hide();
-                deffered.resolve(null);
+                return null;
             }
-
-            deffered.promise.then(function(pat) {
-                $ionicLoading.hide();
-                patient = pat;
-            });
-
-            return deffered.promise
-        }
-
-        function set(patientID) {
-            patient = patientID.toString();
-        }
-
-        function api(name) {
-            return OrangeApi.patients.one(patient).all(name);
         }
 
         function changeStateByPatient() {
-            var patient = getPatient();
             //Change state by patient
-            patient.then(function(pat) {
-                 if (pat != null) {
-                     pat.all('medications').getList({limit: 1}).then(function(medication) {
+            this.getPatient().then(function(patient) {
+                 if (patient != null) {
+                     patient.all('medications').getList({limit: 1}).then(function (medication) {
                          if (!_.isUndefined(medication[0])) {
                              $state.go('app.today.schedule');
                              return;
@@ -146,10 +164,19 @@
                          $state.go('logs');
                      });
 
-                     return pat;
+                     return patient;
                  }
                  $state.go('logs');
             });
+        }
+
+        function setCurrentPatient(patient) {
+            this.currentPatient = patient;
+            $localstorage.set('currentPatient', patient['id']);
+        }
+
+        function getHabits(patient) {
+            return patient.one('habits').get('');
         }
 
         function getReport(patientId, month) {
@@ -164,6 +191,16 @@
                     end_date: endDate.toISOString().split('T')[0]
                 }
             );
+        }
+
+        function setFullName(patient) {
+            patient.fullName = patient.first_name + ' ' + patient.last_name;
+        }
+
+        function getTZName() {
+            var tz = jstz.determine();
+            var m = moment();
+            return m.utcOffset()  === 360 ? 'Asia/Novosibirsk' : tz.name();
         }
     }
 })();

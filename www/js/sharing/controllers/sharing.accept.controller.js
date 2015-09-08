@@ -5,16 +5,16 @@
         .module('orange')
         .controller('SharingAcceptCtrl', SharingAcceptCtrl);
 
-    SharingAcceptCtrl.$inject = ['$scope', '$state', '$q', '$ionicLoading', '$ionicPopup',
-                                 'LogService', 'RequestsService'];
+    SharingAcceptCtrl.$inject = ['$state', '$q', '$ionicLoading', '$ionicPopup',
+                                 'PatientService', 'RequestsService'];
 
-    function SharingAcceptCtrl($scope, $state, $q, $ionicLoading, $ionicPopup, LogService, RequestsService) {
+    function SharingAcceptCtrl($state, $q, $ionicLoading, $ionicPopup, PatientService, RequestsService) {
         var vm = this;
 
         vm.accept = accept;
         vm.request = RequestsService.getAcceptingRequest();
 
-        LogService.getLogs().then(function (items) {
+        PatientService.getItems().then(function (items) {
             vm.logs = items;
             vm.logList = _.chunk(items, 3);
         });

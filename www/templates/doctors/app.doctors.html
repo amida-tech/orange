@@ -17,7 +17,7 @@
         <ion-refresher pulling-text="Pull to refresh" on-refresh="doctors.refresh()">
         </ion-refresher>
 
-        <ion-list class="list-clean" can-swipe="true" show-delete="shouldShowDelete">
+        <ion-list class="list-clean" can-swipe="true">
             <ion-item class="item-text-wrap" ng-repeat="doctor in doctors.doctors" ng-click="doctors.details(doctor)">
                 <div class="block-with-subscribe">
                     <span class="text-basic-bold" ng-bind="doctor.name"></span>
@@ -30,7 +30,7 @@
 
             </ion-item>
         </ion-list>
-        <ion-infinite-scroll ng-if="doctors.isInfinite()" distance="{{ settings.defaultScrollDistance }}" on-infinite="doctors.loadMore()">
+        <ion-infinite-scroll ng-if="doctors.hasMore()" distance="{{ settings.defaultScrollDistance }}" on-infinite="doctors.loadMore()">
         </ion-infinite-scroll>
     </ion-content>
 </ion-view>

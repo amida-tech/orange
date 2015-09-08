@@ -60,7 +60,7 @@
                     <p class="text-muted">Send a reminder notification?</p>
                     <label class="item-input item-select">
                         <select data-ng-model="events.notifications[$index]">
-                            <option value="never" disabled>Never</option>
+                            <option value="" disabled>Never</option>
                             <option value="15">15 Minutes Before</option>
                             <option value="30">30 Minutes Before</option>
                             <option value="60">1 Hour Before</option>
@@ -71,6 +71,7 @@
         </ion-list>
     </ion-content>
     <div class="bottom-buttons">
-        <button class="button button-full col col-no-padding button-orange" ng-click="events.save()" ng-bind="events.buttonText"></button>
+        <button class="button button-full col col-no-padding button-orange"
+                ng-click="events.save(medication.medication)" ng-bind="events.buttonText"></button>
     </div>
 </ion-view>

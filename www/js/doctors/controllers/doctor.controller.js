@@ -5,22 +5,23 @@
         .module('orange')
         .controller('DoctorCtrl', DoctorCtrl);
 
-    DoctorCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$stateParams', 'DoctorService'];
+    DoctorCtrl.$inject = ['$state', '$ionicLoading', '$stateParams', 'DoctorService'];
 
     /* @ngInject */
-    function DoctorCtrl($scope, $state, $ionicLoading, $stateParams, DoctorService) {
+    function DoctorCtrl($state, $ionicLoading, $stateParams, DoctorService) {
         /* jshint validthis: true */
         var vm = this,
             is_edit = 'id' in $stateParams;
 
         vm.title = is_edit ? 'Edit Doctor': 'Add Doctor';
         vm.backState = is_edit ? 'app.doctors.details({id:'+$stateParams.id+'})' : 'app.doctors.search';
-        vm.doctor =  DoctorService.getItem();
+        DoctorService.getItem($stateParams['id']).then(function (doctor) {
+            vm.doctor = doctor;
+            if (vm.doctor == null) {
+                $state.go('app.doctors.search')
+            }
+        });
         vm.doctorsPromise = DoctorService.getItems();
-
-        if (vm.doctor == null) {
-            $state.go('app.doctors.search')
-        }
 
         vm.save = function() {
             $ionicLoading.show({

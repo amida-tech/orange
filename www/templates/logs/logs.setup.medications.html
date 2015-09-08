@@ -12,7 +12,7 @@
     <ion-content padding="true">
         <div class="card orange-card with-avatar" ng-if="!medications.importComplete">
             <div class="orange-avatar">
-                <div class="item-log">
+                <div class="item-log" ng-if="medications.log">
                     <avatar patient="medications.log"></avatar>
                 </div>
             </div>
@@ -30,7 +30,7 @@
         </div>
         <div class="card orange-card" ng-class="{'with-avatar': medications.importComplete}">
             <div class="orange-avatar" ng-if="medications.importComplete">
-                <div class="item-log">
+                <div class="item-log" ng-if="medications.log">
                     <avatar patient="medications.log"></avatar>
                 </div>
             </div>

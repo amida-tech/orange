@@ -5,17 +5,17 @@
         .module('orange')
         .factory('NoteService', NoteService);
 
-    NoteService.$inject = ['PagingService'];
+    NoteService.$inject = ['PatientPagingService'];
 
-    function NoteService(PagingService) {
+    function NoteService(PatientPagingService) {
         var Service = function () {
-            PagingService.constructor.call(this);
-            this.apiUrl = 'journal';
+            PatientPagingService.call(this);
+            this.apiEndpoint = 'journal';
             this.sortBy = 'date';
             this.sortOrder = 'desc';
         };
 
-        Service.prototype = PagingService;
+        Service.prototype = Object.create(PatientPagingService.prototype);
 
         return new Service();
     }

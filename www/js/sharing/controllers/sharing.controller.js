@@ -6,9 +6,9 @@
         .controller('SharingCtrl', SharingCtrl);
 
     SharingCtrl.$inject = ['$scope', '$state', '$q', '$locale', '$ionicLoading', '$ionicPopup',
-                           'LogService', 'RequestsService'];
+                           'PatientService', 'RequestsService'];
 
-    function SharingCtrl($scope, $state, $q, $locale, $ionicLoading, $ionicPopup, LogService, RequestsService) {
+    function SharingCtrl($scope, $state, $q, $locale, $ionicLoading, $ionicPopup, PatientService, RequestsService) {
         var vm = this;
 
         vm.months = $locale.DATETIME_FORMATS.MONTH;
@@ -17,11 +17,13 @@
         vm.cancel = cancel;
         vm.update = update;
         vm.log = null;
-        vm.month = 0;
+        vm.month = '0';
 
-        LogService.getLogs().then(function (items) {
+        PatientService.getItems().then(function (items) {
             vm.logs = items;
             vm.logList = _.chunk(items, 3);
+            vm.log = vm.logs && vm.logs[0].id.toString();
+            vm.month = (new Date()).getMonth().toString();
         });
 
         update();

@@ -4,25 +4,25 @@
     </ion-side-menu-content>
     <ion-side-menu side="left">
         <ion-content scroll="false">
-            <div class="avatar">
+            <div class="avatar" ng-if="log">
                 <avatar patient="log"></avatar>
                 <p>{{ log.first_name }} {{ log.last_name }}</p>
                 <p class="phone" ng-if="log.phone" call-phone>{{ log.phone }}</p>
             </div>
             <ion-list>
-                <ion-item menu-close ui-sref="app.today.schedule" ng-click="fixHistory()">
+                <ion-item menu-close ui-sref="app.today.schedule">
                     Today
                 </ion-item>
-                <ion-item menu-close ui-sref="app.notes.list" ng-click="fixHistory()">
+                <ion-item menu-close ui-sref="app.notes.list">
                     Notes
                 </ion-item>
-                <ion-item menu-close ui-sref="app.medications" ng-click="fixHistory()">
+                <ion-item menu-close ui-sref="app.medications">
                     Medications
                 </ion-item>
-                <ion-item menu-close ui-sref="app.doctors.list" ng-click="fixHistory()">
+                <ion-item menu-close ui-sref="app.doctors.list">
                     Doctors
                 </ion-item>
-                <ion-item menu-close ui-sref="app.pharmacies.list" ng-click="fixHistory()">
+                <ion-item menu-close ui-sref="app.pharmacies.list">
                     Pharmacies
                 </ion-item>
             </ion-list>
@@ -30,13 +30,13 @@
             <div class="bottom-list">
                 <ion-list>
                     <ion-item class="item-email" ng-bind="profile.email"></ion-item>
-                    <ion-item menu-close ui-sref="app.logs.list" ng-click="fixHistory()">
+                    <ion-item menu-close ui-sref="app.logs.list">
                         Logs
                     </ion-item>
-                    <ion-item menu-close ui-sref="app.sharing" ng-click="fixHistory()">
+                    <ion-item menu-close ui-sref="app.sharing">
                         Sharing
                     </ion-item>
-                    <ion-item menu-close ui-sref="app.settings" ng-click="fixHistory()">
+                    <ion-item menu-close ui-sref="app.settings">
                         Settings
                     </ion-item>
                 </ion-list>

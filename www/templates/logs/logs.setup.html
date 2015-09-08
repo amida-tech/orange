@@ -7,7 +7,7 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="orange-bg padding-top">
-        <ion-refresher pulling-text="Pull to refresh" on-refresh="update()">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="update(true)">
         </ion-refresher>
         <p class="padding-x2">Here you can add the medications & habits for each log you created.
             This can be done via a BlueButton import, manual entry, or both.
@@ -16,14 +16,15 @@
             <div class="orange-logs item item-text-wrap light orange-bg">
                 <div class="row row-no-padding" ng-repeat="row in logList">
                     <div class="col col-33" ng-repeat="log in row">
-                        <div class="item-log">
-                            <avatar patient="log" ui-sref="onboarding-log.habits({id: log.id})"></avatar>
+                        <div class="item-log" ng-click="habits(log)">
+                            <avatar patient="log"></avatar>
                             <div class="log-title">{{ log.first_name }}<br/>{{ log.last_name }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <ion-infinite-scroll ng-if="hasMore()" distance="{{ settings.defaultScrollDistance }}" on-infinite="loadMore()">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>

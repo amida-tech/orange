@@ -5,15 +5,15 @@
         .module('orange')
         .factory('DoctorService', DoctorService);
 
-    DoctorService.$inject = ['PagingService'];
+    DoctorService.$inject = ['PatientPagingService'];
 
-    function DoctorService(PagingService) {
+    function DoctorService(PatientPagingService) {
         var Service = function () {
-            PagingService.constructor.call(this);
-            this.apiUrl = 'doctors';
+            PatientPagingService.call(this);
+            this.apiEndpoint = 'doctors';
         };
 
-        Service.prototype = PagingService;
+        Service.prototype = Object.create(PatientPagingService.prototype);
 
         return new Service();
     }

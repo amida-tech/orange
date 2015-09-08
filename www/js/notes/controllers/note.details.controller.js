@@ -5,22 +5,26 @@
         .module('orange')
         .controller('NoteDetailsCtrl', NoteDetailsCtrl);
 
-    NoteDetailsCtrl.$inject = ['$scope', '$stateParams', 'NoteService', 'medications'];
+    NoteDetailsCtrl.$inject = ['$q', '$stateParams', 'NoteService', 'MedicationService'];
 
-    function NoteDetailsCtrl($scope, $stateParams, NoteService, MedicationService) {
+    function NoteDetailsCtrl($q, $stateParams, NoteService, MedicationService) {
         var vm = this;
 
         vm.title = 'Note Details';
         vm.notesPromise = NoteService.getItems();
-        vm.medicationsPromise = MedicationService.getAll();
-        vm.note = NoteService.getItem();
-
-        vm.medicationsPromise.then(function (medications) {
-            vm.note.medications = _.map(vm.note.medication_ids, function(id) {
-                return _.filter(medications, function(medication) {
-                    return medication.id == id;
-                })[0]
-            });
+        vm.medicationsPromise = MedicationService.getItems();
+        $q.all([
+            NoteService.getItem($stateParams['id']),
+            vm.medicationsPromise
+        ]).then(function (data) {
+            vm.note = data[0];
+            if (vm.note['medication_ids']) {
+                vm.note.medications = _.map(vm.note.medication_ids, function (id) {
+                    return _.filter(data[1], function (medication) {
+                        return medication.id == id;
+                    })[0]
+                });
+            }
         });
     }
 })();

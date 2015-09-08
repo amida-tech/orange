@@ -5,21 +5,30 @@
         .module('orange')
         .controller('AddLogCtrl', AddLogCtrl);
 
-    AddLogCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', '$cordovaCamera', 'OrangeApi',
-                          'Avatar', 'LogService', 'patient', 'notifications', '$localstorage'];
+    AddLogCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', '$ionicModal', '$cordovaCamera',
+        'PatientService', 'notifications'];
 
     /* @ngInject */
-    function AddLogCtrl($scope, $state, $ionicLoading, $ionicModal, $cordovaCamera, OrangeApi, Avatar,
-                        LogService, patient, notify, $localstorage) {
+    function AddLogCtrl($scope, $state, $stateParams, $ionicLoading, $ionicModal, $cordovaCamera,
+                        PatientService, notify) {
 
         $scope.editMode = !!$state.params['editMode'];
-        $scope.log = $scope.editMode ? LogService.getDetailLog(): patient;
         $scope.saveLog = $scope.editMode ? saveLogWithHabits: addLog;
         $scope.selectPhoto = selectPhoto;
         $scope.isDevice = ionic.Platform.isWebView();
-        $scope.title = $scope.editMode ? 'Edit Log' : patient.me ? 'Add My Log' : 'Add New Log';
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
         $scope.iconItems = _.chunk($scope.settings.avatars, 3);
+
+        if ('id' in $stateParams) {
+            PatientService.getItem($stateParams['id']).then(function (patient) {
+                $scope.log = $scope.editMode ? patient : {};
+                $scope.title = 'Edit Log';
+            })
+        } else {
+            $scope.log = {};
+            $scope.title = 'Add New Log';
+        }
+
 
         $ionicModal.fromTemplateUrl('templates/logs/logs.icon.modal.html', {
             scope: $scope
@@ -73,12 +82,13 @@
                 template: 'Saving...'
             });
             if ($scope.log.habits) {
-                $scope.log.habits.save().then(function() {
-                    if ($scope.log.id == $localstorage.get('currentPatient')) {
-                        notify.updateNotify();
-                    }
-                    saveLog()
-                },
+                $scope.log.habits.save().then(
+                    function() {
+                        if ($scope.log === PatientService.currentPatient) {
+                            notify.updateNotify();
+                        }
+                        saveLog()
+                    },
                     function (error) {
                         $ionicLoading.hide();
                         alert(error.data.errors);
@@ -90,65 +100,23 @@
         }
 
         function saveLog() {
-            var avatarUrl = $scope.log.avatarUrl;
-
-            var parts = $scope.log.fullName ? $scope.log.fullName.split(' ') : [];
-            $scope.log.first_name = parts.shift() || '';
-            $scope.log.last_name = parts.join(' ') || '';
-
-            if ($scope.log.restangularized) {
-                // Restangular object
-                // We can just save changes
-                $scope.log.birthdate = $scope.log.birthdate || null;
-                if ($scope.log.birthdate instanceof Date) {
-                    $scope.log.birthdate = $scope.log.birthdate.toJSON().slice(0, 10);
+            PatientService.saveItem($scope.log).then(
+                function (patient) {
+                    console.log('log save callback');
+                    $scope.log = patient;
+                    $ionicLoading.hide();
+                    goToNextState();
+                },
+                function (response) {
+                    $ionicLoading.hide();
+                    alert(response.data.errors);
                 }
-                $scope.log.save().then(
-                    function (patient) {
-                        LogService.addLog(patient);
-                        $scope.log = patient;
-                        if (avatarUrl) {
-                            $scope.log.avatarUrl = avatarUrl;
-                            Avatar.upload($scope.log).then(
-                                function () {
-                                    Avatar.cleanCache($scope.log.id);
-                                    goToNextState();
-                                }, goToNextState);
-                        } else {
-                            goToNextState();
-                        }
-                    },
-                    function (response) {
-                        $ionicLoading.hide();
-                        alert(response.data.errors);
-                    }
-                )
-            } else {
-                // Not restangular object
-                // Create new patient
-                OrangeApi.patients.post($scope.log).then(
-                    function (patient) {
-                        LogService.addLog(patient);
-                        $scope.log = patient;
-                        $scope.log.fullName = $scope.log.first_name + ' ' + $scope.log.last_name;
-                        if (avatarUrl) {
-                            $scope.log.avatarUrl = avatarUrl;
-                            Avatar.upload($scope.log).then(goToNextState, goToNextState);
-                        } else {
-                            goToNextState();
-                        }
+            );
 
-                    },
-                    function (error) {
-                        $ionicLoading.hide();
-                        alert(error.status);
-                    }
-                )
-            }
         }
 
         function goToNextState() {
-            var options = {reload: $scope.log.id == $localstorage.get('currentPatient')};
+            var options = {reload: $scope.log['id'] === PatientService.currentPatient['id']};
             $state.go($state.params['nextState'] || 'logs', {}, options);
             $ionicLoading.hide();
         }

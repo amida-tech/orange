@@ -6,11 +6,11 @@
         .factory('notifications', notifications);
 
     notifications.$inject = ['$rootScope', '$q', '$timeout', '$state',
-        '$cordovaLocalNotification', '$ionicPopup', 'Patient', '$localstorage'];
+        '$cordovaLocalNotification', '$ionicPopup', 'PatientService', '$localstorage'];
 
     /* @ngInject */
     function notifications($rootScope, $q, $timeout, $state,
-                           $cordovaLocalNotification, $ionicPopup, Patient, $localstorage) {
+                           $cordovaLocalNotification, $ionicPopup, PatientService, $localstorage) {
         var id = 0;
         var stackAlerts = [];
 
@@ -34,13 +34,16 @@
         ////////////////
 
         //Update notifications
-        function updateNotify() {
+        function updateNotify(force) {
+            if (force === true) {
+                $localstorage.remove('triggeredEvents');
+            }
             if (!($rootScope.isIOS || $rootScope.isAndroid)) {
                 return;
             }
 
             function _cancelCurrent() {
-                var patient = Patient.getPatient();
+                var patient = PatientService.getPatient();
                 patient.then(_fetchPatientData);
 
                 var triggeredEvents = $localstorage.getObject('triggeredEvents');
@@ -180,7 +183,7 @@
                 return;
             }
 
-            var patient = Patient.getPatient();
+            var patient = PatientService.getPatient();
             patient.then(function(pat) {
                 pat.all('schedule').getList({
                     medication_id: medication.id,

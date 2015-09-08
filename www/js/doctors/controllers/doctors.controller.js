@@ -17,7 +17,7 @@
         vm.remove = remove;
         vm.refresh = refresh;
         vm.loadMore = loadMore;
-        vm.isInfinite = DoctorService.isInfinite;
+        vm.hasMore = DoctorService.hasMore;
         vm.title = "Doctors";
 
         refresh();

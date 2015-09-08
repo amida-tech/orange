@@ -5,14 +5,16 @@
         .module('orange')
         .controller('PharmacyDetailsCtrl', PharmacyDetailsCtrl);
 
-    PharmacyDetailsCtrl.$inject = ['$scope', '$locale', 'PharmacyService'];
+    PharmacyDetailsCtrl.$inject = ['$stateParams', '$locale', 'PharmacyService'];
 
-    function PharmacyDetailsCtrl($scope, $locale, PharmacyService) {
+    function PharmacyDetailsCtrl($stateParams, $locale, PharmacyService) {
         var vm = this;
 
         vm.pharmacyPromise = PharmacyService.getItems();
         vm.days = $locale.DATETIME_FORMATS.DAY;
-        vm.pharmacy = PharmacyService.getItem();
+        PharmacyService.getItem($stateParams['id']).then(function (pharmacy) {
+            vm.pharmacy = pharmacy;
+        });
 
     }
 })();
