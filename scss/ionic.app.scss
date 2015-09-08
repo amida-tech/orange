@@ -227,14 +227,14 @@ body {
   font-size: $font-size-base + 1;
   span {
     line-height: 1.1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
   }
   span:first-child {
-    display: block;
     line-height: 1.2;
     margin-bottom: 0;
     padding-bottom: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
     margin-top: 0;
     padding-top: 0;
   }
@@ -787,6 +787,9 @@ ion-content {
     font-family: 'Lato', sans-serif;
     .title {
       text-transform: uppercase;
+    }
+    .title.title-left {
+      margin-left: -10px;
     }
   }
 

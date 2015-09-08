@@ -40,8 +40,8 @@
             <ion-item ng-click="medications.editMedication(medication)"
                       ng-repeat="medication in medications.medications | filter: {origin: 'imported'}">
                 <div class="med-title">
-                    <p class="med-name" ng-bind="medication.name"></p>
-                    <p class="med-rx" ng-bind="medication.brand"></p>
+                    <p class="med-name" ng-bind="medication.brand"></p>
+                    <p class="med-rx" ng-bind="medication.name"></p>
                 </div>
             </ion-item>
             <div class="item item-text-wrap">
@@ -50,8 +50,8 @@
             <ion-item ng-click="medications.editMedication(medication)"
                       ng-repeat="medication in medications.medications | filter: {origin: '!imported'}">
                 <div class="med-title">
-                    <p class="med-name" ng-bind="medication.name"></p>
-                    <p class="med-rx" ng-bind="medication.brand"></p>
+                    <p class="med-name" ng-bind="medication.brand"></p>
+                    <p class="med-rx" ng-bind="medication.name"></p>
                 </div>
             </ion-item>
             <div class="item item-button">

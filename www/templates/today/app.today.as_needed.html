@@ -19,8 +19,8 @@
             <ion-item class="" ng-repeat="medication in asNeeded.medications" ui-sref="app.today.as_needed_add({id: medication.id})">
 
                 <div class="block-with-subscribe">
-                    <span class="text-basic" ng-bind="medication.name"></span>
-                    <span class="text-medication-brand" ng-bind="medication.brand"></span>
+                    <span class="text-basic" ng-bind="medication.brand"></span>
+                    <span class="text-medication-brand" ng-bind="medication.name"></span>
                 </div>
 
             </ion-item>

@@ -40,9 +40,9 @@
 
                         <div class="col col-75 med-title" ng-click="today.openModal(event)">
 
-                            <p class="med-name" ng-bind="event.medication.name"></p>
+                            <p class="med-name" ng-bind="event.medication.brand"></p>
+                            <p class="med-rx" ng-bind="event.medication.name"></p>
 
-                            <p class="med-rx" ng-bind="event.medication.brand"></p>
                             <p class="muted" ng-if="event.dose_id">
                                 <small ng-bind="(event.took_medication ? 'Taken: ' : 'Skipped: ') + (event.dose.date|date:'hh:mm a'|lowercase)"></small>
                             </p>
