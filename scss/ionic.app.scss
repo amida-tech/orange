@@ -232,11 +232,12 @@ body {
     display: block;
   }
   span:first-child {
-    line-height: 1.2;
+    line-height: 1.3;
     margin-bottom: 0;
     padding-bottom: 0;
     margin-top: 0;
     padding-top: 0;
+    vertical-align: top;
   }
 }
 
