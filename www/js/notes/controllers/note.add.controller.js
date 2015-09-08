@@ -19,7 +19,7 @@
         var is_edit = 'id' in $stateParams;
 
         vm.title = (is_edit) ? 'Edit Note' : 'Add Note';
-        vm.backState = (is_edit) ? 'app.notes.details({id: '+id+'})' : 'app.notes.list';
+        vm.backState = (is_edit) ? 'app.notes.details({id: ' + $stateParams.id + '})' : 'app.notes.list';
         vm.notesPromise = NoteService.getItems();
         vm.medicationsPromise = MedicationService.getItems();
 

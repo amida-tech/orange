@@ -151,10 +151,10 @@
                 return item;
             })
         }
-        
+
         function removeItem(removedItem) {
             var self = this,
-                itemIndex = this.items.indexOf(removedItem);
+                itemIndex = this.items ? this.items.indexOf(removedItem) : -1;
             return removedItem.remove().then(function () {
                 if (itemIndex > -1) {
                     self.items.splice(itemIndex, 1);
@@ -173,7 +173,7 @@
                         return item.id === newItem.id;
                     });
                     listItem = _.extend(listItem, newItem);
-                    if (listItem.id === self.item.id) {
+                    if (listItem && listItem.id === self.item.id) {
                         self.setItem(listItem);
                     }
                     return listItem;
@@ -182,7 +182,7 @@
                 return this.getNewItemPromise(savedItem);
             }
         }
-        
+
         function getNewItemPromise(savedItem) {
             return OrangeApi[this.apiEndpoint].post(savedItem).then(
                 this.newItemSuccess.bind(this)

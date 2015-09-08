@@ -5,13 +5,15 @@
         .module('orange')
         .controller('MedicationScheduleCtrl', MedicationScheduleCtrl);
 
-    MedicationScheduleCtrl.$inject = ['$scope', '$stateParams', '$state', '$ionicLoading', 'MedicationService'];
+    MedicationScheduleCtrl.$inject = ['$scope', '$stateParams', '$state', '$ionicLoading', '$ionicPopup', 'MedicationService'];
 
     /* @ngInject */
-    function MedicationScheduleCtrl($scope, $stateParams, $state, $ionicLoading, MedicationService) {
+    function MedicationScheduleCtrl($scope, $stateParams, $state, $ionicLoading, $ionicPopup, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
 
+        vm.scheduleForm = null;
+        vm.showErrors = false;
         vm.activate = activate;
         vm.title = 'MedicationScheduleCtrl';
         vm.buttonText = null;
@@ -56,38 +58,47 @@
         activate();
 
         vm.continue = function (medication) {
-            if (vm.schedule.regularly === false) {
-                delete vm.schedule.until;
-                delete vm.schedule.frequency;
-                // save and go to medication details
-                MedicationService.setMedicationSchedule(vm.schedule);
-                $ionicLoading.show({
-                    template: 'Saving…'
+            vm.showErrors = false;
+            if (!vm.scheduleForm.$valid) {
+                console.log(vm.scheduleForm);
+                $ionicPopup.alert({
+                    title: 'Error',
+                    template: 'Fill in the values for all the required fields',
+                    okType: 'button-orange'
                 });
-                MedicationService.saveItem(medication).finally(
-                    function() {
-                        $ionicLoading.hide();
-                        $state.go(vm.returnUrl);
-                    }
-                );
+                vm.showErrors = true;
+
             } else {
-                // prepare events and go to configure events
-                var events = vm.schedule.times || [];
-                events = events.slice(0, vm.eventsCount);
-                for (var i = events.length; i < vm.eventsCount; i++) {
-                    events.push({
-                        type: 'event',
-                        event: 'breakfast',
-                        when: 'before'
+                if (vm.schedule.regularly === false) {
+                    delete vm.schedule.until;
+                    delete vm.schedule.frequency;
+                    // save and go to medication details
+                    MedicationService.setMedicationSchedule(vm.schedule);
+                    $ionicLoading.show({
+                        template: 'Saving…'
                     });
+                    MedicationService.saveItem(medication).finally(
+                        function() {
+                            $ionicLoading.hide();
+                            $state.go(vm.returnUrl);
+                        }
+                    );
+                } else {
+                    // prepare events and go to configure events
+                    var events = vm.schedule.times || [];
+                    events = events.slice(0, vm.eventsCount);
+                    for (var i = events.length; i < vm.eventsCount; i++) {
+                        events.push({
+                            type: 'event',
+                            event: 'breakfast',
+                            when: 'before'
+                        });
+                    }
+                    vm.schedule.times = events;
+                    MedicationService.setMedicationSchedule(vm.schedule);
+                    $state.go(vm.nextUrl);
                 }
-                vm.schedule.times = events;
-                MedicationService.setMedicationSchedule(vm.schedule);
-                $state.go(vm.nextUrl);
             }
-            //console.log(vm.schedule);
-            //console.log(vm.eventsCount);
-            //$state.go('app.medication.events');
         };
 
         ////////////////
@@ -135,7 +146,7 @@
                 }
             }
 
-            vm.eventsCount = (vm.schedule.times && vm.schedule.times.length) || 1;
+            vm.eventsCount = (vm.schedule.times && vm.schedule.times.length) || null;
         }
 
         function regularityChanged(newValue) {
@@ -166,7 +177,7 @@
                 if (!vm.schedule.frequency) {
                     vm.schedule.frequency = {
                         unit: 'day',
-                        n: 1
+                        n: null
                     };
                     vm.selectedFrequency = 'daily';
                 }
@@ -180,13 +191,13 @@
                     break;
                 case 'number':
                     if (!_.isNumber(vm.schedule.until.stop)) {
-                        vm.schedule.until.stop = 1;
+                        vm.schedule.until.stop = null;
                     }
 
                     break;
                 case 'date':
                     if (!_.isString(vm.schedule.until.stop)) {
-                        vm.schedule.until.stop = moment().format('YYYY-MM-DD');
+                        vm.schedule.until.stop = null;
                     }
                     break;
             }
@@ -199,7 +210,7 @@
                     console.log('daily');
                     frequency = {
                         unit: 'day',
-                        n: (vm.schedule.frequency && vm.schedule.frequency.unit === 'day' && vm.schedule.frequency.n) || 1
+                        n: (vm.schedule.frequency && vm.schedule.frequency.unit === 'day' && vm.schedule.frequency.n) || null
                     };
                     vm.schedule.frequency = frequency;
                     break;

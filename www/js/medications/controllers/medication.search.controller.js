@@ -87,7 +87,7 @@
                 form: parseDfg(elem.dfg),
                 origin: 'manual',
                 dose: {
-                    quantity: 1,
+                    quantity: null,
                     unit: 'mg'
                 },
                 schedule: {

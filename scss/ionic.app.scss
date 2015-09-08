@@ -587,6 +587,12 @@ dl.dl-worksheet {
     padding-bottom: $padding-large-vertical;
     margin-bottom: $padding-large-vertical;
   }
+
+  &.show-errors {
+    input.ng-invalid {
+      border-color: $red;
+    }
+  }
 }
 
 ion-content {
