@@ -14,16 +14,16 @@
                 <ul class="list">
                     <li class="sharing-list" ng-repeat="request in sharing.requests">
                         <div class="item-input item-input-wo-margin">
-                            <span class="input-label input-label-wo-margin">
-                                <div class="sharing-email">
-                                    <strong>{{ request.email }}</strong>
-                                    has requested access to your logs
-                                </div>
-                                <div class="sharing-status">
-                                    <button class="button" ng-click="sharing.accept(request)">Accept</button><br>
-                                    <button class="button" ng-click="sharing.decline(request)">Decline</button>
-                                </div>
-                            </span>
+                            <div class="input-label input-label-wo-margin sharing-email">
+                                <strong>{{ request.email }}</strong>
+                                has requested access to your logs
+                            </div>
+                        </div>
+                        <div class="sharing-status">
+                            <button class="button" ng-click="sharing.accept(request)">Accept</button><br>
+                        </div>
+                        <div class="sharing-status">
+                            <button class="button" ng-click="sharing.decline(request)">Decline</button>
                         </div>
                     </li>
                 </ul>
