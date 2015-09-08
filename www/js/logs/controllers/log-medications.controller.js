@@ -19,7 +19,7 @@
         vm.importComplete = false;
         vm.hasImported = false;
         vm.medications = null;
-        PatientService.getItem($stateParams['id']).then(function (patient) {
+        PatientService.getItem($stateParams['patient_id']).then(function (patient) {
             vm.log = patient;
         });
 

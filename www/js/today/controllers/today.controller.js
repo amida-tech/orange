@@ -5,10 +5,10 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$q', '$scope', '$ionicLoading', '$ionicPopup', '$ionicModal',
+    TodayCtrl.$inject = ['$q', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicModal',
         'n2w', 'PatientService', 'MedicationService'];
 
-    function TodayCtrl($q, $scope, $ionicLoading, $ionicPopup, $ionicModal,
+    function TodayCtrl($q, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicModal,
                        n2w, PatientService, MedicationService) {
         var vm = this,
             doseModal = null,

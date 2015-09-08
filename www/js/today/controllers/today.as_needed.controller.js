@@ -16,7 +16,7 @@
             });
         };
 
-        vm.medicationsPromise = $scope.medications;
+        vm.medicationsPromise = MedicationService.getItems();
         vm.medications = [];
 
         $scope.$watch('medications.$$state.status', function(newValue, oldValue) {
@@ -26,14 +26,15 @@
         });
 
         vm.refresh = function() {
-            MedicationService.getItems().then(
+            vm.medicationsPromise.then(
                 function (medications) {
                     $scope.$broadcast('scroll.refreshComplete');
                     $scope.medications = _filterMedications(medications);
                     vm.medications = $scope.medications;
                 }
             )
-        }
+        };
 
+        vm.refresh();
     }
 })();

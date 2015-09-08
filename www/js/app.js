@@ -453,7 +453,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     })
 
                     .state('onboarding-log', {
-                        url: '/onboarding/log/:id',
+                        url: '/onboarding/log/:patient_id',
                         abstract: true,
                         template: '<ion-nav-view></ion-nav-view>'
                     })

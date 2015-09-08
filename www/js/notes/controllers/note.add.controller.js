@@ -26,31 +26,27 @@
         //Medications to add model
         vm.medications = [];
 
-        if (is_edit) {
-            var id = $stateParams.id;
-            $q.all([
-                NoteService.getItem(id),
-                vm.medicationsPromise
-            ]).then(function (data) {
-                vm.note = data[0];
-                vm.medications = _.map(data[1], function(medication) {
-                    medication.checked = false;
+        var id = $stateParams.id;
+        $q.all([
+            NoteService.getItem(id),
+            vm.medicationsPromise
+        ]).then(function (data) {
+            vm.note = data[0] || {};
+            vm.medications = _.map(data[1], function(medication) {
+                medication.checked = false;
 
-                    if (is_edit) {
-                        var has_medication = _.find(vm.note.medications, function(med) {
-                            return med.id == medication.id
-                        });
+                if (is_edit) {
+                    var has_medication = _.find(vm.note.medications, function(med) {
+                        return med.id == medication.id
+                    });
 
-                        medication.checked = !_.isUndefined(has_medication);
-                        return medication
-                    }
-
+                    medication.checked = !_.isUndefined(has_medication);
                     return medication
-                });
+                }
+
+                return medication
             });
-        } else {
-            vm.note = {};
-        }
+        });
 
         //Save note
         vm.save = function (form) {

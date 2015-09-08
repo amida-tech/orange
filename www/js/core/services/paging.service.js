@@ -136,8 +136,9 @@
             if (this.item && this.item.id == itemId) {
                 deferred.resolve(this.item);
                 return deferred.promise;
-            //} else if (!itemId) {
-            //
+            } else if (!itemId) {
+                deferred.resolve(null);
+                return deferred.promise;
             } else {
                 return this.getItemPromise(itemId);
             }

@@ -5,17 +5,17 @@
         .module('orange')
         .controller('TodayAsNeededAddCtrl', TodayAsNeededAddCtrl);
 
-    TodayAsNeededAddCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', 'PatientService', 'n2w'];
+    TodayAsNeededAddCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', 'PatientService',
+        'MedicationService', 'n2w'];
 
-    function TodayAsNeededAddCtrl($scope, $state, $stateParams, $ionicLoading, PatientService, n2w) {
+    function TodayAsNeededAddCtrl($scope, $state, $stateParams, $ionicLoading, PatientService, MedicationService, n2w) {
         var vm = this;
-        vm.medicationsPromise = $scope.medications;
+        vm.medicationsPromise = MedicationService.getItems();
 
-        vm.medication = _.find($scope.medications.$object, function(medication) {
-            return medication.id == $stateParams.id
+        MedicationService.getItem($stateParams['id']).then(function (medication) {
+            vm.medication = medication;
+            vm.takenText = getTakenText(vm.medication);
         });
-
-        vm.takenText = getTakenText(vm.medication);
 
         function getTakenText(medication) {
             var result = '';
