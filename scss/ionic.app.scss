@@ -1209,23 +1209,19 @@ ion-option-button.option-control.button {
 /* Sharing */
 .sharing-list {
   margin-bottom: $padding-base-vertical;
-  border-left: 3px solid orange;
-  padding-left: 5px;
 }
 
 .sharing-email {
   color: black;
   font-weight: normal;
-  float: left;
-  max-width: 75%;
 }
 
 .sharing-status {
-  float: right;
-  display: block;
+  display: inline-block;
+  width: 45%;
 
   .button {
-    padding: $button-mini-padding;
+    padding: 7px;
     border: 1px solid $gray;
     background: $lightgray;
     height: auto;
@@ -1233,8 +1229,8 @@ ion-option-button.option-control.button {
     font-size: 12px;
     font-weight: bold;
     line-height: 1;
-    float: right;
     margin-bottom: 1px;
+    width: 100%;
   }
 }
 
