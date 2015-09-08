@@ -228,9 +228,10 @@
                 .then(
                 undefined,
                 function (data) {
+                    var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
                     $ionicPopup.alert({
                         title: 'Error',
-                        template: data.data.errors,
+                        template: template,
                         okType: 'button-dark-orange'
                     });
                 })
@@ -285,9 +286,10 @@
                             undefined,
                             function (data) {
                                 $ionicLoading.hide();
+                                var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
                                 $ionicPopup.alert({
                                     title: 'Error',
-                                    template: data.data.errors,
+                                    template: template,
                                     okType: 'button-dark-orange'
                                 });
                             })
