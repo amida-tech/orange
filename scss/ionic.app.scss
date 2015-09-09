@@ -613,7 +613,7 @@ ion-content {
   }
 
   .schedule-header-left {
-    font-size: $orange-font-head-size - 1;
+    font-size: $orange-font-head-size - 2;
     font-weight: normal;
   }
   .schedule-header-right {
@@ -622,6 +622,10 @@ ion-content {
     font-size: $font-size-small - 1;
     line-height: 1;
     font-weight: bold;
+
+    &.overdue {
+      color: $dark-red;
+    }
   }
 }
 

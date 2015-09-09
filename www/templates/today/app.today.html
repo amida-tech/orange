@@ -28,8 +28,8 @@
         <div ng-if="today.schedule.length && filter.events.length" ng-repeat="filter in today.filters"
              class="schedule-item">
             <div class="row row-bottom schedule-header">
-                <div class="col col-66 schedule-header-left" ng-bind="filter.title"></div>
-                <div class="col col-33 schedule-header-right" ng-bind="filter.name"></div>
+                <div class="col col-60 schedule-header-left" ng-bind="filter.title"></div>
+                <div class="col col-40 schedule-header-right" ng-class="{'overdue': filter.name.indexOf('overdue') !== -1}" ng-bind="filter.name"></div>
             </div>
             <div class="list list-inset list-schedule">
                 <div class="item item-schedule"
@@ -40,7 +40,7 @@
 
                         <div class="col col-75 med-title" ng-click="today.openModal(event)">
 
-                            <p class="med-name" ng-bind="event.medication.brand"></p>
+                            <p class="med-name" ng-bind="event.medication.brand + ' - ' + event.medication.dose.quantity + ' ' + event.medication.dose.unit"></p>
                             <p class="med-rx" ng-bind="event.medication.name"></p>
 
                             <p class="muted" ng-if="event.dose_id">
@@ -48,8 +48,6 @@
                             </p>
 
                         </div>
-                        <!--<div class="col col-25 actions" ng-bind-html="filter.buttons | trusted">-->
-                        <!--</div>-->
                         <div class="col col-25 actions" ng-switch="event.status">
                             <div ng-switch-when="skipped">
                                 <i class="icon ion-ios-close dark-red"></i>
@@ -61,7 +59,6 @@
                                 <i class="icon ion-ios-checkmark-outline green" ng-click="today.confirmDose(event)"></i>
                                 <i class="icon ion-ios-close-outline dark-red" ng-click="today.confirmDose(event, true)"></i>
                             </div>
-
                         </div>
                     </div>
                 </div>
