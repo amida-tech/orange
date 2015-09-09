@@ -6,13 +6,13 @@
         .factory('BasePagingService', BasePagingService)
         .factory('PatientPagingService', PatientPagingService);
 
-    BasePagingService.$inject = ['$rootScope', '$q', 'OrangeApi', 'settings'];
+    BasePagingService.$inject = ['$rootScope', '$q', '$state', 'OrangeApi', 'settings', 'GlobalService'];
     PatientPagingService.$inject = ['$rootScope', 'BasePagingService', 'PatientService'];
 
     /**
      * Base Paging service works through OrangeApi
      */
-    function BasePagingService($rootScope, $q, OrangeApi, settings) {
+    function BasePagingService($rootScope, $q, $state, OrangeApi, settings, GlobalService) {
         var Service = function () {
 
             this.apiEndpoint = '';
@@ -23,6 +23,10 @@
             this.limit = settings.defaultLimit;
             this.sortBy = 'id';
             this.sortOrder = 'asc';
+
+            this.errorItemNotFound = '';
+            this.errorItemNotFoundText = 'Item not found';
+            this.afterErrorItemNotFoundState = '';
 
             $rootScope.$on('auth:user:logout', this.clear.bind(this));
         };
@@ -35,6 +39,7 @@
         Service.prototype.getItem = getItem;
         Service.prototype.getItemPromise = getItemPromise;
         Service.prototype.removeItem = removeItem;
+        Service.prototype.excludeItemFromList = excludeItemFromList;
         Service.prototype.saveItem = saveItem;
         Service.prototype.clear = clear;
 
@@ -52,6 +57,7 @@
                     limit: all ? 0 : this.limit
                 };
             this.offset = 0;
+            this.count = 0;
             return fetchItems.call(this, options).then(function (items) {
                 self.items = items;
                 self.offset = all ? items.meta['count'] : self.limit;
@@ -131,7 +137,8 @@
         }
 
         function getItem(itemId) {
-            var deferred = $q.defer();
+            var deferred = $q.defer(),
+                self = this;
 
             if (this.item && (this.item.id == itemId || itemId === undefined)) {
                 deferred.resolve(this.item);
@@ -140,7 +147,15 @@
                 deferred.resolve(null);
                 return deferred.promise;
             } else {
-                return this.getItemPromise(itemId);
+                return this.getItemPromise(itemId).then(
+                    undefined,
+                    function (error) {
+                        if (error.data.errors[0] === self.errorItemNotFound) {
+                            onErrorNotFound.call(self, error);
+                        }
+                        return $q.reject(error);
+                    }
+                );
             }
         }
 
@@ -153,31 +168,61 @@
         }
 
         function removeItem(removedItem) {
-            var self = this,
-                itemIndex = this.items ? this.items.indexOf(removedItem) : -1;
-            return removedItem.remove().then(function () {
-                if (itemIndex > -1) {
-                    self.items.splice(itemIndex, 1);
+            var self = this;
+            return removedItem.remove().then(
+                function () {
+                    self.excludeItemFromList(removedItem);
+                    self.count -= 1;
+                    self.offset -= 1;
+                    return self.items;
+                },
+                function (error) {
+                    if (error.data.errors[0] === self.errorItemNotFound) {
+                        if (self.excludeItemFromList(removedItem)) {
+                            self.count -= 1;
+                            self.offset -= 1;
+                        }
+                        onErrorNotFound.call(self, error);
+                    }
+                    return $q.reject(error);
                 }
-                self.count -= 1;
-                self.offset -= 1;
-                return self.items;
-            });
+            );
+        }
+
+        function excludeItemFromList(item) {
+            var itemIndex = this.items ? this.items.indexOf(item) : -1;
+            if (itemIndex > -1) {
+                this.items.splice(itemIndex, 1);
+                return true;
+            }
+            return false;
         }
 
         function saveItem(savedItem) {
             var self = this;
             if (savedItem.id) {
-                return savedItem.save().then(function (newItem) {
-                    var listItem = _.find(self.items, function (item) {
-                        return item.id === newItem.id;
-                    });
-                    listItem = _.extend(listItem, newItem);
-                    if (listItem && listItem.id === self.item.id) {
-                        self.setItem(listItem);
+                return savedItem.save().then(
+                    function (newItem) {
+                        var listItem = _.find(self.items, function (item) {
+                            return item.id === newItem.id;
+                        });
+                        listItem = _.extend(listItem, newItem);
+                        if (listItem && listItem.id === self.item.id) {
+                            self.setItem(listItem);
+                        }
+                        return listItem;
+                    },
+                    function (error) {
+                        if (error.data.errors[0] === self.errorItemNotFound) {
+                            if (self.excludeItemFromList(savedItem)) {
+                                self.count -= 1;
+                                self.offset -= 1;
+                            }
+                            onErrorNotFound.call(self, error);
+                        }
+                        return $q.reject(error);
                     }
-                    return listItem;
-                });
+                );
             } else {
                 return this.getNewItemPromise(savedItem);
             }
@@ -200,6 +245,14 @@
             this.count += 1;
             this.item = newItem;
             return newItem;
+        }
+
+        function onErrorNotFound(error) {
+            var self = this;
+            GlobalService.showError(this.errorItemNotFoundText).then(function () {
+                self.setItem(null);
+                self.afterErrorItemNotFoundState && $state.go(self.afterErrorItemNotFoundState);
+            });
         }
     }
 

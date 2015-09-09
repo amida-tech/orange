@@ -16,7 +16,8 @@
 
             <form class="orange-form" name="noteAdd">
                 <div class="item item-error"
-                     ng-if="noteAdd.$submitted && !noteAdd.$valid">
+                     ng-if="noteAdd.$submitted && !noteAdd.$valid || notes_add.errors.length">
+                    <p ng-repeat="error in notes_add.errors" ng-bind="error"></p>
                     <div ng-messages="noteAdd.text.$error">
                         <p ng-message="required">Note text is required</p>
                     </div>

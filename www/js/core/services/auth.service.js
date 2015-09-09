@@ -128,20 +128,15 @@
 
             OrangeApi.auth.all('token').post(user).then(
                 function (response) {
-                    if (response.success) {
-                        // save access token to localstorage
-                        $localstorage.set('ACCESS_TOKEN', response.access_token);
-                        OrangeApi.setAccessToken(response.access_token);
-                        // retrieve user info
-                        getUserInfo(deffered)
-                    } else {
-                        logout();
-                        deffered.resolve(false);
-                    }
+                    // save access token to localstorage
+                    $localstorage.set('ACCESS_TOKEN', response.access_token);
+                    OrangeApi.setAccessToken(response.access_token);
+                    // retrieve user info
+                    getUserInfo(deffered)
                 },
-                function () {
+                function (error) {
                     logout();
-                    deffered.resolve(false);
+                    deffered.reject(error);
                 }
             );
             return deffered.promise;

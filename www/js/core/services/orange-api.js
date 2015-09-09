@@ -67,6 +67,7 @@
                     });
 
                     RestangularConfigurer.setErrorInterceptor(function (response, deferred, responseHandler) {
+                        var _error = response.data.errors[0];
                         switch (response.status) {
                             case 500:
                                 $ionicLoading.hide();
@@ -74,9 +75,9 @@
                                 return false;
 
                             case 401:
-                                if (response.data.errors[0] !== $rootScope.ERROR_LIST.WRONG_PASSWORD) {
+                                if (_error !== $rootScope.ERROR_LIST.WRONG_PASSWORD) {
                                     $ionicLoading.hide();
-                                    GlobalService.showError('Authorization is failed').then(function () {
+                                    GlobalService.showError(_.startCase(_error)).then(function () {
                                         var authService = $injector.get('Auth');
                                         authService.logout();
                                         $state.go('onboarding');
@@ -86,7 +87,7 @@
                                 break;
 
                             case 404:
-                                if (response.data.errors[0] === $rootScope.ERROR_LIST.INVALID_PATIENT_ID) {
+                                if (_error === $rootScope.ERROR_LIST.INVALID_PATIENT_ID) {
                                     GlobalService.showError('Patient not found').then(function () {
                                         var patientService = $injector.get('PatientService');
                                         patientService.clear();
