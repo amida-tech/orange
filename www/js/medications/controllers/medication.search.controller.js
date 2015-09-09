@@ -88,7 +88,7 @@
                 origin: 'manual',
                 dose: {
                     quantity: null,
-                    unit: 'mg'
+                    unit: null
                 },
                 schedule: {
                     as_needed: true,
