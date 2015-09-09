@@ -146,11 +146,6 @@
 
             function errorGetPatient(response) {
                 console.log('Error response: ', response);
-                if (response.status === 404 && response.data.errors.indexOf('invalid_patient_id') !== -1) {
-                    $localstorage.remove('currentPatient');
-                    return self.getPatient()
-                }
-
                 $ionicLoading.hide();
                 return null;
             }

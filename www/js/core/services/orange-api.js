@@ -85,8 +85,18 @@
                                 }
                                 break;
 
-                            default:
+                            case 404:
+                                if (response.data.errors[0] === $rootScope.ERROR_LIST.INVALID_PATIENT_ID) {
+                                    GlobalService.showError('Patient not found').then(function () {
+                                        var patientService = $injector.get('PatientService');
+                                        patientService.clear();
+                                        patientService.changeStateByPatient();
+                                    });
+                                    return false;
+                                }
+                                break;
 
+                            default:
                                 if (response.status == 502 || !response.status) {
                                     $ionicLoading.hide();
                                     $rootScope.parentResponse = response;
