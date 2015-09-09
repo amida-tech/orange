@@ -393,8 +393,14 @@
                     vm.schedule.forEach(function (elem) {
                         elem.medication = _.find(vm.medications, {id: elem.medication_id});
 
-                        if (!_.isUndefined(elem.scheduled)) {
-                            elem.event = _.find(elem.medication.schedule.times, {id: elem.scheduled});
+                        elem.event = _.find(elem.medication.schedule.times, {id: elem.scheduled});
+
+                        //As Needed medication event
+                        if (_.isUndefined(elem.event)) {
+                            elem.event = {
+                                type: 'exact',
+                                time: moment(elem.date).format($scope.settings.timeFormat)
+                            }
                         }
 
                         if (elem.dose_id) {
