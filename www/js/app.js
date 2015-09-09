@@ -1,12 +1,13 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ngPDFViewer'])
 
     .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, PatientService,
-                   notifications, settings) {
+                   notifications, settings, errorList) {
 
              // Initializing app
              $rootScope.initialized = false;
              $rootScope.appOpen = true;
              $rootScope.settings = settings;
+             $rootScope.ERROR_LIST = errorList;
 
              Auth.init().then(function (status) {
                  $rootScope.initialized = true;

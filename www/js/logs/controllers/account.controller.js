@@ -17,10 +17,6 @@
         $scope.errors = [];
         $scope.user = {};
 
-        $rootScope.$on('auth:user:logout', function () {
-            $scope.user = {};
-        });
-
         function signUp(form) {
             $scope.errors = [];
             if ($scope.user.agreement !== true) {
