@@ -165,7 +165,7 @@
 
         function changeStateByPatient() {
             //Change state by patient
-            this.getPatient().then(function(patient) {
+            return this.getPatient().then(function (patient) {
                  if (patient != null) {
                      patient.all('medications').getList({limit: 1}).then(function (medication) {
                          if (!_.isUndefined(medication[0])) {

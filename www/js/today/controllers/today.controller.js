@@ -6,10 +6,10 @@
         .controller('TodayCtrl', TodayCtrl);
 
     TodayCtrl.$inject = ['$q', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicModal',
-        'n2w', 'PatientService', 'MedicationService'];
+        '$cordovaDatePicker', 'n2w', 'PatientService', 'MedicationService'];
 
     function TodayCtrl($q, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicModal,
-                       n2w, PatientService, MedicationService) {
+                       $cordovaDatePicker, n2w, PatientService, MedicationService) {
         var vm = this,
             doseModal = null,
             patient = null;
