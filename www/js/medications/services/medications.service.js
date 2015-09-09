@@ -5,14 +5,18 @@
         .module('orange')
         .factory('MedicationService', MedicationService);
 
-    MedicationService.$inject = ['$q', 'n2w', 'notifications', 'PatientPagingService'];
+    MedicationService.$inject = ['$q', 'n2w', 'notifications', 'PatientPagingService', 'errorList'];
 
     /* @ngInject */
-    function MedicationService($q, n2w, notify, PatientPagingService) {
+    function MedicationService($q, n2w, notify, PatientPagingService, errorList) {
         var Service = function () {
             PatientPagingService.call(this);
 
             this.apiEndpoint = 'medications';
+
+            this.errorItemNotFound = errorList.INVALID_MEDICATION_ID;
+            this.errorItemNotFoundText = 'Medication not found';
+            this.afterErrorItemNotFoundState = 'app.medications';
         };
 
         Service.prototype = Object.create(PatientPagingService.prototype);
