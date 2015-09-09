@@ -1,0 +1,13 @@
+<div class="block-with-subscribe">
+    <div class="text-basic" ng-bind="med.brand"></div>
+
+    <div class="text-medication-brand med-rx" ng-bind="med.name" ng-show="!notes_add.showFull"
+          data-ellipsis data-ellipsis-append="more"
+          data-ellipsis-append-click="notes_add.showFull=!notes_add.showFull"></div>
+
+    <div class="text-medication-brand med-rx med-rx-full" ng-show="notes_add.showFull" >
+        {{ med.name }}
+        <span ng-click="notes_add.showFull=!notes_add.showFull" class="pull-right">Hide</span>
+        <div class="clearfix"></div>
+    </div>
+</div>

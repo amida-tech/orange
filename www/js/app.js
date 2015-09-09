@@ -1,4 +1,4 @@
-angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ngPDFViewer'])
+angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ngPDFViewer', 'dibari.angular-ellipsis'])
 
     .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, PatientService,
                    notifications, settings) {

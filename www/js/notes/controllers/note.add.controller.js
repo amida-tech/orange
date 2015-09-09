@@ -108,5 +108,10 @@
                 $cordovaDialogs.alert('Unauthorized', 'Error', 'OK');
             }
         }
+
+        vm.showFull = false;
+        vm.moreClick = function(medicationName) {
+            vm.showFull = true;
+        }
     }
 })();

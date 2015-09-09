@@ -147,6 +147,7 @@ $profile-button-max-width: 120px;
 $small-btn-icon-line-height: 15px;
 $bottom-menu-height: 150px;
 $list-bar-size: 40px;
+$medication-name-height: 53px;
 
 body {
   background-color: $orange;
@@ -225,19 +226,32 @@ body {
 
 .block-with-subscribe {
   font-size: $font-size-base + 1;
-  span {
-    line-height: 1.1;
+  div {
+    line-height: 1.4;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: block;
   }
-  span:first-child {
+  div:first-child {
     line-height: 1.3;
     margin-bottom: 0;
     padding-bottom: 0;
     margin-top: 0;
     padding-top: 0;
     vertical-align: top;
+  }
+  .med-rx {
+    white-space: normal;
+    max-height: $medication-name-height;
+    vertical-align: middle;
+    span {
+      position: relative;
+      color: $orange;
+      z-index: 10000000;
+    }
+  }
+  .med-rx.med-rx-full {
+    max-height: none;
+    white-space: normal;
   }
 }
 
@@ -656,22 +670,6 @@ ion-content {
       font-size: $font-size-base * 2.5;
       line-height: $font-size-base * 2.5;
     }
-  }
-}
-
-.med-title {
-  line-height: 1.2;
-  font-size: $font-size-base * 1.1;
-  .med-name {
-    font-weight: normal;
-    color: $dark;
-    font-size: 1em;
-  }
-  .med-rx {
-    text-transform: uppercase;
-    font-size: 0.8em;
-    font-weight: bold;
-    color: $dark;
   }
 }
 

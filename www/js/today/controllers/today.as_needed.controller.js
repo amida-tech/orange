@@ -5,9 +5,9 @@
         .module('orange')
         .controller('TodayAsNeededCtrl', TodayAsNeededCtrl);
 
-    TodayAsNeededCtrl.$inject = ['$scope', 'MedicationService'];
+    TodayAsNeededCtrl.$inject = ['$scope', '$state', 'MedicationService'];
 
-    function TodayAsNeededCtrl($scope, MedicationService) {
+    function TodayAsNeededCtrl($scope, $state, MedicationService) {
         var vm = this;
 
         var _filterMedications = function(medications) {
@@ -36,5 +36,13 @@
         };
 
         vm.refresh();
+
+        vm.medicationClick = function(id, $event) {
+            if ($event.target.tagName == 'SPAN') {
+                return;
+            }
+
+            $state.go('app.today.as_needed_add', {id: id})
+        }
     }
 })();

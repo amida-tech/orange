@@ -19,11 +19,8 @@
         </div>
 
         <ion-list>
-            <ion-item ng-repeat="medication in medications.medications" ng-click="medications.details(medication)">
-                <div class="med-title">
-                    <p class="med-name" ng-bind="medication.brand"></p>
-                    <p class="med-rx" ng-bind="medication.name"></p>
-                </div>
+            <ion-item ng-repeat="medication in medications.medications" ng-click="medications.details(medication, $event)">
+                <medication-block medication="medication"></medication-block>
             </ion-item>
         </ion-list>
         <ion-infinite-scroll ng-if="medications.hasMore()" distance="{{ settings.defaultScrollDistance }}"

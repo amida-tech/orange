@@ -283,7 +283,11 @@
 
         }
 
-        function showModal(event) {
+        function showModal(event, $event) {
+            if ($event.target.tagName == 'SPAN') {
+                return;
+            }
+
             vm.event = event;
             vm.event.text = getEventText(event);
             vm.showDetails = !!event.dose_id;

@@ -7,9 +7,8 @@
     </ion-header-bar>
     <ion-content padding="true">
         <div class="list orange-list">
-            <div class="item item-title med-title">
-                <p class="med-name" ng-bind="today.event.medication.brand"></p>
-                <p class="med-rx" ng-bind="today.event.medication.name"></p>
+            <div class="item item-title">
+                <medication-block medication="today.event.medication"></medication-block>
             </div>
             <div class="item item-text-wrap orange-form">
                 <p ng-bind="today.event.text">One unit at 9:00am, taken without food</p>
