@@ -281,7 +281,6 @@
 
                         return f;
                     });
-                    console.log(groups);
 
                     //console.log(groups);
 
