@@ -3,15 +3,15 @@
 
     angular
         .module('orange')
-        .directive('doseInput', doseInput);
+        .directive('buttonSpinner', buttonSpinner);
 
-    function doseInput() {
+    function buttonSpinner() {
         return {
             scope: {
                 model: "=model",
                 subscribe: "@subscribe"
             },
-            templateUrl: 'templates/today/orange_button_spinner.html',
+            templateUrl: 'templates/core/orange_button_spinner.html',
             link: function (scope, element, attributes, ngModel) {
                 scope.modelSubscribe = scope.model + ' ' + scope.subscribe;
                 scope.$watch('model', function() {

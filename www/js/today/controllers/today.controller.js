@@ -101,7 +101,7 @@
             vm.quantity = event.medication.dose.quantity;
             var template = '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>';
             if (!skipped) {
-                template = '<dose-input model="today.quantity" subscribe="'+event.medication.dose.unit+'"></dose-input>' + template;
+                template = '<button-spinner model="today.quantity" subscribe="'+event.medication.dose.unit+'"></button-spinner>' + template;
             }
 
             $ionicPopup.confirm({
