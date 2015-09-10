@@ -21,6 +21,7 @@
         vm.buttonText = null;
         vm.schedule = null;
         vm.eventsCount = null;
+        vm.errors = [];
 
         console.log($state.current.name);
         vm.nextUrl = $state.current.name === 'onboarding-log.medications.schedule' ? 'onboarding-log.medications.events' : 'app.medication.events';
@@ -55,6 +56,19 @@
             {name: 'Doesn\'t Matter', key: null}
         ];
 
+        $scope.$watchCollection('schedule.schedule.frequency.start', function (days) {
+            if (days) {
+                var hasDay = _.find(days, function (day) {
+                    return ['29', '30', '31'].indexOf(day.substr(8)) > -1;
+                });
+                if (hasDay) {
+                    vm.errors = ['Medications scheduled for days that do not occur in each month will only ' +
+                       'display during the months in which that date occurs'];
+                } else {
+                    vm.errors = [];
+                }
+            }
+        });
         vm.goBack = goBack;
 
         activate();
