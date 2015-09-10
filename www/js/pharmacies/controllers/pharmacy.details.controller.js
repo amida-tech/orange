@@ -5,9 +5,9 @@
         .module('orange')
         .controller('PharmacyDetailsCtrl', PharmacyDetailsCtrl);
 
-    PharmacyDetailsCtrl.$inject = ['$stateParams', '$locale', 'PharmacyService'];
+    PharmacyDetailsCtrl.$inject = ['$stateParams', '$cordovaInAppBrowser', '$locale', 'PharmacyService'];
 
-    function PharmacyDetailsCtrl($stateParams, $locale, PharmacyService) {
+    function PharmacyDetailsCtrl($stateParams, $cordovaInAppBrowser, $locale, PharmacyService) {
         var vm = this;
 
         vm.pharmacyPromise = PharmacyService.getItems();
@@ -16,5 +16,8 @@
             vm.pharmacy = pharmacy;
         });
 
+        vm.toMap = function () {
+            $cordovaInAppBrowser.open('http://maps.apple.com/?q=' + vm.pharmacy.address.replace(' ', '+'), '_system');
+        }
     }
 })();

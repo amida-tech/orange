@@ -24,6 +24,9 @@
             <ion-list class="list-last-open list-details">
                 <ion-item ng-if="pharmacy_details.pharmacy.address">
                     <span class="text-basic" ng-bind="pharmacy_details.pharmacy.address"></span>
+                    <span class="item-label">
+                        <span class="button text-title" ng-click="pharmacy_details.toMap()">DIRECTIONS</span>
+                    </span>
                 </ion-item>
                 <ion-item ng-if="pharmacy_details.pharmacy.phone" class="text-container">
                     <span class="text-basic phone" ng-bind="pharmacy_details.pharmacy.phone" call-phone></span>
