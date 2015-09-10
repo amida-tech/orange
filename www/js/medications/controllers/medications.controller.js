@@ -4,18 +4,18 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$ionicModal', 'MedicationService'];
+    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicModal', 'MedicationService', 'PatientService', 'GlobalService'];
 
     /* @ngInject */
-    function MedicationsCtrl($scope, $state, $ionicLoading, $ionicModal, MedicationService) {
+    function MedicationsCtrl($scope, $state, $ionicModal, MedicationService, PatientService, GlobalService) {
         var vm = this;
 
         vm.medications = null;
         vm.refresh = refresh;
-        vm.remove = remove;
         vm.loadMore = loadMore;
         vm.details = details;
         vm.pickMedication = pickMedication;
+        vm.showSearchModal = showSearchModal;
 
         refresh();
 
@@ -47,17 +47,6 @@
             )
         }
 
-        function remove(medication) {
-            $ionicLoading.show({
-                template: 'Deleting…'
-            });
-            MedicationService.removeItem(medication).then(
-                function (items) {
-                    vm.medications = items;
-                }
-            ).finally($ionicLoading.hide);
-        }
-
         function loadMore() {
             var morePromise = MedicationService.moreItems();
             if (vm.medications !== null && morePromise) {
@@ -74,10 +63,35 @@
             if ($event.target.tagName == 'SPAN') {
                 return;
             }
-
-
             MedicationService.setItem(medication);
             $state.go('app.medication.details', {id: medication.id})
+        }
+
+        function showSearchModal() {
+            if (checkHabits()) {
+                vm.searchModal.show();
+            } else {
+                GlobalService.showConfirm(
+                    'You have not filled Habits. Do you want to edit them?',
+                    'Invalid Habits'
+                ).then(function (confirm) {
+                    if (confirm) {
+                        PatientService.setItem(PatientService.currentPatient);
+                        $state.go('app.logs.edit', {id: PatientService.currentPatient.id});
+                    }
+                });
+            }
+        }
+
+        function checkHabits() {
+            var habits = PatientService.currentPatient.habits;
+            return _.all([
+                habits['wake'],
+                habits['breakfast'],
+                habits['lunch'],
+                habits['dinner'],
+                habits['sleep']
+            ]);
         }
     }
 })();

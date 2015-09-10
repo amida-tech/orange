@@ -25,6 +25,7 @@
         Service.prototype = Object.create(BasePagingService.prototype);
         Service.prototype.getPatient = getPatient;
         Service.prototype.getHabits = getHabits;
+        Service.prototype.setHabits = setHabits;
         Service.prototype.getTZName = getTZName;
         Service.prototype.setCurrentPatient = setCurrentPatient;
 
@@ -82,12 +83,7 @@
             BasePagingService.prototype.setItem.call(this, item);
             setFullName(this.item);
             if (this.item) {
-                return this.getHabits(this.item).then(function (habits) {
-                    if (!habits.tz || habits.tz === 'Etc/UTC') {
-                        habits.tz = self.getTZName();
-                    }
-                    self.item.habits = habits;
-                });
+                return this.setHabits(this.item);
             }
         }
 
@@ -121,6 +117,7 @@
                     function (currentPatient) {
                         $ionicLoading.hide();
                         self.currentPatient = currentPatient;
+                        self.setHabits(currentPatient);
                         return currentPatient;
                     },
                     errorGetPatient
@@ -142,6 +139,7 @@
                     }
 
                     patient && self.setCurrentPatient(patient);
+                    self.setHabits(patient);
                     $ionicLoading.hide();
                     return patient;
                 },
@@ -182,11 +180,22 @@
 
         function setCurrentPatient(patient) {
             this.currentPatient = patient;
+            this.setHabits(patient);
             $localstorage.set('currentPatient', patient['id']);
         }
 
         function getHabits(patient) {
             return patient.one('habits').get('');
+        }
+
+        function setHabits(patient) {
+            var self = this;
+            return this.getHabits(patient).then(function (habits) {
+                if (!habits.tz || habits.tz === 'Etc/UTC') {
+                    habits.tz = self.getTZName();
+                }
+                patient.habits = habits;
+            });
         }
 
         function getReport(patientId, month) {

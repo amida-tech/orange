@@ -39,7 +39,9 @@
                 return $ionicPopup.confirm({
                     title: title || 'Confirm',
                     template: description || 'Are you sure to perform the action?',
-                    okType: 'button-dark-orange'
+                    okType: 'button-dark-orange',
+                    okText: 'Yes',
+                    cancelText: 'No'
                 });
             } else {
                 var deferred = $q.defer();
