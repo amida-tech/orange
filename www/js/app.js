@@ -367,7 +367,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         cache: false,
                         params: {
                             nextState: 'app.logs.list',
-                            editMode: true
+                            editMode: true,
+                            fromMedication: false
                         }
                     })
                     .state('app.logs.request', {

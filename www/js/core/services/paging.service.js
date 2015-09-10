@@ -210,7 +210,7 @@
                         if (listItem && listItem.id === self.item.id) {
                             self.setItem(listItem);
                         }
-                        return listItem;
+                        return listItem || newItem;
                     },
                     function (error) {
                         if (error.data.errors[0] === self.errorItemNotFound) {

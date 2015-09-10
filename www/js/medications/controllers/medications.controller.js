@@ -77,7 +77,11 @@
                 ).then(function (confirm) {
                     if (confirm) {
                         PatientService.setItem(PatientService.currentPatient);
-                        $state.go('app.logs.edit', {id: PatientService.currentPatient.id});
+                        $state.go('app.logs.edit', {
+                            id: PatientService.currentPatient.id,
+                            nextState: 'app.medications',
+                            fromMedication: true
+                        });
                     }
                 });
             }
