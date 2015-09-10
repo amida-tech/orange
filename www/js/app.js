@@ -512,7 +512,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         controller: 'RequestLogsCtrl',
                         cache: false,
                         params: {
-                            nextState: 'onboarding'
+                            nextState: 'account-login'
                         }
                     })
                     .state('onboarding', {

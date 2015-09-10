@@ -19,6 +19,7 @@
         $scope.isDevice = ionic.Platform.isWebView();
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
         $scope.iconItems = _.chunk($scope.settings.avatars, 3);
+        $scope.backState = $scope.editMode ? 'app.logs.details({id: ' + $stateParams.id + '})' : $state.params['nextState'];
         $scope.errors = [];
 
         if ('id' in $stateParams) {

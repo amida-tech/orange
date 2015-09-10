@@ -18,6 +18,7 @@
         vm.days = $locale.DATETIME_FORMATS.DAY;
         vm.save = save;
         vm.errors = [];
+        vm.backState = 'app.pharmacies.' + (is_edit ? 'details({id: ' + $stateParams.id +'})' : 'list');
 
         $ionicModal.fromTemplateUrl('templates/pharmacies/hours.modal.html', {
             scope: $scope

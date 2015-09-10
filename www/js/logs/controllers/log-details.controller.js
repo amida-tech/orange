@@ -7,7 +7,7 @@
 
     LogDetailsCtrl.$inject = ['$state', '$stateParams', '$ionicLoading', 'PatientService', 'GlobalService'];
 
-    function LogDetailsCtrl($state, $stateParams, $ionicPopup, $ionicLoading, PatientService, GlobalService) {
+    function LogDetailsCtrl($state, $stateParams, $ionicLoading, PatientService, GlobalService) {
 
         var vm = this;
 

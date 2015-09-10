@@ -15,6 +15,7 @@
         $scope.data = {
             email: null
         };
+        $scope.backState = $state.params['nextState'];
 
         if ($state.current.name === 'account-reset') {
             service = OrangeApi.user.all('reset_password');
