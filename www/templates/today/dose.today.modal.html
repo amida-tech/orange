@@ -17,18 +17,18 @@
                         <textarea name="text"
                                   rows="8"
                                   placeholder="Add a note..."
-                                  data-ng-model="today.dose.notes"
+                                  data-ng-model="today.notes"
                                 ></textarea>
                 </label>
                 <div ng-show="today.showDetails">
                     <p class="detail-item" ng-bind="(today.event.took_medication ? 'Taken: ' : 'Skipped: ') + (today.event.dose.date|date:'hh:mm a'|lowercase)"></p>
-                    <p class="detail-item" ng-bind="today.event.dose.notes"></p>
+                    <p class="detail-item" ng-bind="today.notes"></p>
                 </div>
             </div>
         </div>
     </ion-content>
     <div class="bottom-buttons" ng-show="!today.showDetails">
-        <button class="button button-small button-full col button-balanced" ng-click="today.createDose()">Take Medication</button>
-        <button class="button button-small button-full col button-assertive" ng-click="today.createDose(true)">Skip Medication</button>
+        <button class="button button-small button-full col button-balanced" ng-click="today.confirmDose(today.event)">Take Medication</button>
+        <button class="button button-small button-full col button-assertive" ng-click="today.confirmDose(today.event, true)">Skip Medication</button>
     </div>
 </ion-modal-view>

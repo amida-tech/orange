@@ -33,7 +33,6 @@
         vm.confirmDose = confirmDose;
         vm.openModal = showModal;
         vm.closeModal = hideModal;
-        vm.createDose = createDose;
         vm.changeDate = changeDate;
 
 
@@ -73,42 +72,6 @@
         }
 
 
-        function createDose(skipped) {
-            skipped = skipped || false;
-            vm.dose.taken = !skipped;
-
-            $ionicPopup.confirm({
-                title: vm.event.medication.brand,
-                template: '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>',
-                okText: '<b>Yes</b>',
-                okType: 'button-dark-orange'
-            }).then(
-                function (confirm) {
-                    if (confirm) {
-                        $ionicLoading.show({
-                            template: 'Saving...'
-                        });
-                        patient.all('doses').post(vm.dose)
-                            .then(
-                            undefined,
-                            function (data) {
-                                var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
-                                $ionicPopup.alert({
-                                    title: 'Error',
-                                    template: template,
-                                    okType: 'button-dark-orange'
-                                });
-                            })
-                            .finally(
-                            function () {
-                                refresh();
-                                hideModal();
-                            });
-                    }
-                });
-
-        }
-
         function showModal(event, $event) {
             if ($event.target.tagName == 'SPAN') {
                 return;
@@ -135,40 +98,51 @@
 
         function confirmDose(event, skipped) {
             skipped = skipped || false;
+            vm.quantity = event.medication.dose.quantity;
+            var template = '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>';
+            if (!skipped) {
+                template = '<dose-input model="today.quantity" subscribe="'+event.medication.dose.unit+'"></dose-input>' + template;
+            }
 
             $ionicPopup.confirm({
                 title: event.medication.brand,
-                template: '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>',
+                template: template,
                 okText: '<b>Yes</b>',
+                scope: $scope,
                 okType: 'button-dark-orange'
             }).then(
                 function (confirm) {
-                    if (confirm) {
-                        var dose = {
-                            medication_id: event.medication_id,
-                            date: moment().format(),
-                            taken: !skipped,
-                            scheduled: event.scheduled
-                        };
-                        $ionicLoading.show({
-                            template: 'Saving...'
-                        });
-                        patient.all('doses').post(dose)
-                            .then(
-                            undefined,
-                            function (data) {
-                                $ionicLoading.hide();
-                                var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
-                                $ionicPopup.alert({
-                                    title: 'Error',
-                                    template: template,
-                                    okType: 'button-dark-orange'
-                                });
-                            })
-                            .finally(function () {
-                                         refresh();
-                                     })
+                    if (!confirm) {
+                        return;
                     }
+
+                    var dose = {
+                        medication_id: event.medication_id,
+                        date: moment().format(),
+                        taken: !skipped,
+                        scheduled: event.scheduled,
+                        quantity: vm.quantity,
+                        note: vm.notes || ''
+                    };
+                    $ionicLoading.show({
+                        template: 'Saving...'
+                    });
+                    patient.all('doses').post(dose)
+                        .then(
+                        undefined,
+                        function (data) {
+                            $ionicLoading.hide();
+                            var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
+                            $ionicPopup.alert({
+                                title: 'Error',
+                                template: template,
+                                okType: 'button-dark-orange'
+                            });
+                        })
+                        .finally(function () {
+                                     refresh();
+                                     hideModal()
+                                 })
                 });
         }
 

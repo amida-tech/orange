@@ -15,7 +15,7 @@
         <ion-refresher pulling-text="Pull to refresh" on-refresh="asNeeded.refresh()">
         </ion-refresher>
 
-        <ion-list class="list-clean" can-swipe="true" >
+        <ion-list can-swipe="true" >
             <ion-item class="" ng-repeat="medication in asNeeded.medications" ng-click="asNeeded.medicationClick(medication.id, $event)">
                 <medication-block medication-name="medication.name"
                                   medication-brand="medication.brand"></medication-block>

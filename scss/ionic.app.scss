@@ -150,6 +150,7 @@ $bottom-menu-height: 150px;
 $list-bar-size: 40px;
 $medication-name-height: 53px;
 $icon-asneeded-height: 56px;
+$input-height: 42px;
 
 body {
   background-color: $orange;
@@ -474,7 +475,7 @@ dl.dl-worksheet {
     padding-left: $padding-base-horizontal;
   }
   .item-select {
-    height: 42px;
+    height: $input-height;
     margin-top: $padding-base-vertical;
     margin-bottom: $padding-base-vertical * 2 !important;
     border: 1px solid $lightgray !important;
@@ -529,7 +530,7 @@ dl.dl-worksheet {
       font-size: 30px;
       right: $padding-base-horizontal;
       color: $green;
-      line-height: 42px;
+      line-height: $input-height;
     }
 
     .icon.icon-right.icon-red {
@@ -541,7 +542,7 @@ dl.dl-worksheet {
       border: 1px solid $lightgray;
       border-radius: $card-border-radius;
       padding: $padding-base-vertical $padding-base-horizontal;
-      min-height: 42px;
+      min-height: $input-height;
       //margin-right: 5px; // WHY THIS?
 
       &:focus {
@@ -1306,4 +1307,46 @@ ion-option-button.option-control.button {
 
 .push-as-needed-icon {
   height: $icon-asneeded-height + $padding-base-horizontal * 2;
+}
+
+.buttons.buttons-left.header-item {
+    min-width: 35px;
+}
+
+
+.input-block {
+  display: table;
+  margin-bottom: 5px;
+  input, .input-addon {
+    display: table-cell;
+    height: $input-height;
+  }
+  .input-addon {
+    padding: 0;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    .button {
+      width: $input-height;
+      max-height: $input-height;
+      min-height: 0;
+      font-size: $font-size-base + 5;
+    }
+  }
+  .input-addon:first-child {
+    .button {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+  .input-addon:last-child {
+    .button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+  input {
+    width: 100%;
+    padding: 6px 12px;
+  }
 }
