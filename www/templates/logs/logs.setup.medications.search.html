@@ -31,11 +31,10 @@
             </ion-item>
 
             <ion-item ng-repeat="med in search.result"
-                      ng-click="medication.pickMedication(med)">
-                <div class="med-title">
-                    <p class="med-name" ng-bind="med.brand"></p>
-                    <p class="med-rx" ng-bind="med.name"></p>
-                </div>
+                      ng-click="medication.pickMedication(med, $event)">
+
+                <medication-block medication-name="med.name"
+                                  medication-brand="med.brand"></medication-block>
             </ion-item>
         </ion-list>
 

@@ -128,7 +128,11 @@
             });
         }
 
-        function pickMedication(medication) {
+        function pickMedication(medication, $event) {
+            if ($event.target.tagName == 'SPAN') {
+                return;
+            }
+
             console.log('Medication picked:', medication);
             MedicationService.setItem(medication);
             vm.medication = medication;
@@ -150,7 +154,11 @@
             );
         }
 
-        function editMedication(medication) {
+        function editMedication(medication, $event) {
+            if ($event.target.tagName == 'SPAN') {
+                return;
+            }
+
             MedicationService.setItem(medication);
             vm.medication = medication;
             $state.go('onboarding-log.medications.schedule')

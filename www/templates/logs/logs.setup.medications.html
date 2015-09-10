@@ -37,22 +37,19 @@
             <div class="item item-text-wrap" ng-if="medication.hasImported">
                 <p class="form-title">Via Automatic Import</p>
             </div>
-            <ion-item ng-click="medication.editMedication(med)"
+            <ion-item ng-click="medication.editMedication(med, $event)"
                       ng-repeat="med in medication.medications | filter: {origin: 'imported'}">
-                <div class="med-title">
-                    <p class="med-name" ng-bind="med.brand"></p>
-                    <p class="med-rx" ng-bind="med.name"></p>
-                </div>
+
+                    <medication-block medication-name="med.name"
+                                      medication-brand="med.brand"></medication-block>
             </ion-item>
             <div class="item item-text-wrap">
                 <p class="form-title">Via Manual Entry</p>
             </div>
-            <ion-item ng-click="medication.editMedication(med)"
+            <ion-item ng-click="medication.editMedication(med, $event)"
                       ng-repeat="med in medication.medications | filter: {origin: '!imported'}">
-                <div class="med-title">
-                    <p class="med-name" ng-bind="med.brand"></p>
-                    <p class="med-rx" ng-bind="med.name"></p>
-                </div>
+                    <medication-block medication-name="med.name"
+                                      medication-brand="med.brand"></medication-block>
             </ion-item>
             <div class="item item-button">
                 <button class="button button-full button-orange" ui-sref="onboarding-log.medications.search">Add Medication</button>
