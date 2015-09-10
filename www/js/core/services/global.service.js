@@ -10,7 +10,8 @@
     /* @ngInject */
     function GlobalService($q, $ionicPopup) {
         var service = {
-                showError: showError
+                showError: showError,
+                showConfirm: showConfirm
             },
             isShowError = false;
 
@@ -25,6 +26,20 @@
                     okType: 'button-dark-orange'
                 }).then(function () {
                     isShowError = false;
+                });
+            } else {
+                var deferred = $q.defer();
+                deferred.reject(null);
+                return deferred.promise;
+            }
+        }
+
+        function showConfirm(description, title) {
+            if (!isShowError) {
+                return $ionicPopup.confirm({
+                    title: title || 'Confirm',
+                    template: description || 'Are you sure to perform the action?',
+                    okType: 'button-dark-orange'
                 });
             } else {
                 var deferred = $q.defer();

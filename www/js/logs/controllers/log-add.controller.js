@@ -19,6 +19,7 @@
         $scope.isDevice = ionic.Platform.isWebView();
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
         $scope.iconItems = _.chunk($scope.settings.avatars, 3);
+        $scope.errors = [];
 
         if ('id' in $stateParams) {
             PatientService.getItem($stateParams['id']).then(function (patient) {
@@ -61,7 +62,12 @@
                     saveToPhotoAlbum: false
                 };
 
-                $cordovaCamera.getPicture(options).then(setAvatarUrl, console.log)
+                $cordovaCamera.getPicture(options).then(
+                    setAvatarUrl,
+                    function (error) {
+                        $scope.errors = [error];
+                    }
+                );
             }
         }
 
@@ -97,7 +103,7 @@
                     },
                     function (error) {
                         $ionicLoading.hide();
-                        alert(error.data.errors);
+                        $scope.errors = _.map(error.data.errors, _.startCase);
                     }
                 )
             } else {
@@ -112,9 +118,9 @@
                     $ionicLoading.hide();
                     goToNextState();
                 },
-                function (response) {
+                function (error) {
                     $ionicLoading.hide();
-                    alert(response.data.errors);
+                    $scope.errors = _.map(error.data.errors, _.startCase);
                 }
             );
 
