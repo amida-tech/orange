@@ -20,6 +20,7 @@
         vm.schedule = null;
         vm.eventsCount = null;
 
+        console.log($state.current.name);
         vm.nextUrl = $state.current.name === 'onboarding-log.medications.schedule' ? 'onboarding-log.medications.events' : 'app.medication.events';
         vm.returnUrl = $state.current.name === 'onboarding-log.medications.schedule' ? 'onboarding-log.medications.list' : 'app.medications';
 
@@ -104,11 +105,20 @@
         ////////////////
 
         function goBack(medication_id) {
-            if (medication_id) {
-                $state.go('app.medication.details');
+            if ($state.current.name === 'onboarding-log.medications.schedule') {
+                if (medication_id) {
+                    $state.go('onboarding-log.medications.list');
+                } else {
+                    $state.go('onboarding-log.medications.search');
+                }
             } else {
-                $state.go('app.medications');
+                if (medication_id) {
+                    $state.go('app.medication.details');
+                } else {
+                    $state.go('app.medications');
+                }
             }
+
 
 
         }

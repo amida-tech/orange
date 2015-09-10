@@ -39,6 +39,12 @@
                     quantity: 1,
                     unit: 'mg'
                 },
+                schedule: {
+                    as_needed: true,
+                    take_with_medications: [],
+                    take_without_medications: [],
+                    take_with_food: null
+                },
                 access_prime: 'write',
                 access_family: 'write',
                 access_anyone: 'write'

@@ -469,7 +469,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         abstract: true,
                         template: '<ion-nav-view></ion-nav-view>',
                         templateUrl: 'templates/logs/logs.setup.medications.html',
-                        controller: 'LogMedicationsCtrl as medications',
+                        controller: 'LogMedicationsCtrl as medication',
                         cache: false
                     })
 
@@ -486,12 +486,12 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
 
                     .state('onboarding-log.medications.schedule', {
                         url: '/schedule',
-                        templateUrl: 'templates/logs/logs.setup.medications.schedule.html',
+                        templateUrl: 'templates/medications/app.medications.schedule.html',
                         controller: 'MedicationScheduleCtrl as schedule'
                     })
                     .state('onboarding-log.medications.events', {
                         url: '/events',
-                        templateUrl: 'templates/logs/logs.setup.medications.events.html',
+                        templateUrl: 'templates/medications/app.medications.events.html',
                         controller: 'MedicationEventsCtrl as events'
                     })
                     .state('account-create', {

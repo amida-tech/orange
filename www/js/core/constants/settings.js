@@ -16,6 +16,8 @@
             ],
             'defaultLimit': 25,
             'defaultScrollDistance': '5%',  // for ion-infinite-scroll
-            timeFormat: 'hh:mm a'
+            timeFormat: 'hh:mm a',
+            dateFormat: 'YYYY-MM-DD',
+            fullDateFormat: 'MMM Do YYYY'
         });
 })();

@@ -14,8 +14,12 @@
             doseModal = null,
             patient = null;
 
-        vm.scheduleDate = $stateParams.date || moment().format('YYYY-MM-DD');
-        vm.title = moment().format('YYYY-MM-DD') === vm.scheduleDate ? 'Today' : moment(vm.scheduleDate, 'YYYY-MM-DD').format('MMMM Do YYYY');
+        var dateFormat = $scope.settings.dateFormat;
+        var fullDateFormat = $scope.settings.fullDateFormat;
+        var timeFormat = $scope.settings.timeFormat;
+
+        vm.scheduleDate = $stateParams.date || moment().format(dateFormat);
+        vm.title = moment().format(dateFormat) === vm.scheduleDate ? 'Today' : moment(vm.scheduleDate, dateFormat).format(fullDateFormat);
         vm.schedule = null;
         vm.medications = null;
         vm.habits = null;
@@ -23,186 +27,7 @@
         vm.event = null;
         vm.dose = null;
 
-        vm.filters = [
-            {
-                title: '',
-                name: '',
-                f: function (elem) {
-                    return elem.event &&
-                        elem.event.type === 'event' &&
-                        elem.event.when === 'after' &&
-                        elem.event.event === 'sleep';
-                },
-                getTitle: function () {
-                    return 'After Wake (' + vm.habits.wake + ')';
-                },
-                events: []
-            },
-            {
-                title: 'Exact Time',
-                name: '',
-                f: function (elem) {
-                    if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, $scope.settings.timeFormat);
-                        var time = moment(elem.date);
-                        return time <= breakfast;
-                    }
-
-                    return false;
-
-                },
-                events: []
-
-            },
-            {
-                title: '',
-                name: '',
-                f: function (elem) {
-                    return elem.event &&
-                        elem.event.type === 'event' &&
-                        elem.event.when === 'before' &&
-                        elem.event.event === 'breakfast';
-                },
-                getTitle: function () {
-                    return 'Before Breakfast (' + vm.habits.breakfast + ')';
-                },
-                events: []
-            },
-            {
-                title: '',
-                name: '',
-                f: function (elem) {
-                    return elem.event &&
-                        elem.event.type === 'event' &&
-                        elem.event.when === 'after' &&
-                        elem.event.event === 'breakfast';
-                },
-                getTitle: function () {
-                    return 'After Breakfast (' + vm.habits.breakfast + ')';
-                },
-                events: []
-            },
-            {
-                title: 'Exact Time',
-                name: '',
-                f: function (elem) {
-                    if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var breakfast = moment(vm.habits.breakfast, $scope.settings.timeFormat);
-                        var lunch = moment(vm.habits.lunch, $scope.settings.timeFormat);
-                        var time = moment(elem.date);
-                        return (time > breakfast) && (time <= lunch);
-                    }
-
-                    return false;
-
-                },
-                events: []
-
-            },
-            {
-                title: '',
-                name: '',
-                f: function (elem) {
-                    return elem.event &&
-                        elem.event.type === 'event' &&
-                        elem.event.when === 'before' &&
-                        elem.event.event === 'lunch';
-                },
-                getTitle: function () {
-                    return 'Before Lunch (' + vm.habits.lunch + ')';
-                },
-                events: []
-            },
-            {
-                title: '',
-                name: '',
-                f: function (elem) {
-                    return elem.event &&
-                        elem.event.type === 'event' &&
-                        elem.event.when === 'after' &&
-                        elem.event.event === 'lunch';
-                },
-                getTitle: function () {
-                    return 'After Lunch (' + vm.habits.lunch + ')';
-                },
-                events: []
-            },
-            {
-                title: 'Exact Time',
-                name: '',
-                f: function (elem) {
-                    if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var lunch = moment(vm.habits.lunch, $scope.settings.timeFormat);
-                        var dinner = moment(vm.habits.dinner, $scope.settings.timeFormat);
-                        var time = moment(elem.date);
-                        return (time > lunch) && (time <= dinner);
-                    }
-
-                    return false;
-
-                },
-                events: []
-
-            },
-            {
-                title: '',
-                name: '',
-                f: function (elem) {
-                    return elem.event &&
-                        elem.event.type === 'event' &&
-                        elem.event.when === 'before' &&
-                        elem.event.event === 'dinner';
-                },
-                getTitle: function () {
-                    return 'Before Dinner (' + vm.habits.dinner + ')';
-                },
-                events: []
-            },
-            {
-                title: 'After Dinner',
-                name: '',
-                f: function (elem) {
-                    return elem.event &&
-                        elem.event.type === 'event' &&
-                        elem.event.when === 'after' &&
-                        elem.event.event === 'dinner';
-                },
-                getTitle: function () {
-                    return 'After Dinner (' + vm.habits.dinner + ')';
-                },
-                events: []
-            },
-            {
-                title: 'Exact Time',
-                name: '',
-                f: function (elem) {
-                    if ((elem.event && elem.event.type === 'exact') || (_.isUndefined(elem.notification))) {
-                        var dinner = moment(vm.habits.dinner, $scope.settings.timeFormat);
-                        var time = moment(elem.date);
-                        return (time > dinner);
-                    }
-
-                    return false;
-
-                },
-                events: []
-
-            },
-            {
-                title: '',
-                name: '',
-                f: function (elem) {
-                    return elem.event &&
-                        elem.event.type === 'event' &&
-                        elem.event.when === 'before' &&
-                        elem.event.event === 'sleep';
-                },
-                getTitle: function () {
-                    return 'Before Sleep (' + vm.habits.sleep + ')';
-                },
-                events: []
-            }
-        ];
+        vm.filters = [];
 
         vm.refresh = refresh;
         vm.confirmDose = confirmDose;
@@ -210,6 +35,7 @@
         vm.closeModal = hideModal;
         vm.createDose = createDose;
         vm.changeDate = changeDate;
+
 
         PatientService.getPatient().then(function (item) {
             patient = item;
@@ -226,7 +52,7 @@
         function changeDate() {
 
             var options = {
-                date: moment(vm.scheduleDate, 'YYYY-MM-DD').toDate(),
+                date: moment(vm.scheduleDate, dateFormat).toDate(),
                 mode: 'date',
                 allowOldDates: true,
                 allowFutureDates: true,
@@ -236,8 +62,8 @@
             $cordovaDatePicker.show(options).then(function (date) {
 
                 if (date) {
-                    vm.scheduleDate = moment(date).format('YYYY-MM-DD');
-                    vm.title = moment().format('YYYY-MM-DD') === vm.scheduleDate ? 'Today' : moment(vm.scheduleDate, 'YYYY-MM-DD').format('MMMM Do YYYY');
+                    vm.scheduleDate = moment(date).format(dateFormat);
+                    vm.title = moment().format(dateFormat) === vm.scheduleDate ? 'Today' : moment(vm.scheduleDate, dateFormat).format(fullDateFormat);
                     $ionicLoading.show({
                         template: 'Loading...'
                     });
@@ -252,7 +78,7 @@
             vm.dose.taken = !skipped;
 
             $ionicPopup.confirm({
-                title: vm.event.medication.name,
+                title: vm.event.medication.brand,
                 template: '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>',
                 okText: '<b>Yes</b>',
                 okType: 'button-dark-orange'
@@ -311,7 +137,7 @@
             skipped = skipped || false;
 
             $ionicPopup.confirm({
-                title: event.medication.name,
+                title: event.medication.brand,
                 template: '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>',
                 okText: '<b>Yes</b>',
                 okType: 'button-dark-orange'
@@ -349,7 +175,7 @@
         function getEventText(event) {
             var result = '';
             result += _.capitalize(n2w.toWords(event.medication.dose.quantity || 0));
-            result += ' unit' + (event.medication.dose.quantity === 1 ? '' : 's');
+            result += ' ' + event.medication.dose.unit;
             if (event.event.type == 'exact') {
                 result += ' at ' + event.event.time;
             } else {
@@ -361,12 +187,57 @@
             return result;
         }
 
+        function getHabitsTime(event) {
+            if (event.event === 'sleep') {
+                return (event.when === 'before' ? vm.habits['sleep'] : vm.habits['wake']);
+            } else {
+                return vm.habits[event.event];
+            }
+        }
+
+        function getFilterTitle(event) {
+            var result = '';
+            if (event.event.type == 'exact') {
+                if (!_.isUndefined(event.scheduled)) {
+                    result += event.event.time;
+                } else {
+                    result += 'Exact Time';
+                }
+
+            } else {
+                if (event.event.event === 'sleep') {
+                    result += (event.event.when === 'after' ? 'After Wake' : 'Before Sleep');
+                } else {
+                    result += event.event.when + ' ' + event.event.event;
+                }
+                result = _.startCase(result);
+                result += ' (' + getHabitsTime(event.event) + ')';
+            }
+
+
+            return result;
+        }
+
         function getFilterName(events) {
             var result = '';
-            if (events.length) {
-                var first = moment(events[0].date);
-                return first.fromNow();
+            var event = events[0];
+            var now = moment();
+
+            if (event.dose_id) {
+                if (event.took_medication) {
+                    result = 'Taken ' + moment(event.dose.date).fromNow();
+                } else {
+                    result = 'Skipped';
+                }
+            } else {
+                var eventDate = moment(event.date);
+                if (eventDate >= now) {
+                    result = eventDate.fromNow();
+                } else {
+                    result = moment.duration(now - eventDate).humanize() + ' overdue';
+                }
             }
+
             return result;
         }
 
@@ -413,13 +284,44 @@
                         elem.status = getEventStatus(elem);
                     });
 
-                    vm.filters.forEach(function (filter) {
-                        filter.events = _.filter(vm.schedule, filter.f);
-                        filter.name = getFilterName(filter.events);
-                        if (filter.getTitle) {
-                            filter.title = filter.getTitle();
+                    var groups = _.groupBy(vm.schedule, function (elem) {
+                        var f = '';
+                        var whens = {
+                            'before': '1',
+                            'during': '2',
+                            'after': '3'
+                        };
+                        f += moment(elem.date).format('HH:mm-');
+                        if (elem.event.type === 'exact') {
+                            f += '0-' + moment(elem.event.time, $scope.settings.timeFormat).format('HH:mm');
+                        } else {
+                            f += whens[elem.event.when] + '-' +  moment(getHabitsTime(elem.event), $scope.settings.timeFormat).format('HH:mm');
                         }
-                    })
+                        f += '-';
+                        if (elem.dose_id) {
+                            f += moment(elem.dose.date).format('HH:mm-');
+                            f += (elem.took_medication ? '0' : '1')
+                        } else {
+                            f += '00:00-0';
+                        }
+
+                        return f;
+                    });
+
+                    //console.log(groups);
+
+                    vm.filters = [];
+                    var keys = _.keysIn(groups).sort();
+                    _.forEach(keys, function(key) {
+                        var events = groups[key];
+                        var title = getFilterTitle(events[0]);
+                        var name = getFilterName(events);
+                        vm.filters.push({
+                            title: title,
+                            name: name,
+                            events: events
+                        })
+                    });
                 },
                 function (error) {
                     console.log(error);
