@@ -17,10 +17,6 @@
         $scope.errors = [];
         $scope.user = {};
 
-        $rootScope.$on('auth:user:logout', function () {
-            $scope.user = {};
-        });
-
         function signUp(form) {
             $scope.errors = [];
             if ($scope.user.agreement !== true) {
@@ -63,10 +59,7 @@
                     },
                     function (error) {
                         $scope.error = true;
-                        error.data.errors.forEach(function (elem) {
-                            $scope.errors.push(_.startCase(elem))
-                        });
-
+                        $scope.errors = _.map(error.data.errors, _.startCase);
                     }
                 )
             }
@@ -82,22 +75,26 @@
                     'password': $scope.user.password
                 };
                 Auth.auth(user).then(function (status) {
-                    if (status === true) {
-                        $scope.error = false;
-                        $scope.errors = [];
-                        PatientService.changeStateByPatient().then(function (response) {
-                            $timeout(function () {
-                                $scope.user = {};
-                            }, 5000);
-                            return response;
-                        });
-                        notify.updateNotify();
+                    $scope.error = false;
+                    $scope.errors = [];
+                    PatientService.changeStateByPatient().then(function (response) {
+                        $timeout(function () {
+                            $scope.user = {};
+                        }, 5000);
+                        return response;
+                    });
+                    notify.updateNotify();
+                }, function (error) {
+                    $scope.error = true;
+                    var _error = error.data.errors[0];
+                    if (_error === $rootScope.ERROR_LIST.WRONG_PASSWORD) {
+                        $scope.errors = ['Wrong Email or Password'];
+                    } else if (_error === $rootScope.ERROR_LIST.LOGIN_ATTEMPTS_EXCEEDED) {
+                        $scope.errors = ['Too many incorrect tries'];
                     } else {
-                        $scope.error = true;
-                        $scope.errors = [];
-                        $scope.errors.push('Invalid Email or Password')
+                        $scope.errors = [_.startCase(_error)];
                     }
-                })
+                });
             }
         }
 

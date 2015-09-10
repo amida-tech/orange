@@ -5,14 +5,14 @@
         .module('orange')
         .controller('SharingAcceptCtrl', SharingAcceptCtrl);
 
-    SharingAcceptCtrl.$inject = ['$state', '$q', '$ionicLoading', '$ionicPopup',
-                                 'PatientService', 'RequestsService'];
+    SharingAcceptCtrl.$inject = ['$state', '$q', '$ionicLoading', 'PatientService', 'RequestsService', 'GlobalService'];
 
-    function SharingAcceptCtrl($state, $q, $ionicLoading, $ionicPopup, PatientService, RequestsService) {
+    function SharingAcceptCtrl($state, $q, $ionicLoading, PatientService, RequestsService, GlobalService) {
         var vm = this;
 
         vm.accept = accept;
         vm.request = RequestsService.getAcceptingRequest();
+        vm.errors = [];
 
         PatientService.getItems().then(function (items) {
             vm.logs = items;
@@ -25,7 +25,7 @@
             });
 
             if (!selectedItems.length) {
-                vm.error = 'No selected logs';
+                vm.errors = ['No selected logs'];
                 return
             }
 
@@ -50,16 +50,15 @@
                             goToSharing();
                         },
                         function (error) {
-                            $ionicPopup.alert({
-                                title: 'Error',
-                                template: error.data.errors
-                            }).then(goToSharing);
+                            GlobalService.showError(
+                                _.startCase(error.data.errors[0])
+                            ).then(goToSharing);
                         }
                     );
                 },
                 function (error) {
                     $ionicLoading.hide();
-                    vm.error = error.data.errors.join('<br>');
+                    vm.errors = _.map(error.data.errors, _.startCase);
                 }
             );
         }

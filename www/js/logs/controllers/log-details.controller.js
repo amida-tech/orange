@@ -5,9 +5,9 @@
         .module('orange')
         .controller('LogDetailsCtrl', LogDetailsCtrl);
 
-    LogDetailsCtrl.$inject = ['$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'PatientService'];
+    LogDetailsCtrl.$inject = ['$state', '$stateParams', '$ionicLoading', 'PatientService', 'GlobalService'];
 
-    function LogDetailsCtrl($state, $stateParams, $ionicPopup, $ionicLoading, PatientService) {
+    function LogDetailsCtrl($state, $stateParams, $ionicPopup, $ionicLoading, PatientService, GlobalService) {
 
         var vm = this;
 
@@ -19,11 +19,7 @@
         });
 
         function deleteLog() {
-            $ionicPopup.confirm({
-                title: 'Delete Log',
-                template: 'Are you sure want to delete this log?',
-                okType: 'button-orange'
-            }).then(
+            GlobalService.showConfirm('Are you sure want to delete this log?', 'Delete Log').then(
                 function (confirm) {
                     if (confirm) {
                         var isCurrent = vm.currentLog.id === PatientService.currentPatient.id;
@@ -37,10 +33,7 @@
                             },
                             function (error) {
                                 $ionicLoading.hide();
-                                $ionicPopup.alert({
-                                    title: 'Error',
-                                    template: error.data.errors
-                                });
+                                GlobalService.showError(_.startCase(error.data.errors[0]));
                             }
                         );
                     }

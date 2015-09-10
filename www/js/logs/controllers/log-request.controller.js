@@ -49,9 +49,7 @@
                         $scope.logRequestNextState = $state.params['nextState'] || 'logs';
                     },
                     function(error) {
-                        error.data.errors.forEach(function (elem) {
-                            $scope.errors.push(_.startCase(elem))
-                        });
+                        $scope.errors = _.map(error.data.errors, _.startCase);
                     }
                 );
             }

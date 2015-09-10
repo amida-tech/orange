@@ -17,10 +17,11 @@
             <div class="item item-body">
                 <form class="orange-form" name="patientForm">
                     <div class="item item-error"
-                         ng-if="patientForm.$submitted && !patientForm.$valid">
+                         ng-if="patientForm.$submitted && !patientForm.$valid || errors.length">
                         <div ng-messages="patientForm.name.$error">
                             <p ng-message="required">Full Name is required</p>
                         </div>
+                        <p ng-repeat="error in errors" ng-bind="error"></p>
                     </div>
                     <p ng-if="log.me" class="item-input">{{ log.first_name }} {{ log.last_name }}</p>
                     <label ng-if="!log.me" class="item-input">

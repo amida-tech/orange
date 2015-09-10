@@ -15,10 +15,11 @@
             </div>
             <form name="doctorForm" class="orange-form">
                 <div class="item item-error"
-                     ng-if="doctorForm.$submitted && !doctorForm.$valid">
+                     ng-if="doctorForm.$submitted && !doctorForm.$valid || doctor.errors.length">
                     <div ng-messages="doctorForm.name.$error">
                         <p ng-message="required">Doctor name is required.</p>
                     </div>
+                    <p ng-repeat="error in doctor.errors" ng-bind="error"></p>
                 </div>
                 <div class="item item-body">
                     <label class="item-input">

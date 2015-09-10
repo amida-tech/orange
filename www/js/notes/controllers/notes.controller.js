@@ -5,10 +5,10 @@
         .module('orange')
         .controller('NotesCtrl', NotesCtrl);
 
-    NotesCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$cordovaDialogs', 'NoteService'];
+    NotesCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'NoteService'];
 
     /* @ngInject */
-    function NotesCtrl($scope, $state, $ionicLoading, $cordovaDialogs, NoteService) {
+    function NotesCtrl($scope, $state, $ionicLoading, NoteService) {
         var vm = this;
         vm.refresh = refresh;
         vm.remove = remove;
@@ -32,14 +32,6 @@
 
         function removeError (error) {
             $ionicLoading.hide();
-
-            if (error.status == 400) {
-                $cordovaDialogs.alert('Bad Request', 'Error', 'OK');
-            }
-
-            if (error.status == 401) {
-                $cordovaDialogs.alert('Unauthorized', 'Error', 'OK');
-            }
         }
 
         function refresh() {

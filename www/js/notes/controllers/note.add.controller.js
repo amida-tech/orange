@@ -7,12 +7,12 @@
 
     NoteAddCtrl.$inject = [
         '$q', '$scope', '$filter', '$state', '$stateParams',
-        '$ionicLoading', '$ionicModal', '$cordovaDialogs', 'NoteService', 'MedicationService'
+        '$ionicLoading', '$ionicModal', 'NoteService', 'MedicationService'
     ];
 
     /* @ngInject */
     function NoteAddCtrl($q, $scope, $filter, $state, $stateParams,
-                         $ionicLoading, $ionicModal, $cordovaDialogs,  NoteService, MedicationService) {
+                         $ionicLoading, $ionicModal, NoteService, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
         //Check "id" param in url
@@ -25,6 +25,7 @@
 
         //Medications to add model
         vm.medications = [];
+        vm.errors = [];
 
         var id = $stateParams.id;
         $q.all([
@@ -94,18 +95,14 @@
 
         function saveSuccess(note) {
             $ionicLoading.hide();
+            NoteService.setItem(null);
             $state.go('app.notes.list');
         }
 
         function saveError(error) {
             $ionicLoading.hide();
-
-            if (error.status == 400) {
-                $cordovaDialogs.alert('Bad Request', 'Error', 'OK');
-            }
-
-            if (error.status == 401) {
-                $cordovaDialogs.alert('Unauthorized', 'Error', 'OK');
+            if (error.data.errors[0] !== NoteService.errorItemNotFound) {
+                vm.errors = _.map(error.data.errors, _.startCase);
             }
         }
 

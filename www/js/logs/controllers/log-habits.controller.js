@@ -32,12 +32,10 @@
                     },
                     function (error) {
                         $ionicLoading.hide();
-                        error.data.errors.forEach(function (elem) {
-                            vm.errors.push(_.startCase(elem))
-                        });
+                        vm.errors = _.map(error.data.errors, _.startCase);
                     });
             } else {
-                vm.errors.push('Please fill all habits');
+                vm.errors = ['Please fill all habits'];
             }
         }
     }

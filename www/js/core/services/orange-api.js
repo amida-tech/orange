@@ -23,8 +23,8 @@
             setAccessToken: function (token) {
                 accessToken = token;
             },
-            $get: ['Restangular', '$cordovaDialogs', '$state', '$rootScope', '$ionicLoading',
-                function (Restangular, $cordovaDialogs, $state, $rootScope, $ionicLoading) {
+            $get: ['Restangular', '$state', '$rootScope', '$ionicLoading', '$injector', 'GlobalService',
+                function (Restangular, $state, $rootScope, $ionicLoading, $injector, GlobalService) {
 
                 var OrangeRest = Restangular.withConfig(function (RestangularConfigurer) {
 
@@ -67,28 +67,48 @@
                     });
 
                     RestangularConfigurer.setErrorInterceptor(function (response, deferred, responseHandler) {
-                        if (response.status == 500) {
-                            $ionicLoading.hide();
-                            $cordovaDialogs.alert('Server Error', 'Error', 'OK');
-                            return false;
-                        }
+                        var _error = response.data.errors[0];
+                        switch (response.status) {
+                            case 500:
+                                $ionicLoading.hide();
+                                GlobalService.showError('Server Error');
+                                return false;
 
-                        //if (response.status == 404) {
-                        //    $ionicLoading.hide();
-                        //    $cordovaDialogs.alert('Item not found', 'Error', 'OK');
-                        //    return false;
-                        //}
+                            case 401:
+                                if (_error !== $rootScope.ERROR_LIST.WRONG_PASSWORD) {
+                                    $ionicLoading.hide();
+                                    GlobalService.showError(_.startCase(_error)).then(function () {
+                                        var authService = $injector.get('Auth');
+                                        authService.logout();
+                                        $state.go('onboarding');
+                                    });
+                                    return false;
+                                }
+                                break;
 
-                        if (response.status == 502 || !response.status) {
-                            $ionicLoading.hide();
-                            $rootScope.parentResponse = response;
-                            $rootScope.promise = deferred;
+                            case 404:
+                                if (_error === $rootScope.ERROR_LIST.INVALID_PATIENT_ID) {
+                                    GlobalService.showError('Patient not found').then(function () {
+                                        var patientService = $injector.get('PatientService');
+                                        patientService.clear();
+                                        patientService.changeStateByPatient();
+                                    });
+                                    return false;
+                                }
+                                break;
 
-                            if (_.isUndefined($rootScope.currentState))
-                                $rootScope.currentState = $state.current.name;
+                            default:
+                                if (response.status == 502 || !response.status) {
+                                    $ionicLoading.hide();
+                                    $rootScope.parentResponse = response;
+                                    $rootScope.promise = deferred;
 
-                            $state.go('retry');
-                            return false;
+                                    if (_.isUndefined($rootScope.currentState))
+                                        $rootScope.currentState = $state.current.name;
+
+                                    $state.go('retry');
+                                    return false;
+                                }
                         }
 
                         return true;

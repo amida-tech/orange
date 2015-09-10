@@ -5,15 +5,10 @@
         .module('orange')
         .controller('MedicationSearchCtrl', MedicationSearchCtrl);
 
-    MedicationSearchCtrl.$inject = ['$timeout', '$ionicPopup', 'OrangeApi'];
+    MedicationSearchCtrl.$inject = ['$timeout', 'OrangeApi', 'GlobalService'];
 
-    function MedicationSearchCtrl($timeout, $ionicPopup, OrangeApi) {
+    function MedicationSearchCtrl($timeout, OrangeApi, GlobalService) {
         var vm = this;
-
-        var alertOptions = {
-            title: 'Error',
-            okType: 'button-dark-orange'
-        };
 
         vm.term = null;
         vm.timer = null;
@@ -21,9 +16,7 @@
         vm.suggestions = [];
         vm.title = 'Search Medication';
 
-
         vm.pickSuggestion = pickSuggestion;
-
         vm.search = search;
 
         ////////////////
@@ -57,9 +50,7 @@
                     },
                     function (error) {
                         vm.timer = null;
-                        var options = angular.extend({}, alertOptions);
-                        options.subTitle = 'Cannot get search results';
-                        $ionicPopup.alert(options);
+                        GlobalService.showError('Cannot get search results');
                     });
             }, 1000)
         }
@@ -73,9 +64,7 @@
                 },
                 function (error) {
                     vm.timer = null;
-                    var options = angular.extend({}, alertOptions);
-                    options.subTitle = 'Cannot get suggestions';
-                    $ionicPopup.alert(alertOptions);
+                    GlobalService.showError('Cannot get suggestions');
                 });
         }
 

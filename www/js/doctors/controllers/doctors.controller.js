@@ -27,23 +27,16 @@
                 template: 'Deleting...'
             });
             DoctorService.removeItem(doctor).then(function (items) {
-                $ionicLoading.hide();
                 vm.doctors = items;
-            });
+            }).finally($ionicLoading.hide);
         }
 
         function refresh() {
             vm.doctorsPromise = DoctorService.getItems(true);
-            vm.doctorsPromise.then(
-                function (doctors) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                    vm.doctors = doctors;
-                },
-                function (error) {
-                    $ionicLoading.hide();
-                    $cordovaDialogs.alert(error.statusText, 'Error', 'OK');
-                }
-            )
+            vm.doctorsPromise.then(function (doctors) {
+                $scope.$broadcast('scroll.refreshComplete');
+                vm.doctors = doctors;
+            });
         }
 
         function loadMore() {

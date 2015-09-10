@@ -14,6 +14,7 @@
             is_edit = 'id' in $stateParams;
 
         vm.title = is_edit ? 'Edit Doctor': 'Add Doctor';
+        vm.errors = [];
         vm.backState = is_edit ? 'app.doctors.details({id:'+$stateParams.id+'})' : 'app.doctors.search';
         DoctorService.getItem($stateParams['id']).then(function (doctor) {
             vm.doctor = doctor;
@@ -38,8 +39,10 @@
         }
 
         function saveError(error) {
-            alert(error);
             $ionicLoading.hide();
+            if (error.data.errors[0] !== DoctorService.errorItemNotFound) {
+                vm.errors = _.map(error.data.errors, _.startCase);
+            }
         }
     }
 })();

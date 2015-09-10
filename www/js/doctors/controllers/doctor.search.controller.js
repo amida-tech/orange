@@ -5,11 +5,11 @@
         .module('orange')
         .controller('DoctorSearchCtrl', DoctorSearchCtrl);
 
-    DoctorSearchCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'OrangeApi', '$ionicModal', '$ionicPopup',
-                                'DoctorService'];
+    DoctorSearchCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'OrangeApi', '$ionicModal',
+                                'DoctorService', 'GlobalService'];
 
     /* @ngInject */
-    function DoctorSearchCtrl($scope, $state, $ionicLoading, OrangeApi, $ionicModal, $ionicPopup, DoctorService) {
+    function DoctorSearchCtrl($scope, $state, $ionicLoading, OrangeApi, $ionicModal, DoctorService, GlobalService) {
         var vm = this;
 
         vm.title = 'Find Doctor';
@@ -51,7 +51,7 @@
                         provider.name_prefix,
                         provider.first_name,
                         provider.middle_name,
-                        provider.last_name,
+                        provider.last_name
                     ].join(' ').toLowerCase()
                 );
 
@@ -73,7 +73,7 @@
                 vm.doctors.push(doctor)
             });
             if (!vm.doctors.length) {
-                $ionicPopup.alert({ title: 'No Doctors Found.' });
+                GlobalService.showError('No Doctors Found.');
                 return;
             }
 

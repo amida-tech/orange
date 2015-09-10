@@ -6,16 +6,20 @@
         .factory('PatientService', PatientService);
 
     PatientService.$inject = ['$q', '$state', '$ionicLoading', 'OrangeApi', '$localstorage',
-        'BasePagingService', 'Avatar'];
+        'BasePagingService', 'Avatar', 'errorList'];
 
     /* @ngInject */
-    function PatientService($q, $state, $ionicLoading, OrangeApi, $localstorage, BasePagingService, Avatar) {
+    function PatientService($q, $state, $ionicLoading, OrangeApi, $localstorage, BasePagingService,
+                            Avatar, errorList) {
 
         var Service = function () {
             BasePagingService.call(this);
             this.apiEndpoint = 'patients';
             this.currentPatient = null;
             this.limit = 30;
+
+            this.errorItemNotFound = errorList.INVALID_PATIENT_ID;
+            this.errorItemNotFoundText = 'Patient not found';
         };
 
         Service.prototype = Object.create(BasePagingService.prototype);
@@ -146,11 +150,6 @@
 
             function errorGetPatient(response) {
                 console.log('Error response: ', response);
-                if (response.status === 404 && response.data.errors.indexOf('invalid_patient_id') !== -1) {
-                    $localstorage.remove('currentPatient');
-                    return self.getPatient()
-                }
-
                 $ionicLoading.hide();
                 return null;
             }

@@ -5,14 +5,18 @@
         .module('orange')
         .factory('NoteService', NoteService);
 
-    NoteService.$inject = ['PatientPagingService'];
+    NoteService.$inject = ['PatientPagingService', 'errorList'];
 
-    function NoteService(PatientPagingService) {
+    function NoteService(PatientPagingService, errorList) {
         var Service = function () {
             PatientPagingService.call(this);
             this.apiEndpoint = 'journal';
             this.sortBy = 'date';
             this.sortOrder = 'desc';
+
+            this.errorItemNotFound = errorList.INVALID_JOURNAL_ID;
+            this.errorItemNotFoundText = 'Note not found';
+            this.afterErrorItemNotFoundState = 'app.notes.list';
         };
 
         Service.prototype = Object.create(PatientPagingService.prototype);

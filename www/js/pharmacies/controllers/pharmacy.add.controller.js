@@ -6,17 +6,18 @@
         .controller('PharmacyAddCtrl', PharmacyAddCtrl);
 
     PharmacyAddCtrl.$inject = [
-        '$scope', '$ionicLoading', '$cordovaDialogs', '$state', '$locale', '$ionicModal',
+        '$scope', '$ionicLoading', '$state', '$locale', '$ionicModal',
         '$stateParams', 'PharmacyService'
     ];
 
-    function PharmacyAddCtrl($scope, $ionicLoading, $cordovaDialogs, $state, $locale,
+    function PharmacyAddCtrl($scope, $ionicLoading, $state, $locale,
                              $ionicModal, $stateParams, PharmacyService) {
         var vm = this,
             is_edit = 'id' in $stateParams;
         vm.title = ((is_edit) ? 'Edit': 'Add') + ' Pharmacy';
         vm.days = $locale.DATETIME_FORMATS.DAY;
         vm.save = save;
+        vm.errors = [];
 
         $ionicModal.fromTemplateUrl('templates/pharmacies/hours.modal.html', {
             scope: $scope
@@ -52,12 +53,15 @@
 
         function saveSuccess() {
             $ionicLoading.hide();
+            PharmacyService.setItem(null);
             $state.go('app.pharmacies.list');
         }
 
         function saveError(error) {
             $ionicLoading.hide();
-            $cordovaDialogs.alert(error.statusText, 'Error', 'OK');
+            if (error.data.errors[0] !== PharmacyService.errorItemNotFound) {
+                vm.errors = _.map(error.data.errors, _.startCase);
+            }
         }
     }
 })();

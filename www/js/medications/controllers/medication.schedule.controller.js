@@ -5,10 +5,12 @@
         .module('orange')
         .controller('MedicationScheduleCtrl', MedicationScheduleCtrl);
 
-    MedicationScheduleCtrl.$inject = ['$scope', '$stateParams', '$state', '$ionicLoading', '$ionicPopup', 'MedicationService'];
+    MedicationScheduleCtrl.$inject = ['$scope', '$stateParams', '$state', '$ionicLoading',
+        'MedicationService', 'GlobalService'];
 
     /* @ngInject */
-    function MedicationScheduleCtrl($scope, $stateParams, $state, $ionicLoading, $ionicPopup, MedicationService) {
+    function MedicationScheduleCtrl($scope, $stateParams, $state, $ionicLoading,
+                                    MedicationService, GlobalService) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -32,7 +34,6 @@
             {name: 'Both', key: 'both'}
         ];
         $scope.$watch('schedule.selectedRegularity', regularityChanged);
-
         vm.duration = [
             {name: 'Ongoing', key: 'forever'},
             {name: '# of Times', key: 'number'},
@@ -62,11 +63,7 @@
             vm.showErrors = false;
             if (!vm.scheduleForm.$valid) {
                 console.log(vm.scheduleForm);
-                $ionicPopup.alert({
-                    title: 'Error',
-                    template: 'Fill in the values for all the required fields',
-                    okType: 'button-orange'
-                });
+                GlobalService.showError('Fill in the values for all the required fields');
                 vm.showErrors = true;
 
             } else {

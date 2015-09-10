@@ -6,9 +6,10 @@
         .controller('SharingCtrl', SharingCtrl);
 
     SharingCtrl.$inject = ['$scope', '$state', '$q', '$locale', '$ionicLoading', '$ionicPopup',
-                           'PatientService', 'RequestsService'];
+                           'PatientService', 'RequestsService', 'GlobalService'];
 
-    function SharingCtrl($scope, $state, $q, $locale, $ionicLoading, $ionicPopup, PatientService, RequestsService) {
+    function SharingCtrl($scope, $state, $q, $locale, $ionicLoading, $ionicPopup, PatientService,
+                         RequestsService, GlobalService) {
         var vm = this;
 
         vm.months = $locale.DATETIME_FORMATS.MONTH;
@@ -37,9 +38,6 @@
                     vm.requested = data[0];
                     vm.requests = data[1];
                     $scope.$broadcast('scroll.refreshComplete');
-                },
-                function (error) {
-                    showError(error);
                 }
             );
         }
@@ -59,10 +57,7 @@
                             $ionicLoading.hide();
                             update();
                         },
-                        function (error) {
-                            $ionicLoading.hide();
-                            showError(error);
-                        }
+                        failureCallback
                     );
                 }
             });
@@ -83,10 +78,7 @@
                             $ionicLoading.hide();
                             update();
                         },
-                        function (error) {
-                            $ionicLoading.hide();
-                            showError(error);
-                        }
+                        failureCallback
                     );
                 }
             });
@@ -97,11 +89,17 @@
             $state.go('app.sharing-accept');
         }
 
-        function showError(error) {
-            $ionicPopup.alert({
-                title: 'Error',
-                template: error.data.errors
-            });
+        function failureCallback(error) {
+            $ionicLoading.hide();
+            if (error.data.errors[0] === $scope.ERROR_LIST.INVALID_REQUEST_ID) {
+                GlobalService.showError('Request already cancelled or closed or not found').then(function () {
+                    update(true);
+                });
+            } else if (error.data.errors[0] === $scope.ERROR_LIST.INVALID_STATUS) {
+                GlobalService.showError('Invalid status').then(function () {
+                    update(true);
+                });
+            }
         }
     }
 })();

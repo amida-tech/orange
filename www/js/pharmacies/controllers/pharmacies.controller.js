@@ -5,9 +5,9 @@
         .module('orange')
         .controller('PharmaciesCtrl', PharmaciesCtrl);
 
-    PharmaciesCtrl.$inject = ['$scope', '$state', '$ionicLoading', '$cordovaDialogs', 'PharmacyService'];
+    PharmaciesCtrl.$inject = ['$scope', '$state', '$ionicLoading', 'PharmacyService'];
 
-    function PharmaciesCtrl($scope, $state, $ionicLoading, $cordovaDialogs, PharmacyService) {
+    function PharmaciesCtrl($scope, $state, $ionicLoading, PharmacyService) {
         var vm = this;
 
         vm.refresh = refresh;
@@ -39,7 +39,6 @@
 
         function removeFailure(error) {
             $ionicLoading.hide();
-            $cordovaDialogs.alert(error.statusText, 'Error', 'OK');
         }
 
         function loadMore() {
