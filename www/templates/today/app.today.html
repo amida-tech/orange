@@ -1,16 +1,13 @@
 <ion-view hide-nav-bar="false">
     <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
         <ion-nav-buttons side="left">
-            <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-            </button>
+            <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
         </ion-nav-buttons>
 
         <ion-nav-title ng-click="today.changeDate()" ng-bind="today.title"></ion-nav-title>
 
         <ion-nav-buttons side="right">
             <change-patient></change-patient>
-            <button class="button button-icon button-clear button-small ion-plus button-dose"
-                    ui-sref="app.today.as_needed"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="orange-bg orange-light">
@@ -62,4 +59,7 @@
             </div>
         </div>
     </ion-content>
+    <div class="add-asneeded-container positive" ui-sref="app.today.as_needed">
+        <span class="icon ion-plus add-asneeded"></span>
+    </div>
 </ion-view>

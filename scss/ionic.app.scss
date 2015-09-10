@@ -110,7 +110,7 @@ $more-dark: #444 !default;
 
 // Colors
 $orange: #FAAA20;
-$orange-light: #FFD496;
+$orange-light: #feecd1;
 $red: #FA2E20;
 $dark-red: #D0021B;
 $green: #20B11D;
@@ -148,6 +148,7 @@ $small-btn-icon-line-height: 15px;
 $bottom-menu-height: 150px;
 $list-bar-size: 40px;
 $medication-name-height: 53px;
+$icon-asneeded-height: 56px;
 
 body {
   background-color: $orange;
@@ -1300,4 +1301,27 @@ ion-option-button.option-control.button {
   display: block;
   border-top: 1px solid $gray;
   padding: 2px 0;
+}
+
+.add-asneeded {
+  font-size: $icon-asneeded-height - 20;
+  color: #fff;
+}
+
+.add-asneeded-container {
+  height: $icon-asneeded-height;
+  width: $icon-asneeded-height;
+  bottom: $padding-base-horizontal;
+  right: $padding-base-horizontal;
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px $dark;
+  background: $positive;
+  text-align: center;
+  vertical-align: middle;
+  line-height: $icon-asneeded-height;
+}
+
+.push-as-needed-icon {
+  height: $icon-asneeded-height + $padding-base-horizontal * 2;
 }
