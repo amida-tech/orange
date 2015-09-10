@@ -21,7 +21,8 @@
             <ion-item class="item-title ">
                 <div class="row row-no-padding">
                 <div class="med-title col col-66">
-                    <medication-block medication="medication.medication"></medication-block>
+                    <medication-block medication-name="medication.name"
+                                      medication-brand="medication.brand"></medication-block>
                 </div>
                 <div class="col col-33 text-right med-info">
                     <p ng-bind="medication.medication.schedule_summary"></p>

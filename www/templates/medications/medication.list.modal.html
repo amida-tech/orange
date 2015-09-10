@@ -14,7 +14,8 @@
                            ng-model="med.checked"
                            ng-change="notes_add.medicationChangeEvent()"/>
                 </label>
-                <medication-block medication="med"></medication-block>
+                <medication-block medication-name="med.name"
+                                  medication-brand="med.brand"></medication-block>
             </li>
         </ul>
     </ion-content>

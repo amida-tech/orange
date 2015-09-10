@@ -8,7 +8,8 @@
     function medicationBlock() {
         return {
             scope: {
-                med: "=medication"
+                brand: "=medicationBrand",
+                name: "=medicationName"
             },
             templateUrl: 'templates/medications/medication-block.html',
             link: function (scope, element, attributes, ngModel) {

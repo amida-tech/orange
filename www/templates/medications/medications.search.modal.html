@@ -32,7 +32,8 @@
 
             <ion-item ng-repeat="medication in search.result"
                       ng-click="medications.pickMedication(medication, $event)">
-                <medication-block medication="medication"></medication-block>
+                <medication-block medication-name="medication.name"
+                                  medication-brand="medication.brand"></medication-block>
             </ion-item>
         </ion-list>
 

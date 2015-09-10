@@ -39,13 +39,11 @@
                     <div class="row row-center row-no-padding">
 
                         <div class="col col-75 med-title" ng-click="today.openModal(event, $event)">
-
-                            <medication-block medication="event.medication"></medication-block>
-
+                            <medication-block medication-name="event.medication.name"
+                                              medication-brand="event.medication.brand + ' - ' + event.medication.dose.quantity + ' ' + event.medication.dose.unit"></medication-block>
                             <p class="muted" ng-if="event.dose_id">
                                 <small ng-bind="(event.took_medication ? 'Taken: ' : 'Skipped: ') + (event.dose.date|date:'hh:mm a'|lowercase)"></small>
                             </p>
-
                         </div>
                         <div class="col col-25 actions" ng-switch="event.status">
                             <div ng-switch-when="skipped">

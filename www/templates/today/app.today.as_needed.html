@@ -17,8 +17,8 @@
 
         <ion-list class="list-clean" can-swipe="true" >
             <ion-item class="" ng-repeat="medication in asNeeded.medications" ng-click="asNeeded.medicationClick(medication.id, $event)">
-                <medication-block medication="medication"></medication-block>
-
+                <medication-block medication-name="medication.name"
+                                  medication-brand="medication.brand"></medication-block>
             </ion-item>
         </ion-list>
     </ion-content>
