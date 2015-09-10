@@ -16,7 +16,6 @@
 
             this.errorItemNotFound = errorList.INVALID_MEDICATION_ID;
             this.errorItemNotFoundText = 'Medication not found';
-            this.afterErrorItemNotFoundState = 'app.medications';
         };
 
         Service.prototype = Object.create(PatientPagingService.prototype);
