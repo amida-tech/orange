@@ -359,13 +359,6 @@ dl.dl-worksheet {
 .list-clean {
   border: none;
   background: $light;
-  .item {
-    border: none;
-    .item-content {
-      padding-top: 5px;
-    }
-    //background: $light;
-  }
   .item:first-child {
     .item-content {
       padding-top: $item-padding;
@@ -387,21 +380,6 @@ dl.dl-worksheet {
 .list-last-open {
   .item:last-child {
     border-bottom: none;
-  }
-}
-
-.medication-list {
-  z-index: 100;
-  padding: 0 $item-padding;
-  .medication-item:first-child {
-    border-top: 1px solid $gray;
-  }
-  .medication-item {
-    font-size: $log-subscribe-font-size;
-    padding: 5px 0;
-    .item-content {
-      padding: 7px 49px 7px 7px
-    }
   }
 }
 

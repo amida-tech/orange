@@ -20,8 +20,8 @@
         <ion-list class="list-clean" can-swipe="true">
             <ion-item class="item-text-wrap" ng-repeat="doctor in doctors.doctors" ng-click="doctors.details(doctor)">
                 <div class="block-with-subscribe">
-                    <span class="text-basic-bold" ng-bind="doctor.name"></span>
-                    <span class="text-basic" ng-bind="doctor.title" ng-if="doctor.title"></span>
+                    <div class="text-basic-bold" ng-bind="doctor.name"></div>
+                    <div class="text-basic" ng-bind="doctor.title" ng-if="doctor.title"></div>
                 </div>
 
                 <ion-option-button class="button-assertive option-control" ng-click="doctors.remove(doctor)">

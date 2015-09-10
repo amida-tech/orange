@@ -21,8 +21,8 @@
             <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies"
                       ng-click="pharmacies.pharmacyDetails(pharmacy)">
                 <div class="block-with-subscribe">
-                    <span class="text-basic-bold" ng-bind="pharmacy.name"></span>
-                    <span class="text-basic" ng-bind="pharmacy.address"></span>
+                    <div class="text-basic-bold" ng-bind="pharmacy.name"></div>
+                    <div class="text-basic" ng-bind="pharmacy.address"></div>
                 </div>
                 <ion-option-button class="button-assertive option-control" ng-click="pharmacies.remove(pharmacy)">
                     <i class="icon ion-trash-a"></i>
