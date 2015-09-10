@@ -11,7 +11,7 @@
                 model: "=model",
                 subscribe: "@subscribe"
             },
-            templateUrl: 'templates/today/dose-input.html',
+            templateUrl: 'templates/today/orange_button_spinner.html',
             link: function (scope, element, attributes, ngModel) {
                 scope.modelSubscribe = scope.model + ' ' + scope.subscribe;
                 scope.$watch('model', function() {
