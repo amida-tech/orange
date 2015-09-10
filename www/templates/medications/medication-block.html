@@ -1,13 +1,13 @@
 <div class="block-with-subscribe">
     <div class="text-basic med-up" ng-bind="brand"></div>
 
-    <div class="text-medication-brand med-rx" ng-bind="name" ng-show="!showFull"
-          data-ellipsis data-ellipsis-append="more"
-          data-ellipsis-append-click="showFull=!showFull"></div>
+    <div class="text-medication-brand med-rx" ng-bind="nameModel" ng-if="!showFull"
+          ellipsis data-ellipsis-append="more"
+          data-ellipsis-append-click="showEvent()"></div>
 
-    <div class="text-medication-brand med-rx med-rx-full" ng-show="showFull" >
-        {{ name }}
-        <span ng-click="showFull=!showFull" class="pull-right">Hide</span>
+    <div class="text-medication-brand med-rx med-rx-full" ng-if="showFull" >
+        {{ nameModel }}
+        <span ng-click="showEvent()" class="pull-right">Hide</span>
         <div class="clearfix"></div>
     </div>
 </div>
