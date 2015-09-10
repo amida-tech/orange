@@ -26,7 +26,6 @@
     },
     "cordova-plugin-inappbrowser",
     "cordova-plugin-camera",
-    "cordova-plugin-dialogs",
     {
       "locator": "https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git",
       "id": "nl.x-services.plugins.launchmyapp",
