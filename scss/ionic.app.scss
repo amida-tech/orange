@@ -359,6 +359,9 @@ dl.dl-worksheet {
 .list-clean {
   border: none;
   background: $light;
+  .item {
+    border: none;
+  }
   .item:first-child {
     .item-content {
       padding-top: $item-padding;

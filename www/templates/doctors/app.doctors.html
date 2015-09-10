@@ -17,7 +17,7 @@
         <ion-refresher pulling-text="Pull to refresh" on-refresh="doctors.refresh()">
         </ion-refresher>
 
-        <ion-list class="list-clean" can-swipe="true">
+        <ion-list can-swipe="true">
             <ion-item class="item-text-wrap" ng-repeat="doctor in doctors.doctors" ng-click="doctors.details(doctor)">
                 <div class="block-with-subscribe">
                     <div class="text-basic-bold" ng-bind="doctor.name"></div>
