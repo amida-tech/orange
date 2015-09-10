@@ -148,7 +148,7 @@ $profile-button-max-width: 120px;
 $small-btn-icon-line-height: 15px;
 $bottom-menu-height: 150px;
 $list-bar-size: 40px;
-$medication-name-height: 53px;
+$medication-name-height: 54px;
 $icon-asneeded-height: 56px;
 $input-height: 42px;
 
@@ -1122,10 +1122,14 @@ ion-content {
 }
 
 .med-info {
-  line-height: 1.2;
-  font-size: $font-size-base * 1.1;
+  line-height: 1.1;
+  //border-top: 1px solid $lightgray;
+  padding-top: 5px;
+  margin-top: 5px;
   p {
     color: $dark;
+    white-space: normal;
+    font-size: $font-size-base * 0.9;
   }
 
 }

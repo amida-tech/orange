@@ -19,15 +19,11 @@
 
         <ion-list ng-if="medication.medication">
             <ion-item class="item-title ">
-                <div class="row row-no-padding">
-                <div class="med-title col col-66">
-                    <medication-block medication-name="medication.medication.name"
-                                      medication-brand="medication.medication.brand"></medication-block>
-                </div>
-                <div class="col col-33 text-right med-info">
+                <medication-block medication-name="medication.medication.name"
+                                  medication-brand="medication.medication.brand"></medication-block>
+                <div class="med-info">
                     <p ng-bind="medication.medication.schedule_summary"></p>
                     <p ng-bind="medication.eventsText"></p>
-                </div>
                 </div>
             </ion-item>
 
