@@ -173,7 +173,7 @@
             var result = '';
             if (event.event.type == 'exact') {
                 if (!_.isUndefined(event.scheduled)) {
-                    result += event.event.time;
+                    result += moment(event.date).format(timeFormat);
                 } else {
                     result += 'Exact Time';
                 }
@@ -185,7 +185,7 @@
                     result += event.event.when + ' ' + event.event.event;
                 }
                 result = _.startCase(result);
-                result += ' (' + getHabitsTime(event.event) + ')';
+                result += ' (' + moment(event.date).format(timeFormat) + ')';
             }
 
 
@@ -265,7 +265,7 @@
                             'during': '2',
                             'after': '3'
                         };
-                        f += moment(elem.date).format('HH:mm-');
+                        f += elem.date.slice(11, 16);
                         if (elem.event.type === 'exact') {
                             f += '0-' + moment(elem.event.time, $scope.settings.timeFormat).format('HH:mm');
                         } else {
@@ -281,6 +281,7 @@
 
                         return f;
                     });
+                    console.log(groups);
 
                     //console.log(groups);
 
