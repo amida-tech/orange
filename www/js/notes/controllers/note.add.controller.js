@@ -105,5 +105,10 @@
                 vm.errors = _.map(error.data.errors, _.startCase);
             }
         }
+
+        vm.showFull = false;
+        vm.moreClick = function(medicationName) {
+            vm.showFull = true;
+        }
     }
 })();

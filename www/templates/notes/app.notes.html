@@ -21,10 +21,8 @@
         <ion-list class="list-clean" can-swipe="true">
             <ion-item class="item-text-wrap" ng-repeat="note in notes_list.notes" ng-click="notes_list.details(note)">
                 <div class="block-with-subscribe">
-                    <span class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></span>
-                    <span class="text-basic">
-                        {{ note.text }}
-                    </span>
+                    <div class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></div>
+                    <div class="text-basic" ng-bind="note.text"></div>
                 </div>
 
                 <ion-option-button class="button-assertive option-control" ng-click="notes_list.remove(note)">

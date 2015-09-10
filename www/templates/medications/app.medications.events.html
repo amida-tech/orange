@@ -1,7 +1,7 @@
 <ion-view title="{{events.title}}">
     <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-buttons side="left">
-            <button ui-sref="app.medication.schedule" class="button back-button button-clear header-item">
+            <button ui-sref="{{ events.backUrl }}" class="button back-button button-clear header-item">
                 <i class="icon ion-arrow-left-c"></i>
             </button>
         </ion-nav-buttons>
@@ -15,10 +15,9 @@
 
             <ion-item class="item-title">
                 <div class="row row-no-padding">
-                    <div class="med-title col col-66">
-                        <p class="med-name" ng-bind="medication.medication.brand"></p>
-
-                        <p class="med-rx" ng-bind="medication.medication.name"></p>
+                    <div class="col">
+                        <medication-block medication-name="medication.medication.name"
+                                          medication-brand="medication.medication.brand"></medication-block>
                     </div>
                 </div>
             </ion-item>

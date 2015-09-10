@@ -15,14 +15,12 @@
         <div class="padding">
             <ion-list class="list-last-open list-details">
                 <ion-item>
-                    <div class="block-with-subscribe">
-                        <span class="text-basic" ng-bind="asNeededAdd.medication.brand"></span>
-                        <span class="text-medication-brand" ng-bind="asNeededAdd.medication.name"></span>
-                    </div>
+                    <medication-block medication-name="asNeededAdd.medication.name"
+                                      medication-brand="asNeededAdd.medication.brand"></medication-block>
                     <div class="item-label">
                         <div class="block-with-subscribe">
-                            <span class="text-basic text-compressed">Due at {{ asNeededAdd.date.format('hh:mm A') }}</span>
-                            <span class="text-basic text-compressed">{{ asNeededAdd.date.format('DD/MM/YY') }}</span>
+                            <div class="text-basic text-compressed">Due at {{ asNeededAdd.date.format('hh:mm A') }}</div>
+                            <div class="text-basic text-compressed">{{ asNeededAdd.date.format('DD/MM/YY') }}</div>
                         </div>
                     </div>
                 </ion-item>

@@ -26,10 +26,8 @@
 
         <div class="list list-clean medication-list">
             <div class="item medication-item" ng-repeat="medication in note_details.note.medications">
-                <div class="block-with-subscribe">
-                    <span class="text-basic" ng-bind="medication.brand"></span>
-                    <span class="text-medication-brand" ng-bind="medication.name"></span>
-                </div>
+                <medication-block medication-name="medication.name"
+                                  medication-brand="medication.name"></medication-block>
             </div>
         </div>
     </ion-content>

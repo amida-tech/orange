@@ -26,7 +26,11 @@
             vm.searchModal = modal
         });
 
-        function pickMedication(medication) {
+        function pickMedication(medication, $event) {
+            if ($event.target.tagName == 'SPAN') {
+                return;
+            }
+
             console.log('Medication picked:', medication);
             vm.searchModal.hide();
             MedicationService.setItem(medication);
@@ -66,7 +70,12 @@
             }
         }
 
-        function details(medication) {
+        function details(medication, $event) {
+            if ($event.target.tagName == 'SPAN') {
+                return;
+            }
+
+
             MedicationService.setItem(medication);
             $state.go('app.medication.details', {id: medication.id})
         }

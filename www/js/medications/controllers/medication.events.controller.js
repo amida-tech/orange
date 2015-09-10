@@ -22,6 +22,7 @@
 
         vm.nextUrl = $state.current.name === 'onboarding-log.medications.events' ? 'onboarding-log.medications.list' : 'app.medications';
         vm.returnUrl = $state.current.name === 'onboarding-log.medications.events' ? 'onboarding-log.medications.list' : 'app.medications';
+        vm.backUrl = $state.current.name === 'onboarding-log.medications.events' ? 'onboarding-log.medications.schedule' : 'app.medication.schedule';
 
 
         vm.eventTypes = [
