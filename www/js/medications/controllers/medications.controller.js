@@ -39,10 +39,6 @@
                 function (medications) {
                     $scope.$broadcast('scroll.refreshComplete');
                     vm.medications = medications;
-                },
-                function (error) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                    console.log(error);
                 }
             )
         }
@@ -54,9 +50,6 @@
             MedicationService.removeItem(medication).then(
                 function (items) {
                     vm.medications = items;
-                },
-                function (error) {
-                    console.log(error);
                 }
             ).finally($ionicLoading.hide);
         }

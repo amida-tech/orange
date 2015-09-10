@@ -14,8 +14,8 @@
                              ng-if="!doctor.doctorsPromise.$$state.status"></ion-spinner>
             </div>
             <form name="doctorForm" class="orange-form">
-                <div class="item item-error" ng-if="doctor.error">
-                    <p ng-repeat="error in doctor.errors"></p>
+                <div class="item item-error" ng-if="doctor.errors.length">
+                    <p ng-repeat="error in doctor.errors" ng-bind="error"></p>
                 </div>
                 <div class="item item-body">
                     <dl class="dl-worksheet">

@@ -5,10 +5,10 @@
         .module('orange')
         .controller('MedicationEventsCtrl', MedicationEventsCtrl);
 
-    MedicationEventsCtrl.$inject = ['$state', '$stateParams', '$ionicPopup', '$ionicLoading', 'MedicationService'];
+    MedicationEventsCtrl.$inject = ['$state', '$stateParams', '$ionicLoading', 'MedicationService', 'GlobalService'];
 
     /* @ngInject */
-    function MedicationEventsCtrl($state, $stateParams, $ionicPopup, $ionicLoading, MedicationService) {
+    function MedicationEventsCtrl($state, $stateParams, $ionicLoading, MedicationService, GlobalService) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -90,12 +90,11 @@
                     },
                     function (error) {
                         $ionicLoading.hide();
-                        $ionicPopup.alert({
-                            title: 'Error',
-                            template: error.data.errors,
-                            okType: 'button-dark-orange'
-                        });
-                        $state.go(vm.nextUrl);
+                        if (error.data.errors[0] !== MedicationService.errorItemNotFound) {
+                            GlobalService.showError(error.data.errors[0]).then(function () {
+                                $state.go(vm.nextUrl);
+                            });
+                        }
                     }
                 )
             }

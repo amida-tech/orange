@@ -29,16 +29,9 @@
                         template: 'Deleting…'
                     });
 
-                    MedicationService.removeItem(medication).then(
-                        undefined,
-                        function (error) {
-                            console.log(error);
-                        }
-                    ).finally(
-                        function () {
-                            $ionicLoading.hide();
-                            $state.go('app.medications');
-                        })
+                    MedicationService.removeItem(medication).then(function () {
+                        $state.go('app.medications');
+                    }).finally($ionicLoading.hide);
                 }
             });
         }
