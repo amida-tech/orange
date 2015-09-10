@@ -110,7 +110,8 @@ $more-dark: #444 !default;
 
 // Colors
 $orange: #FAAA20;
-$orange-light: #feecd1;
+$orange-lighter: #feecd1;
+$orange-light: #FFD496;
 $red: #FA2E20;
 $dark-red: #D0021B;
 $green: #20B11D;
@@ -264,7 +265,7 @@ body {
 }
 
 .orange-light {
-  color: $orange-light;
+  color: $orange-lighter;
 }
 
 .green {
@@ -858,13 +859,13 @@ ion-content {
   }
 
   &.orange-light {
-    color: $orange-light;
+    color: $orange-lighter;
     .button-clear,
     .button-icon,
     .button-outline,
     .title, {
       margin: 0;
-      color: $orange-light;
+      color: $orange-lighter;
       font-weight: bold;
     }
 

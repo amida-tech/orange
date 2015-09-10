@@ -17,13 +17,15 @@
         vm.backState = is_edit ? 'app.doctors.details({id:'+$stateParams.id+'})' : 'app.doctors.search';
         DoctorService.getItem($stateParams['id']).then(function (doctor) {
             vm.doctor = doctor;
-            if (vm.doctor == null) {
-                $state.go('app.doctors.search')
-            }
         });
         vm.doctorsPromise = DoctorService.getItems();
 
-        vm.save = function() {
+        vm.save = function(form) {
+            form.$submitted = true;
+            if (!_.isEmpty(form.$error)) {
+                return;
+            }
+
             $ionicLoading.show({
                 template: 'Saving...'
             });
