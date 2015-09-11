@@ -337,7 +337,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.logs.list', {
                         url: '',
                         templateUrl: 'templates/logs/app.logs.html',
-                        controller: 'LogsCtrl as menu_logs'
+                        controller: 'LogsCtrl as menu_logs',
+                        cache: false
                     })
                     .state('app.logs.add', {
                         url: '/add',
