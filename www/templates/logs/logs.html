@@ -8,7 +8,7 @@
         <ion-refresher pulling-text="Pull to refresh" on-refresh="update(true)">
         </ion-refresher>
         <div class="text-center">
-            <ion-spinner class="orange-loading-spinner" icon="dots" ng-show="!logList.length"></ion-spinner>
+            <ion-spinner class="orange-loading-spinner" icon="dots" ng-show="log.patientPromise.$$state.status"></ion-spinner>
         </div>
         <div class="list list-clean">
             <div class="orange-logs item item-text-wrap">

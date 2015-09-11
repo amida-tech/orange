@@ -27,7 +27,7 @@
 
         function update(force) {
             force = force || false;
-            PatientService.getItems(force).then(function (patients) {
+            vm.patientPromise = PatientService.getItems(force).then(function (patients) {
                 setPatients(patients);
                 if (force) {
                     $scope.$broadcast('scroll.refreshComplete');

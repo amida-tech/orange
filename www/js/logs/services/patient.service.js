@@ -50,6 +50,8 @@
         }
 
         function saveItem(savedItem) {
+            var self = this;
+
             var avatarUrl = savedItem.avatarUrl,
                 parts = savedItem.fullName ? savedItem.fullName.split(' ') : [],
                 isNew = !savedItem.id;
@@ -63,6 +65,11 @@
 
             return BasePagingService.prototype.saveItem.call(this, savedItem).then(function (item) {
                 console.log('Begin patient.saveItem callback');
+
+                if (self.currentPatient === null) {
+                    self.currentPatient = item;
+                }
+
                 setFullName(item);
                 if (avatarUrl) {
                     item.avatarUrl = avatarUrl;
@@ -131,6 +138,11 @@
             return this.getItems().then(
 
                 function (patients) {
+                    if (!patients.length) {
+                        $ionicLoading.hide();
+                        return;
+                    }
+
                     var patient = _.find(patients, function (item) {
                             return item['me'] === true;
                         });

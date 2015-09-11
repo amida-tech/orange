@@ -27,7 +27,11 @@
                             template: 'Deleting...'
                         });
                         PatientService.removeItem(vm.currentLog).then(
-                            function () {
+                            function (response) {
+                                if (!response.length) {
+                                    $state.go('logs');
+                                    return;
+                                }
                                 $ionicLoading.hide();
                                 $state.go('app.logs.list', {}, {reload: isCurrent});
                             },
