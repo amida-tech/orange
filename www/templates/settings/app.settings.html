@@ -62,9 +62,9 @@
                 <input name="confirm" type="password" ng-model="settings.password_model.confirm"
                        placeholder="Confirm New Password" required compare-to="settings.password_model.new"/>
             </label>
+            <label class="item-input">
+                <button type="submit" class="button button-full button-orange" ng-click="settings.update()">Update</button>
+            </label>
          </form>
     </ion-content>
-    <div class="bottom-buttons">
-        <button type="submit" class="button button-full button-orange" ng-click="settings.update()">Update</button>
-    </div>
 </ion-view>
