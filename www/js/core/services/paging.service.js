@@ -31,6 +31,7 @@
             $rootScope.$on('auth:user:logout', this.clear.bind(this));
         };
 
+        Service.prototype.initItems = initItems;
         Service.prototype.getItems = getItems;
         Service.prototype.getAllItems = getAllItems;
         Service.prototype.hasMore = hasMore;
@@ -50,11 +51,12 @@
 
         return Service;
 
-        function initItems(all) {
+        function initItems(all, limit) {
             all = all || false;
             var self = this,
                 options = {
-                    limit: all ? 0 : this.limit
+                    limit: all ? limit || 0 : this.limit
+                    //limit: all ? 0 : this.limit
                 };
             this.offset = 0;
             this.count = 0;
@@ -75,7 +77,7 @@
         function getItems(force) {
             force = force || false;
             if (this.items == null || force) {
-                return initItems.apply(this);
+                return this.initItems();
             } else {
                 var deferred = $q.defer();
                 deferred.resolve(this.items);
@@ -84,11 +86,21 @@
         }
 
         function getAllItems(force) {
-            if (force || this.count === 0 || this.count > this.offset) {
-                return initItems.call(this, true);
-            } else {
-                return this.getItems();
-            }
+            // TODO: Uncommented this, when limit:0 will work for all services
+            //if (force || this.count === 0 || this.count > this.offset) {
+            //    return initItems.call(this, true);
+            //} else {
+            //    return this.getItems();
+            //}
+            var self = this;
+            return fetchItems.call(this, {limit: 0}).then(function (response) {
+                var count = response.meta['count'] || 0;
+                if (count && (count > self.offset || force)) {
+                    return self.initItems(true, count);
+                } else {
+                    return self.getItems();
+                }
+            });
         }
 
         function fetchItems(options) {
