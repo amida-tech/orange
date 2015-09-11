@@ -1358,3 +1358,22 @@ ion-option-button.option-control.button {
     border-bottom: 1px solid $middlegray;
   }
 }
+
+.button-download {
+  background-color: #1b7bc4;
+  color: white;
+  font-weight: bolder;
+  border-radius: 5px;
+  height: 40px;
+
+  &.activated {
+    background-color: #1b8bc4;
+  }
+}
+
+.img-download {
+  height: 40px;
+  width: 40px;
+  margin-right: 10px;
+  margin-top: 1px;
+}

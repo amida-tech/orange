@@ -67,10 +67,11 @@
                         <option ng-repeat="log in sharing.logs" value="{{ log.id }}">{{ log.first_name + ' ' + log.last_name }}</option>
                     </select>
                 </label>
-                    <button class="button button-full button-orange"
-                            ui-sref="app.sharing-report({id: sharing.log, month: sharing.month})">Get Report</button>
-            </form>
+                <button class="button button-full button-download" ui-sref="app.sharing-report({id: sharing.log, month: sharing.month})">
+                    <img src="img/bluebutton.svg" class="img-download">Download My Data
+                </button>
 
+            </form>
         </div>
     </ion-content>
 </ion-view>
