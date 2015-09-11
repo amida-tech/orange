@@ -46,9 +46,8 @@
                             browserRef.close();
                         }
                     });
-
                     browserRef.addEventListener('exit', function (event) {
-                        deferred.reject("The sign in flow was canceled");
+                        deferred.reject(null);
                     });
 
                 } else {

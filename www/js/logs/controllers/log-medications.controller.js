@@ -122,6 +122,11 @@
                     }
                 })
             }, function (error) {
+                if (error === null) {
+                    $ionicLoading.hide();
+                    return;
+                }
+                
                 console.log("error: " + error);
                 vm.oauthError = "error " + error;
                 $ionicLoading.hide();
