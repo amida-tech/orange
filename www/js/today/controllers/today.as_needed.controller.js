@@ -16,7 +16,6 @@
             });
         };
 
-        vm.medicationsPromise = MedicationService.getItems();
         vm.medications = [];
 
         $scope.$watch('medications.$$state.status', function(newValue, oldValue) {
@@ -26,6 +25,7 @@
         });
 
         vm.refresh = function() {
+            vm.medicationsPromise = MedicationService.getAllItems(true);
             vm.medicationsPromise.then(
                 function (medications) {
                     $scope.$broadcast('scroll.refreshComplete');

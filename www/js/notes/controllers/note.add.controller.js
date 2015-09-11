@@ -21,7 +21,7 @@
         vm.title = (is_edit) ? 'Edit Note' : 'Add Note';
         vm.backState = (is_edit) ? 'app.notes.details({id: ' + $stateParams.id + '})' : 'app.notes.list';
         vm.notesPromise = NoteService.getItems();
-        vm.medicationsPromise = MedicationService.getItems();
+        vm.medicationsPromise = MedicationService.getAllItems();
 
         //Medications to add model
         vm.medications = [];

@@ -5,18 +5,29 @@
         .module('orange')
         .controller('SharingAcceptCtrl', SharingAcceptCtrl);
 
-    SharingAcceptCtrl.$inject = ['$state', '$q', '$ionicLoading', 'PatientService', 'RequestsService', 'GlobalService'];
+    SharingAcceptCtrl.$inject = ['$scope', '$state', '$q', '$ionicLoading', 'PatientService', 'RequestsService',
+        'GlobalService'];
 
-    function SharingAcceptCtrl($state, $q, $ionicLoading, PatientService, RequestsService, GlobalService) {
+    function SharingAcceptCtrl($scope, $state, $q, $ionicLoading, PatientService, RequestsService, GlobalService) {
         var vm = this;
 
         vm.accept = accept;
         vm.request = RequestsService.getAcceptingRequest();
+        vm.hasMore = PatientService.hasMore;
+        vm.loadMore = loadMore;
+        vm.update = update;
 
-        PatientService.getItems().then(function (items) {
-            vm.logs = items;
-            vm.logList = _.chunk(items, 3);
-        });
+        update();
+
+        function update(force) {
+            force = force || false;
+            vm.patientPromise = PatientService.getItems(force).then(function (patients) {
+                setPatients(patients);
+                if (force) {
+                    $scope.$broadcast('scroll.refreshComplete');
+                }
+            });
+        }
 
         function accept() {
             var selectedItems = _.filter(vm.logs, function (item) {
@@ -65,6 +76,23 @@
         function goToSharing() {
             $ionicLoading.hide();
             $state.go('app.sharing');
+        }
+
+        function loadMore() {
+            var morePromise = PatientService.moreItems();
+            if (vm.logs.length && morePromise) {
+                morePromise.then(function (items) {
+                    setPatients(items);
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+            } else {
+                $scope.$broadcast('scroll.infiniteScrollComplete');
+            }
+        }
+
+        function setPatients(patients) {
+            vm.logs = patients;
+            vm.logList = _.chunk(patients, 3);
         }
     }
 })();

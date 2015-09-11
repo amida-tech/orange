@@ -12,6 +12,8 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
+        <ion-refresher pulling-text="Pull to refresh" on-refresh="sharing_accept.update(true)">
+        </ion-refresher>
         <div class="list orange-list">
             <form class="orange-logs item item-text-wrap" name="acceptForm">
                 <div class="row row-no-padding" ng-repeat="row in sharing_accept.logList">
@@ -24,5 +26,7 @@
                 </div>
             </form>
         </div>
+        <ion-infinite-scroll ng-if="sharing_accept.hasMore()" distance="{{ settings.defaultScrollDistance }}" on-infinite="sharing_accept.loadMore()">
+        </ion-infinite-scroll>
     </ion-content>
 </ion-view>
