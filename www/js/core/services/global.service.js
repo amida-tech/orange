@@ -34,14 +34,15 @@
             }
         }
 
-        function showConfirm(description, title) {
+        function showConfirm(description, title, scope) {
             if (!isShowError) {
                 return $ionicPopup.confirm({
                     title: title || 'Confirm',
                     template: description || 'Are you sure to perform the action?',
                     okType: 'button-dark-orange',
                     okText: 'Yes',
-                    cancelText: 'No'
+                    cancelText: 'No',
+                    scope: scope
                 });
             } else {
                 var deferred = $q.defer();

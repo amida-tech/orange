@@ -5,11 +5,11 @@
         .module('orange')
         .controller('TodayCtrl', TodayCtrl);
 
-    TodayCtrl.$inject = ['$q', '$scope', '$stateParams', '$ionicLoading', '$ionicPopup', '$ionicModal',
-        '$cordovaDatePicker', 'n2w', 'PatientService', 'MedicationService'];
+    TodayCtrl.$inject = ['$q', '$scope', '$stateParams', '$ionicLoading', '$ionicModal', '$cordovaDatePicker',
+        'n2w', 'PatientService', 'MedicationService', 'DoseService', 'GlobalService'];
 
-    function TodayCtrl($q, $scope, $stateParams, $ionicLoading, $ionicPopup, $ionicModal,
-                       $cordovaDatePicker, n2w, PatientService, MedicationService) {
+    function TodayCtrl($q, $scope, $stateParams, $ionicLoading, $ionicModal,$cordovaDatePicker, n2w,
+                       PatientService, MedicationService, DoseService, GlobalService) {
         var vm = this,
             doseModal = null,
             patient = null;
@@ -73,7 +73,7 @@
 
 
         function showModal(event, $event) {
-            console.log(event)
+            console.log(event);
             if ($event.target.tagName == 'SPAN') {
                 return;
             }
@@ -105,13 +105,7 @@
                 template = '<button-spinner model="today.quantity" subscribe="'+event.medication.dose.unit+'"></button-spinner>' + template;
             }
 
-            $ionicPopup.confirm({
-                title: event.medication.brand,
-                template: template,
-                okText: '<b>Yes</b>',
-                scope: $scope,
-                okType: 'button-dark-orange'
-            }).then(
+            GlobalService.showConfirm(template, event.medication.brand, $scope).then(
                 function (confirm) {
                     if (!confirm) {
                         return;
@@ -132,19 +126,16 @@
                     $ionicLoading.show({
                         template: 'Saving...'
                     });
-                    patient.all('doses').post(dose)
-                        .then(
+                    DoseService.saveItem(dose).then(
                         undefined,
                         function (data) {
                             $ionicLoading.hide();
-                            var template = data.data.errors.indexOf('invalid_medication_id') > -1 ? 'Medication not found' : data.data.errors;
-                            $ionicPopup.alert({
-                                title: 'Error',
-                                template: template,
-                                okType: 'button-dark-orange'
-                            });
-                        })
-                        .finally(function () {
+                            var template = data.data.errors.indexOf('invalid_medication_id') > -1
+                                           ? 'Medication not found'
+                                           : _.map(data.data.errors, _.startCase);
+                            GlobalService.showError(template);
+                        }
+                    ).finally(function () {
                                      refresh();
                                      hideModal()
                                  })
@@ -237,7 +228,7 @@
                 patient.all('schedule').getList(filter),
                 MedicationService.getItems(true),
                 PatientService.getHabits(patient),
-                patient.all('doses').getList()
+                DoseService.getAllItems(true)
             ]).then(
                 function (data) {
                     vm.schedule = data[0].plain();

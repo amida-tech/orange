@@ -5,10 +5,10 @@
         .module('orange')
         .controller('TodayAsNeededAddCtrl', TodayAsNeededAddCtrl);
 
-    TodayAsNeededAddCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', 'PatientService',
-        'MedicationService', 'n2w'];
+    TodayAsNeededAddCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading',
+        'MedicationService', 'DoseService', 'n2w'];
 
-    function TodayAsNeededAddCtrl($scope, $state, $stateParams, $ionicLoading, PatientService, MedicationService, n2w) {
+    function TodayAsNeededAddCtrl($scope, $state, $stateParams, $ionicLoading, MedicationService, DoseService, n2w) {
         var vm = this;
         vm.medicationsPromise = MedicationService.getItems();
 
@@ -50,11 +50,9 @@
 
         vm.createDose = function() {
             $ionicLoading.show({template: 'Save Intake...'});
-            PatientService.getPatient().then(function (patient) {
-                patient.all('doses').post(vm.dose).then(function () {
-                    $ionicLoading.hide();
-                    $state.go('app.today.schedule')
-                });
+            DoseService.saveItem(vm.dose).then(function () {
+                $ionicLoading.hide();
+                $state.go('app.today.schedule')
             });
         }
     }

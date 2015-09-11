@@ -250,7 +250,7 @@
             if (addCondition === undefined) {
                 addCondition = true;
             }
-            if (!this.hasMore() && addCondition) {
+            if (!this.hasMore() && addCondition && this.items) {
                 this.items[this.sortOrder !== 'desc' ? 'push' : 'unshift'](newItem);
                 this.offset += 1;
             }
