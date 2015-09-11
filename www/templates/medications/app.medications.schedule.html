@@ -98,7 +98,7 @@
                         <div ng-if="schedule.selectedFrequency === 'monthly'">
                             <p class="text-muted">Which days?</p>
                             <calendar ng-model="schedule.schedule.frequency.start"></calendar><br>
-                            <div class="item item-error" ng-if="schedule.errors.length">
+                            <div class="item item-warning" ng-if="schedule.errors.length">
                                 <p ng-repeat="error in schedule.errors" ng-bind="error"></p>
                             </div>
                         </div>

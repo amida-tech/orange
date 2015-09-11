@@ -314,6 +314,19 @@ body {
 
 }
 
+.item-warning {
+  background-color: $orange-light;
+  padding: $padding-base-horizontal $padding-large-horizontal;
+  border: none !important;
+  p {
+    color: $dark;
+    font-size: $font-size-small + 1;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+}
+
 .list-details {
   .item {
     border: None;
