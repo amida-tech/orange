@@ -265,7 +265,7 @@
                             'during': '2',
                             'after': '3'
                         };
-                        f += elem.date.slice(11, 16);
+                        f += moment(elem.date).format('YYYY-MM-DD-HH-mm-');
                         if (elem.event.type === 'exact') {
                             f += '0-' + moment(elem.event.time, $scope.settings.timeFormat).format('HH:mm');
                         } else {
@@ -283,7 +283,6 @@
                     });
 
                     //console.log(groups);
-
                     vm.filters = [];
                     var keys = _.keysIn(groups).sort();
                     _.forEach(keys, function(key) {
