@@ -226,7 +226,7 @@
             };
             $q.all([
                 patient.all('schedule').getList(filter),
-                MedicationService.getItems(true),
+                MedicationService.getAllItems(true),
                 PatientService.getHabits(patient),
                 DoseService.getAllItems(true)
             ]).then(
