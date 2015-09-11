@@ -6,7 +6,7 @@
             </button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
-            <button class="button button-clear" ui-sref="app.today.schedule">Done</button>
+            <button class="button button-clear" ui-sref="app.today.schedule" ng-if="!!setup.logList.length">Done</button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="orange-bg padding-top">
@@ -17,7 +17,7 @@
             Pick a log to begin.</p>
         <div class="list list-clean orange-bg">
             <div class="orange-logs item item-text-wrap light orange-bg">
-                <div class="row row-no-padding" ng-repeat="row in logList">
+                <div class="row row-no-padding" ng-repeat="row in setup.logList">
                     <div class="col col-33" ng-repeat="log in row">
                         <div class="item-log" ng-click="habits(log)">
                             <avatar patient="log"></avatar>

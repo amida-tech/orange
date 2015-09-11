@@ -29,7 +29,7 @@
                         PatientService.removeItem(vm.currentLog).then(
                             function (response) {
                                 if (!response.length) {
-                                    $state.go('logs');
+                                    $state.go('logs', {}, {reload: isCurrent});
                                     return;
                                 }
                                 $ionicLoading.hide();

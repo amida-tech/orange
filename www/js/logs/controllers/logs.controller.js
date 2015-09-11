@@ -12,13 +12,13 @@
         var vm = this;
 
         $scope.logs = [];
-        $scope.logList = [];
         $scope.update = update;
         $scope.habits = habits;
         $scope.hasMore = PatientService.hasMore;
         $scope.loadMore = loadMore;
         $scope.withMe = false;
 
+        vm.logList = [];
         vm.editMode = false;
         vm.setEditMode = setEditMode;
         vm.details = details;
@@ -63,7 +63,7 @@
 
         function setPatients(patients) {
             $scope.logs = patients;
-            $scope.logList = _.chunk(patients, 3);
+            vm.logList = _.chunk(patients, 3);
             $scope.withMe = !!_.find(patients, function (item) {
                 return item['me'] === true;
             });
