@@ -103,6 +103,15 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                                  $rootScope.todayHistoryView = currentView;
                              }
 
+                             if (toState.name == 'app.today.schedule' || toState.name == 'logs') {
+                                 $ionicHistory.nextViewOptions({
+                                     historyRoot: true,
+                                     disableBack: true
+                                 });
+
+                                 history.backView = null;
+                             }
+
                              //Set history
                              if (toState.name != 'app.today.schedule' && _.indexOf(menuMap, toState.name) != -1 && !_.isUndefined($rootScope.todayHistoryId)) {
                                  currentView.backViewId = $rootScope.todayHistoryId;
