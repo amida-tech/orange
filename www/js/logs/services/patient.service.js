@@ -89,8 +89,8 @@
         function setItem(item) {
             var self = this;
             BasePagingService.prototype.setItem.call(this, item);
-            setFullName(this.item);
             if (this.item) {
+                setFullName(this.item);
                 return this.setHabits(this.item);
             }
         }
