@@ -74,8 +74,8 @@
                     'password': $scope.user.password
                 };
                 Auth.auth(user).then(function (status) {
-                    $scope.error = false;
                     $scope.errors = [];
+                    form.$submitted = false;
                     PatientService.changeStateByPatient().then(function (response) {
                         $timeout(function () {
                             $scope.user = {};
@@ -84,7 +84,7 @@
                     });
                     notify.updateNotify();
                 }, function (error) {
-                    $scope.error = true;
+                    form.$submitted = false;
                     var _error = error.data.errors[0];
                     if (_error === $rootScope.ERROR_LIST.WRONG_PASSWORD) {
                         $scope.errors = ['Incorrect Email or Password'];
