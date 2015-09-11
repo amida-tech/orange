@@ -12,9 +12,6 @@
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
-        <div class="item item-error" ng-if="sharing_accept.errors.length">
-            <p ng-repeat="error in sharing_accept.errors" ng-bind="error"></p>
-        </div>
         <div class="list orange-list">
             <form class="orange-logs item item-text-wrap" name="acceptForm">
                 <div class="row row-no-padding" ng-repeat="row in sharing_accept.logList">

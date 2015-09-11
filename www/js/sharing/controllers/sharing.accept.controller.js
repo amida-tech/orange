@@ -12,7 +12,6 @@
 
         vm.accept = accept;
         vm.request = RequestsService.getAcceptingRequest();
-        vm.errors = [];
 
         PatientService.getItems().then(function (items) {
             vm.logs = items;
@@ -25,7 +24,7 @@
             });
 
             if (!selectedItems.length) {
-                vm.errors = ['No selected logs'];
+                GlobalService.showError('No selected logs');
                 return
             }
 
@@ -58,7 +57,7 @@
                 },
                 function (error) {
                     $ionicLoading.hide();
-                    vm.errors = _.map(error.data.errors, _.startCase);
+                    GlobalService.showError(_.startCase(error.data.errors[0]));
                 }
             );
         }
