@@ -35,6 +35,7 @@
 
         function saveSuccess(doctor) {
             $ionicLoading.hide();
+            DoctorService.setItem(null);
             $state.go('app.doctors.list');
         }
 

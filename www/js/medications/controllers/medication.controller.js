@@ -33,6 +33,7 @@
                     });
 
                     MedicationService.removeItem(medication).then(function () {
+                        MedicationService.setItem(null);
                         $state.go('app.medications');
                     }).finally($ionicLoading.hide);
                 }

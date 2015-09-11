@@ -183,7 +183,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.notes', {
                         url: '/notes',
                         abstract: true,
-                        cache: false,
                         views: {
                             menuContent: {
                                 template: '<ion-nav-view/>'
@@ -214,7 +213,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     })
                     .state('app.medications', {
                         url: '/medications',
-                        //abstract: true,
                         views: {
                             'menuContent': {
                                 templateUrl: 'templates/medications/app.medications.html',
@@ -224,7 +222,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     })
                     .state('app.medication', {
                         url: '/medication/{id}',
-                        //abstract: true,
                         cache: false,
                         params: {
                             id: {value: null, squash: true}
@@ -258,7 +255,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.doctors', {
                         url: '/doctors',
                         abstract: true,
-                        cache: false,
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>'
@@ -285,13 +281,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/add',
                         templateUrl: 'templates/doctors/app.doctors.add.html',
                         controller: 'DoctorCtrl as doctor',
-                        cache: false
                     })
                     .state('app.doctors.edit', {
                         url: '/:id/edit',
                         templateUrl: 'templates/doctors/app.doctors.add.html',
                         controller: 'DoctorCtrl as doctor',
-                        cache: false
                     })
                     .state('app.pharmacies', {
                         url: '/pharmacies',
@@ -325,7 +319,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.logs', {
                         url: '/logs',
                         abstract: true,
-                        cache: false,
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view />'
@@ -335,7 +328,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.logs.list', {
                         url: '',
                         templateUrl: 'templates/logs/app.logs.html',
-                        cache: false,
                         controller: 'LogsCtrl as menu_logs'
                     })
                     .state('app.logs.add', {
@@ -358,13 +350,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/details/:id',
                         templateUrl: 'templates/logs/logs.details.html',
                         controller: 'LogDetailsCtrl as log_details',
-                        cache: false
                     })
                     .state('app.logs.edit', {
                         url: '/edit/:id',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
-                        cache: false,
                         params: {
                             nextState: 'app.logs.list',
                             editMode: true,
@@ -375,6 +365,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/request',
                         templateUrl: 'templates/logs/logs.request.html',
                         controller: 'RequestLogsCtrl',
+                        cache: false,
                         params: {
                             nextState: 'app.logs.list'
                         }
@@ -394,7 +385,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         views: {
                             'menuContent': {
                                 templateUrl: 'templates/sharing/app.sharing.accept.html',
-                                cache: false,
                                 controller: 'SharingAcceptCtrl as sharing_accept'
                             }
                         }

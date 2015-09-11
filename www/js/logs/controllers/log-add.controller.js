@@ -117,6 +117,7 @@
         function saveLog() {
             PatientService.saveItem($scope.log).then(
                 function (patient) {
+                    PatientService.setItem(null);
                     $scope.log = patient;
                     $ionicLoading.hide();
                     goToNextState();
