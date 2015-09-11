@@ -452,7 +452,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('logs-setup', {
                         url: '/onboarding/logs/setup',
                         templateUrl: 'templates/logs/logs.setup.html',
-                        cache: false,
                         controller: 'LogsCtrl'
                     })
 

@@ -8,7 +8,7 @@
     <ion-content padding="true" class="orange-bg">
         <div class="card orange-card">
             <form name="loginForm" class="orange-form">
-                <div class="item item-error" ng-if="error">
+                <div class="item item-error" ng-if="loginForm.$submitted && !loginForm.$valid || errors.length">
                     <p ng-repeat="error in errors" ng-bind="error"></p>
                     <div ng-messages="loginForm.email.$error">
                         <p ng-message="email || validateEmail">Invalid email address</p>

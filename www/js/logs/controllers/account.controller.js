@@ -67,9 +67,8 @@
 
         function login(form) {
             $scope.errors = [];
-            if (!form.$valid || $scope.errors.length) {
-                $scope.error = true;
-            } else {
+            form.$submitted = true;
+            if (form.$valid) {
                 var user = {
                     'email': $scope.user.email,
                     'password': $scope.user.password
@@ -88,7 +87,7 @@
                     $scope.error = true;
                     var _error = error.data.errors[0];
                     if (_error === $rootScope.ERROR_LIST.WRONG_PASSWORD) {
-                        $scope.errors = ['Wrong Email or Password'];
+                        $scope.errors = ['Incorrect Email or Password'];
                     } else if (_error === $rootScope.ERROR_LIST.LOGIN_ATTEMPTS_EXCEEDED) {
                         $scope.errors = ['Too many incorrect tries'];
                     } else {
@@ -96,6 +95,12 @@
                     }
                 });
             }
+
+            $scope.$watch('user.password', function () {
+                if ($scope.errors.length) {
+                    $scope.errors = [];
+                }
+            });
         }
 
         function goToTerms() {
