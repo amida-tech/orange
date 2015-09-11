@@ -96,6 +96,12 @@
                 });
             }
 
+            $scope.$watch('user.email', function () {
+                if ($scope.errors.length) {
+                    $scope.errors = [];
+                }
+            });
+
             $scope.$watch('user.password', function () {
                 if ($scope.errors.length) {
                     $scope.errors = [];
