@@ -56,6 +56,7 @@
             event.show = !event.show;
             if (!event.show) {
                 event = prepareEvent(cleanEvent(event));
+                event.text = MedicationService.getEventText(event);
             } else {
                 vm.buttonText = 'Schedule';
                 vm.events.forEach(function (elem) {
@@ -141,7 +142,6 @@
             delete event.show;
             //delete event.id;
             delete event.notification;
-            event.text = MedicationService.getEventText(event);
             return event;
         }
 
@@ -165,7 +165,6 @@
 
         function clean(events) {
             return _.map(angular.copy(events), cleanEvent)
-
         }
 
         function activate() {
