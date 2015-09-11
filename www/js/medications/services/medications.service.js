@@ -84,9 +84,10 @@
 
         function getEventText(event) {
             var result = '';
-            var units = this.item.dose.quantity;
-            result += _.capitalize(n2w.toWords(units || 0));
-            result += ' unit' + (units === 1 ? '' : 's');
+            var quantity = this.item.dose.quantity;
+            var unit = this.item.dose.unit;
+            result += _.capitalize(n2w.toWords(quantity || 0));
+            result += ' ' + unit;
             if (event.type == 'exact') {
                 result += ' at ' + event.time;
             } else {
@@ -95,7 +96,6 @@
                 } else {
                     result += ' ' + event.when + ' ' + event.event;
                 }
-
             }
             return result;
         }

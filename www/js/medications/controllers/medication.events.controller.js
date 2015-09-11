@@ -141,11 +141,15 @@
             delete event.show;
             //delete event.id;
             delete event.notification;
+            event.text = MedicationService.getEventText(event);
             return event;
         }
 
         function prepareEvent(event) {
-            event.text = MedicationService.getEventText(event);
+            if (!_.isUndefined(event.id)) {
+                event.text = MedicationService.getEventText(event);
+            }
+
             event.notification = 30;
             if (event.type === 'event' && ['breakfast', 'lunch', 'dinner'].indexOf(event.event) !== -1) {
                 event.eventType = 'meal';
