@@ -73,6 +73,7 @@
 
 
         function showModal(event, $event) {
+            console.log(event)
             if ($event.target.tagName == 'SPAN') {
                 return;
             }
@@ -121,9 +122,13 @@
                         date: moment().format(),
                         taken: !skipped,
                         scheduled: event.scheduled,
-                        quantity: vm.quantity,
+                        dose: {
+                            unit: event.medication.dose.unit,
+                            quantity: vm.quantity
+                        },
                         note: vm.notes || ''
                     };
+
                     $ionicLoading.show({
                         template: 'Saving...'
                     });
@@ -148,8 +153,8 @@
 
         function getEventText(event) {
             var result = '';
-            result += _.capitalize(n2w.toWords(event.medication.dose.quantity || 0));
-            result += ' ' + event.medication.dose.unit;
+            result += _.capitalize(n2w.toWords(event.doseModel.quantity || 0));
+            result += ' ' + event.doseModel.unit;
             if (event.event.type == 'exact') {
                 result += ' at ' + event.event.time;
             } else {
@@ -241,6 +246,7 @@
                     vm.doses = data[3].plain();
                     vm.schedule.forEach(function (elem) {
                         elem.medication = _.find(vm.medications, {id: elem.medication_id});
+                        elem.doseModel = elem.medication.dose;
 
                         elem.event = _.find(elem.medication.schedule.times, {id: elem.scheduled});
 
@@ -254,6 +260,7 @@
 
                         if (elem.dose_id) {
                             elem.dose = _.find(vm.doses, {id: elem.dose_id});
+                            elem.doseModel = elem.dose.dose;
                         }
                         elem.status = getEventStatus(elem);
                     });

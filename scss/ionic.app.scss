@@ -116,6 +116,7 @@ $red: #FA2E20;
 $dark-red: #D0021B;
 $green: #20B11D;
 $gray: #9E9A9A;
+$middlegray: #ccc;
 $lightgray: #efefef;
 
 $input-color-placeholder: $gray !default;
@@ -1352,5 +1353,8 @@ ion-option-button.option-control.button {
   input {
     width: 100%;
     padding: 6px 12px;
+    text-align: center;
+    border-top: 1px solid $middlegray;
+    border-bottom: 1px solid $middlegray;
   }
 }

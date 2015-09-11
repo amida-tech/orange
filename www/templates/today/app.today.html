@@ -37,7 +37,7 @@
 
                         <div class="col col-75 med-title" ng-click="today.openModal(event, $event)">
                             <medication-block medication-name="event.medication.name"
-                                              medication-brand="event.medication.brand + ' - ' + event.medication.dose.quantity + ' ' + event.medication.dose.unit"></medication-block>
+                                              medication-brand="event.medication.brand + ' - ' + event.doseModel.quantity + ' ' + event.doseModel.unit"></medication-block>
                             <p class="muted" ng-if="event.dose_id">
                                 <small ng-bind="(event.took_medication ? 'Taken: ' : 'Skipped: ') + (event.dose.date|date:'hh:mm a'|lowercase)"></small>
                             </p>
