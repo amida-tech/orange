@@ -41,10 +41,10 @@
             <div class="pharmacy-details-hours-list">
                 <div class="item" ng-repeat="day in pharmacy_details.days">
                     <div class="day"><strong>{{ day }}:</strong></div>
-                     <div>
+                     <span>
                          {{ pharmacy_details.pharmacy.hours[day.toLowerCase()]['open'] }}
                     - {{ pharmacy_details.pharmacy.hours[day.toLowerCase()]['close'] }}
-                     </div>
+                     </span>
                 </div>
             </div>
         </div>
