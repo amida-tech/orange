@@ -17,8 +17,8 @@
                          ng-if="medication.medication === null"></ion-spinner>
         </div>
 
-        <ion-list ng-if="medication.medication">
-            <ion-item class="item-title ">
+        <ion-list ng-if="medication.medication" class="list-last-open">
+            <ion-item class="item-title">
                 <medication-block medication-name="medication.medication.name"
                                   medication-brand="medication.medication.brand"></medication-block>
                 <div class="med-info">
@@ -32,6 +32,10 @@
 
                 <p class="info" ng-bind="medication.getEventText(event)"></p>
             </ion-item>
+            <ion-item>
+                <span class="text-muted" ng-bind="medication.medicationStatusMap[medication.medication.origin]"></span>
+            </ion-item>
+
         </ion-list>
 
 

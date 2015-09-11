@@ -9,7 +9,10 @@
 
     function MedicationCtrl($state, $stateParams, $ionicLoading, $ionicPopup, MedicationService) {
         var vm = this;
-
+        vm.medicationStatusMap = {
+            manual: 'Manually Entered',
+            import: 'Automatic Imported'
+        };
         vm.title = 'Medication Details';
         MedicationService.getItem($stateParams['id']).then(function (medication) {
             vm.medication = medication;
