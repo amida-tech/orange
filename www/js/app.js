@@ -453,7 +453,11 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/onboarding/logs/setup',
                         templateUrl: 'templates/logs/logs.setup.html',
                         controller: 'LogsCtrl as setup',
-                        cache: false
+                        cache: false,
+                        params: {
+                            from_medication: false,
+                            log_id: null
+                        }
                     })
 
                     .state('onboarding-log', {

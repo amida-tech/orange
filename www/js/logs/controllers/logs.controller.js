@@ -22,6 +22,9 @@
         vm.editMode = false;
         vm.setEditMode = setEditMode;
         vm.details = details;
+        vm.backState = $state.params['from_medication']
+                       ? 'onboarding-log.medications.list({patient_id:'+ $state.params['log_id'] +'})'
+                       : 'logs';
 
         update();
 
