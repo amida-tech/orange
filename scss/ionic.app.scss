@@ -566,6 +566,7 @@ dl.dl-worksheet {
 
     textarea {
       padding-left: $padding-base-horizontal - 3px;
+      -webkit-appearance: none;
     }
 
     input[readonly].not-readonly {
