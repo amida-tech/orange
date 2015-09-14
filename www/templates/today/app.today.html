@@ -1,13 +1,13 @@
-<ion-view hide-nav-bar="false">
+<ion-view hide-nav-bar="false" view-title="{{ today.title }}">
     <ion-nav-bar class="bar-orange orange-light main-bar" align-title="left">
         <ion-nav-buttons side="left">
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left"></button>
         </ion-nav-buttons>
 
-        <ion-nav-title ng-click="today.changeDate()" ng-bind="today.title"></ion-nav-title>
-
         <ion-nav-buttons side="right">
             <change-patient></change-patient>
+            <button type="button" class="button button-clean button-icon ion-android-calendar button-dose button-small"
+                    ng-click="today.changeDate()"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="orange-bg orange-light">
@@ -49,7 +49,7 @@
                             <div ng-switch-when="taken">
                                 <i class="icon ion-ios-checkmark green"></i>
                             </div>
-                            <div ng-switch-default>
+                            <div ng-switch-default ng-if="today.title.toLowerCase() == 'today' ">
                                 <i class="icon ion-ios-checkmark-outline green" ng-click="today.confirmDose(event)"></i>
                                 <i class="icon ion-ios-close-outline dark-red" ng-click="today.confirmDose(event, true)"></i>
                             </div>
