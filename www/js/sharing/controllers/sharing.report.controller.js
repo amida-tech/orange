@@ -48,7 +48,7 @@
             $scope.$broadcast('scroll.refreshComplete');
             $scope.totalPages = 0;
             $scope.pdfURL = '';
-            PatientService.getReport($stateParams.id, $stateParams.month).then(
+            PatientService.getReport($stateParams.id, $stateParams.month, $stateParams.year).then(
                 function (data) {
                     pdfData = data;
                     $cordovaFile.writeFile(reportDir, fileName, data, true).then(

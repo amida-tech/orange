@@ -399,7 +399,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         }
                     })
                     .state('app.sharing-report', {
-                        url: '/sharing/report/:id?month',
+                        url: '/sharing/report/:id?month&year',
                         views: {
                             'menuContent': {
                                 templateUrl: 'templates/sharing/app.sharing.report.html',

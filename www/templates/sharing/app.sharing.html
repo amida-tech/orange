@@ -55,19 +55,24 @@
                     <span class="input-label input-label-wo-margin">Select Month</span>
                 </label>
                 <label class="item item-input item-select">
-                    <select data-ng-model="sharing.month">
-                        <option ng-repeat="month in sharing.months" value="{{ sharing.months.indexOf(month) }}">{{ month }}</option>
+                    <select data-ng-model="sharing.month"
+                            ng-options="option.name for option in sharing.months track by option.id">
+
                     </select>
                 </label>
                 <label class="item-input">
                     <span class="input-label input-label-wo-margin">Select Log</span>
                 </label>
                 <label class="item item-input item-select">
-                    <select data-ng-model="sharing.log">
+                    <select data-ng-model="sharing.log" ng-change="sharing.onChange()">
                         <option ng-repeat="log in sharing.logs" value="{{ log.id }}">{{ log.first_name + ' ' + log.last_name }}</option>
                     </select>
                 </label>
-                <button class="button button-full button-download" ui-sref="app.sharing-report({id: sharing.log, month: sharing.month})">
+                <label class="item item-warning" ng-if="sharing.buttonDisabled">
+                    <p>This log has not data for report.</p>
+                </label>
+                <button class="button button-full button-download" ng-disabled="sharing.buttonDisabled"
+                        ui-sref="app.sharing-report({id: sharing.log, month: sharing.month.month, year: sharing.month.year})">
                     <img src="img/bluebutton.svg" class="img-download">Download My Data
                 </button>
 

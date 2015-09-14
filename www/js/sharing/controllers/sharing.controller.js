@@ -5,26 +5,28 @@
         .module('orange')
         .controller('SharingCtrl', SharingCtrl);
 
-    SharingCtrl.$inject = ['$scope', '$state', '$q', '$locale', '$ionicLoading', '$ionicPopup',
+    SharingCtrl.$inject = ['$scope', '$state', '$q', '$ionicLoading', '$ionicPopup',
                            'PatientService', 'RequestsService', 'GlobalService'];
 
-    function SharingCtrl($scope, $state, $q, $locale, $ionicLoading, $ionicPopup, PatientService,
+    function SharingCtrl($scope, $state, $q, $ionicLoading, $ionicPopup, PatientService,
                          RequestsService, GlobalService) {
         var vm = this;
 
-        vm.months = $locale.DATETIME_FORMATS.MONTH;
+        vm.months = [];
         vm.accept = accept;
         vm.decline = decline;
         vm.cancel = cancel;
         vm.update = update;
+        vm.onChange = onChange;
         vm.log = null;
-        vm.month = '0';
+        vm.month = '';
+        vm.buttonDisabled = false;
 
         PatientService.getItems().then(function (items) {
             vm.logs = items;
             vm.logList = _.chunk(items, 3);
             vm.log = vm.logs && vm.logs[0].id.toString();
-            vm.month = (new Date()).getMonth().toString();
+            onChange();
         });
 
         update();
@@ -100,6 +102,33 @@
                     update(true);
                 });
             }
+        }
+
+        function onChange() {
+            var patient = _.find(vm.logs, function (item) {
+                return item.id == vm.log;
+            });
+            patient.one('doses/nonempty/first').get('').then(function (response) {
+                if (response['count'] > 0) {
+                    vm.buttonDisabled = false;
+                    vm.months = [];
+                    var currentDate = moment().startOf('month'),
+                        minDate = moment(response['min_dose_date']).startOf('month');
+                    while (!minDate.isAfter(currentDate)) {
+                        vm.months.push({
+                            id: minDate.format('YYYY_MM'),
+                            name: minDate.format('MMMM YYYY'),
+                            year: minDate.year(),
+                            month: minDate.month()
+                        });
+                        minDate.add('M', 1);
+                    }
+                    vm.month = _.last(vm.months);
+                } else {
+                    vm.buttonDisabled = true;
+                    vm.months = [];
+                }
+            });
         }
     }
 })();
