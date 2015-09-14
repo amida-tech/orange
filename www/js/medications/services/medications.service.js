@@ -84,17 +84,19 @@
 
         function getEventText(event) {
             var result = '';
-            var quantity = this.item.dose.quantity;
-            var unit = this.item.dose.unit;
-            result += _.capitalize(n2w.toWords(quantity || 0));
-            result += ' ' + unit;
-            if (event.type == 'exact') {
-                result += ' at ' + event.time;
-            } else {
-                if (event.when === 'after' && event.event === 'sleep') {
-                    result += ' ' + 'after wake';
+            if (this.item) {
+                var quantity = this.item.dose.quantity;
+                var unit = this.item.dose.unit;
+                result += _.capitalize(n2w.toWords(quantity || 0));
+                result += ' ' + unit;
+                if (event.type == 'exact') {
+                    result += ' at ' + event.time;
                 } else {
-                    result += ' ' + event.when + ' ' + event.event;
+                    if (event.when === 'after' && event.event === 'sleep') {
+                        result += ' ' + 'after wake';
+                    } else {
+                        result += ' ' + event.when + ' ' + event.event;
+                    }
                 }
             }
             return result;

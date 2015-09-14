@@ -7,7 +7,7 @@
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
             <button class="button button-clear button-small button-dose"
-                    ng-click="medication.remove(medication.medication)">Delete</button>
+                    ng-click="medication.changeStatus(medication.medication)">{{ medication.status }}</button>
         </ion-nav-buttons>
     </ion-nav-bar>
 

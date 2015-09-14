@@ -1,0 +1,37 @@
+<form class="orange-form">
+    <p>This medication is currently marked as {{ statusData.currentStatus }}</p>
+    <div class="item item-error" ng-if="statusData.viewError">
+        <p>Please, select other value</p>
+    </div>
+    <label class="item item-input item-select">
+        <select data-ng-model="statusData.selectedStatus" ng-change="statusData.viewError = false">
+            <option value="active" ng-disabled="statusData.currentStatus.toLowerCase() === 'active'">Active</option>
+            <option value="paused" ng-disabled="statusData.currentStatus.toLowerCase() === 'paused'">Paused</option>
+            <option value="archived" ng-disabled="statusData.currentStatus.toLowerCase() === 'archived'">Archived</option>
+            <option value="delete">Delete</option>
+        </select>
+    </label>
+    <p ng-if="statusData.selectedStatus === 'active'">
+        Activating a medication will add it to your daily adherence schedule.
+        You will be able to log doses of this medication.
+        This is best for medications you are currently taking.
+    </p>
+    <p ng-if="statusData.selectedStatus === 'paused'">
+        Pausing a medication will remove it from the daily
+        adherence schedule. You will still be able to log,
+        as needed doses.
+        This is best for medications you are not taking for a short time.
+    </p>
+    <p ng-if="statusData.selectedStatus === 'archived'">
+        Archiving a medication will remove it from the daily
+        adherence schedule. You will not be able to do log doses
+        without activating the medication again.
+        This is best for medications you are no longer taking.
+    </p>
+    <p ng-if="statusData.selectedStatus === 'delete'">
+        Deleting a medication will completely remove it from the daily
+        adherence schedule. You will not be able to log doses
+        without activating the medication again.
+        This is best for medications you are no longer taking.
+    </p>
+</form>
