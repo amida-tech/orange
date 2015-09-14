@@ -96,6 +96,10 @@
                             GlobalService.showError(error.data.errors[0]).then(function () {
                                 $state.go(vm.nextUrl);
                             });
+                        } else {
+                            GlobalService.showError(MedicationService.errorItemNotFoundText).then(function () {
+                                $state.go('app.medications');
+                            });
                         }
                     }
                 )

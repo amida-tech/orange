@@ -89,12 +89,22 @@
                     $ionicLoading.show({
                         template: 'Saving…'
                     });
-                    MedicationService.saveItem(medication).finally(
-                        function() {
-                            $ionicLoading.hide();
+                    MedicationService.saveItem(medication).then(
+                        function () {
                             $state.go(vm.returnUrl);
+                        },
+                        function (error) {
+                            if (error.data.errors[0] !== MedicationService.errorItemNotFound) {
+                                GlobalService.showError(error.data.errors[0]).then(function () {
+                                    $state.go(vm.nextUrl);
+                                });
+                            } else {
+                                GlobalService.showError(MedicationService.errorItemNotFoundText).then(function () {
+                                    $state.go('app.medications');
+                                });
+                            }
                         }
-                    );
+                    ).finally($ionicLoading.hide);
                 } else {
                     // prepare events and go to configure events
                     var events = vm.schedule.times || [];

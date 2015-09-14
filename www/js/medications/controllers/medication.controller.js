@@ -49,21 +49,25 @@
                             if (vm.medication.status === $scope.statusData.selectedStatus) {
                                 $scope.statusData['viewError'] = true;
                                 e.preventDefault();
+                            } else {
+                                return true;
                             }
                         }
                     }
                 ]
-            }).then(function () {
-                if ($scope.statusData.selectedStatus === 'delete') {
-                    remove(vm.medication);
-                } else {
-                    vm.medication.status = $scope.statusData['selectedStatus'];
-                    $ionicLoading.show({
-                        template: 'Saving...'
-                    });
-                    MedicationService.saveItem(vm.medication).then(
-                        successCallback, errorCallback
-                    ).finally($ionicLoading.hide);
+            }).then(function (confirm) {
+                if (confirm) {
+                    if ($scope.statusData.selectedStatus === 'delete') {
+                        remove(vm.medication);
+                    } else {
+                        vm.medication.status = $scope.statusData['selectedStatus'];
+                        $ionicLoading.show({
+                            template: 'Saving...'
+                        });
+                        MedicationService.saveItem(vm.medication).then(
+                            successCallback, errorCallback
+                        ).finally($ionicLoading.hide);
+                    }
                 }
             });
         }
@@ -96,7 +100,11 @@
         }
 
         function errorCallback(error) {
-            GlobalService.showError(error.data.errors[0]);
+            GlobalService.showError(error.data.errors[0]).then(function () {
+                if (error.data.errors === MedicationService.errorItemNotFound) {
+                    $state.go('app.medications');
+                }
+            });
         }
     }
 })();
