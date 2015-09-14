@@ -10,7 +10,11 @@
     function MedicationsCtrl($scope, $state, $ionicModal, MedicationService, PatientService, GlobalService) {
         var vm = this;
 
-        vm.medications = null;
+        vm.medications = {
+            active: [],
+            paused: [],
+            archived: []
+        };
         vm.refresh = refresh;
         vm.loadMore = loadMore;
         vm.details = details;
@@ -38,11 +42,23 @@
         }
 
         function refresh() {
-            vm.medicationsPromise = MedicationService.getItems(true);
+            vm.medicationsPromise = MedicationService.getAllItems(true);
             vm.medicationsPromise.then(
                 function (medications) {
                     $scope.$broadcast('scroll.refreshComplete');
-                    vm.medications = medications;
+                    vm.medications.active = _.filter(medications, function(med) {
+                        return med.status == 'active'
+                    });
+
+                    vm.medications.paused = _.filter(medications, function(med) {
+                        return med.status == 'paused'
+                    });
+
+                    vm.medications.archived = _.filter(medications, function(med) {
+                        return med.status == 'archived'
+                    });
+
+
                 }
             )
         }

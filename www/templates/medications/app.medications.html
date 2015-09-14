@@ -18,14 +18,36 @@
                          ng-if="!medications.medicationsPromise.$$state.status"></ion-spinner>
         </div>
 
-        <ion-list>
-            <ion-item ng-repeat="medication in medications.medications" ng-click="medications.details(medication, $event)">
+        <ion-list ng-class="(medications.medications.paused.length || medications.medications.archived.length) ? 'list-last-open' : ''">
+            <ion-item ng-repeat="medication in medications.medications.active" ng-click="medications.details(medication, $event)">
                 <medication-block medication-name="medication.name"
                                   medication-brand="medication.brand"></medication-block>
             </ion-item>
         </ion-list>
-        <ion-infinite-scroll ng-if="medications.hasMore()" distance="{{ settings.defaultScrollDistance }}"
-                             on-infinite="medications.loadMore()">
-        </ion-infinite-scroll>
+
+        <div class="paused-container" ng-if="medications.medications.paused.length">
+            <p class="form-title padding">Paused</p>
+            <ion-list ng-class="(medications.medications.archived.length) ? 'list-last-open' : ''">
+                <ion-item ng-repeat="medication in medications.medications.paused" ng-click="medications.details(medication, $event)">
+                    <medication-block medication-name="medication.name"
+                                      medication-brand="medication.brand"></medication-block>
+                </ion-item>
+            </ion-list>
+        </div>
+
+        <div class="archived-container" ng-if="medications.medications.archived.length">
+            <p class="form-title padding">Archived</p>
+            <ion-list>
+                <ion-item ng-repeat="medication in medications.medications.archived" ng-click="medications.details(medication, $event)">
+                    <medication-block medication-name="medication.name"
+                                      medication-brand="medication.brand"></medication-block>
+                </ion-item>
+            </ion-list>
+        </div>
+
+
+        <!--<ion-infinite-scroll ng-if="medications.hasMore()" distance="{{ settings.defaultScrollDistance }}"-->
+                             <!--on-infinite="medications.loadMore()">-->
+        <!--</ion-infinite-scroll>-->
     </ion-content>
 </ion-view>
