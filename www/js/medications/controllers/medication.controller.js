@@ -92,9 +92,7 @@
 
         function successCallback() {
             MedicationService.setItem(null);
-            MedicationService.getAllItems(true).then(function () {
-                $state.go('app.medications');
-            });
+            $state.go('app.medications');
         }
 
         function errorCallback(error) {

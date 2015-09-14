@@ -30,12 +30,7 @@
 
         function update(force) {
             force = force || false;
-            vm.patientPromise = PatientService.getItems(force).then(function (patients) {
-                setPatients(patients);
-                if (force) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                }
-            });
+            vm.patientPromise = PatientService.getItems(force);
         }
 
         function setEditMode(isEditMode) {
@@ -54,22 +49,18 @@
 
         function loadMore() {
             var morePromise = PatientService.moreItems();
-            if ($scope.logs.length && morePromise) {
-                morePromise.then(function (items) {
-                    setPatients(items);
-                    $scope.$broadcast('scroll.infiniteScrollComplete');
-                });
-            } else {
+            if (!($scope.logs.length && morePromise)) {
                 $scope.$broadcast('scroll.infiniteScrollComplete');
             }
         }
 
-        function setPatients(patients) {
+        PatientService.onListChanged(function (event, patients) {
+            $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.logs = patients;
             vm.logList = _.chunk(patients, 3);
             $scope.withMe = !!_.find(patients, function (item) {
                 return item['me'] === true;
             });
-        }
+        });
     }
 })();

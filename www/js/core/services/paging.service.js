@@ -34,6 +34,8 @@
         Service.prototype.initItems = initItems;
         Service.prototype.getItems = getItems;
         Service.prototype.getAllItems = getAllItems;
+        Service.prototype.sendListChanged = sendListChanged;
+        Service.prototype.onListChanged = onListChanged;
         Service.prototype.hasMore = hasMore;
         Service.prototype.moreItems = moreItems;
         Service.prototype.setItem = setItem;
@@ -63,6 +65,7 @@
             return fetchItems.call(this, options).then(function (items) {
                 self.items = items;
                 self.offset = all ? items.meta['count'] : self.limit;
+                self.sendListChanged();
                 return self.items;
             });
         }
@@ -133,6 +136,7 @@
                     function (items) {
                         self.items = _.union(self.items, items);
                         self.offset += self.limit;
+                        self.sendListChanged();
                         return self.items;
                     }
                 )
@@ -186,6 +190,7 @@
                     self.excludeItemFromList(removedItem);
                     self.count -= 1;
                     self.offset -= 1;
+                    self.sendListChanged();
                     return self.items;
                 },
                 function (error) {
@@ -222,6 +227,7 @@
                         if (listItem && listItem.id === self.item.id) {
                             self.setItem(listItem);
                         }
+                        self.sendListChanged();
                         return listItem || newItem;
                     },
                     function (error) {
@@ -256,6 +262,7 @@
             }
             this.count += 1;
             this.item = newItem;
+            this.sendListChanged();
             return newItem;
         }
 
@@ -265,6 +272,14 @@
                 self.setItem(null);
                 self.afterErrorItemNotFoundState && $state.go(self.afterErrorItemNotFoundState);
             });
+        }
+
+        function sendListChanged() {
+            $rootScope.$broadcast(this.apiEndpoint + ':items:changed', this.items);
+        }
+
+        function onListChanged(callback) {
+            $rootScope.$on(this.apiEndpoint + ':items:changed', callback);
         }
     }
 

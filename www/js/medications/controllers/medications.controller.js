@@ -43,24 +43,6 @@
 
         function refresh() {
             vm.medicationsPromise = MedicationService.getAllItems(true);
-            vm.medicationsPromise.then(
-                function (medications) {
-                    $scope.$broadcast('scroll.refreshComplete');
-                    vm.medications.active = _.filter(medications, function(med) {
-                        return med.status == 'active'
-                    });
-
-                    vm.medications.paused = _.filter(medications, function(med) {
-                        return med.status == 'paused'
-                    });
-
-                    vm.medications.archived = _.filter(medications, function(med) {
-                        return med.status == 'archived'
-                    });
-
-
-                }
-            )
         }
 
         function loadMore() {
@@ -113,6 +95,21 @@
                 habits['sleep']
             ]);
         }
+
+        MedicationService.onListChanged(function (event, medications) {
+            $scope.$broadcast('scroll.refreshComplete');
+            vm.medications.active = _.filter(medications, function(med) {
+                return med.status == 'active'
+            });
+
+            vm.medications.paused = _.filter(medications, function(med) {
+                return med.status == 'paused'
+            });
+
+            vm.medications.archived = _.filter(medications, function(med) {
+                return med.status == 'archived'
+            });
+        });
     }
 })();
 
