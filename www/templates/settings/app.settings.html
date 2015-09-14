@@ -21,15 +21,18 @@
 
             <label class="item-input">
                 <input name="full_name" type="text" ng-model="settings.user_model.full_name"
-                       placeholder="Full Name" required/>
+                       placeholder="Full Name" required
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
             <label class="item-input">
                 <input name="phone" type="text" ng-model="settings.user_model.phone"
-                       placeholder="Phone (Optional)"/>
+                       placeholder="Phone (Optional)"
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
             <label class="item-input">
                 <input type="text" ng-model="settings.email"
-                       placeholder="E-mail" disabled/>
+                       placeholder="E-mail" disabled
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
         </form>
 
@@ -52,15 +55,18 @@
 
             <label class="item-input">
                 <input name="old" type="password" ng-model="settings.password_model.old"
-                       placeholder="Current Password" required/>
+                       placeholder="Current Password" required
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
             <label class="item-input">
                 <input name="new" type="password" ng-model="settings.password_model.new"
-                       placeholder="New Password" required/>
+                       placeholder="New Password" required
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
             <label class="item-input">
                 <input name="confirm" type="password" ng-model="settings.password_model.confirm"
-                       placeholder="Confirm New Password" required compare-to="settings.password_model.new"/>
+                       placeholder="Confirm New Password" required compare-to="settings.password_model.new"
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
             <label class="item-input">
                 <button type="submit" class="button button-full button-orange" ng-click="settings.update()">Update</button>
