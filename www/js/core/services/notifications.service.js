@@ -176,6 +176,7 @@
             }
 
             $cordovaLocalNotification.clearAll();
+            $cordovaLocalNotification.cancelAll();
         }
 
         function addNotifyByMedication(medication) {
