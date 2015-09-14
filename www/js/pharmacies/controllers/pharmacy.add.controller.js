@@ -28,7 +28,7 @@
         });
 
         if (is_edit) {
-            PharmacyService.getItem($stateParams.id).then(function (pharmacy) {
+            PharmacyService.getItem($stateParams.id, true).then(function (pharmacy) {
                 vm.pharmacy = pharmacy;
             });
         } else {

@@ -420,8 +420,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('logs', {
                         url: '/onboarding/logs',
                         templateUrl: 'templates/logs/logs.html',
-                        controller: 'LogsCtrl as logsCtrl',
-                        cache: false
+                        controller: 'LogsCtrl as logsCtrl'
                     })
                     .state('logs-add', {
                         url: '/onboarding/logs/add',
@@ -452,7 +451,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/onboarding/logs/setup',
                         templateUrl: 'templates/logs/logs.setup.html',
                         controller: 'LogsCtrl as setup',
-                        cache: false,
                         params: {
                             from_medication: false,
                             log_id: null

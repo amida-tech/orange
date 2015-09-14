@@ -26,7 +26,7 @@
                        ? 'onboarding-log.medications.list({patient_id:'+ $state.params['log_id'] +'})'
                        : 'logs';
 
-        update();
+        update(true);
 
         function update(force) {
             force = force || false;

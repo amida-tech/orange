@@ -29,7 +29,7 @@
 
         var id = $stateParams.id;
         $q.all([
-            NoteService.getItem(id),
+            NoteService.getItem(id, true),
             vm.medicationsPromise
         ]).then(function (data) {
             vm.note = data[0] || {};

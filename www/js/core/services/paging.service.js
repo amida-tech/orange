@@ -152,17 +152,27 @@
             item && console.log('Set item ' + item['id']);
         }
 
-        function getItem(itemId) {
+        function getItem(itemId, isClone) {
+            isClone = isClone || false;
             var deferred = $q.defer(),
                 self = this;
 
             if (this.item && (this.item.id == itemId || itemId === undefined)) {
-                deferred.resolve(this.item);
+                deferred.resolve(isClone ? angular.copy(this.item) : this.item);
                 return deferred.promise;
             } else if (!itemId) {
                 deferred.resolve(null);
                 return deferred.promise;
             } else {
+                if (this.items !== null) {
+                    var existItem = _.find(this.items, function (item) {
+                        return item.id == itemId;
+                    });
+                    if (existItem) {
+                        deferred.resolve(isClone ? angular.copy(existItem) : existItem);
+                        return deferred.promise;
+                    }
+                }
                 return this.getItemPromise(itemId).then(
                     undefined,
                     function (error) {
@@ -218,12 +228,15 @@
         function saveItem(savedItem) {
             var self = this;
             if (savedItem.id) {
-                return savedItem.save().then(
+                var listItem = _.find(this.items, function (item) {
+                    return item.id === savedItem.id;
+                });
+                var _savedItem = listItem || savedItem;
+                if (listItem) {
+                    _savedItem = _.extend(listItem, savedItem);
+                }
+                return _savedItem.save().then(
                     function (newItem) {
-                        var listItem = _.find(self.items, function (item) {
-                            return item.id === newItem.id;
-                        });
-                        listItem = _.extend(listItem, newItem);
                         if (listItem && listItem.id === self.item.id) {
                             self.setItem(listItem);
                         }

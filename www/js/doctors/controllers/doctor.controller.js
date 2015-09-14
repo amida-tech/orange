@@ -16,7 +16,7 @@
         vm.title = is_edit ? 'Edit Doctor': 'Add Doctor';
         vm.errors = [];
         vm.backState = is_edit ? 'app.doctors.details({id:'+$stateParams.id+'})' : 'app.doctors.search';
-        DoctorService.getItem($stateParams['id']).then(function (doctor) {
+        DoctorService.getItem($stateParams['id'], true).then(function (doctor) {
             vm.doctor = doctor;
         });
         vm.doctorsPromise = DoctorService.getItems();

@@ -13,7 +13,7 @@
                         PatientService, notify) {
 
         $scope.editMode = !!$state.params['editMode'];
-        $scope.saveLog = $scope.editMode ? saveLogWithHabits: addLog;
+        $scope.saveLog = saveLog;
         $scope.checkForm = checkForm;
         $scope.selectPhoto = selectPhoto;
         $scope.isDevice = ionic.Platform.isWebView();
@@ -25,12 +25,12 @@
         $scope.errors = [];
 
         if ('id' in $stateParams) {
-            PatientService.getItem($stateParams['id']).then(function (patient) {
-                $scope.log = $scope.editMode ? patient : {};
+            PatientService.getItem($stateParams['id'], true).then(function (patient) {
+                $scope.editLog = $scope.editMode ? patient : {};
                 $scope.title = 'Edit Log';
             })
         } else {
-            $scope.log = {};
+            $scope.editLog = {};
             $scope.title = 'Add New Log';
         }
 
@@ -75,8 +75,8 @@
         }
 
         function setAvatarUrl(data) {
-            $scope.log.avatar = null;
-            $scope.log.avatarUrl = data;
+            $scope.editLog.avatar = null;
+            $scope.editLog.avatarUrl = data;
             $scope.iconModal.hide();
         }
 
@@ -85,40 +85,17 @@
             return _.isEmpty(form.$error);
         }
 
-        function addLog() {
-            $ionicLoading.show({
-                template: 'Saving...'
-            });
-            saveLog();
-        }
-
-        function saveLogWithHabits() {
-            $ionicLoading.show({
-                template: 'Saving...'
-            });
-            if ($scope.log.habits) {
-                $scope.log.habits.save().then(
-                    function() {
-                        if ($scope.log === PatientService.currentPatient) {
-                            notify.updateNotify();
-                        }
-                        saveLog()
-                    },
-                    function (error) {
-                        $ionicLoading.hide();
-                        $scope.errors = _.map(error.data.errors, _.startCase);
-                    }
-                )
-            } else {
-                saveLog();
-            }
-        }
-
         function saveLog() {
-            PatientService.saveItem($scope.log).then(
+            $ionicLoading.show({
+                template: 'Saving...'
+            });
+            PatientService.saveItem($scope.editLog).then(
                 function (patient) {
+                    if ($scope.log.id == PatientService.currentPatient.id) {
+                        notify.updateNotify();
+                    }
                     PatientService.setItem(null);
-                    $scope.log = patient;
+                    $scope.editLog = patient;
                     $ionicLoading.hide();
                     goToNextState();
                 },
@@ -131,7 +108,7 @@
         }
 
         function goToNextState() {
-            var options = {reload: $scope.log['id'] === PatientService.currentPatient['id']};
+            var options = {reload: $scope.editLog['id'] === PatientService.currentPatient['id']};
             $state.go($state.params['nextState'] || 'logs', {}, options);
             $ionicLoading.hide();
         }

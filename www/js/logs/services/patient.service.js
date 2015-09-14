@@ -63,12 +63,19 @@
             if (savedItem.birthdate instanceof Date) {
                 savedItem.birthdate = savedItem.birthdate.toJSON().slice(0, 10);
             }
+            var habits = savedItem.habits;
+            delete savedItem.habits;
 
             return BasePagingService.prototype.saveItem.call(this, savedItem).then(function (item) {
                 console.log('Begin patient.saveItem callback');
 
                 if (self.currentPatient === null) {
                     self.currentPatient = item;
+                }
+
+                if (habits) {
+                    item.habits = _.extend(item.habits, habits) || habits;
+                    item.habits.save();
                 }
 
                 setFullName(item);

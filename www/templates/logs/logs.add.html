@@ -10,11 +10,11 @@
         <div class="card orange-card with-avatar">
             <div class="orange-avatar">
                 <div class="item-log" ng-click="iconModal.show()">
-                    <div ng-if="!log.avatarUrl && !editMode" class="log-avatar">
+                    <div ng-if="!editLog.avatarUrl && !editMode" class="log-avatar">
                         <div class="log-caption">+</div>
                     </div>
-                    <img ng-if="log.avatarUrl" ng-src="{{log.avatarUrl}}" class="log-avatar-img" alt=""/>
-                    <avatar patient="log" ng-if="log.avatar && editMode && !log.avatarUrl"></avatar>
+                    <img ng-if="editLog.avatarUrl" ng-src="{{editLog.avatarUrl}}" class="log-avatar-img" alt=""/>
+                    <avatar patient="editLog" ng-if="editLog.avatar && editMode && !editLog.avatarUrl"></avatar>
                 </div>
             </div>
             <div class="item item-body">
@@ -26,23 +26,23 @@
                         </div>
                         <p ng-repeat="error in errors" ng-bind="error"></p>
                     </div>
-                    <p ng-if="log.me" class="item-input">{{ log.first_name }} {{ log.last_name }}</p>
-                    <label ng-if="!log.me" class="item-input">
-                        <input type="text" ng-model="log.fullName" placeholder="Full Name" name="name" required/>
+                    <p ng-if="editLog.me" class="item-input">{{ editLog.first_name }} {{ editLog.last_name }}</p>
+                    <label ng-if="!editLog.me" class="item-input">
+                        <input type="text" ng-model="editLog.fullName" placeholder="Full Name" name="name" required/>
                     </label>
                     <label class="item-input">
                         <input type="text"
-                               ng-model="log.birthdate"
+                               ng-model="editLog.birthdate"
                                placeholder="Date of Birth (Optional)"
                                max-date-now="true"
                                datefield/>
                     </label>
                     <label class="item-input">
-                        <input type="tel" ng-model="log.phone" placeholder="Phone Number (Optional)"/>
+                        <input type="tel" ng-model="editLog.phone" placeholder="Phone Number (Optional)"/>
                     </label>
-                    <!--<p class="item-input" ng-bind="log.birthdate" data-ng-model="log.birthdate" datetime="date"></p>-->
+                    <!--<p class="item-input" ng-bind="editLog.birthdate" data-ng-model="editLog.birthdate" datetime="date"></p>-->
                     <label class="item item-input item-select">
-                        <select data-ng-model="log.sex" ng-class="{'placeholder': !log.sex}">
+                        <select data-ng-model="editLog.sex" ng-class="{'placeholder': !editLog.sex}">
                             <option value="" disabled>Gender (Optional)</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
