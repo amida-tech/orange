@@ -22,7 +22,7 @@
                 </label>
                 <div ng-show="today.showDetails">
                     <p class="detail-item" ng-bind="(today.event.took_medication ? 'Taken: ' : 'Skipped: ') + (today.event.dose.date|date:'hh:mm a'|lowercase)"></p>
-                    <p class="detail-item" ng-bind="today.notes"></p>
+                    <p class="detail-item" ng-bind="today.dose.notes"></p>
                 </div>
             </div>
         </div>

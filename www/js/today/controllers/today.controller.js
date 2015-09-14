@@ -86,7 +86,8 @@
                 medication_id: event.medication_id,
                 date: moment().format(),
                 taken: true,
-                scheduled: event.scheduled
+                scheduled: event.scheduled,
+                notes: event.dose && event.dose.notes
             };
             doseModal.show();
         }
@@ -120,7 +121,7 @@
                             unit: event.medication.dose.unit,
                             quantity: vm.quantity
                         },
-                        note: vm.notes || ''
+                        notes: vm.notes || ''
                     };
 
                     $ionicLoading.show({
