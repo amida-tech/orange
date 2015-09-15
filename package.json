@@ -46,7 +46,8 @@
     {
       "locator": "https://github.com/sarahgoldman/cordova-print-pdf-plugin.git",
       "id": "cordova-plugin-print-pdf"
-    }
+    },
+    "cordova-plugin-statusbar"
   ],
   "cordovaPlatforms": [
     "ios",
