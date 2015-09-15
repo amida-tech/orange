@@ -24,7 +24,7 @@
             </div>
 
             <ion-list class="list-last-open list-details">
-                <ion-item>
+                <ion-item ng-if="doctorDetails.doctor.address">
                     <span class="text-basic pre-line">{{ doctorDetails.doctor.address }}</span>
 
                     <span class="item-label">
