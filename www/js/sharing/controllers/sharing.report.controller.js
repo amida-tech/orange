@@ -34,6 +34,7 @@
         $scope.pageLoaded = function(currentPage, totalPages) {
             $scope.currentPage = currentPage;
             $scope.totalPages = totalPages;
+            $scope.loading = false;
         };
 
         $scope.loadProgress = function(loaded, total, state) {
@@ -44,7 +45,7 @@
         getReport();
 
         function getReport() {
-            $scope.loading = true;
+            setLoadingTrue();
             $scope.$broadcast('scroll.refreshComplete');
             $scope.totalPages = 0;
             $scope.pdfURL = '';
@@ -104,6 +105,14 @@
                 binary += String.fromCharCode( bytes[ i ] );
             }
             return window.btoa( binary );
+        }
+
+        $scope.$on('pdfviewer.nextPage', setLoadingTrue);
+        $scope.$on('pdfviewer.prevPage', setLoadingTrue);
+        $scope.$on('pdfviewer.gotoPage', setLoadingTrue);
+
+        function setLoadingTrue() {
+            $scope.loading = true;
         }
     }
 })();
