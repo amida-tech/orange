@@ -24,6 +24,10 @@
                     <p ng-message="compareTo">Password and password confirmation don't match</p>
                 </div>
 
+                <div ng-messages="signUpForm.phone.$error">
+                    <p ng-message="required">Phone number is required</p>
+                </div>
+
             </div>
             <div class="item item-body">
 
