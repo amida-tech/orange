@@ -1335,48 +1335,58 @@ ion-option-button.option-control.button {
     min-width: 35px;
 }
 
-
-.input-block {
-  display: table;
-  margin-bottom: 5px;
-  input, .input-addon {
-    display: table-cell;
-    height: $input-height;
+.spinner-container {
+  .input-block {
+    display: table;
+    margin-bottom: 5px;
+    input, .input-addon {
+      display: table-cell;
+      height: $input-height;
+    }
+    .input-addon {
+      padding: 0;
+      width: 1%;
+      white-space: nowrap;
+      vertical-align: middle;
+      .button {
+        width: $input-height;
+        max-height: $input-height;
+        min-height: 0;
+        font-size: $font-size-base + 5;
+      }
+    }
+    .input-addon:first-child {
+      .button {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+    .input-addon:last-child {
+      .button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+    input {
+      width: 100%;
+      padding: 6px;
+      text-align: center;
+      border-top: 1px solid $middlegray;
+      border-bottom: 1px solid $middlegray;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
   }
-  .input-addon {
-    padding: 0;
-    width: 1%;
-    white-space: nowrap;
+  .subscribe {
     vertical-align: middle;
-    .button {
-      width: $input-height;
-      max-height: $input-height;
-      min-height: 0;
-      font-size: $font-size-base + 5;
-    }
-  }
-  .input-addon:first-child {
-    .button {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  }
-  .input-addon:last-child {
-    .button {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-  input {
-    width: 100%;
-    padding: 6px 12px;
+    line-height: 42px;
     text-align: center;
-    border-top: 1px solid $middlegray;
-    border-bottom: 1px solid $middlegray;
-    border-radius: 0;
-    -webkit-appearance: none;
+    font-family: Lato;
+    font-weight: 300;
+    text-transform: uppercase;
   }
 }
+
 
 .button-download {
   background-color: #1b7bc4;

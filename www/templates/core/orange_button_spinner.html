@@ -1,9 +1,14 @@
-<div class="input-block">
-    <div class="input-addon">
-        <button class="button-icon ion-minus button button-orange" ng-click="(model > 1) ? model=model-1 : model"></button>
+<div class="row spinner-container">
+    <div class="col-66 col">
+        <div class="input-block">
+            <div class="input-addon">
+                <button class="button-icon ion-minus button button-orange" ng-click="(model > 1) ? model=model-1 : model"></button>
+            </div>
+            <input type="number" class="input-add-dose ng-valid ng-dirty ng-touched" ng-model="model" style="">
+            <div class="input-addon">
+                <button class="button-icon ion-plus button button-orange" ng-click="model=model+1"></button>
+            </div>
+        </div>
     </div>
-    <input type="text" class="input-add-dose" ng-model="modelSubscribe" readonly="true"/>
-    <div class="input-addon">
-        <button class="button-icon ion-plus button button-orange" ng-click="model=model+1"></button>
-    </div>
+    <div class="col-33 col subscribe" ng-bind="subscribe"></div>
 </div>
