@@ -106,8 +106,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
 
                              if (toState.name == 'app.today.schedule' || toState.name == 'logs') {
                                  $ionicHistory.nextViewOptions({
-                                     historyRoot: true,
-                                     disableBack: true
+                                     historyRoot: true
                                  });
 
                                  history.backView = null;
