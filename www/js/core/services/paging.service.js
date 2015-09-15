@@ -177,7 +177,9 @@
                     undefined,
                     function (error) {
                         if (error.data.errors[0] === self.errorItemNotFound) {
-                            onErrorNotFound.call(self, error);
+                            return onErrorNotFound.call(self, error).then(function () {
+                                return $q.reject(error);
+                            });
                         }
                         return $q.reject(error);
                     }
@@ -281,7 +283,7 @@
 
         function onErrorNotFound(error) {
             var self = this;
-            GlobalService.showError(this.errorItemNotFoundText).then(function () {
+            return GlobalService.showError(this.errorItemNotFoundText).then(function () {
                 self.setItem(null);
                 self.afterErrorItemNotFoundState && $state.go(self.afterErrorItemNotFoundState);
             });

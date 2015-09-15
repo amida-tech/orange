@@ -145,12 +145,19 @@
         }
 
         function activate() {
-            MedicationService.getItem($stateParams['id']).then(function (medication) {
-                if (medication && medication.schedule !== vm.schedule) {
-                    console.log('Schedule changed', medication.schedule);
-                    update(angular.copy(medication.schedule));
+            MedicationService.getItem($stateParams['id']).then(
+                function (medication) {
+                    if (medication && medication.schedule !== vm.schedule) {
+                        console.log('Schedule changed', medication.schedule);
+                        update(angular.copy(medication.schedule));
+                    }
+                },
+                function (error) {
+                    if (error.data.errors[0] === MedicationService.errorItemNotFound) {
+                        $state.go('app.medications');
+                    }
                 }
-            });
+            );
         }
 
         function update(schedule) {
@@ -241,7 +248,7 @@
                     console.log('daily');
                     frequency = {
                         unit: 'day',
-                        n: (vm.schedule.frequency && vm.schedule.frequency.unit === 'day' && vm.schedule.frequency.n) || null
+                        n: (vm.schedule.frequency && vm.schedule.frequency.unit === 'day' && vm.schedule.frequency.n) || 1
                     };
                     vm.schedule.frequency = frequency;
                     break;

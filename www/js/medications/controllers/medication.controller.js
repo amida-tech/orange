@@ -16,11 +16,18 @@
             import: 'Automatic Imported'
         };
         vm.title = 'Medication Details';
-        MedicationService.getItem($stateParams['id']).then(function (medication) {
-            vm.medication = medication;
-            vm.eventsText = MedicationService.getMedicationText(vm.medication);
-            setStatus();
-        });
+        MedicationService.getItem($stateParams['id']).then(
+            function (medication) {
+                vm.medication = medication;
+                vm.eventsText = MedicationService.getMedicationText(vm.medication);
+                setStatus();
+            },
+            function (error) {
+                if (error.data.errors[0] === MedicationService.errorItemNotFound) {
+                    $state.go('app.medications');
+                }
+            }
+        );
         vm.getEventText = MedicationService.getEventText.bind(MedicationService);
         vm.changeStatus = changeStatus;
 
