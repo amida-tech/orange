@@ -4,10 +4,11 @@
         .module('orange')
         .controller('MedicationsCtrl', MedicationsCtrl);
 
-    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicModal', 'MedicationService', 'PatientService', 'GlobalService'];
+    MedicationsCtrl.$inject = ['$scope', '$state', '$ionicModal', 'MedicationService', 'PatientService',
+        'GlobalService', 'notifications'];
 
     /* @ngInject */
-    function MedicationsCtrl($scope, $state, $ionicModal, MedicationService, PatientService, GlobalService) {
+    function MedicationsCtrl($scope, $state, $ionicModal, MedicationService, PatientService, GlobalService, notify) {
         var vm = this;
 
         vm.medications = {
@@ -97,6 +98,11 @@
         }
 
         MedicationService.onListChanged(function (event, medications) {
+            var currentMedications = _.union(vm.medications.active, vm.medications.paused, vm.medications.archived);
+            if (currentMedications.length !== 0 && medications.length !== currentMedications.length) {
+                notify.updateNotify();
+            }
+
             $scope.$broadcast('scroll.refreshComplete');
             vm.medications.active = _.filter(medications, function(med) {
                 return med.status == 'active'

@@ -95,10 +95,13 @@
         }
 
         function _scheduleNotify(medications, schedule) {
-            var notifications = [];
+            console.log('Medications', medications);
+            console.log('Schedule', medications);
+
+            var notifyArray = [];
             _.each(schedule, function(item) {
                 var date = moment(item.date);
-                if (date < moment() || item.dose_id) {
+                if (date < moment() || !_.isUndefined(item.dose_id)) {
                     return;
                 }
 
@@ -135,17 +138,16 @@
                 };
 
                 //Combine notify by date
-                notifications.push(scheduleOptions);
+                notifyArray.push(scheduleOptions);
                 //if ($rootScope.isAndroid) {
                 //    $cordovaLocalNotification.schedule(scheduleOptions)
                 //}
 
                 id++;
             });
-
             //Schedule
             //if ($rootScope.isIOS) {
-            _schNotify(notifications);
+            _schNotify(notifyArray);
             //}
         }
 
@@ -165,7 +167,7 @@
                     $timeout(function() {
                         _schNotify(notifications);
                     });
-                })
+                }, 5)
             }
         }
 

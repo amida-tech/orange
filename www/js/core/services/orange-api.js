@@ -67,7 +67,7 @@
                     });
 
                     RestangularConfigurer.setErrorInterceptor(function (response, deferred, responseHandler) {
-                        var _error = response.data.errors[0];
+                        var _error = (response.data === null) ? [] : response.data.errors[0];
                         switch (response.status) {
                             case 500:
                                 $ionicLoading.hide();

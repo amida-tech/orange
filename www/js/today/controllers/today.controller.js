@@ -232,7 +232,7 @@
             ]).then(
                 function (data) {
                     // Update notify, on refresh scheduling
-                    if (vm.schedule !== null && data[1].plain().length > vm.medications.length) {
+                    if (vm.schedule !== null && data[1].plain().length != vm.medications.length) {
                         notify.updateNotify();
                     }
 
