@@ -15,7 +15,7 @@
         };
 
         function call() {
-            var phone = this.innerText.match(/[\d\+]*/g).join('');
+            var phone = this.getAttribute('phone') || this.innerText.match(/[\d\+]*/g).join('');
             if (phone[0] !== '+') {
                 phone = '+1' + phone;
             }

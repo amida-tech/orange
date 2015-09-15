@@ -31,7 +31,7 @@
                 <ion-item ng-if="pharmacy_details.pharmacy.phone" class="text-container">
                     <span class="text-basic phone" ng-bind="pharmacy_details.pharmacy.phone"></span>
                     <span class="item-label">
-                        <span class="button text-title" call-phone>CALL</span>
+                        <span class="button text-title" call-phone phone="{{ pharmacy_details.pharmacy.phone }}">CALL</span>
                     </span>
                 </ion-item>
                 <ion-item ng-if="pharmacy_details.pharmacy.notes">
