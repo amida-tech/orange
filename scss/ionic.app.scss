@@ -967,6 +967,17 @@ ion-content {
       text-align: center;
       color: $light;
     }
+
+    .box {
+      position: absolute;
+      text-align: center;
+      bottom: $button-height * 3 + 20;
+    }
+
+    .slide-screen {
+      max-width: 80%;
+    }
+
     .slider-pager {
       bottom: $button-height * 3;
       .slider-pager-page {
@@ -984,6 +995,16 @@ ion-content {
     }
   }
 
+}
+
+@media (max-height: 500px) {
+  .onboarding {
+    .slider {
+      .slide-screen {
+        max-width: 70%;
+      }
+    }
+  }
 }
 
 .bottom-buttons {
