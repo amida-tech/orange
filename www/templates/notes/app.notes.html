@@ -14,12 +14,12 @@
 
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots"
-                         ng-if="!notes_list.notesPromise.$$state.status"></ion-spinner>
+                         ng-if="!notes_list.itemsPromise.$$state.status"></ion-spinner>
         </div>
 
 
         <ion-list can-swipe="true">
-            <ion-item class="item-text-wrap" ng-repeat="note in notes_list.notes" ng-click="notes_list.details(note)">
+            <ion-item class="item-text-wrap" ng-repeat="note in notes_list.items" ng-click="notes_list.details(note)">
                 <div class="block-with-subscribe">
                     <div class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></div>
                     <div class="text-basic" ng-bind="note.text"></div>

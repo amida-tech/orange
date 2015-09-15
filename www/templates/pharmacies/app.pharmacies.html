@@ -15,11 +15,11 @@
         </ion-refresher>
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots"
-                         ng-if="!pharmacies.pharmaciesPromise.$$state.status"></ion-spinner>
+                         ng-if="!pharmacies.itemsPromise.$$state.status"></ion-spinner>
         </div>
         <ion-list can-swipe="true">
-            <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.pharmacies"
-                      ng-click="pharmacies.pharmacyDetails(pharmacy)">
+            <ion-item class="item-text-wrap" ng-repeat="pharmacy in pharmacies.items"
+                      ng-click="pharmacies.details(pharmacy)">
                 <div class="block-with-subscribe">
                     <div class="text-basic-bold" ng-bind="pharmacy.name"></div>
                     <div class="text-basic" ng-bind="pharmacy.address"></div>

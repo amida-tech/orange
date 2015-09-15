@@ -191,6 +191,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.notes', {
                         url: '/notes',
                         abstract: true,
+                        params: {
+                            service: 'NoteService',
+                            detailsState: 'app.notes.details'
+                        },
                         views: {
                             menuContent: {
                                 template: '<ion-nav-view/>'
@@ -200,7 +204,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.notes.list', {
                         url: '',
                         templateUrl: 'templates/notes/app.notes.html',
-                        controller: 'NotesCtrl as notes_list'
+                        controller: 'BaseListController as notes_list'
                     })
 
                     .state('app.notes.details', {
@@ -263,6 +267,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.doctors', {
                         url: '/doctors',
                         abstract: true,
+                        params: {
+                            service: 'DoctorService',
+                            detailsState: 'app.doctors.details'
+                        },
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>'
@@ -273,7 +281,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.doctors.list', {
                         url: '',
                         templateUrl: 'templates/doctors/app.doctors.html',
-                        controller: 'DoctorsCtrl as doctors'
+                        controller: 'BaseListController as doctors'
                     })
                     .state('app.doctors.search', {
                         url: '/search',
@@ -298,6 +306,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.pharmacies', {
                         url: '/pharmacies',
                         abstract: true,
+                        params: {
+                            service: 'PharmacyService',
+                            detailsState: 'app.pharmacies.details'
+                        },
                         views: {
                             'menuContent': {
                                 template: '<ion-nav-view></ion-nav-view>'
@@ -307,7 +319,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.pharmacies.list', {
                         url: '',
                         templateUrl: 'templates/pharmacies/app.pharmacies.html',
-                        controller: 'PharmaciesCtrl as pharmacies'
+                        controller: 'BaseListController as pharmacies'
                     })
                     .state('app.pharmacies.add', {
                         url: '/add',
