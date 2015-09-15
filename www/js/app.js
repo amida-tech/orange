@@ -75,7 +75,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                  }, false);
 
                  //Fix for Android back button
-                 if ($rootScope.isAndroid) {
+                 if (ionic.Platform.isAndroid()) {
                      $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
                          var menuMap = [
                              'app.today.schedule',
@@ -89,7 +89,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                          ];
 
                          $ionicHistory.nextViewOptions({
-                             historyRoot: false
+                             historyRoot: false,
+                             disableBack: false
                          });
 
                          $timeout(function () {
@@ -98,8 +99,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                              var history = $ionicHistory.viewHistory();
 
                              //Save today view
-                             if (toState.name == 'app.today.schedule') {
-                                 $rootScope.todayHistoryId = currentView.id;
+                             if (toState.name === 'app.today.schedule') {
+                                 $rootScope.todayHistoryId = currentView.viewId;
                                  $rootScope.todayHistoryView = currentView;
                              }
 
@@ -118,7 +119,6 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                                  history.backView = $rootScope.todayHistoryView;
                                  currentView.index = 1;
                                  history.histories[currentHistoryId].stack = [$rootScope.todayHistoryView, currentView];
-                                 console.log(history)
                              }
                          }, 300)
                      });

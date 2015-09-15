@@ -6,10 +6,10 @@
         .controller('TodayCtrl', TodayCtrl);
 
     TodayCtrl.$inject = ['$q', '$scope', '$stateParams', '$ionicLoading', '$ionicModal', '$cordovaDatePicker',
-        'n2w', 'PatientService', 'MedicationService', 'DoseService', 'GlobalService'];
+        'n2w', 'PatientService', 'MedicationService', 'DoseService', 'GlobalService', 'notifications'];
 
     function TodayCtrl($q, $scope, $stateParams, $ionicLoading, $ionicModal,$cordovaDatePicker, n2w,
-                       PatientService, MedicationService, DoseService, GlobalService) {
+                       PatientService, MedicationService, DoseService, GlobalService, notify) {
         var vm = this,
             doseModal = null,
             patient = null;
@@ -73,7 +73,6 @@
 
 
         function showModal(event, $event) {
-            console.log(event);
             if ($event.target.tagName == 'SPAN') {
                 return;
             }
@@ -232,6 +231,11 @@
                 DoseService.getAllItems(true)
             ]).then(
                 function (data) {
+                    // Update notify, on refresh scheduling
+                    if (vm.schedule !== null && data[1].plain().length > vm.medications.length) {
+                        notify.updateNotify();
+                    }
+
                     vm.schedule = data[0].plain();
                     vm.medications = data[1].plain();
                     vm.habits = data[2].plain();
@@ -317,7 +321,12 @@
             MedicationService.getItems().then(function (medications) {
                 event.medication = _.find(medications, {id: event.medication_id});
                 event.event = _.find(event.medication.schedule.times, {id: event.scheduled});
-                showModal(event);
+                event.doseModel = event.medication.dose;
+
+                // Simulate event object
+                var $event = { target: {} };
+
+                showModal(event, $event);
             });
         });
     }
