@@ -325,7 +325,6 @@
 
                 // Simulate event object
                 var $event = { target: {} };
-
                 showModal(event, $event);
             });
         });

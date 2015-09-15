@@ -95,9 +95,6 @@
         }
 
         function _scheduleNotify(medications, schedule) {
-            console.log('Medications', medications);
-            console.log('Schedule', medications);
-
             var notifyArray = [];
             _.each(schedule, function(item) {
                 var date = moment(item.date);
@@ -222,18 +219,10 @@
                 return;
             }
 
-            if ($state.name != 'app.today.schedule') {
-                $state.go('app.today.schedule').finally(function() {
-                    $timeout(function() {
-                        $rootScope.$broadcast('today:click:notification', notification);
-                    });
-                });
-                return;
-            }
-
+            $state.go('app.today.schedule');
             $timeout(function() {
                 $rootScope.$broadcast('today:click:notification', notification);
-            });
+            }, 1000);
         }
 
         function _triggerNotifyEvent (ev, notification, state) {
