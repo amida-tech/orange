@@ -20,6 +20,7 @@
 
             this.errorItemNotFound = errorList.INVALID_PATIENT_ID;
             this.errorItemNotFoundText = 'Patient not found';
+            this.skipHabits = false;
         };
 
         Service.prototype = Object.create(BasePagingService.prototype);
@@ -66,6 +67,8 @@
             var habits = savedItem.habits;
             delete savedItem.habits;
 
+            this.skipHabits = true;
+
             return BasePagingService.prototype.saveItem.call(this, savedItem).then(function (item) {
                 console.log('Begin patient.saveItem callback');
 
@@ -74,8 +77,15 @@
                 }
 
                 if (habits) {
-                    item.habits = _.extend(item.habits, habits) || habits;
-                    item.habits.save();
+                    self.getHabits(item).then(function (_habits) {
+                        item.habits = _habits;
+                        _habits['wake'] = habits['wake'];
+                        _habits['breakfast'] = habits['breakfast'];
+                        _habits['dinner'] = habits['dinner'];
+                        _habits['lunch'] = habits['lunch'];
+                        _habits['sleep'] = habits['sleep'];
+                        _habits.save();
+                    });
                 }
 
                 setFullName(item);
@@ -89,16 +99,20 @@
                         return item;
                     });
                 }
+                self.skipHabits = false;
                 return item;
+            }, function () {
+                self.skipHabits = false;
             });
         }
 
         function setItem(item) {
-            var self = this;
             BasePagingService.prototype.setItem.call(this, item);
             if (this.item) {
                 setFullName(this.item);
-                return this.setHabits(this.item);
+                if (!this.skipHabits) {
+                    return this.setHabits(this.item);
+                }
             }
         }
 
