@@ -13,6 +13,7 @@
                            $cordovaLocalNotification, $ionicPopup, PatientService, $localstorage) {
         var id = 0;
         var stackAlerts = [];
+        var clickFlag = false;
 
         $rootScope.$on('$cordovaLocalNotification:click', _clickNotifyEvent);
         $rootScope.$on('$cordovaLocalNotification:trigger', _triggerNotifyEvent);
@@ -195,6 +196,7 @@
         }
 
         function _clickNotifyEvent (ev, notification, state) {
+            clickFlag = true;
             $cordovaLocalNotification.clear([notification.id]);
 
             if (!$rootScope.initialized) {
@@ -236,7 +238,11 @@
                     template: notification.text
                 };
 
-                _notificationAlert(notifyAlertObject);
+                if (!clickFlag) {
+                    _notificationAlert(notifyAlertObject);
+                }
+
+                clickFlag = false;
             }
 
             var event = JSON.parse(notification.data).event;
