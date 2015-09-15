@@ -216,7 +216,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.notes.add', {
                         url: '/add',
                         templateUrl: 'templates/notes/app.notes.add.html',
-                        controller: 'NoteAddCtrl as notes_add'
+                        controller: 'NoteAddCtrl as notes_add',
+                        cache: false
                     })
                     .state('app.notes.update', {
                         url: '/:id/update',

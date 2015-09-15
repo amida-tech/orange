@@ -32,7 +32,7 @@
             NoteService.getItem(id, true),
             vm.medicationsPromise
         ]).then(function (data) {
-            vm.note = data[0] || {};
+            vm.note = id && data[0] || {};
             vm.medications = _.map(data[1], function(medication) {
                 medication.checked = false;
 
