@@ -91,7 +91,7 @@
             });
             PatientService.saveItem($scope.editLog).then(
                 function (patient) {
-                    if ($scope.log.id == PatientService.currentPatient.id) {
+                    if (!_.isUndefined($scope.log) && $scope.log.id == PatientService.currentPatient.id) {
                         notify.updateNotify();
                     }
                     PatientService.setItem(null);
@@ -108,7 +108,7 @@
         }
 
         function goToNextState() {
-            var options = {reload: $scope.editLog['id'] === PatientService.currentPatient['id']};
+            var options = {reload: $scope.editLog.id === PatientService.currentPatient.id};
             $state.go($state.params['nextState'] || 'logs', {}, options);
             $ionicLoading.hide();
         }

@@ -25,7 +25,7 @@
             }
 
             result += _.capitalize(n2w.toWords(medication.dose.quantity || 0));
-            result += ' unit' + (medication.dose.quantity === 1 ? '' : 's');
+            result += ' ' + medication.dose.unit;
             if (medication.schedule.take_with_food !== null) {
                 result += ', taken ' + (medication.schedule.take_with_food ? 'with': 'without') + ' food'
             }

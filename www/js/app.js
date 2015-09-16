@@ -88,6 +88,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                              'app.settings'
                          ];
 
+                         var rootStates = ['onboarding', 'app.today.schedule', 'logs'];
+
                          $ionicHistory.nextViewOptions({
                              historyRoot: false,
                              disableBack: false
@@ -104,7 +106,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                                  $rootScope.todayHistoryView = currentView;
                              }
 
-                             if (toState.name == 'app.today.schedule' || toState.name == 'logs') {
+                             if (rootStates.indexOf(toState.name) !== -1) {
                                  $ionicHistory.nextViewOptions({
                                      historyRoot: true
                                  });
