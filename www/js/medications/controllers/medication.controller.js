@@ -107,11 +107,11 @@
         }
 
         function errorCallback(error) {
-            GlobalService.showError(error.data.errors[0]).then(function () {
-                if (error.data.errors === MedicationService.errorItemNotFound) {
-                    $state.go('app.medications');
-                }
-            });
+            if (error.data.errors[0] === MedicationService.errorItemNotFound) {
+                $state.go('app.medications');
+            } else {
+                GlobalService.showError(error.data.errors[0]);
+            }
         }
     }
 })();

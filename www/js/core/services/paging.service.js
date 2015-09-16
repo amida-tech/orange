@@ -6,13 +6,13 @@
         .factory('BasePagingService', BasePagingService)
         .factory('PatientPagingService', PatientPagingService);
 
-    BasePagingService.$inject = ['$rootScope', '$q', '$state', 'OrangeApi', 'settings', 'GlobalService'];
+    BasePagingService.$inject = ['$rootScope', '$q', '$state', '$ionicLoading', 'OrangeApi', 'settings', 'GlobalService'];
     PatientPagingService.$inject = ['$rootScope', 'BasePagingService', 'PatientService'];
 
     /**
      * Base Paging service works through OrangeApi
      */
-    function BasePagingService($rootScope, $q, $state, OrangeApi, settings, GlobalService) {
+    function BasePagingService($rootScope, $q, $state, $ionicLoading, OrangeApi, settings, GlobalService) {
         var Service = function () {
 
             this.apiEndpoint = '';
@@ -211,7 +211,9 @@
                             self.count -= 1;
                             self.offset -= 1;
                         }
-                        onErrorNotFound.call(self, error);
+                        return onErrorNotFound.call(self, error).then(function () {
+                            return $q.reject(error);
+                        });
                     }
                     return $q.reject(error);
                 }
@@ -251,7 +253,9 @@
                                 self.count -= 1;
                                 self.offset -= 1;
                             }
-                            onErrorNotFound.call(self, error);
+                            return onErrorNotFound.call(self, error).then(function () {
+                                return $q.reject(error);
+                            });
                         }
                         return $q.reject(error);
                     }
@@ -283,6 +287,7 @@
 
         function onErrorNotFound(error) {
             var self = this;
+            $ionicLoading.hide();
             return GlobalService.showError(this.errorItemNotFoundText).then(function () {
                 self.setItem(null);
                 self.afterErrorItemNotFoundState && $state.go(self.afterErrorItemNotFoundState);
