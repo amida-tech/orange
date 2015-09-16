@@ -169,6 +169,7 @@ body {
 
 .pull-left {
   float: left !important;
+  max-width: 100%;
 }
 
 .pull-right {
@@ -891,6 +892,7 @@ ion-content {
   .item-log {
     display: inline-block;
     width: auto;
+    max-width: 100%;
     margin: $padding-base-vertical;
     line-height: $padding-base-horizontal;
     padding-bottom: $padding-base-horizontal;
