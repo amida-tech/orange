@@ -9,6 +9,8 @@
         return {
             scope: {
                 model: "=model",
+                minValue: '=minValue',
+                maxValue: '=maxValue',
                 subscribe: "@subscribe"
             },
             templateUrl: 'templates/core/orange_button_spinner.html',
