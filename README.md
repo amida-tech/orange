@@ -38,3 +38,16 @@ If you'd like to demo the layout, run `ionic serve`
 
 To test on a physical android device, plug in the device and run `ionic run android --device`.
 Make sure USB debugging is enabled on your device.
+
+
+## Contributing
+
+Contributors are welcome. See issues https://github.com/amida-tech/orange/issues
+
+## Release Notes
+
+See release notes [here] (./RELEASENOTES.md)
+
+## License
+
+Licensed under [Apache 2.0](./LICENSE)
