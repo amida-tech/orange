@@ -242,6 +242,7 @@
                 return _savedItem.save().then(
                     function (newItem) {
                         if (listItem && listItem.id === self.item.id) {
+                            listItem = _.extend(listItem, newItem);
                             self.setItem(listItem);
                         }
                         self.sendListChanged();
