@@ -53,13 +53,11 @@
                     <label class="item-input" ng-if="editMode">
                         <button class="button button-dark button-full" ng-click="habitsModal.show()">Habits</button>
                     </label>
+                    <div class="item item-button">
+                        <button class="button button-full button-orange" ng-click="checkForm(patientForm) && saveLog()">{{ button_title }}</button>
+                    </div>
                 </form>
             </div>
-            <div class="item item-button">
-                <button class="button button-full button-orange" ng-click="checkForm(patientForm) && saveLog()">{{ button_title }}</button>
-            </div>
-
         </div>
-
     </ion-content>
 </ion-view>
