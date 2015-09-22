@@ -24,7 +24,8 @@
                         <input type="text" data-ng-model="pharmacies_add.pharmacy.name" name="name" placeholder="Name" required />
                     </label>
                     <label class="item-input">
-                        <input type="tel" data-ng-model="pharmacies_add.pharmacy.phone" name="phone" placeholder="Phone" />
+                        <input type="tel" data-ng-model="pharmacies_add.pharmacy.phone" name="phone"
+                               placeholder="Phone" field-max-length="10" />
                     </label>
                     <label class="item-input">
                         <textarea name="address" data-ng-model="pharmacies_add.pharmacy.address" rows="3" placeholder="Address"></textarea>
