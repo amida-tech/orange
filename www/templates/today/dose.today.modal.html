@@ -13,13 +13,16 @@
             </div>
             <div class="item item-text-wrap orange-form">
                 <p ng-bind="today.event.text">One unit at 9:00am, taken without food</p>
-                <label class="item-input padding-top" ng-show="!today.showDetails">
+                <label class="item-input padding-top" ng-show="!today.showDetails && today.isToday">
                         <textarea name="text"
                                   rows="8"
                                   placeholder="Add a note..."
                                   data-ng-model="today.notes"
                                 ></textarea>
                 </label>
+                <div ng-show="!today.showDetails && !today.isToday">
+                    <p class="detail-item" ng-bind="today.dose.notes"></p>
+                </div>
                 <div ng-show="today.showDetails">
                     <p class="detail-item" ng-bind="(today.event.took_medication ? 'Taken: ' : 'Skipped: ') + (today.event.dose.date|date:'hh:mm a'|lowercase)"></p>
                     <p class="detail-item" ng-bind="today.dose.notes"></p>

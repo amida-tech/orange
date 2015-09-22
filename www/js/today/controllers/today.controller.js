@@ -80,6 +80,7 @@
             vm.event = event;
             vm.event.text = getEventText(event);
             vm.showDetails = !!event.dose_id;
+            vm.isToday = moment().format(dateFormat) === vm.scheduleDate;
 
             vm.dose = {
                 medication_id: event.medication_id,
