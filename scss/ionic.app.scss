@@ -424,7 +424,9 @@ dl.dl-worksheet {
     background-color: transparent;
     color: $orange-light;
   }
-  &.activated {
+  &.activated,
+  &.button-icon.activated {
+    background-color: $orange-light;
     opacity: 0.5;
   }
 }
@@ -1359,6 +1361,7 @@ ion-option-button.option-control.button {
 }
 
 .spinner-container {
+  max-width: 300px;
   .input-block {
     display: table;
     margin-bottom: 5px;
