@@ -120,7 +120,7 @@
             vm.quantity = event.medication.dose.quantity;
             var template = '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>';
             if (!skipped) {
-                template = '<button-spinner model="today.quantity" min-value=1 subscribe="'+event.medication.dose.unit+'"></button-spinner>' + template;
+                template = '<p>Modify this dose?</p><button-spinner model="today.quantity" min-value=1 subscribe="'+event.medication.dose.unit+'"></button-spinner>' + template;
             }
 
             GlobalService.showConfirm(template, event.medication.brand, $scope).then(
