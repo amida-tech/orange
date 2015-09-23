@@ -26,6 +26,7 @@
 
         vm.event = null;
         vm.dose = null;
+        vm.withAsNeeded = false;
 
         vm.filters = [];
 
@@ -314,6 +315,10 @@
                             name: name,
                             events: events
                         })
+                    });
+
+                    vm.withAsNeeded = _.some(vm.medications, function (item) {
+                        return item.schedule.as_needed === true;
                     });
                 },
                 function (error) {
