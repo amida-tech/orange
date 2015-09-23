@@ -7,7 +7,7 @@
     </ion-header-bar>
     <ion-content padding="true" class="orange-bg">
         <div class="card orange-card">
-            <form name="loginForm" class="orange-form">
+            <form name="loginForm" class="orange-form" ng-submit="login(loginForm)">
                 <div class="item item-error" ng-if="loginForm.$submitted && !loginForm.$valid || errors.length">
                     <p ng-repeat="error in errors" ng-bind="error"></p>
                     <div ng-messages="loginForm.email.$error">
@@ -34,7 +34,7 @@
                         </div>
                     </label>
                 </div>
-
+                <button ng-hide="true"></button>
             </form>
             <div class="item item-button">
                 <input type="submit" class="button button-block button-orange" ng-click="login(loginForm)" value="Log In"/>
