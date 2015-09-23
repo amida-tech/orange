@@ -33,7 +33,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
              });
 
              $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                 if (!$rootScope.initialized && toState.name !== 'loading') {
+                 if (!$rootScope.initialized && toState.name !== 'loading' && toState.name !== 'onboarding') {
                      $rootScope.cachedState = {
                          toState: toState,
                          toParams: toParams
