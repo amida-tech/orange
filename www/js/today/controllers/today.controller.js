@@ -188,7 +188,7 @@
                 if (!_.isUndefined(event.scheduled)) {
                     result += moment(event.date).format(timeFormat);
                 } else {
-                    result += 'Exact Time';
+                    result += 'Exact Time (' + moment(event.date).format(timeFormat) + ')';
                 }
 
             } else {
