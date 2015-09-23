@@ -358,7 +358,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
                         params: {
-                            nextState: 'app.logs.list'
+                            nextState: 'app.logs.list',
+                            backState: 'app.logs.list'
                         }
                     })
                     .state('app.logs.add_my', {
@@ -366,13 +367,15 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
                         params: {
-                            nextState: 'app.logs.list'
+                            nextState: 'app.logs.list',
+                            backState: 'app.logs.list'
                         }
                     })
                     .state('app.logs.details', {
                         url: '/details/:id',
                         templateUrl: 'templates/logs/logs.details.html',
                         controller: 'LogDetailsCtrl as log_details',
+                        cache: false
                     })
                     .state('app.logs.edit', {
                         url: '/edit/:id',
@@ -380,6 +383,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         controller: 'AddLogCtrl',
                         params: {
                             nextState: 'app.logs.list',
+                            backState: 'app.logs.details',
                             editMode: true,
                             fromMedication: false
                         }
@@ -441,7 +445,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
                         params: {
-                            nextState: 'logs'
+                            nextState: 'logs',
+                            backState: 'logs'
                         }
                     })
                     .state('logs-add-my', {
@@ -449,7 +454,19 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
                         params: {
-                            nextState: 'logs'
+                            nextState: 'logs',
+                            backState: 'logs'
+                        }
+                    })
+                    .state('logs-edit', {
+                        url: '/onboarding/logs/edit/:id',
+                        templateUrl: 'templates/logs/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        params: {
+                            nextState: 'logs',
+                            backState: 'logs',
+                            editMode: true,
+                            fromMedication: false
                         }
                     })
                     .state('logs-request', {

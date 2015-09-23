@@ -241,12 +241,18 @@
                 }
                 return _savedItem.save().then(
                     function (newItem) {
-                        if (listItem && listItem.id === self.item.id) {
-                            listItem = _.extend(listItem, newItem);
-                            self.setItem(listItem);
+                        if (listItem) {
+                            var index = self.items.indexOf(listItem);
+                            if (index > -1) {
+                                // replace element
+                                self.items.splice(index, 1, newItem);
+                            }
+                            if (newItem.id === self.item.id) {
+                                self.setItem(newItem);
+                            }
                         }
                         self.sendListChanged();
-                        return listItem || newItem;
+                        return newItem;
                     },
                     function (error) {
                         if (error.data.errors[0] === self.errorItemNotFound) {

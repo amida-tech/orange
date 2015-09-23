@@ -79,6 +79,7 @@
                             $state.go('app.logs.edit', {
                                 id: PatientService.currentPatient.id,
                                 nextState: 'app.medications',
+                                backState: 'app.medications',
                                 fromMedication: true
                             });
                         });
