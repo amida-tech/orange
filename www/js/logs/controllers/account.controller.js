@@ -110,7 +110,7 @@
         }
 
         function goToTerms() {
-            $cordovaInAppBrowser.open('http://amida-tech.github.io/orange/terms', '_blank');
+            $cordovaInAppBrowser.open('http://orange.amida-tech.com/terms.html', '_blank');
         }
     }
 })();
