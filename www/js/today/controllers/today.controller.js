@@ -81,6 +81,9 @@
             vm.event.text = getEventText(event);
             vm.showDetails = !!event.dose_id;
             vm.isToday = moment().format(dateFormat) === vm.scheduleDate;
+            if (!vm.showDetails) {
+                vm.notes = '';
+            }
 
             vm.dose = {
                 medication_id: event.medication_id,
@@ -92,10 +95,23 @@
             doseModal.show();
         }
 
-        function hideModal() {
-            vm.event = null;
-            vm.dose = null;
-            doseModal.hide();
+        function hideModal(force) {
+            force = force || false;
+            if (vm.notes && !force) {
+                GlobalService.showConfirm('All changes will discard. Continue?').then(
+                    function (confirm) {
+                        if (confirm) {
+                            vm.event = null;
+                            vm.dose = null;
+                            doseModal.hide();
+                        }
+                    }
+                );
+            } else {
+                vm.event = null;
+                vm.dose = null;
+                doseModal.hide();
+            }
         }
 
         function confirmDose(event, skipped) {
@@ -138,7 +154,7 @@
                         }
                     ).finally(function () {
                                      refresh();
-                                     hideModal()
+                                     hideModal(true);
                                  })
                 });
         }

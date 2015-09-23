@@ -5,10 +5,11 @@
         .module('orange')
         .controller('TodayAsNeededAddCtrl', TodayAsNeededAddCtrl);
 
-    TodayAsNeededAddCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading',
-        'MedicationService', 'DoseService', 'n2w'];
+    TodayAsNeededAddCtrl.$inject = ['$state', '$stateParams', '$ionicLoading',
+        'MedicationService', 'DoseService', 'n2w', 'GlobalService'];
 
-    function TodayAsNeededAddCtrl($scope, $state, $stateParams, $ionicLoading, MedicationService, DoseService, n2w) {
+    function TodayAsNeededAddCtrl($state, $stateParams, $ionicLoading, MedicationService, DoseService, n2w,
+                                  GlobalService) {
         var vm = this;
         vm.date = moment();
         vm.dose = {
@@ -46,6 +47,16 @@
                 $ionicLoading.hide();
                 $state.go('app.today.schedule')
             });
-        }
+        };
+
+        vm.back = function () {
+            GlobalService.showConfirm('All changes will discard. Continue?').then(
+                function (confirm) {
+                    if (confirm) {
+                        $state.go('app.today.as_needed');
+                    }
+                }
+            );
+        };
     }
 })();
