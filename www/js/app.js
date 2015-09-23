@@ -289,7 +289,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.doctors.search', {
                         url: '/search',
                         templateUrl: 'templates/doctors/app.doctors.search.html',
-                        controller: 'DoctorSearchCtrl as doctorSearch'
+                        controller: 'DoctorSearchCtrl as doctorSearch',
+                        cache: false
                     })
                     .state('app.doctors.details', {
                         url: '/:id/details',
@@ -299,12 +300,12 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.doctors.add', {
                         url: '/add',
                         templateUrl: 'templates/doctors/app.doctors.add.html',
-                        controller: 'DoctorCtrl as doctor',
+                        controller: 'DoctorCtrl as doctor'
                     })
                     .state('app.doctors.edit', {
                         url: '/:id/edit',
                         templateUrl: 'templates/doctors/app.doctors.add.html',
-                        controller: 'DoctorCtrl as doctor',
+                        controller: 'DoctorCtrl as doctor'
                     })
                     .state('app.pharmacies', {
                         url: '/pharmacies',
@@ -515,7 +516,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('onboarding-log.medications.search', {
                         url: '/search',
                         templateUrl: 'templates/logs/logs.setup.medications.search.html',
-                        controller: 'MedicationSearchCtrl as search'
+                        controller: 'MedicationSearchCtrl as search',
+                        cache: false
                     })
 
                     .state('onboarding-log.medications.schedule', {
