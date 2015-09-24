@@ -235,7 +235,10 @@
             if ($rootScope.isIOS && $rootScope.appOpen) {
                 var notifyAlertObject = {
                     title: notification.title,
-                    template: notification.text
+                    template: notification.text,
+                    okType: 'button-dark-orange',
+                    okText: 'Ok',
+                    cancelText: 'Cancel'
                 };
 
                 if (!clickFlag) {
@@ -268,17 +271,17 @@
                 return;
             }
 
-            var alertPromise = $ionicPopup.alert(alertObj);
+            var alertPromise = $ionicPopup.confirm(alertObj);
             alertPromise.then(_alertConfirm);
         }
-        function _alertConfirm() {
+        function _alertConfirm(confirm) {
             if (stackAlerts.length) {
                 var alertObj = stackAlerts.shift();
-                var alertPromise = $ionicPopup.alert(alertObj);
+                var alertPromise = $ionicPopup.confirm(alertObj);
                 alertPromise.then(_alertConfirm);
             }
 
-            if ($state.name != 'app.today.schedule') {
+            if (confirm && $state.name != 'app.today.schedule') {
                 $state.go('app.today.schedule');
             }
         }
