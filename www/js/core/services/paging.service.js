@@ -208,13 +208,19 @@
                 },
                 function (error) {
                     if (error.data.errors[0] === self.errorItemNotFound) {
-                        if (self.excludeItemFromList(removedItem)) {
-                            self.count -= 1;
-                            self.offset -= 1;
+                        if (error.status === 404) {
+                            if (self.excludeItemFromList(removedItem)) {
+                                self.count -= 1;
+                                self.offset -= 1;
+                                self.sendListChanged();
+                            }
+                            return onErrorNotFound.call(self, error).then(function () {
+                                return $q.reject(error);
+                            });
                         }
-                        return onErrorNotFound.call(self, error).then(function () {
-                            return $q.reject(error);
-                        });
+                        else {
+                            GlobalService.showError('API Error. Medication not delete');
+                        }
                     }
                     return $q.reject(error);
                 }
