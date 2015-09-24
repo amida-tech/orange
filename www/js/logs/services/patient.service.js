@@ -105,6 +105,10 @@
                 setFullName(this.item);
                 if (!this.item.habits) {
                     return this.setHabits(this.item);
+                } else {
+                    var deferred = $q.defer();
+                    deferred.resolve(null);
+                    return deferred.promise;
                 }
             }
         }
