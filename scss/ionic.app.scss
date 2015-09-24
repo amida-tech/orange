@@ -975,7 +975,6 @@ ion-content {
 
   .slider {
     height: 100%;
-    padding-top: 30%;
     h1, p {
       margin-top: $padding-large-vertical * 4;
       text-align: center;
@@ -985,7 +984,6 @@ ion-content {
     .box {
       position: absolute;
       text-align: center;
-      bottom: $button-height * 3 + 20;
     }
 
     .slide-screen {
@@ -993,7 +991,8 @@ ion-content {
     }
 
     .slider-pager {
-      bottom: $button-height * 3;
+      bottom: $button-height * 2;
+      position: fixed;
       .slider-pager-page {
         margin: 0 1px;
         color: $stable;
@@ -1015,7 +1014,7 @@ ion-content {
   .onboarding {
     .slider {
       .slide-screen {
-        max-width: 70%;
+        max-width: 60%;
       }
     }
   }
@@ -1442,4 +1441,13 @@ ion-option-button.option-control.button {
   margin-right: 10px;
   margin-top: 1px;
   vertical-align: middle;
+}
+
+.logo {
+  text-align: center;
+
+  img {
+    height: 100px;
+    max-width: 100%;
+  }
 }
