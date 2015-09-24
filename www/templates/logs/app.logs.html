@@ -4,11 +4,6 @@
             <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
             </button>
         </ion-nav-buttons>
-        <ion-nav-buttons side="right" >
-            <button class="button button-clear button-small button-dose"
-                    ng-click="menu_logs.setEditMode(!menu_logs.editMode)"
-                    ng-bind="menu_logs.editMode ? 'Done': 'Edit'"></button>
-        </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg">
         <ion-refresher pulling-text="Pull to refresh" on-refresh="update(true)">
@@ -29,7 +24,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row row-no-padding" ng-show="menu_logs.editMode">
+                <div class="row row-no-padding">
                     <div class="col col-33" ng-if="!withMe">
                         <div class="item-log" ui-sref="app.logs.add_my">
                             <div class="log-avatar">

@@ -19,8 +19,6 @@
         $scope.withMe = false;
 
         vm.logList = [];
-        vm.editMode = false;
-        vm.setEditMode = setEditMode;
         vm.details = details;
         vm.edit = edit;
         vm.backState = $state.params['from_medication']
@@ -32,10 +30,6 @@
         function update(force) {
             force = force || false;
             vm.patientPromise = PatientService.getItems(force);
-        }
-
-        function setEditMode(isEditMode) {
-            vm.editMode = isEditMode;
         }
 
         function habits(patient) {
