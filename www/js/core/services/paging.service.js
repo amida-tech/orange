@@ -101,6 +101,7 @@
                 if (count && (count > self.offset || force)) {
                     return self.initItems(true, count);
                 } else {
+                    self.sendListChanged();
                     return self.getItems();
                 }
             });
