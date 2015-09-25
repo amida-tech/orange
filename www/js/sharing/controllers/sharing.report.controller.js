@@ -14,7 +14,8 @@
             printPdf = window.plugins.PrintPDF,
             pdfData,
             buttonLabels = ['Email'],
-            deviceVersion = _.map(device.version.split('.'), Number);
+            deviceVersion = _.map(device.version.split('.'), Number),
+            patient = null;
 
         // Only for iOS & Android 4.4+
         if (!(device.platform === 'Android' && (
@@ -42,7 +43,12 @@
             $scope.loading = false;
         };
 
-        getReport();
+        PatientService.getItem($stateParams.id).then(function (item) {
+            patient = item;
+            fileName = patient.fullName.replace(' ', '_') + '-' + $stateParams.year + '-' +
+                (Number($stateParams.month) + 1);
+            getReport();
+        });
 
         function getReport() {
             setLoadingTrue();

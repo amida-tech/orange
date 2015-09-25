@@ -23,6 +23,7 @@
         };
 
         Service.prototype = Object.create(BasePagingService.prototype);
+        Service.prototype.getItem = getItem;
         Service.prototype.getPatient = getPatient;
         Service.prototype.getHabits = getHabits;
         Service.prototype.setHabits = setHabits;
@@ -48,6 +49,15 @@
             BasePagingService.prototype.clear.call(this);
             this.currentPatient = null;
             $localstorage.remove('currentPatient');
+        }
+
+        function getItem() {
+            return BasePagingService.prototype.getItem.apply(this, arguments).then(
+                function (item) {
+                    setFullName(item);
+                    return item;
+                }
+            );
         }
 
         function saveItem(savedItem) {
