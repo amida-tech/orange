@@ -1,0 +1,38 @@
+<ion-view hide-nav-bar="false" view-title="Add Medication">
+    <ion-nav-bar class="bar-orange" align-title="center">
+        <ion-nav-buttons side="left" >
+            <button ui-sref="{{ medications_add.backState }}" class="button back-button button-clear header-item">
+                <i class="icon ion-arrow-left-c"></i>
+            </button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+
+    <ion-content class="orange-bg" overflow-scroll="true">
+        <div class="card orange-card">
+            <form class="orange-form" name="medicationsAdd">
+
+                <div class="item item-error"
+                     ng-if="medicationsAdd.$submitted && !medicationsAdd.$valid || medications_add.errors.length">
+                    <p ng-repeat="error in medications_add.errors" ng-bind="error"></p>
+                    <div ng-messages="medicationsAdd.name.$error">
+                        <p ng-message="required">Name is required</p>
+                    </div>
+                </div>
+
+                <div class="item item-body">
+                    <label class="item-input">
+                        <input type="text" data-ng-model="medications_add.medication.name" name="name" placeholder="Name" required />
+                    </label>
+                    <label class="item-input">
+                        <input type="text" data-ng-model="medications_add.medication.brand" name="phone"
+                               placeholder="Brand"/>
+                    </label>
+                </div>
+            </form>
+            <div class="item item-button">
+                <button type="submit" class="button button-full button-orange"
+                        ng-click="medications_add.schedule(medicationsAdd)">Schedule</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

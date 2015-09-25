@@ -235,6 +235,15 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                             }
                         }
                     })
+                    .state('app.medication_add', {
+                        url: '/medications/add',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/medications/app.medication.add.html',
+                                controller: 'MedicationAddCtrl as medications_add'
+                            }
+                        }
+                    })
                     .state('app.medication', {
                         url: '/medication/{id}',
                         cache: false,
