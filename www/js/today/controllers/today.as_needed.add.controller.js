@@ -50,13 +50,17 @@
         };
 
         vm.back = function () {
-            GlobalService.showConfirm('All changes will discard. Continue?').then(
-                function (confirm) {
-                    if (confirm) {
-                        $state.go('app.today.as_needed');
+            if (vm.dose['notes']) {
+                GlobalService.showConfirm('All changes will discard. Continue?').then(
+                    function (confirm) {
+                        if (confirm) {
+                            $state.go('app.today.as_needed');
+                        }
                     }
-                }
-            );
+                );
+            } else {
+                $state.go('app.today.as_needed');
+            }
         };
     }
 })();

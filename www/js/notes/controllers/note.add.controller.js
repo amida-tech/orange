@@ -30,10 +30,12 @@
         var id = $stateParams.id;
         $q.all([
             NoteService.getItem(id, true),
+            NoteService.getItem(id),
             vm.medicationsPromise
         ]).then(function (data) {
             vm.note = id && data[0] || {};
-            vm.medications = _.map(data[1], function(medication) {
+            vm.originalNote = data[1];
+            vm.medications = _.map(data[2], function(medication) {
                 medication.checked = false;
 
                 if (is_edit) {
@@ -67,13 +69,17 @@
         };
 
         vm.back = function () {
-            GlobalService.showConfirm('All changes will discard. Continue?').then(
-                function (confirm) {
-                    if (confirm) {
-                        $state.go(backState, {id: $stateParams.id});
+            if (vm.originalNote && vm.originalNote['text'] !== vm.note['text'] || !vm.note['id'] && vm.note['text']) {
+                GlobalService.showConfirm('All changes will discard. Continue?').then(
+                    function (confirm) {
+                        if (confirm) {
+                            $state.go(backState, {id: $stateParams.id});
+                        }
                     }
-                }
-            );
+                );
+            } else {
+                $state.go(backState, {id: $stateParams.id});
+            }
         };
 
         //Medications List
