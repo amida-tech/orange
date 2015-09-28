@@ -20,7 +20,7 @@
                              ng-if="search.timer"></ion-spinner>
             </ion-item>
             <ion-item ng-show="!search.result.length && search.term && !search.timer">
-                <button class="button button-orange button-full" ng-click="medications.addNew()">Add medication manually</button>
+                <button class="button button-orange button-full" ng-click="medications.addNew(); search.clear()">Add medication manually</button>
             </ion-item>
             <ion-item ng-show="search.suggestions.length" class="item-text-wrap">
                 <h3>Suggestions:</h3>
@@ -34,7 +34,7 @@
             </ion-item>
 
             <ion-item ng-repeat="medication in search.result"
-                      ng-click="medications.pickMedication(medication, $event)">
+                      ng-click="medications.pickMedication(medication, $event); search.clear()">
                 <medication-block medication-name="medication.name"
                                   medication-brand="medication.brand"></medication-block>
             </ion-item>
