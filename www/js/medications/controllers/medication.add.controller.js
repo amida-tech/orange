@@ -14,8 +14,12 @@
         vm.backState = 'app.medications';
 
         vm.medication = {
+            access_anyone: 'write',
+            access_family: 'write',
+            access_prime: 'write',
             name: '',
             brand: '',
+            origin: 'manual',
             schedule: {
                 as_needed: true
             }
