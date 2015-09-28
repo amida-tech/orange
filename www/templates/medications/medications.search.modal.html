@@ -19,7 +19,7 @@
                 <ion-spinner class="orange-loading-spinner" icon="dots"
                              ng-if="search.timer"></ion-spinner>
             </ion-item>
-            <ion-item ng-show="search.suggestions.length">
+            <ion-item ng-show="!search.result.length && search.term && !search.timer">
                 <button class="button button-orange button-full" ng-click="medications.addNew()">Add medication manually</button>
             </ion-item>
             <ion-item ng-show="search.suggestions.length" class="item-text-wrap">

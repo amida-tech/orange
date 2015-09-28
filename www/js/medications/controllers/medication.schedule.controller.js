@@ -134,12 +134,9 @@
                 if (medication_id) {
                     $state.go('app.medication.details');
                 } else {
-                    $state.go('app.medications');
+                    $state.go($state.params['backState']);
                 }
             }
-
-
-
         }
 
         function activate() {

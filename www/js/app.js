@@ -266,7 +266,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/schedule',
                         cache: false,
                         templateUrl: 'templates/medications/app.medications.schedule.html',
-                        controller: 'MedicationScheduleCtrl as schedule'
+                        controller: 'MedicationScheduleCtrl as schedule',
+                        params: {
+                            backState: 'app.medications'
+                        }
                     })
 
                     .state('app.medication.events', {

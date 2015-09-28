@@ -28,7 +28,7 @@
             form.$submitted = true;
             if (_.isEmpty(form.$error)) {
                 MedicationService.setItem(vm.medication);
-                $state.go('app.medication.schedule');
+                $state.go('app.medication.schedule', {backState: $state.current.name});
             }
         }
     }
