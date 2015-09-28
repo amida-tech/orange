@@ -4,7 +4,7 @@
     angular
         .module('orange')
         .constant('settings', {
-            'orangeApiUrl': 'http://localhost:3000/v1',
+            'orangeApiUrl': 'http://localhost:5000/v1',
             'clientSecret': 'testsecret',
             'avatars': [
                 {path: 'img/avatars/Option1.png', path2x: 'img/avatars/Option1@2x.png'},
