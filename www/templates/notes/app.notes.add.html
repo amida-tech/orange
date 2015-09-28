@@ -1,7 +1,7 @@
 <ion-view hide-nav-bar="false" view-title="{{ notes_add.title }}">
     <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-buttons side="left" >
-            <button ui-sref="{{ notes_add.backState }}" class="button back-button button-clear header-item">
+            <button ng-click="notes_add.back()" class="button back-button button-clear header-item">
                 <i class="icon ion-arrow-left-c"></i>
             </button>
         </ion-nav-buttons>
@@ -32,13 +32,13 @@
 
                     <div class="medication-container">
                         <div class="bar-list text-center">
-                            <button class="button button-icon icon ion-ios-minus-outline pull-left"
+                            <button type="button" class="button button-icon icon ion-ios-minus-outline pull-left"
                                     ng-click="notes_add.medicationShowDelete = !notes_add.medicationShowDelete;">
                             </button>
 
                             <span>Medications</span>
 
-                            <button class="button button-icon button-clear button-small ion-plus button-dose pull-right"
+                            <button type="button" class="button button-icon button-clear button-small ion-plus button-dose pull-right"
                                     ng-click="notes_add.modal.show()"></button>
                             <div class="clearfix"></div>
                         </div>

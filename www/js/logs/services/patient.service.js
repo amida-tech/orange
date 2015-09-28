@@ -51,9 +51,8 @@
         }
 
         function saveItem(savedItem) {
-            var self = this;
-
-            var avatarUrl = savedItem.avatarUrl,
+            var self = this,
+                avatarUrl = savedItem.avatarUrl,
                 parts = savedItem.fullName ? savedItem.fullName.split(' ') : [],
                 isNew = !savedItem.id;
 
@@ -63,19 +62,26 @@
             if (savedItem.birthdate instanceof Date) {
                 savedItem.birthdate = savedItem.birthdate.toJSON().slice(0, 10);
             }
-            var habits = savedItem.habits;
-            delete savedItem.habits;
+
+            if (!isNew) {
+                var listItem = _.find(this.items, function (item) {
+                    return item.id == savedItem.id;
+                });
+                if (listItem) {
+                    listItem.habits['wake'] = savedItem.habits['wake'];
+                    listItem.habits['breakfast'] = savedItem.habits['breakfast'];
+                    listItem.habits['dinner'] = savedItem.habits['dinner'];
+                    listItem.habits['lunch'] = savedItem.habits['lunch'];
+                    listItem.habits['sleep'] = savedItem.habits['sleep'];
+                    listItem.habits.save();
+                }
+            }
 
             return BasePagingService.prototype.saveItem.call(this, savedItem).then(function (item) {
                 console.log('Begin patient.saveItem callback');
 
-                if (self.currentPatient === null) {
+                if (self.currentPatient === null || self.currentPatient.id == item.id) {
                     self.currentPatient = item;
-                }
-
-                if (habits) {
-                    item.habits = _.extend(item.habits, habits) || habits;
-                    item.habits.save();
                 }
 
                 setFullName(item);
@@ -94,11 +100,16 @@
         }
 
         function setItem(item) {
-            var self = this;
             BasePagingService.prototype.setItem.call(this, item);
             if (this.item) {
                 setFullName(this.item);
-                return this.setHabits(this.item);
+                if (!this.item.habits) {
+                    return this.setHabits(this.item);
+                } else {
+                    var deferred = $q.defer();
+                    deferred.resolve(null);
+                    return deferred.promise;
+                }
             }
         }
 

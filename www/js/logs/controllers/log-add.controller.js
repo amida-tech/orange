@@ -19,10 +19,9 @@
         $scope.isDevice = ionic.Platform.isWebView();
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
         $scope.iconItems = _.chunk($scope.settings.avatars, 3);
-        $scope.backState = ($scope.editMode && !$state.params['fromMedication'])
-                           ? 'app.logs.details({id: ' + $stateParams.id + '})'
-                           : $state.params['nextState'];
+        $scope.backState = $state.params['backState'] + '({id: ' + $stateParams.id + '})';
         $scope.errors = [];
+        $scope.withHabits = $scope.editMode && $state.current.name !== 'logs-edit';
 
         if ('id' in $stateParams) {
             PatientService.getItem($stateParams['id'], true).then(function (patient) {
@@ -91,7 +90,7 @@
             });
             PatientService.saveItem($scope.editLog).then(
                 function (patient) {
-                    if ($scope.log.id == PatientService.currentPatient.id) {
+                    if (!_.isUndefined($scope.log) && $scope.log.id == PatientService.currentPatient.id) {
                         notify.updateNotify();
                     }
                     PatientService.setItem(null);
@@ -108,7 +107,7 @@
         }
 
         function goToNextState() {
-            var options = {reload: $scope.editLog['id'] === PatientService.currentPatient['id']};
+            var options = {reload: $scope.editLog.id === PatientService.currentPatient.id};
             $state.go($state.params['nextState'] || 'logs', {}, options);
             $ionicLoading.hide();
         }

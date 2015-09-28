@@ -5,8 +5,11 @@
     <ion-side-menu side="left">
         <ion-content scroll="false">
             <div class="avatar" ng-if="log">
-                <avatar patient="log"></avatar>
+                <div ng-click="showModal()" menu-close>
+                    <avatar patient="log"></avatar>
+                </div>
                 <p>{{ log.first_name }} {{ log.last_name }}</p>
+
                 <p class="phone" ng-if="log.phone" call-phone>{{ log.phone }}</p>
             </div>
             <ion-list>

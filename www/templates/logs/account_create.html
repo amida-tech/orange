@@ -21,7 +21,7 @@
 
                 <div ng-messages="signUpForm.confirmPassword.$error">
                     <p ng-message="required">Confirm Password is required</p>
-                    <p ng-message="compareTo">Password and password confirmation don't match</p>
+                    <p ng-message="compareTo" class="pre-line">Password and password confirmation don't match</p>
                 </div>
 
                 <div ng-messages="signUpForm.phone.$error">
@@ -38,7 +38,7 @@
                         <input type="email" name="email" ng-model="user.email" placeholder="Email" required validate-email />
                     </label>
                     <label class="item-input">
-                        <input type="tel" name="phone" ng-model="user.phone" placeholder="Phone Number" required/>
+                        <input type="tel" name="phone" ng-model="user.phone" placeholder="Phone Number" field-max-length="10" required/>
                     </label>
 
                     <label class="item-input">

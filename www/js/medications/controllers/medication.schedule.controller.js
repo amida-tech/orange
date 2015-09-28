@@ -99,9 +99,7 @@
                                     $state.go(vm.nextUrl);
                                 });
                             } else {
-                                GlobalService.showError(MedicationService.errorItemNotFoundText).then(function () {
-                                    $state.go('app.medications');
-                                });
+                                $state.go('app.medications');
                             }
                         }
                     ).finally($ionicLoading.hide);

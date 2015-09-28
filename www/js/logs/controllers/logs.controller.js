@@ -19,9 +19,8 @@
         $scope.withMe = false;
 
         vm.logList = [];
-        vm.editMode = false;
-        vm.setEditMode = setEditMode;
         vm.details = details;
+        vm.edit = edit;
         vm.backState = $state.params['from_medication']
                        ? 'onboarding-log.medications.list({patient_id:'+ $state.params['log_id'] +'})'
                        : 'logs';
@@ -33,10 +32,6 @@
             vm.patientPromise = PatientService.getItems(force);
         }
 
-        function setEditMode(isEditMode) {
-            vm.editMode = isEditMode;
-        }
-
         function habits(patient) {
             PatientService.setItem(patient);
             $state.go('onboarding-log.habits', {patient_id: patient.id})
@@ -45,6 +40,11 @@
         function details(patient) {
             PatientService.setItem(patient);
             $state.go('app.logs.details', {id: patient.id});
+        }
+
+        function edit(patient) {
+            PatientService.setItem(patient);
+            $state.go('logs-edit', {id: patient.id});
         }
 
         function loadMore() {

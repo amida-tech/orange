@@ -169,6 +169,7 @@ body {
 
 .pull-left {
   float: left !important;
+  max-width: 100%;
 }
 
 .pull-right {
@@ -291,7 +292,7 @@ body {
 }
 
 .pre-line {
-  white-space: pre !important;
+  white-space: pre-line !important;
 }
 
 .spinner {
@@ -423,7 +424,9 @@ dl.dl-worksheet {
     background-color: transparent;
     color: $orange-light;
   }
-  &.activated {
+  &.activated,
+  &.button-icon.activated {
+    background-color: $orange-light;
     opacity: 0.5;
   }
 }
@@ -891,6 +894,7 @@ ion-content {
   .item-log {
     display: inline-block;
     width: auto;
+    max-width: 100%;
     margin: $padding-base-vertical;
     line-height: $padding-base-horizontal;
     padding-bottom: $padding-base-horizontal;
@@ -957,11 +961,20 @@ ion-content {
 
 }
 
+.add-avatar {
+  background: url('../img/log_add.png') no-repeat center;
+  background-size: 60%;
+}
+
+.import-avatar {
+  background: url('../img/log_import.png') no-repeat center;
+  background-size: 60%;
+}
+
 .onboarding {
 
   .slider {
     height: 100%;
-    padding-top: 30%;
     h1, p {
       margin-top: $padding-large-vertical * 4;
       text-align: center;
@@ -971,7 +984,6 @@ ion-content {
     .box {
       position: absolute;
       text-align: center;
-      bottom: $button-height * 3 + 20;
     }
 
     .slide-screen {
@@ -979,7 +991,8 @@ ion-content {
     }
 
     .slider-pager {
-      bottom: $button-height * 3;
+      bottom: $button-height * 2;
+      position: fixed;
       .slider-pager-page {
         margin: 0 1px;
         color: $stable;
@@ -1001,7 +1014,7 @@ ion-content {
   .onboarding {
     .slider {
       .slide-screen {
-        max-width: 70%;
+        max-width: 60%;
       }
     }
   }
@@ -1357,6 +1370,7 @@ ion-option-button.option-control.button {
 }
 
 .spinner-container {
+  max-width: 300px;
   .input-block {
     display: table;
     margin-bottom: 5px;
@@ -1427,4 +1441,13 @@ ion-option-button.option-control.button {
   margin-right: 10px;
   margin-top: 1px;
   vertical-align: middle;
+}
+
+.logo {
+  text-align: center;
+
+  img {
+    height: 100px;
+    max-width: 100%;
+  }
 }

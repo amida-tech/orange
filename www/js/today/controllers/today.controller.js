@@ -26,6 +26,7 @@
 
         vm.event = null;
         vm.dose = null;
+        vm.withAsNeeded = false;
 
         vm.filters = [];
 
@@ -80,6 +81,10 @@
             vm.event = event;
             vm.event.text = getEventText(event);
             vm.showDetails = !!event.dose_id;
+            vm.isToday = moment().format(dateFormat) === vm.scheduleDate;
+            if (!vm.showDetails) {
+                vm.notes = '';
+            }
 
             vm.dose = {
                 medication_id: event.medication_id,
@@ -91,10 +96,23 @@
             doseModal.show();
         }
 
-        function hideModal() {
-            vm.event = null;
-            vm.dose = null;
-            doseModal.hide();
+        function hideModal(force) {
+            force = force || false;
+            if (vm.notes && !force) {
+                GlobalService.showConfirm('All changes will discard. Continue?').then(
+                    function (confirm) {
+                        if (confirm) {
+                            vm.event = null;
+                            vm.dose = null;
+                            doseModal.hide();
+                        }
+                    }
+                );
+            } else {
+                vm.event = null;
+                vm.dose = null;
+                doseModal.hide();
+            }
         }
 
         function confirmDose(event, skipped) {
@@ -102,7 +120,7 @@
             vm.quantity = event.medication.dose.quantity;
             var template = '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>';
             if (!skipped) {
-                template = '<button-spinner model="today.quantity" subscribe="'+event.medication.dose.unit+'"></button-spinner>' + template;
+                template = '<p>Modify this dose?</p><button-spinner model="today.quantity" min-value=1 subscribe="'+event.medication.dose.unit+'"></button-spinner>' + template;
             }
 
             GlobalService.showConfirm(template, event.medication.brand, $scope).then(
@@ -137,7 +155,7 @@
                         }
                     ).finally(function () {
                                      refresh();
-                                     hideModal()
+                                     hideModal(true);
                                  })
                 });
         }
@@ -171,7 +189,7 @@
                 if (!_.isUndefined(event.scheduled)) {
                     result += moment(event.date).format(timeFormat);
                 } else {
-                    result += 'Exact Time';
+                    result += 'Exact Time (' + moment(event.date).format(timeFormat) + ')';
                 }
 
             } else {
@@ -297,6 +315,10 @@
                             name: name,
                             events: events
                         })
+                    });
+
+                    vm.withAsNeeded = _.some(vm.medications, function (item) {
+                        return item.schedule.as_needed === true;
                     });
                 },
                 function (error) {

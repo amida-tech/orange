@@ -6,13 +6,13 @@
         .factory('BasePagingService', BasePagingService)
         .factory('PatientPagingService', PatientPagingService);
 
-    BasePagingService.$inject = ['$rootScope', '$q', '$state', 'OrangeApi', 'settings', 'GlobalService'];
+    BasePagingService.$inject = ['$rootScope', '$q', '$state', '$ionicLoading', 'OrangeApi', 'settings', 'GlobalService'];
     PatientPagingService.$inject = ['$rootScope', 'BasePagingService', 'PatientService'];
 
     /**
      * Base Paging service works through OrangeApi
      */
-    function BasePagingService($rootScope, $q, $state, OrangeApi, settings, GlobalService) {
+    function BasePagingService($rootScope, $q, $state, $ionicLoading, OrangeApi, settings, GlobalService) {
         var Service = function () {
 
             this.apiEndpoint = '';
@@ -101,6 +101,7 @@
                 if (count && (count > self.offset || force)) {
                     return self.initItems(true, count);
                 } else {
+                    self.sendListChanged();
                     return self.getItems();
                 }
             });
@@ -207,11 +208,19 @@
                 },
                 function (error) {
                     if (error.data.errors[0] === self.errorItemNotFound) {
-                        if (self.excludeItemFromList(removedItem)) {
-                            self.count -= 1;
-                            self.offset -= 1;
+                        if (error.status === 404) {
+                            if (self.excludeItemFromList(removedItem)) {
+                                self.count -= 1;
+                                self.offset -= 1;
+                                self.sendListChanged();
+                            }
+                            return onErrorNotFound.call(self, error).then(function () {
+                                return $q.reject(error);
+                            });
                         }
-                        onErrorNotFound.call(self, error);
+                        else {
+                            GlobalService.showError('API Error. Medication not delete');
+                        }
                     }
                     return $q.reject(error);
                 }
@@ -239,11 +248,18 @@
                 }
                 return _savedItem.save().then(
                     function (newItem) {
-                        if (listItem && listItem.id === self.item.id) {
-                            self.setItem(listItem);
+                        if (listItem) {
+                            var index = self.items.indexOf(listItem);
+                            if (index > -1) {
+                                // replace element
+                                self.items.splice(index, 1, newItem);
+                            }
+                            if (newItem.id === self.item.id) {
+                                self.setItem(newItem);
+                            }
                         }
                         self.sendListChanged();
-                        return listItem || newItem;
+                        return newItem;
                     },
                     function (error) {
                         if (error.data.errors[0] === self.errorItemNotFound) {
@@ -251,7 +267,9 @@
                                 self.count -= 1;
                                 self.offset -= 1;
                             }
-                            onErrorNotFound.call(self, error);
+                            return onErrorNotFound.call(self, error).then(function () {
+                                return $q.reject(error);
+                            });
                         }
                         return $q.reject(error);
                     }
@@ -283,6 +301,7 @@
 
         function onErrorNotFound(error) {
             var self = this;
+            $ionicLoading.hide();
             return GlobalService.showError(this.errorItemNotFoundText).then(function () {
                 self.setItem(null);
                 self.afterErrorItemNotFoundState && $state.go(self.afterErrorItemNotFoundState);

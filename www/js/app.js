@@ -33,7 +33,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
              });
 
              $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                 if (!$rootScope.initialized && toState.name !== 'loading') {
+                 if (!$rootScope.initialized && toState.name !== 'loading' && toState.name !== 'onboarding') {
                      $rootScope.cachedState = {
                          toState: toState,
                          toParams: toParams
@@ -88,6 +88,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                              'app.settings'
                          ];
 
+                         var rootStates = ['onboarding', 'app.today.schedule', 'logs'];
+
                          $ionicHistory.nextViewOptions({
                              historyRoot: false,
                              disableBack: false
@@ -104,7 +106,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                                  $rootScope.todayHistoryView = currentView;
                              }
 
-                             if (toState.name == 'app.today.schedule' || toState.name == 'logs') {
+                             if (rootStates.indexOf(toState.name) !== -1) {
                                  $ionicHistory.nextViewOptions({
                                      historyRoot: true
                                  });
@@ -287,7 +289,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.doctors.search', {
                         url: '/search',
                         templateUrl: 'templates/doctors/app.doctors.search.html',
-                        controller: 'DoctorSearchCtrl as doctorSearch'
+                        controller: 'DoctorSearchCtrl as doctorSearch',
+                        cache: false
                     })
                     .state('app.doctors.details', {
                         url: '/:id/details',
@@ -297,12 +300,12 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.doctors.add', {
                         url: '/add',
                         templateUrl: 'templates/doctors/app.doctors.add.html',
-                        controller: 'DoctorCtrl as doctor',
+                        controller: 'DoctorCtrl as doctor'
                     })
                     .state('app.doctors.edit', {
                         url: '/:id/edit',
                         templateUrl: 'templates/doctors/app.doctors.add.html',
-                        controller: 'DoctorCtrl as doctor',
+                        controller: 'DoctorCtrl as doctor'
                     })
                     .state('app.pharmacies', {
                         url: '/pharmacies',
@@ -356,7 +359,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
                         params: {
-                            nextState: 'app.logs.list'
+                            nextState: 'app.logs.list',
+                            backState: 'app.logs.list'
                         }
                     })
                     .state('app.logs.add_my', {
@@ -364,13 +368,15 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
                         params: {
-                            nextState: 'app.logs.list'
+                            nextState: 'app.logs.list',
+                            backState: 'app.logs.list'
                         }
                     })
                     .state('app.logs.details', {
                         url: '/details/:id',
                         templateUrl: 'templates/logs/logs.details.html',
                         controller: 'LogDetailsCtrl as log_details',
+                        cache: false
                     })
                     .state('app.logs.edit', {
                         url: '/edit/:id',
@@ -378,6 +384,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         controller: 'AddLogCtrl',
                         params: {
                             nextState: 'app.logs.list',
+                            backState: 'app.logs.details',
                             editMode: true,
                             fromMedication: false
                         }
@@ -439,7 +446,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
                         params: {
-                            nextState: 'logs'
+                            nextState: 'logs',
+                            backState: 'logs'
                         }
                     })
                     .state('logs-add-my', {
@@ -447,7 +455,19 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
                         params: {
-                            nextState: 'logs'
+                            nextState: 'logs',
+                            backState: 'logs'
+                        }
+                    })
+                    .state('logs-edit', {
+                        url: '/onboarding/logs/edit/:id',
+                        templateUrl: 'templates/logs/logs.add.html',
+                        controller: 'AddLogCtrl',
+                        params: {
+                            nextState: 'logs',
+                            backState: 'logs',
+                            editMode: true,
+                            fromMedication: false
                         }
                     })
                     .state('logs-request', {
@@ -496,7 +516,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('onboarding-log.medications.search', {
                         url: '/search',
                         templateUrl: 'templates/logs/logs.setup.medications.search.html',
-                        controller: 'MedicationSearchCtrl as search'
+                        controller: 'MedicationSearchCtrl as search',
+                        cache: false
                     })
 
                     .state('onboarding-log.medications.schedule', {

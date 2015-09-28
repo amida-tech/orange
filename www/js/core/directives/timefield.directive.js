@@ -24,6 +24,8 @@
                         // Running on device show datepicker
                         var time = ngModel.$viewValue;
                         var date = new Date();
+                        date.setHours(0);
+                        date.setMinutes(0);
 
                         if (!!time) {
                             date = moment(time, settings.timeFormat).toDate();
@@ -32,15 +34,17 @@
                         var options = {
                             date: date,
                             mode: 'time',
+                            minuteInterval: 5,
                             allowOldDates: true,
                             allowFutureDates: true,
                             androidTheme: $cordovaDatePicker.THEME_DEVICE_DEFAULT_DARK
                         };
                         $cordovaDatePicker.show(options).then(function (date) {
-
-                            var time = moment(date).format(settings.timeFormat);
-                            ngModel.$setViewValue(time);
-                            elem.val(time);
+                            if (date) {
+                                var time = moment(date).format(settings.timeFormat);
+                                ngModel.$setViewValue(time);
+                                elem.val(time);
+                            }
                         });
                     } else {
                         // Steps for web app here

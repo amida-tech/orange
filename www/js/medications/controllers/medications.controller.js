@@ -75,11 +75,13 @@
                     'Invalid Habits'
                 ).then(function (confirm) {
                     if (confirm) {
-                        PatientService.setItem(PatientService.currentPatient);
-                        $state.go('app.logs.edit', {
-                            id: PatientService.currentPatient.id,
-                            nextState: 'app.medications',
-                            fromMedication: true
+                        PatientService.setItem(PatientService.currentPatient).then(function () {
+                            $state.go('app.logs.edit', {
+                                id: PatientService.currentPatient.id,
+                                nextState: 'app.medications',
+                                backState: 'app.medications',
+                                fromMedication: true
+                            });
                         });
                     }
                 });

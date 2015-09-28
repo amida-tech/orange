@@ -25,12 +25,13 @@
                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
             <label class="item-input">
-                <input name="phone" type="text" ng-model="settings.user_model.phone"
+                <input name="phone" type="tel" ng-model="settings.user_model.phone"
                        placeholder="Phone (Optional)"
-                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                       field-max-length="10"/>
             </label>
             <label class="item-input">
-                <input type="text" ng-model="settings.email"
+                <input type="email" ng-model="settings.email"
                        placeholder="E-mail" disabled
                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
@@ -49,7 +50,7 @@
                 </div>
                 <div ng-messages="passwordReset.confirm.$error">
                     <p ng-message="required">Confirm password is required</p>
-                    <p ng-message="compareTo">Password and Password confirmation don't match</p>
+                    <p ng-message="compareTo" class="pre-line">Password and Password confirmation don't match</p>
                 </div>
             </div>
 

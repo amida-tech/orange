@@ -7,19 +7,19 @@
 
     NoteAddCtrl.$inject = [
         '$q', '$scope', '$filter', '$state', '$stateParams',
-        '$ionicLoading', '$ionicModal', 'NoteService', 'MedicationService'
+        '$ionicLoading', '$ionicModal', 'NoteService', 'MedicationService', 'GlobalService'
     ];
 
     /* @ngInject */
     function NoteAddCtrl($q, $scope, $filter, $state, $stateParams,
-                         $ionicLoading, $ionicModal, NoteService, MedicationService) {
+                         $ionicLoading, $ionicModal, NoteService, MedicationService, GlobalService) {
         /* jshint validthis: true */
         var vm = this;
         //Check "id" param in url
-        var is_edit = 'id' in $stateParams;
+        var is_edit = 'id' in $stateParams,
+            backState = (is_edit) ? 'app.notes.details' : 'app.notes.list';
 
         vm.title = (is_edit) ? 'Edit Note' : 'Add Note';
-        vm.backState = (is_edit) ? 'app.notes.details({id: ' + $stateParams.id + '})' : 'app.notes.list';
         vm.notesPromise = NoteService.getItems();
         vm.medicationsPromise = MedicationService.getAllItems();
 
@@ -64,6 +64,16 @@
                 vm.note.date = $filter('date')(new Date(), 'yyyy-MM-ddTHH:mm:ssZ');
             }
             NoteService.saveItem(vm.note).then(saveSuccess, saveError);
+        };
+
+        vm.back = function () {
+            GlobalService.showConfirm('All changes will discard. Continue?').then(
+                function (confirm) {
+                    if (confirm) {
+                        $state.go(backState, {id: $stateParams.id});
+                    }
+                }
+            );
         };
 
         //Medications List

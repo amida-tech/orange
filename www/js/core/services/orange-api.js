@@ -75,13 +75,13 @@
                                 return false;
 
                             case 401:
+                                if ($state.current.name === 'loading') {
+                                    error401();
+                                    return false;
+                                }
                                 if (_error !== $rootScope.ERROR_LIST.WRONG_PASSWORD) {
                                     $ionicLoading.hide();
-                                    GlobalService.showError(_.startCase(_error)).then(function () {
-                                        var authService = $injector.get('Auth');
-                                        authService.logout();
-                                        $state.go('onboarding');
-                                    });
+                                    GlobalService.showError(_.startCase(_error)).then(error401);
                                     return false;
                                 }
                                 break;
@@ -120,6 +120,12 @@
                     accessToken = token;
                     headers['Authorization'] = 'Bearer ' + accessToken;
                     OrangeRest.setDefaultHeaders(headers);
+                }
+
+                function error401() {
+                    var authService = $injector.get('Auth');
+                    authService.logout();
+                    $state.go('onboarding');
                 }
 
                 return {

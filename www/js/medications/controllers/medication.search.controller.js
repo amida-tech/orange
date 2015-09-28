@@ -18,6 +18,7 @@
 
         vm.pickSuggestion = pickSuggestion;
         vm.search = search;
+        vm.clear = clear;
 
         ////////////////
 
@@ -100,6 +101,12 @@
                 result += ' and/or ' + dfg.slice(-1);
             }
             return result;
+        }
+
+        function clear() {
+            vm.term = null;
+            vm.suggestions = [];
+            vm.result = [];
         }
     }
 })();
