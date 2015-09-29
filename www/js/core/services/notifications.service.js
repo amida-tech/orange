@@ -237,8 +237,8 @@
                     title: notification.title,
                     template: notification.text,
                     okType: 'button-dark-orange',
-                    okText: 'Ok',
-                    cancelText: 'Cancel'
+                    okText: 'Open Today',
+                    cancelText: 'Dismiss'
                 };
 
                 if (!clickFlag) {
