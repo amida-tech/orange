@@ -67,7 +67,7 @@
                 isNew = !savedItem.id;
 
             savedItem.first_name = parts.shift() || savedItem.first_name;
-            savedItem.last_name = parts.join(' ') || savedItem.last_name;
+            savedItem.last_name = parts.join(' ');
             savedItem.birthdate = savedItem.birthdate || null;
             if (savedItem.birthdate instanceof Date) {
                 savedItem.birthdate = savedItem.birthdate.toJSON().slice(0, 10);
