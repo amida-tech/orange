@@ -45,8 +45,9 @@
 
         PatientService.getItem($stateParams.id).then(function (item) {
             patient = item;
-            fileName = patient.fullName.replace(' ', '_') + '-' + $stateParams.year + '-' +
-                (Number($stateParams.month) + 1);
+            var month = (Number($stateParams.month) + 1);
+            fileName = patient.fullName.trim().replace(' ', '_') + '-' + $stateParams.year + '-' +
+                (month < 10 ? '0' : '') + month;
             getReport();
         });
 
