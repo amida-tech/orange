@@ -25,7 +25,16 @@
                        ? 'onboarding-log.medications.list({patient_id:'+ $state.params['log_id'] +'})'
                        : 'logs';
 
-        update(true);
+        PatientService.onListChanged(function (event, patients) {
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.logs = patients;
+            vm.logList = _.chunk(patients, 3);
+            $scope.withMe = !!_.find(patients, function (item) {
+                return item['me'] === true;
+            });
+        });
+
+        update();
 
         function update(force) {
             force = force || false;
@@ -53,14 +62,5 @@
                 $scope.$broadcast('scroll.infiniteScrollComplete');
             }
         }
-
-        PatientService.onListChanged(function (event, patients) {
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-            $scope.logs = patients;
-            vm.logList = _.chunk(patients, 3);
-            $scope.withMe = !!_.find(patients, function (item) {
-                return item['me'] === true;
-            });
-        });
     }
 })();

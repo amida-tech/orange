@@ -147,19 +147,6 @@
 
             var patientID = $localstorage.get('currentPatient', null);
 
-            //Get patient by id
-            if (patientID) {
-                return OrangeApi.patients.get(patientID).then(
-                    function (currentPatient) {
-                        $ionicLoading.hide();
-                        self.currentPatient = currentPatient;
-                        self.setHabits(currentPatient);
-                        return currentPatient;
-                    },
-                    errorGetPatient
-                );
-            }
-
             $ionicLoading.show({
                 template: 'Loading patient data...'
             });
@@ -172,9 +159,31 @@
                         return;
                     }
 
-                    var patient = _.find(patients, function (item) {
+                    var patient;
+                    //Get patient by id
+                    if (patientID) {
+                        patient = _.find(patients, function (item) {
+                            return item['id'] == patientID;
+                        });
+                        if (!patient) {
+                            return OrangeApi.patients.get(patientID).then(
+                                function (currentPatient) {
+                                    $ionicLoading.hide();
+                                    self.currentPatient = currentPatient;
+                                    self.setHabits(currentPatient);
+                                    return currentPatient;
+                                },
+                                errorGetPatient
+                            );
+                        }
+                    }
+
+                    if (!patient) {
+                        patient = _.find(patients, function (item) {
                             return item['me'] === true;
                         });
+                    }
+
                     if (patient === undefined && patients.length > 0) {
                         patient = patients[0];
                     }

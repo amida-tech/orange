@@ -84,6 +84,7 @@
             } else {
                 var deferred = $q.defer();
                 deferred.resolve(this.items);
+                this.sendListChanged();
                 return deferred.promise;
             }
         }
