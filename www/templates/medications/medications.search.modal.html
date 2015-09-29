@@ -15,11 +15,11 @@
             </label>
         </form>
         <ion-list class="list-clean">
-            <ion-item class="text-center">
+            <ion-item class="text-center" ng-if="search.timer">
                 <ion-spinner class="orange-loading-spinner" icon="dots"
-                             ng-if="search.timer"></ion-spinner>
+                             ></ion-spinner>
             </ion-item>
-            <ion-item ng-show="!search.result.length && search.term && !search.timer">
+            <ion-item ng-show="!search.result.length && search.term && !search.timer" class="col-no-padding">
                 <button class="button button-orange button-full" ng-click="medications.addNew(); search.clear()">Add medication manually</button>
             </ion-item>
             <ion-item ng-show="search.suggestions.length" class="item-text-wrap">
