@@ -57,7 +57,7 @@
         ];
 
         $scope.$watchCollection('schedule.schedule.frequency.start', function (days) {
-            if (days) {
+            if (days && vm.schedule.frequency.unit === 'month') {
                 var hasDay = _.find(days, function (day) {
                     return ['29', '30', '31'].indexOf(day.substr(8)) > -1;
                 });
