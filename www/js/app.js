@@ -88,7 +88,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                              'app.settings'
                          ];
 
-                         var rootStates = ['onboarding', 'app.today.schedule', 'logs'];
+                         var rootStates = ['onboarding', 'app.today.schedule'];
 
                          $ionicHistory.nextViewOptions({
                              historyRoot: false,
