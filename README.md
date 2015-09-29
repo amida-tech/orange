@@ -1,3 +1,18 @@
+#Orange Rx
+Amida’s Orange Rx mobile application helps make medication adherence
+easy and safe. Instead error-prone manual data entry, Orange Rx
+automatically imports - under the patients control - personal health data from
+a variety of electronic sources. Combining open source Blue ButtonTM technology with a simple, intuitive interface, Orange Rx enables patients and their care teams to track and log medications, control dosing and refills, and report adverse effects.
+
+Some of the features of the Orange Rx app include:
+– Notifications and reminders for medication dosing
+– Automatic synchronization for up-to- date dosing information
+– Multi-user log-in for multiple individuals to manage and view medication schedules
+– Data storage in a secure, private, HIPAA-compliant server
+– Easily hosted on a HIPAA-compliant Amida server, your server, or in the cloud
+– Seamless integration to all file types and existing systems using Amida’s open source Data Reconciliation Engine
+
+
 ## About
 
 Medication adherence app
