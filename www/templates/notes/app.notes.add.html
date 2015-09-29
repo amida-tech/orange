@@ -1,7 +1,7 @@
 <ion-view hide-nav-bar="false" view-title="{{ notes_add.title }}">
     <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-buttons side="left" >
-            <button ng-click="notes_add.back()" class="button back-button button-clear header-item">
+            <button ui-sref="{{ notes_add.backState }}" class="button back-button button-clear header-item">
                 <i class="icon ion-arrow-left-c"></i>
             </button>
         </ion-nav-buttons>
