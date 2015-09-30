@@ -14,6 +14,16 @@
             doseModal = null,
             patient = null;
 
+        vm.hideButtons = false;
+
+        window.addEventListener('native.keyboardshow', function() {
+            vm.hideButtons = true;
+        });
+
+        window.addEventListener('native.keyboardhide', function() {
+            vm.hideButtons = false;
+        });
+
         var dateFormat = $scope.settings.dateFormat;
         var fullDateFormat = $scope.settings.fullDateFormat;
         var timeFormat = $scope.settings.timeFormat;
@@ -80,7 +90,7 @@
 
             vm.event = event;
             vm.event.text = getEventText(event);
-            vm.showDetails = !!event.dose_id;
+            vm.showDetails = !!event.dose_id || vm.title.toLowerCase() !== 'today';
             vm.isToday = moment().format(dateFormat) === vm.scheduleDate;
             if (!vm.showDetails) {
                 vm.notes = '';

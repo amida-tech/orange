@@ -19,6 +19,16 @@
             taken: true
         };
 
+        vm.hideButtons = false;
+
+        window.addEventListener('native.keyboardshow', function() {
+            vm.hideButtons = true;
+        });
+
+        window.addEventListener('native.keyboardhide', function() {
+            vm.hideButtons = false;
+        });
+
         MedicationService.getItem($stateParams['id']).then(function (medication) {
             forceBack = false;
             vm.medication = medication;
