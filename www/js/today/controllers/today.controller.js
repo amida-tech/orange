@@ -189,7 +189,7 @@
                 if (!_.isUndefined(event.scheduled)) {
                     result += moment(event.date).format(timeFormat);
                 } else {
-                    result += 'Exact Time (' + moment(event.date).format(timeFormat) + ')';
+                    result += 'As Needed (' + moment(event.date).format(timeFormat) + ')';
                 }
 
             } else {
