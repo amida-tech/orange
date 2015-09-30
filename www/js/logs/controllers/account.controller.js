@@ -4,11 +4,12 @@
         .module('orange')
         .controller('AccountCtrl', AccountCtrl);
 
-    AccountCtrl.$inject = ['$rootScope', '$scope',  '$timeout', '$cordovaInAppBrowser', 'Auth', 'OrangeApi',
-                           'PatientService', 'notifications'];
+    AccountCtrl.$inject = ['$rootScope', '$scope',  '$timeout', '$ionicLoading', '$cordovaInAppBrowser',
+        'Auth', 'OrangeApi', 'PatientService', 'notifications'];
 
     /* @ngInject */
-    function AccountCtrl($rootScope, $scope, $timeout, $cordovaInAppBrowser, Auth, OrangeApi, PatientService, notify) {
+    function AccountCtrl($rootScope, $scope, $timeout, $ionicLoading, $cordovaInAppBrowser,
+                         Auth, OrangeApi, PatientService, notify) {
 
         $scope.login = login;
         $scope.signUp = signUp;
@@ -37,6 +38,8 @@
                     'last_name': last_name
                 };
 
+                $ionicLoading.show({template: 'Loading...'});
+
                 // Call Api
                 OrangeApi.user.post(user).then(
                     function (response) {
@@ -58,7 +61,7 @@
                         $scope.error = true;
                         $scope.errors = _.map(error.data.errors, _.startCase);
                     }
-                )
+                ).finally($ionicLoading.hide);
             }
         }
 
