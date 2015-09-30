@@ -26,12 +26,13 @@
                        : 'logs';
 
         PatientService.onListChanged(function (event, patients) {
-            $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.logs = patients;
             vm.logList = _.chunk(patients, 3);
             $scope.withMe = !!_.find(patients, function (item) {
                 return item['me'] === true;
             });
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$broadcast('scroll.infiniteScrollComplete');
         });
 
         update();
