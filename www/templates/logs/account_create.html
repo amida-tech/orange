@@ -30,6 +30,10 @@
                 <div ng-messages="signUpForm.phone.$error">
                     <p ng-message="required">Phone number is required</p>
                 </div>
+
+                <div ng-messages="signUpForm.agreement.$error">
+                    <p ng-message="required">Please agree to the Terms of Use</p>
+                </div>
                 <p ng-repeat="error in errors" ng-bind="error"></p>
 
             </div>
