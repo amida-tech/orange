@@ -6,19 +6,27 @@
         .controller('MedicationCtrl', MedicationCtrl);
 
     MedicationCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', '$ionicPopup',
-        'MedicationService', 'GlobalService'];
+        'MedicationService', 'NoteService', 'GlobalService'];
 
     function MedicationCtrl($scope, $state, $stateParams, $ionicLoading, $ionicPopup,
-                            MedicationService, GlobalService) {
+                            MedicationService, NoteService, GlobalService) {
         var vm = this;
         vm.medicationStatusMap = {
             manual: 'Manually Entered',
             import: 'Automatic Imported'
         };
+        vm.notes = null;
         vm.title = 'Medication Details';
         MedicationService.getItem($stateParams['id']).then(
             function (medication) {
                 vm.medication = medication;
+                NoteService.getAllItems().then(
+                    function (notes) {
+                        vm.notes = _.filter(notes, function (note) {
+                            return note.medication_ids.indexOf(vm.medication.id) >= 0;
+                        });
+                    }
+                );
                 vm.eventsText = MedicationService.getMedicationText(vm.medication);
                 setStatus();
             },

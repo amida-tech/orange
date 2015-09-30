@@ -38,6 +38,19 @@
 
         </ion-list>
 
+        <h4 class="list-header" ng-if="medication.notes !== null && medication.notes.length > 0">Medication notes</h4>
+        <div class="text-center" ng-if="medication.notes === null">
+            <ion-spinner class="spinner-orange-light" icon="dots"></ion-spinner>
+        </div>
+        <ion-list ng-if="medication.notes.length > 0">
+            <ion-item ng-repeat="note in medication.notes">
+                <div class="block-with-subscribe">
+                    <div class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></div>
+                    <div class="text-basic" ng-bind="note.text"></div>
+                </div>
+            </ion-item>
+        </ion-list>
+
 
     </ion-content>
     <div class="bottom-buttons">

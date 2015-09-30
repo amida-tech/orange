@@ -1454,3 +1454,11 @@ ion-option-button.option-control.button {
     max-width: 100%;
   }
 }
+
+h4.list-header {
+  text-transform: uppercase;
+  color: $gray;
+  font-size: $font-size-base;
+  font-family: OpenSans;
+  padding-left: $padding-small-horizontal;
+}
