@@ -1343,12 +1343,7 @@ ion-option-button.option-control.button {
   padding: 2px 0;
 }
 
-.add-asneeded {
-  font-size: $icon-asneeded-height - 20;
-  color: #fff;
-}
-
-.add-asneeded-container {
+.floating-button {
   height: $icon-asneeded-height;
   width: $icon-asneeded-height;
   bottom: $padding-base-horizontal;
@@ -1360,6 +1355,13 @@ ion-option-button.option-control.button {
   text-align: center;
   vertical-align: middle;
   line-height: $icon-asneeded-height;
+  &.assertive {
+    background: $assertive;
+  }
+  .icon {
+    font-size: $icon-asneeded-height - 20;
+    color: #fff;
+  }
 }
 
 .push-as-needed-icon {

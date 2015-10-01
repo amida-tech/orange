@@ -206,7 +206,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.notes.list', {
                         url: '',
                         templateUrl: 'templates/notes/app.notes.html',
-                        controller: 'BaseListController as notes_list'
+                        controller: 'NotesListController as notes_list'
                     })
 
                     .state('app.notes.details', {
