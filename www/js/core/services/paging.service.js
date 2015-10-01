@@ -84,6 +84,7 @@
             } else {
                 var deferred = $q.defer();
                 deferred.resolve(this.items);
+                this.sendListChanged();
                 return deferred.promise;
             }
         }
@@ -101,6 +102,9 @@
                 if (count && (count > self.offset || force)) {
                     return self.initItems(true, count);
                 } else {
+                    if (count === 0) {
+                        self.items = response;
+                    }
                     self.sendListChanged();
                     return self.getItems();
                 }

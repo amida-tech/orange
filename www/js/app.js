@@ -88,7 +88,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                              'app.settings'
                          ];
 
-                         var rootStates = ['onboarding', 'app.today.schedule', 'logs'];
+                         var rootStates = ['onboarding', 'app.today.schedule'];
 
                          $ionicHistory.nextViewOptions({
                              historyRoot: false,
@@ -235,6 +235,15 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                             }
                         }
                     })
+                    .state('app.medication_add', {
+                        url: '/medications/add',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/medications/app.medication.add.html',
+                                controller: 'MedicationAddCtrl as medications_add'
+                            }
+                        }
+                    })
                     .state('app.medication', {
                         url: '/medication/{id}',
                         cache: false,
@@ -257,7 +266,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/schedule',
                         cache: false,
                         templateUrl: 'templates/medications/app.medications.schedule.html',
-                        controller: 'MedicationScheduleCtrl as schedule'
+                        controller: 'MedicationScheduleCtrl as schedule',
+                        params: {
+                            backState: 'app.medications'
+                        }
                     })
 
                     .state('app.medication.events', {

@@ -21,6 +21,7 @@
         vm.details = details;
         vm.pickMedication = pickMedication;
         vm.showSearchModal = showSearchModal;
+        vm.addNew = addNew;
 
         refresh();
 
@@ -97,6 +98,11 @@
                 habits['dinner'],
                 habits['sleep']
             ]);
+        }
+
+        function addNew() {
+            vm.searchModal.hide();
+            $state.go('app.medication_add');
         }
 
         MedicationService.onListChanged(function (event, medications) {

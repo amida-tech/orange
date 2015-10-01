@@ -23,6 +23,7 @@
         };
 
         Service.prototype = Object.create(BasePagingService.prototype);
+        Service.prototype.getItem = getItem;
         Service.prototype.getPatient = getPatient;
         Service.prototype.getHabits = getHabits;
         Service.prototype.setHabits = setHabits;
@@ -50,6 +51,15 @@
             $localstorage.remove('currentPatient');
         }
 
+        function getItem() {
+            return BasePagingService.prototype.getItem.apply(this, arguments).then(
+                function (item) {
+                    setFullName(item);
+                    return item;
+                }
+            );
+        }
+
         function saveItem(savedItem) {
             var self = this,
                 avatarUrl = savedItem.avatarUrl,
@@ -57,7 +67,7 @@
                 isNew = !savedItem.id;
 
             savedItem.first_name = parts.shift() || savedItem.first_name;
-            savedItem.last_name = parts.join(' ') || savedItem.last_name;
+            savedItem.last_name = parts.join(' ');
             savedItem.birthdate = savedItem.birthdate || null;
             if (savedItem.birthdate instanceof Date) {
                 savedItem.birthdate = savedItem.birthdate.toJSON().slice(0, 10);
@@ -137,19 +147,6 @@
 
             var patientID = $localstorage.get('currentPatient', null);
 
-            //Get patient by id
-            if (patientID) {
-                return OrangeApi.patients.get(patientID).then(
-                    function (currentPatient) {
-                        $ionicLoading.hide();
-                        self.currentPatient = currentPatient;
-                        self.setHabits(currentPatient);
-                        return currentPatient;
-                    },
-                    errorGetPatient
-                );
-            }
-
             $ionicLoading.show({
                 template: 'Loading patient data...'
             });
@@ -162,9 +159,31 @@
                         return;
                     }
 
-                    var patient = _.find(patients, function (item) {
+                    var patient;
+                    //Get patient by id
+                    if (patientID) {
+                        patient = _.find(patients, function (item) {
+                            return item['id'] == patientID;
+                        });
+                        if (!patient) {
+                            return OrangeApi.patients.get(patientID).then(
+                                function (currentPatient) {
+                                    $ionicLoading.hide();
+                                    self.currentPatient = currentPatient;
+                                    self.setHabits(currentPatient);
+                                    return currentPatient;
+                                },
+                                errorGetPatient
+                            );
+                        }
+                    }
+
+                    if (!patient) {
+                        patient = _.find(patients, function (item) {
                             return item['me'] === true;
                         });
+                    }
+
                     if (patient === undefined && patients.length > 0) {
                         patient = patients[0];
                     }

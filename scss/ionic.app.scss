@@ -984,6 +984,7 @@ ion-content {
     .box {
       position: absolute;
       text-align: center;
+      bottom: $button-height * 4 + $padding-large-vertical * 2;
     }
 
     .slide-screen {
@@ -1447,7 +1448,17 @@ ion-option-button.option-control.button {
   text-align: center;
 
   img {
-    height: 100px;
+    position: relative;
+    top: 10px;
+    height: 80px;
     max-width: 100%;
   }
+}
+
+h4.list-header {
+  text-transform: uppercase;
+  color: $gray;
+  font-size: $font-size-base;
+  font-family: OpenSans;
+  padding-left: $padding-small-horizontal;
 }

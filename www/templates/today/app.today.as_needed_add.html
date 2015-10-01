@@ -1,7 +1,7 @@
 <ion-view hide-nav-bar="false" class="light-bg" view-title="As Needed Add">
     <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-buttons side="left" >
-            <button ng-click="asNeededAdd.back()" class="button back-button button-clear header-item">
+            <button ui-sref="app.today.as_needed" class="button back-button button-clear header-item">
                 <i class="icon ion-arrow-left-c"></i>
             </button>
         </ion-nav-buttons>
@@ -44,7 +44,7 @@
 
         <div class="clearfix"></div>
     </ion-content>
-    <div class="bottom-buttons">
+    <div class="bottom-buttons" ng-hide="asNeededAdd.hideButtons">
         <button class="button button-small button-full col button-balanced" ng-click="asNeededAdd.createDose()">Take Medication</button>
     </div>
 </ion-view>

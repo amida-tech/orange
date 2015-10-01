@@ -7,9 +7,12 @@
     </ion-header-bar>
     <ion-content padding="true" class="orange-bg">
         <div class="card orange-card">
-            <form class="orange-form" name="signUpForm">
+            <form class="orange-form" name="signUpForm" ng-submit="signUp(signUpForm)">
             <div class="item item-error" ng-if="error">
-                <p ng-repeat="error in errors" ng-bind="error"></p>
+                <div ng-messages="signUpForm.fullName.$error">
+                    <p ng-message="required">Full Name is required</p>
+                </div>
+
                 <div ng-messages="signUpForm.email.$error">
                     <p ng-message="email || validateEmail">Invalid email address</p>
                     <p ng-message="required">Email address is required</p>
@@ -28,11 +31,16 @@
                     <p ng-message="required">Phone number is required</p>
                 </div>
 
+                <div ng-messages="signUpForm.agreement.$error">
+                    <p ng-message="required">Please agree to the Terms of Use</p>
+                </div>
+                <p ng-repeat="error in errors" ng-bind="error"></p>
+
             </div>
             <div class="item item-body">
 
                     <label class="item-input">
-                        <input type="text" name="fullName" ng-model="user.fullName" placeholder="Full Name"/>
+                        <input type="text" name="fullName" ng-model="user.fullName" placeholder="Full Name" required/>
                     </label>
                     <label class="item-input">
                         <input type="email" name="email" ng-model="user.email" placeholder="Email" required validate-email />
@@ -56,6 +64,7 @@
                     <div class="agree-div">I agree to the <p ng-click="goToTerms()">Terms of Use</p></div>
 
             </div>
+                <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" value=""/>
             </form>
             <div class="item item-button">
                 <button class="button button-full button-orange" ng-click="signUp(signUpForm)">Sign Up</button>

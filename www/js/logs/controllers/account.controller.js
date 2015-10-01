@@ -4,11 +4,12 @@
         .module('orange')
         .controller('AccountCtrl', AccountCtrl);
 
-    AccountCtrl.$inject = ['$rootScope', '$scope',  '$timeout', '$cordovaInAppBrowser', 'Auth', 'OrangeApi',
-                           'PatientService', 'notifications'];
+    AccountCtrl.$inject = ['$rootScope', '$scope',  '$timeout', '$ionicLoading', '$cordovaInAppBrowser',
+        'Auth', 'OrangeApi', 'PatientService', 'notifications'];
 
     /* @ngInject */
-    function AccountCtrl($rootScope, $scope, $timeout, $cordovaInAppBrowser, Auth, OrangeApi, PatientService, notify) {
+    function AccountCtrl($rootScope, $scope, $timeout, $ionicLoading, $cordovaInAppBrowser,
+                         Auth, OrangeApi, PatientService, notify) {
 
         $scope.login = login;
         $scope.signUp = signUp;
@@ -19,9 +20,6 @@
 
         function signUp(form) {
             $scope.errors = [];
-            if ($scope.user.agreement !== true) {
-                $scope.errors.push('Please agree to the Terms of Use')
-            }
 
             if (!form.$valid || $scope.errors.length) {
                 $scope.error = true;
@@ -39,6 +37,8 @@
                     'first_name': first_name,
                     'last_name': last_name
                 };
+
+                $ionicLoading.show({template: 'Loading...'});
 
                 // Call Api
                 OrangeApi.user.post(user).then(
@@ -61,7 +61,7 @@
                         $scope.error = true;
                         $scope.errors = _.map(error.data.errors, _.startCase);
                     }
-                )
+                ).finally($ionicLoading.hide);
             }
         }
 
