@@ -992,8 +992,8 @@ ion-content {
     }
 
     .slider-pager {
-      bottom: $button-height * 2;
-      position: fixed;
+      bottom: $button-height * 2 + 100px;
+      position: relative;
       .slider-pager-page {
         margin: 0 1px;
         color: $stable;
