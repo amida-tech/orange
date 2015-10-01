@@ -1462,3 +1462,21 @@ h4.list-header {
   font-family: OpenSans;
   padding-left: $padding-small-horizontal;
 }
+
+.medication-event {
+  .notification-button {
+    float: right;
+    font-size: $font-size-base - 1;
+    padding: $padding-small-vertical;
+    min-height: $font-size-base;
+    height: auto;
+    line-height: $font-size-base + 1;
+    font-family: Lato;
+    i {
+      font-size: $font-size-base + 1;
+      position: relative;
+      top: 1px;
+      color: $dark;
+    }
+  }
+}

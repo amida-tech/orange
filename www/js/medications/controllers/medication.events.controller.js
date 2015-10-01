@@ -83,7 +83,9 @@
 
                 MedicationService.saveItem(medication).then(
                     function () {
-                        MedicationService.setNotifications(_.map(vm.notifications, Number)).finally(
+                        MedicationService.setNotifications(_.map(vm.notifications, function(item) {
+                            return _.isNumber(item) ? parseInt(item) : item;
+                        })).finally(
                             function () {
                                 $ionicLoading.hide();
                                 $state.go(vm.nextUrl);
@@ -144,6 +146,7 @@
             delete event.show;
             //delete event.id;
             delete event.notification;
+            delete event.notificationText;
             return event;
         }
 
@@ -152,7 +155,7 @@
                 event.text = MedicationService.getEventText(event);
             }
 
-            event.notification = 30;
+            event.notification = '30';
             if (event.type === 'event' && ['breakfast', 'lunch', 'dinner'].indexOf(event.event) !== -1) {
                 event.eventType = 'meal';
             } else if (event.type === 'event') {
