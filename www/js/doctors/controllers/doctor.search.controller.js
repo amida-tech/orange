@@ -73,7 +73,13 @@
                 vm.doctors.push(doctor)
             });
             if (!vm.doctors.length) {
-                GlobalService.showError('No Doctors Found.');
+                GlobalService.showConfirm('Doctors not found. Do you want add doctor manually?').then(
+                    function (confirm) {
+                        if (confirm) {
+                            $state.go('app.doctors.add');
+                        }
+                    }
+                );
                 return;
             }
 
