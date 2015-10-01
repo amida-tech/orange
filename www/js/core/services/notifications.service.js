@@ -91,11 +91,11 @@
             $q.all([medPromise, schedulePromise]).then(function(data) {
                 var medications = data[0];
                 var schedule = data[1];
-                _scheduleNotify(medications, schedule);
+                _scheduleNotify(medications, schedule, patient);
             });
         }
 
-        function _scheduleNotify(medications, schedule) {
+        function _scheduleNotify(medications, schedule, patient) {
             var notifyArray = [];
             _.each(schedule, function(item) {
                 var date = moment(item.date);
@@ -118,8 +118,10 @@
                 }
 
                 //Set Text
-                var messageText = 'You need to take ' + medication.name + ' at ' +
-                    moment(item.date).format('hh:mm A');
+                var messageText = 'Medication Reminder: ' + patient['first_name'] + ' ' +
+                    patient['last_name'] + ' is scheduled to take ' + medication.dose.quantity + ' ' +
+                    medication.dose.unit + ' of ' + medication.name +
+                    ' at ' + moment(item.date).format('hh:mm A');
 
                 var data = {
                     event: item,
@@ -190,9 +192,9 @@
                     medication_id: medication.id,
                     end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')
                 }).then(function(schedule) {
-                    _scheduleNotify([medication], schedule)
+                    _scheduleNotify([medication], schedule, pat);
                 });
-            })
+            });
         }
 
         function _clickNotifyEvent (ev, notification, state) {
