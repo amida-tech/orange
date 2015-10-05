@@ -312,7 +312,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.doctors.add', {
                         url: '/add',
                         templateUrl: 'templates/doctors/app.doctors.add.html',
-                        controller: 'DoctorCtrl as doctor'
+                        controller: 'DoctorCtrl as doctor',
+                        cache: false
                     })
                     .state('app.doctors.edit', {
                         url: '/:id/edit',
