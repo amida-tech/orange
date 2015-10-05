@@ -86,15 +86,17 @@
                 end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')
             });
             var medPromise = OrangeApi.medications.getList();
+            var patientsPromise = PatientService.getAllItems();
 
-            $q.all([medPromise, schedulePromise]).then(function(data) {
+            $q.all([medPromise, schedulePromise, patientsPromise]).then(function(data) {
                 var medications = data[0];
                 var schedule = data[1];
-                _scheduleNotify(medications, schedule);
+                var patients = data[2];
+                _scheduleNotify(medications, schedule, patients);
             });
         }
 
-        function _scheduleNotify(medications, schedule) {
+        function _scheduleNotify(medications, schedule, patients) {
             var notifyArray = [];
             _.each(schedule, function(item) {
                 var date = moment(item.date);
@@ -107,7 +109,16 @@
                     return med.id == item.medication_id
                 });
 
+
                 if (_.isUndefined(medication)) {
+                    return;
+                }
+
+                var patient = _.find(patients, function(pat) {
+                    return pat.id == item.patient_id
+                });
+
+                if (_.isUndefined(patient)) {
                     return;
                 }
 
@@ -117,7 +128,8 @@
                 }
 
                 //Set Text
-                var messageText = 'Medication Reminder: ' + 'scheduled to take ' + medication.dose.quantity + ' ' +
+                var messageText = 'Medication Reminder: ' + patient['first_name'] + ' ' +
+                    patient['last_name'] + ' is scheduled to take ' + medication.dose.quantity + ' ' +
                     medication.dose.unit + ' of ' + medication.name +
                     ' at ' + moment(item.date).format('hh:mm A');
 
@@ -179,16 +191,19 @@
             $cordovaLocalNotification.cancelAll();
         }
 
+        //Add notify only one medication
         function addNotifyByMedication(medication) {
             if (!($rootScope.isIOS || $rootScope.isAndroid)) {
                 return;
             }
 
-            OrangeApi.schedule.getList({
+            var patientsPromise = PatientService.getAllItems();
+            var schedulePromise = OrangeApi.schedule.getList({
                 medication_id: medication.id,
                 end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')
-            }).then(function(schedule) {
-                _scheduleNotify([medication], schedule, pat);
+            });
+            $q.all([schedulePromise, patientsPromise]).then(function(data) {
+                _scheduleNotify([medication], data[0], data[1]);
             });
         }
 
@@ -269,7 +284,6 @@
                 clickFlag = false;
             }
 
-            var event = JSON.parse(notification.data).event;
             var triggered = [{
                 id: notification.id,
                 date: event.date,
