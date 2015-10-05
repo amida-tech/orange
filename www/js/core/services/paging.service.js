@@ -258,7 +258,7 @@
                                 // replace element
                                 self.items.splice(index, 1, newItem);
                             }
-                            if (newItem.id === self.item.id) {
+                            if (self.item && newItem.id === self.item.id) {
                                 self.setItem(newItem);
                             }
                         }
