@@ -19,10 +19,9 @@
         $scope.isDevice = ionic.Platform.isWebView();
         $scope.button_title = $scope.editMode ? 'Save Log' : 'Add Log';
         $scope.iconItems = _.chunk($scope.settings.avatars, 3);
-        $scope.backState = ($scope.editMode && !$state.params['fromMedication'])
-                           ? 'app.logs.details({id: ' + $stateParams.id + '})'
-                           : $state.params['nextState'];
+        $scope.backState = $state.params['backState'] + '({id: ' + $stateParams.id + '})';
         $scope.errors = [];
+        $scope.withHabits = $scope.editMode && $state.current.name !== 'logs-edit';
 
         if ('id' in $stateParams) {
             PatientService.getItem($stateParams['id'], true).then(function (patient) {

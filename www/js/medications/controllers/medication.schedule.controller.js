@@ -57,7 +57,7 @@
         ];
 
         $scope.$watchCollection('schedule.schedule.frequency.start', function (days) {
-            if (days) {
+            if (days && vm.schedule.frequency.unit === 'month') {
                 var hasDay = _.find(days, function (day) {
                     return ['29', '30', '31'].indexOf(day.substr(8)) > -1;
                 });
@@ -99,9 +99,7 @@
                                     $state.go(vm.nextUrl);
                                 });
                             } else {
-                                GlobalService.showError(MedicationService.errorItemNotFoundText).then(function () {
-                                    $state.go('app.medications');
-                                });
+                                $state.go('app.medications');
                             }
                         }
                     ).finally($ionicLoading.hide);
@@ -136,12 +134,9 @@
                 if (medication_id) {
                     $state.go('app.medication.details');
                 } else {
-                    $state.go('app.medications');
+                    $state.go($state.params['backState']);
                 }
             }
-
-
-
         }
 
         function activate() {

@@ -21,6 +21,7 @@
         vm.details = details;
         vm.pickMedication = pickMedication;
         vm.showSearchModal = showSearchModal;
+        vm.addNew = addNew;
 
         refresh();
 
@@ -79,6 +80,7 @@
                             $state.go('app.logs.edit', {
                                 id: PatientService.currentPatient.id,
                                 nextState: 'app.medications',
+                                backState: 'app.medications',
                                 fromMedication: true
                             });
                         });
@@ -96,6 +98,11 @@
                 habits['dinner'],
                 habits['sleep']
             ]);
+        }
+
+        function addNew() {
+            vm.searchModal.hide();
+            $state.go('app.medication_add');
         }
 
         MedicationService.onListChanged(function (event, medications) {

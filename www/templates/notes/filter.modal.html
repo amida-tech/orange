@@ -1,0 +1,17 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-orange">
+        <h1 class="title">Medications</h1>
+
+        <button ng-click="notes_list.modal.hide()" class="button back-button buttons button-clear header-item">
+            Close
+        </button>
+    </ion-header-bar>
+    <ion-content>
+        <ul class="list">
+            <li class="item" ng-repeat="med in notes_list.medications" ng-click="notes_list.selectFilter(med)">
+                <medication-block medication-name="med.name"
+                                  medication-brand="med.brand"></medication-block>
+            </li>
+        </ul>
+    </ion-content>
+</ion-modal-view>

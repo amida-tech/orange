@@ -12,6 +12,9 @@
 
         <span class="form-label">Account Settings</span>
         <form class="orange-form" name="accountUpdate" ng-init="settings.setFormScope(this)">
+            <div class="item item-success" ng-if="settings.success">
+                <p>Settings updated successfully</p>
+            </div>
             <div class="item item-error"
                  ng-if="accountUpdate.$submitted && !accountUpdate.$valid">
                 <div ng-messages="accountUpdate.full_name.$error">
@@ -25,12 +28,13 @@
                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
             <label class="item-input">
-                <input name="phone" type="text" ng-model="settings.user_model.phone"
+                <input name="phone" type="tel" ng-model="settings.user_model.phone"
                        placeholder="Phone (Optional)"
-                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                       field-max-length="10"/>
             </label>
             <label class="item-input">
-                <input type="text" ng-model="settings.email"
+                <input type="email" ng-model="settings.email"
                        placeholder="E-mail" disabled
                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
@@ -68,9 +72,10 @@
                        placeholder="Confirm New Password" required compare-to="settings.password_model.new"
                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
             </label>
-            <label class="item-input">
-                <button type="submit" class="button button-full button-orange" ng-click="settings.update()">Update</button>
-            </label>
+
          </form>
+
+        <button type="submit" class="button button-full button-orange" ng-click="settings.update()">Update</button>
+
     </ion-content>
 </ion-view>

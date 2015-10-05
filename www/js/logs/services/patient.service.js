@@ -24,6 +24,7 @@
         };
 
         Service.prototype = Object.create(BasePagingService.prototype);
+        Service.prototype.getItem = getItem;
         Service.prototype.getPatient = getPatient;
         Service.prototype.getHabits = getHabits;
         Service.prototype.setHabits = setHabits;
@@ -51,41 +52,49 @@
             $localstorage.remove('currentPatient');
         }
 
-        function saveItem(savedItem) {
-            var self = this;
+        function getItem() {
+            return BasePagingService.prototype.getItem.apply(this, arguments).then(
+                function (item) {
+                    setFullName(item);
+                    return item;
+                }
+            );
+        }
 
-            var avatarUrl = savedItem.avatarUrl,
+        function saveItem(savedItem) {
+            var self = this,
+                avatarUrl = savedItem.avatarUrl,
                 parts = savedItem.fullName ? savedItem.fullName.split(' ') : [],
                 isNew = !savedItem.id;
 
             savedItem.first_name = parts.shift() || savedItem.first_name;
-            savedItem.last_name = parts.join(' ') || savedItem.last_name;
+            savedItem.last_name = parts.join(' ');
             savedItem.birthdate = savedItem.birthdate || null;
             if (savedItem.birthdate instanceof Date) {
                 savedItem.birthdate = savedItem.birthdate.toJSON().slice(0, 10);
             }
-            var habits = savedItem.habits;
-            delete savedItem.habits;
+
+            if (!isNew) {
+                var listItem = _.find(this.items, function (item) {
+                    return item.id == savedItem.id;
+                });
+                if (listItem) {
+                    listItem.habits['wake'] = savedItem.habits['wake'];
+                    listItem.habits['breakfast'] = savedItem.habits['breakfast'];
+                    listItem.habits['dinner'] = savedItem.habits['dinner'];
+                    listItem.habits['lunch'] = savedItem.habits['lunch'];
+                    listItem.habits['sleep'] = savedItem.habits['sleep'];
+                    listItem.habits.save();
+                }
+            }
 
             this.skipHabits = true;
 
             return BasePagingService.prototype.saveItem.call(this, savedItem).then(function (item) {
                 console.log('Begin patient.saveItem callback');
 
-                if (self.currentPatient === null) {
+                if (self.currentPatient === null || self.currentPatient.id == item.id) {
                     self.currentPatient = item;
-                }
-
-                if (habits) {
-                    self.getHabits(item).then(function (_habits) {
-                        item.habits = _habits;
-                        _habits['wake'] = habits['wake'];
-                        _habits['breakfast'] = habits['breakfast'];
-                        _habits['dinner'] = habits['dinner'];
-                        _habits['lunch'] = habits['lunch'];
-                        _habits['sleep'] = habits['sleep'];
-                        _habits.save();
-                    });
                 }
 
                 setFullName(item);
@@ -110,8 +119,13 @@
             BasePagingService.prototype.setItem.call(this, item);
             if (this.item) {
                 setFullName(this.item);
-                if (!this.skipHabits) {
+
+                if (!this.item.habits) {
                     return this.setHabits(this.item);
+                } else {
+                    var deferred = $q.defer();
+                    deferred.resolve(null);
+                    return deferred.promise;
                 }
             }
         }
@@ -140,19 +154,6 @@
 
             var patientID = $localstorage.get('currentPatient', null);
 
-            //Get patient by id
-            if (patientID) {
-                return OrangeApi.patients.get(patientID).then(
-                    function (currentPatient) {
-                        $ionicLoading.hide();
-                        self.currentPatient = currentPatient;
-                        self.setHabits(currentPatient);
-                        return currentPatient;
-                    },
-                    errorGetPatient
-                );
-            }
-
             $ionicLoading.show({
                 template: 'Loading patient data...'
             });
@@ -165,9 +166,31 @@
                         return;
                     }
 
-                    var patient = _.find(patients, function (item) {
+                    var patient;
+                    //Get patient by id
+                    if (patientID) {
+                        patient = _.find(patients, function (item) {
+                            return item['id'] == patientID;
+                        });
+                        if (!patient) {
+                            return OrangeApi.patients.get(patientID).then(
+                                function (currentPatient) {
+                                    $ionicLoading.hide();
+                                    self.currentPatient = currentPatient;
+                                    self.setHabits(currentPatient);
+                                    return currentPatient;
+                                },
+                                errorGetPatient
+                            );
+                        }
+                    }
+
+                    if (!patient) {
+                        patient = _.find(patients, function (item) {
                             return item['me'] === true;
                         });
+                    }
+
                     if (patient === undefined && patients.length > 0) {
                         patient = patients[0];
                     }

@@ -38,7 +38,7 @@
                                datefield/>
                     </label>
                     <label class="item-input">
-                        <input type="tel" ng-model="editLog.phone" placeholder="Phone Number (Optional)"/>
+                        <input type="tel" ng-model="editLog.phone" field-max-length="10" placeholder="Phone Number (Optional)"/>
                     </label>
                     <!--<p class="item-input" ng-bind="editLog.birthdate" data-ng-model="editLog.birthdate" datetime="date"></p>-->
                     <label class="item item-input item-select">
@@ -50,7 +50,7 @@
                             <option value="unspecified">Unspecified</option>
                         </select>
                     </label>
-                    <label class="item-input" ng-if="editMode">
+                    <label class="item-input" ng-if="withHabits">
                         <button class="button button-dark button-full" ng-click="habitsModal.show()">Habits</button>
                     </label>
                 </form>

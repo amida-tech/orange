@@ -38,6 +38,12 @@
         $scope.errors = [];
         $scope.sendRequest = sendRequest;
 
+        $scope.$watch('data.email', function () {
+            if ($scope.errors.length) {
+                $scope.errors = [];
+            }
+        });
+
         function sendRequest(form) {
 
             if (form.$valid) {

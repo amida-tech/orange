@@ -169,6 +169,7 @@ body {
 
 .pull-left {
   float: left !important;
+  max-width: 100%;
 }
 
 .pull-right {
@@ -314,6 +315,20 @@ body {
 
 }
 
+.item-success {
+  background-color: $green;
+  padding: $padding-base-horizontal $padding-large-horizontal;
+  margin-top: $padding-large-vertical;
+  p {
+    color: $light;
+    font-size: $font-size-small + 1;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+}
+
 .item-warning {
   background-color: $orange-light;
   padding: $padding-base-horizontal $padding-large-horizontal;
@@ -423,7 +438,9 @@ dl.dl-worksheet {
     background-color: transparent;
     color: $orange-light;
   }
-  &.activated {
+  &.activated,
+  &.button-icon.activated {
+    background-color: $orange-light;
     opacity: 0.5;
   }
 }
@@ -891,6 +908,7 @@ ion-content {
   .item-log {
     display: inline-block;
     width: auto;
+    max-width: 100%;
     margin: $padding-base-vertical;
     line-height: $padding-base-horizontal;
     padding-bottom: $padding-base-horizontal;
@@ -957,11 +975,20 @@ ion-content {
 
 }
 
+.add-avatar {
+  background: url('../img/log_add.png') no-repeat center;
+  background-size: 60%;
+}
+
+.import-avatar {
+  background: url('../img/log_import.png') no-repeat center;
+  background-size: 55%;
+}
+
 .onboarding {
 
   .slider {
     height: 100%;
-    padding-top: 30%;
     h1, p {
       margin-top: $padding-large-vertical * 4;
       text-align: center;
@@ -971,7 +998,7 @@ ion-content {
     .box {
       position: absolute;
       text-align: center;
-      bottom: $button-height * 3 + 20;
+      bottom: $button-height * 4 + $padding-large-vertical * 2;
     }
 
     .slide-screen {
@@ -979,7 +1006,8 @@ ion-content {
     }
 
     .slider-pager {
-      bottom: $button-height * 3;
+      bottom: $button-height * 2 + 100px;
+      position: relative;
       .slider-pager-page {
         margin: 0 1px;
         color: $stable;
@@ -1001,7 +1029,7 @@ ion-content {
   .onboarding {
     .slider {
       .slide-screen {
-        max-width: 70%;
+        max-width: 60%;
       }
     }
   }
@@ -1226,6 +1254,26 @@ ion-option-button.option-control.button {
   }
 }
 
+.pharmacy-edit-hours {
+  div {
+    display: inline-block;
+    max-width: 35%;
+
+    .apply-button {
+      min-height: $input-height;
+      margin: 0;
+      padding-left: 4px;
+      padding-right: 4px;
+      font-size: 14px;
+    }
+  }
+
+  .item-input {
+    margin-bottom: 0;
+    overflow: initial;
+  }
+}
+
 .log-details-habits-list {
   h2 {
     margin-top: 0;
@@ -1329,12 +1377,7 @@ ion-option-button.option-control.button {
   padding: 2px 0;
 }
 
-.add-asneeded {
-  font-size: $icon-asneeded-height - 20;
-  color: #fff;
-}
-
-.add-asneeded-container {
+.floating-button {
   height: $icon-asneeded-height;
   width: $icon-asneeded-height;
   bottom: $padding-base-horizontal;
@@ -1346,6 +1389,13 @@ ion-option-button.option-control.button {
   text-align: center;
   vertical-align: middle;
   line-height: $icon-asneeded-height;
+  &.assertive {
+    background: $assertive;
+  }
+  .icon {
+    font-size: $icon-asneeded-height - 20;
+    color: #fff;
+  }
 }
 
 .push-as-needed-icon {
@@ -1357,6 +1407,7 @@ ion-option-button.option-control.button {
 }
 
 .spinner-container {
+  max-width: 300px;
   .input-block {
     display: table;
     margin-bottom: 5px;
@@ -1427,4 +1478,51 @@ ion-option-button.option-control.button {
   margin-right: 10px;
   margin-top: 1px;
   vertical-align: middle;
+}
+
+.logo {
+  text-align: center;
+
+  img {
+    position: relative;
+    top: 10px;
+    height: 80px;
+    max-width: 100%;
+  }
+}
+
+h4.list-header {
+  text-transform: uppercase;
+  color: $gray;
+  font-size: $font-size-base;
+  font-family: OpenSans;
+  padding-left: $padding-small-horizontal;
+}
+
+.medication-event {
+  .notification-button {
+    float: right;
+    font-size: $font-size-base - 1;
+    padding: $padding-small-vertical;
+    min-height: $font-size-base;
+    height: auto;
+    line-height: $font-size-base + 1;
+    font-family: Lato;
+    i {
+      font-size: $font-size-base + 1;
+      position: relative;
+      top: 1px;
+      color: $dark;
+    }
+  }
+}
+
+.popup-body {
+  padding-top: 0;
+  padding-bottom: 0;
+  p {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: $padding-large-vertical;
+  }
 }

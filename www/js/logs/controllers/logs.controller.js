@@ -19,22 +19,27 @@
         $scope.withMe = false;
 
         vm.logList = [];
-        vm.editMode = false;
-        vm.setEditMode = setEditMode;
         vm.details = details;
+        vm.edit = edit;
         vm.backState = $state.params['from_medication']
                        ? 'onboarding-log.medications.list({patient_id:'+ $state.params['log_id'] +'})'
                        : 'logs';
 
-        update(true);
+        PatientService.onListChanged(function (event, patients) {
+            $scope.logs = patients;
+            vm.logList = _.chunk(patients, 3);
+            $scope.withMe = !!_.find(patients, function (item) {
+                return item['me'] === true;
+            });
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+        });
+
+        update();
 
         function update(force) {
             force = force || false;
             vm.patientPromise = PatientService.getItems(force);
-        }
-
-        function setEditMode(isEditMode) {
-            vm.editMode = isEditMode;
         }
 
         function habits(patient) {
@@ -47,20 +52,16 @@
             $state.go('app.logs.details', {id: patient.id});
         }
 
+        function edit(patient) {
+            PatientService.setItem(patient);
+            $state.go('logs-edit', {id: patient.id});
+        }
+
         function loadMore() {
             var morePromise = PatientService.moreItems();
             if (!($scope.logs.length && morePromise)) {
                 $scope.$broadcast('scroll.infiniteScrollComplete');
             }
         }
-
-        PatientService.onListChanged(function (event, patients) {
-            $scope.$broadcast('scroll.infiniteScrollComplete');
-            $scope.logs = patients;
-            vm.logList = _.chunk(patients, 3);
-            $scope.withMe = !!_.find(patients, function (item) {
-                return item['me'] === true;
-            });
-        });
     }
 })();

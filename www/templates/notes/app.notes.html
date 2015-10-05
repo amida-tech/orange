@@ -9,17 +9,22 @@
             <button class="button button-icon button-clear button-small ion-plus button-dose" ui-sref="app.notes.add"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
-    <ion-content class="light-bg">
+    <ion-header-bar class="bar bar-subheader bar-orange filter-title" align-title="left" ng-if="notes_list.filter">
+        <h4 class="title">
+            Filter - {{notes_list.filter.medication.brand ? notes_list.filter.medication.brand : notes_list.filter.medication.name}}
+        </h4>
+    </ion-header-bar>
+    <ion-content class="light-bg" ng-class="{'has-subheader': notes_list.filter}">
         <ion-refresher pulling-text="Pull to refresh" on-refresh="notes_list.refresh()"></ion-refresher>
 
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots"
-                         ng-if="!notes_list.itemsPromise.$$state.status"></ion-spinner>
+                         ng-if="notes_list.items === null"></ion-spinner>
         </div>
 
 
         <ion-list can-swipe="true">
-            <ion-item class="item-text-wrap" ng-repeat="note in notes_list.items" ng-click="notes_list.details(note)">
+            <ion-item class="item-text-wrap" ng-repeat="note in notes_list.filteredItems" ng-click="notes_list.details(note)">
                 <div class="block-with-subscribe">
                     <div class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></div>
                     <div class="text-basic" ng-bind="note.text"></div>
@@ -34,5 +39,8 @@
         <ion-infinite-scroll ng-if="notes_list.hasMore()" distance="{{ settings.defaultScrollDistance }}" on-infinite="notes_list.loadMore()">
         </ion-infinite-scroll>
     </ion-content>
+    <div class="floating-button" ng-class="{'assertive': notes_list.filter}" ng-click="notes_list.selectMedication()">
+        <span class="icon" ng-class="{'ion-ios-close-empty': notes_list.filter, 'ion-funnel': !notes_list.filter}"></span>
+    </div>
 </ion-view>
 
