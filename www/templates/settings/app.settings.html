@@ -12,6 +12,9 @@
 
         <span class="form-label">Account Settings</span>
         <form class="orange-form" name="accountUpdate" ng-init="settings.setFormScope(this)">
+            <div class="item item-success" ng-if="settings.success">
+                <p>Settings updated successfully</p>
+            </div>
             <div class="item item-error"
                  ng-if="accountUpdate.$submitted && !accountUpdate.$valid">
                 <div ng-messages="accountUpdate.full_name.$error">

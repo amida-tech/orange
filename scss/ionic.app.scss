@@ -315,6 +315,20 @@ body {
 
 }
 
+.item-success {
+  background-color: $green;
+  padding: $padding-base-horizontal $padding-large-horizontal;
+  margin-top: $padding-large-vertical;
+  p {
+    color: $light;
+    font-size: $font-size-small + 1;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+}
+
 .item-warning {
   background-color: $orange-light;
   padding: $padding-base-horizontal $padding-large-horizontal;
