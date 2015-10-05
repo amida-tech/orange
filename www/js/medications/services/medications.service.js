@@ -28,6 +28,8 @@
         Service.prototype.setMedicationSchedule = setMedicationSchedule;
         Service.prototype.setMedicationEvents = setMedicationEvents;
         Service.prototype.setNotifications = setNotifications;
+        Service.prototype.getNotifications = getNotifications;
+        Service.prototype.updateNotification = updateNotification;
 
         return new Service();
 
@@ -59,19 +61,47 @@
             notify.addNotifyByMedication(newItem);
         }
 
+        function updateNotification(id, value) {
+            var medication = this.item;
+            return medication.all('times').one(id.toString()).customPUT({
+                user: value
+            });
+        }
+
         function setNotifications(notifications) {
             var promises = [],
                 medication = this.item;
             for (var i = 0, len = medication.schedule.times.length; i < len; i++) {
                 var time = medication.schedule.times[i];
                 var notification = notifications[i] || 30;
+                if (!_.isNaN(parseInt(notification))) {
+                    notification = parseInt(notification);
+                }
                 console.log('setting notification time', medication.id, time.id, notification);
                 var promise = medication.all('times').one(time.id.toString()).customPUT({
-                   user: notification
+                    user: notification
                 });
                 promises.push(promise);
             }
             return $q.all(promises);
+        }
+
+        function getNotifications() {
+            var medication = this.item;
+            if (medication.schedule && medication.schedule.times) {
+                var promises = [];
+
+                for (var i = 0, len = medication.schedule.times.length; i < len; i++) {
+                    var time = medication.schedule.times[i];
+                    var promise = medication.all('times').one(time.id.toString()).customGET();
+                    promises.push(promise);
+                }
+                return $q.all(promises);
+            } else {
+                var deffered = $q.defer();
+                deffered.resolve([]);
+                return deffered.promise;
+            }
         }
 
         function setMedicationSchedule(schedule) {

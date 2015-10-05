@@ -17,6 +17,7 @@
         vm.title = ((is_edit) ? 'Edit': 'Add') + ' Pharmacy';
         vm.days = $locale.DATETIME_FORMATS.DAY;
         vm.save = save;
+        vm.applyHoursToAll = applyHoursToAll;
         vm.errors = [];
         vm.backState = 'app.pharmacies.' + (is_edit ? 'details({id: ' + $stateParams.id +'})' : 'list');
 
@@ -63,6 +64,15 @@
             if (error.data.errors[0] !== PharmacyService.errorItemNotFound) {
                 vm.errors = _.map(error.data.errors, _.startCase);
             }
+        }
+
+        function applyHoursToAll(month) {
+            _.each(vm.pharmacy.hours, function (hours, _month) {
+                if (month !== _month) {
+                    hours['open'] = vm.pharmacy.hours[month]['open'];
+                    hours['close'] = vm.pharmacy.hours[month]['close'];
+                }
+            });
         }
     }
 })();

@@ -88,7 +88,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                              'app.settings'
                          ];
 
-                         var rootStates = ['onboarding', 'app.today.schedule'];
+                         var rootStates = ['onboarding', 'app.today.schedule', 'logs'];
 
                          $ionicHistory.nextViewOptions({
                              historyRoot: false,
@@ -206,7 +206,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.notes.list', {
                         url: '',
                         templateUrl: 'templates/notes/app.notes.html',
-                        controller: 'BaseListController as notes_list'
+                        controller: 'NotesListController as notes_list',
+                        cache: false
                     })
 
                     .state('app.notes.details', {
@@ -312,7 +313,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('app.doctors.add', {
                         url: '/add',
                         templateUrl: 'templates/doctors/app.doctors.add.html',
-                        controller: 'DoctorCtrl as doctor'
+                        controller: 'DoctorCtrl as doctor',
+                        cache: false
                     })
                     .state('app.doctors.edit', {
                         url: '/:id/edit',
@@ -522,7 +524,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
 
                     .state('onboarding-log.medications.list', {
                         url: '',
-                        templateUrl: 'templates/logs/logs.setup.medications.html'
+                        templateUrl: 'templates/logs/logs.setup.medications.html',
+                        cache: false
                     })
 
                     .state('onboarding-log.medications.search', {

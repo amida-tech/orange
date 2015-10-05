@@ -180,8 +180,10 @@
                     //Pick first patient for now
                     var patient = patients.entry.length ? patients.entry[0] : null;
                     if (patient) {
-                        var patientID = patient.content.identifier[0].value;
-                        console.log(patientID);
+                        console.log("Patient: "+ JSON.stringify(patient,null,4));
+                        var patientID = patient.resource.id;
+                        patientID=patientID.split("/")[1];
+                        console.log("patientID: ", patientID);
                         var medUrl = token.c.credentials.api_url + '/MedicationPrescription?patient=' + patientID;
                         $http({
                             method: "get",
@@ -192,7 +194,9 @@
                             }
                         })
                             .success(function (data) {
-                                         console.log("was successful connection to meds: ", data);
+
+
+                                         console.log("was successful connection to meds: ", JSON.stringify(data,null,4));
                                          callback(data);
                                      })
                             .error(function (data, status) {

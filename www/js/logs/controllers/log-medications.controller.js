@@ -85,7 +85,7 @@
             $ionicLoading.show({
                 template: 'Loading...'
             });
-            TokenService.getSMARTCredentials(function (credentials) {
+            TokenService.getDRECredentials(function (credentials) {
                 c = credentials;
             });
             Oauth.smart(c).then(function (requestToken) {
@@ -126,7 +126,7 @@
                     $ionicLoading.hide();
                     return;
                 }
-                
+
                 console.log("error: " + error);
                 vm.oauthError = "error " + error;
                 $ionicLoading.hide();

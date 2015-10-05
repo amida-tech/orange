@@ -43,7 +43,7 @@
         }
 
         function habits(patient) {
-            PatientService.setItem(patient);
+            PatientService.setCurrentPatient(patient);
             $state.go('onboarding-log.habits', {patient_id: patient.id})
         }
 
@@ -53,8 +53,11 @@
         }
 
         function edit(patient) {
-            PatientService.setItem(patient);
-            $state.go('logs-edit', {id: patient.id});
+            PatientService.setItem(patient).then(
+                function () {
+                    $state.go('logs-edit', {id: patient.id});
+                }
+            );
         }
 
         function loadMore() {

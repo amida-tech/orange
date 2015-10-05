@@ -315,6 +315,20 @@ body {
 
 }
 
+.item-success {
+  background-color: $green;
+  padding: $padding-base-horizontal $padding-large-horizontal;
+  margin-top: $padding-large-vertical;
+  p {
+    color: $light;
+    font-size: $font-size-small + 1;
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+}
+
 .item-warning {
   background-color: $orange-light;
   padding: $padding-base-horizontal $padding-large-horizontal;
@@ -968,7 +982,7 @@ ion-content {
 
 .import-avatar {
   background: url('../img/log_import.png') no-repeat center;
-  background-size: 60%;
+  background-size: 55%;
 }
 
 .onboarding {
@@ -992,8 +1006,8 @@ ion-content {
     }
 
     .slider-pager {
-      bottom: $button-height * 2;
-      position: fixed;
+      bottom: $button-height * 2 + 100px;
+      position: relative;
       .slider-pager-page {
         margin: 0 1px;
         color: $stable;
@@ -1240,6 +1254,26 @@ ion-option-button.option-control.button {
   }
 }
 
+.pharmacy-edit-hours {
+  div {
+    display: inline-block;
+    max-width: 35%;
+
+    .apply-button {
+      min-height: $input-height;
+      margin: 0;
+      padding-left: 4px;
+      padding-right: 4px;
+      font-size: 14px;
+    }
+  }
+
+  .item-input {
+    margin-bottom: 0;
+    overflow: initial;
+  }
+}
+
 .log-details-habits-list {
   h2 {
     margin-top: 0;
@@ -1343,12 +1377,7 @@ ion-option-button.option-control.button {
   padding: 2px 0;
 }
 
-.add-asneeded {
-  font-size: $icon-asneeded-height - 20;
-  color: #fff;
-}
-
-.add-asneeded-container {
+.floating-button {
   height: $icon-asneeded-height;
   width: $icon-asneeded-height;
   bottom: $padding-base-horizontal;
@@ -1360,6 +1389,13 @@ ion-option-button.option-control.button {
   text-align: center;
   vertical-align: middle;
   line-height: $icon-asneeded-height;
+  &.assertive {
+    background: $assertive;
+  }
+  .icon {
+    font-size: $icon-asneeded-height - 20;
+    color: #fff;
+  }
 }
 
 .push-as-needed-icon {
@@ -1462,3 +1498,66 @@ h4.list-header {
   font-family: OpenSans;
   padding-left: $padding-small-horizontal;
 }
+
+.medication-event {
+  .notification-button {
+    float: right;
+    font-size: $font-size-base - 1;
+    padding: $padding-small-vertical;
+    min-height: $font-size-base;
+    height: auto;
+    line-height: $font-size-base + 1;
+    font-family: Lato;
+    i {
+      font-size: $font-size-base + 1;
+      position: relative;
+      top: 1px;
+      color: $dark;
+    }
+  }
+}
+
+.popup-body {
+  padding-top: 0;
+  padding-bottom: 0;
+  p {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: $padding-large-vertical;
+  }
+}
+
+.import-item {
+  .bb-logo {
+    display: block;
+    width: 60px;
+    float: left;
+    margin: $padding-base-horizontal;
+  }
+
+  .amida-logo {
+    display: inline-block;
+    width: 90px;
+    margin-top: $padding-base-horizontal;
+  }
+  h4 {
+    font-family: 'OpenSans';
+    font-weight: 700;
+    display: block;
+    font-size: $font-size-base * 1.2;
+    margin-top: 0;
+    margin-left: 60px + $padding-base-horizontal * 2;
+  }
+}
+
+.icon-filter-off {
+  display: inline-block;
+  background: url('../img/filter_off_80.png') no-repeat center;
+  background-size: 40px 40px;
+  width: 32px;
+  height: 36px;
+  position: relative;
+  top: 8px
+}
+
+

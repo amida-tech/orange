@@ -16,13 +16,17 @@
 
         vm.hideButtons = false;
 
-        window.addEventListener('native.keyboardshow', function() {
-            vm.hideButtons = true;
-        });
+        if ($scope.isAndroid) {
+            window.addEventListener('native.keyboardshow', function() {
+                vm.hideButtons = true;
+            });
 
-        window.addEventListener('native.keyboardhide', function() {
-            vm.hideButtons = false;
-        });
+            window.addEventListener('native.keyboardhide', function() {
+                vm.hideButtons = false;
+            });
+        }
+
+
 
         var dateFormat = $scope.settings.dateFormat;
         var fullDateFormat = $scope.settings.fullDateFormat;

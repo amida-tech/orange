@@ -18,7 +18,7 @@
                     if (val === undefined || val === null) {
                         val = '';
                     }
-                    if (val.toString().match(/^(\d+\.?\d*)?$/g) && val != 0) {
+                    if (val.toString().match(/^(\d+\.?\d*)?$/g) && val != 0 || val === '') {
                         _value = val;
                     }
                     ngModel.$viewValue = _value;

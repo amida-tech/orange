@@ -6,11 +6,11 @@
         .factory('notifications', notifications);
 
     notifications.$inject = ['$rootScope', '$q', '$timeout', '$state',
-        '$cordovaLocalNotification', '$ionicPopup', 'PatientService', '$localstorage'];
+        '$cordovaLocalNotification', '$ionicPopup', 'PatientService', '$localstorage', 'OrangeApi'];
 
     /* @ngInject */
     function notifications($rootScope, $q, $timeout, $state,
-                           $cordovaLocalNotification, $ionicPopup, PatientService, $localstorage) {
+                           $cordovaLocalNotification, $ionicPopup, PatientService, $localstorage, OrangeApi) {
         var id = 0;
         var stackAlerts = [];
         var clickFlag = false;
@@ -44,8 +44,7 @@
             }
 
             function _cancelCurrent() {
-                var patient = PatientService.getPatient();
-                patient.then(_fetchPatientData);
+                _getScheduledData();
 
                 var triggeredEvents = $localstorage.getObject('triggeredEvents');
                 $cordovaLocalNotification.getAllIds().then(function(ids) {
@@ -82,20 +81,22 @@
             });
         }
 
-        function _fetchPatientData(patient) {
-            var schedulePromise = patient.all('schedule').getList({
+        function _getScheduledData() {
+            var schedulePromise = OrangeApi.schedule.getList({
                 end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')
             });
-            var medPromise = patient.all('medications').getList();
+            var medPromise = OrangeApi.medications.getList();
+            var patientsPromise = PatientService.getAllItems();
 
-            $q.all([medPromise, schedulePromise]).then(function(data) {
+            $q.all([medPromise, schedulePromise, patientsPromise]).then(function(data) {
                 var medications = data[0];
                 var schedule = data[1];
-                _scheduleNotify(medications, schedule);
+                var patients = data[2];
+                _scheduleNotify(medications, schedule, patients);
             });
         }
 
-        function _scheduleNotify(medications, schedule) {
+        function _scheduleNotify(medications, schedule, patients) {
             var notifyArray = [];
             _.each(schedule, function(item) {
                 var date = moment(item.date);
@@ -108,7 +109,16 @@
                     return med.id == item.medication_id
                 });
 
+
                 if (_.isUndefined(medication)) {
+                    return;
+                }
+
+                var patient = _.find(patients, function(pat) {
+                    return pat.id == item.patient_id
+                });
+
+                if (_.isUndefined(patient)) {
                     return;
                 }
 
@@ -118,8 +128,10 @@
                 }
 
                 //Set Text
-                var messageText = 'You need to take ' + medication.name + ' at ' +
-                    moment(item.date).format('hh:mm A');
+                var messageText = 'Medication Reminder: ' + patient['first_name'] + ' ' +
+                    patient['last_name'] + ' is scheduled to take ' + medication.dose.quantity + ' ' +
+                    medication.dose.unit + ' of ' + medication.name +
+                    ' at ' + moment(item.date).format('hh:mm A');
 
                 var data = {
                     event: item,
@@ -179,38 +191,53 @@
             $cordovaLocalNotification.cancelAll();
         }
 
+        //Add notify only one medication
         function addNotifyByMedication(medication) {
             if (!($rootScope.isIOS || $rootScope.isAndroid)) {
                 return;
             }
 
-            var patient = PatientService.getPatient();
-            patient.then(function(pat) {
-                pat.all('schedule').getList({
-                    medication_id: medication.id,
-                    end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')
-                }).then(function(schedule) {
-                    _scheduleNotify([medication], schedule)
-                });
-            })
+            var patientsPromise = PatientService.getAllItems();
+            var schedulePromise = OrangeApi.schedule.getList({
+                medication_id: medication.id,
+                end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')
+            });
+            $q.all([schedulePromise, patientsPromise]).then(function(data) {
+                _scheduleNotify([medication], data[0], data[1]);
+            });
         }
 
         function _clickNotifyEvent (ev, notification, state) {
             clickFlag = true;
             $cordovaLocalNotification.clear([notification.id]);
 
-            if (!$rootScope.initialized) {
-                $rootScope.$watch('initialized', function(newValue, oldValue) {
+            var patientId = JSON.parse(notification.data).event.patient_id;
+            PatientService.getPatient().then(function(current) {
+                if (current.id !== patientId) {
+                    OrangeApi.patients.get(patientId).then(function(patient) {
+                        PatientService.setCurrentPatient(patient);
+                        _clickNotifyProcess(notification);
+                    });
+                    return;
+                }
+
+                _clickNotifyProcess(notification);
+            });
+        }
+
+        function _clickNotifyProcess(notification) {
+             if (!$rootScope.initialized) {
+                $rootScope.$watch('initialized', function (newValue, oldValue) {
                     if (newValue) {
-                        $state.go('app.today.schedule');
+                        $state.go('app.today.schedule', {}, {reload: true});
 
                         //Success init today listener
-                        var stateChangeEvent = $rootScope.$on('$stateChangeSuccess',  function(event, toState, toParams, fromState, fromParams) {
+                        var stateChangeEvent = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
                             if (toState.name == 'app.today.schedule') {
                                 //Delay for init today
-                                $timeout(function() {
+                                $timeout(function () {
                                     $rootScope.$broadcast('today:click:notification', notification);
-                                });
+                                }, 100);
                                 //Remove Event
                                 stateChangeEvent();
                             }
@@ -218,23 +245,32 @@
                     }
 
                 });
-                return;
             }
 
-            $state.go('app.today.schedule');
-            $timeout(function() {
-                $rootScope.$broadcast('today:click:notification', notification);
-            }, 1000);
+            $state.go('app.today.schedule', {}, {reload: true});
+            var stateChangeEvent = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+                if (toState.name == 'app.today.schedule') {
+                    //Delay for init today
+                    $timeout(function () {
+                        $rootScope.$broadcast('today:click:notification', notification);
+                    }, 100);
+                    //Remove Event
+                    stateChangeEvent();
+                }
+            });
+
         }
 
         function _triggerNotifyEvent (ev, notification, state) {
-            if (_checkTriggered(JSON.parse(notification.data).event)) {
+            var event = JSON.parse(notification.data).event;
+            if (_checkTriggered(event)) {
                 return;
             }
 
             if ($rootScope.isIOS && $rootScope.appOpen) {
                 var notifyAlertObject = {
                     title: notification.title,
+                    patientId: event.patient_id,
                     template: notification.text,
                     okType: 'button-dark-orange',
                     okText: 'Open Today',
@@ -248,7 +284,6 @@
                 clickFlag = false;
             }
 
-            var event = JSON.parse(notification.data).event;
             var triggered = [{
                 id: notification.id,
                 date: event.date,
@@ -272,17 +307,27 @@
             }
 
             var alertPromise = $ionicPopup.confirm(alertObj);
-            alertPromise.then(_alertConfirm);
+            alertPromise.then(function(confirm) {
+                PatientService.getPatient().then(function(current) {
+                    if (confirm && current.id !== alertObj.patientId) {
+                        OrangeApi.patients.get(alertObj.patientId).then(function(patient) {
+                            PatientService.setCurrentPatient(patient);
+                            _alertConfirm(confirm);
+                        });
+                        return;
+                    }
+                    _alertConfirm(confirm);
+                });
+            });
         }
         function _alertConfirm(confirm) {
             if (stackAlerts.length) {
                 var alertObj = stackAlerts.shift();
-                var alertPromise = $ionicPopup.confirm(alertObj);
-                alertPromise.then(_alertConfirm);
+                _notificationAlert(alertObj);
             }
 
             if (confirm && $state.name != 'app.today.schedule') {
-                $state.go('app.today.schedule');
+                $state.go('app.today.schedule', {}, {reload: true});
             }
         }
     }

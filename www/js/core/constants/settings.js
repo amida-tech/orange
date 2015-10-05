@@ -1,6 +1,7 @@
 (function () {
     "use strict";
 
+
     angular
         .module('orange')
         .constant('settings', {

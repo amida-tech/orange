@@ -5,10 +5,10 @@
         .module('orange')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$scope', '$state', '$ionicPopup', '$ionicLoading', 'Auth', 'OrangeApi'];
+    SettingsCtrl.$inject = ['$scope', '$timeout', '$state', '$ionicPopup', '$ionicLoading', 'Auth', 'OrangeApi'];
 
     /* @ngInject */
-    function SettingsCtrl($scope, $state, $ionicPopup, $ionicLoading, Auth) {
+    function SettingsCtrl($scope, $timeout, $state, $ionicPopup, $ionicLoading, Auth) {
         /* jshint validthis: true */
         var vm = this;
         var user = Auth.userInfo();
@@ -17,6 +17,9 @@
         $scope.accountUpdate = {};
         $scope.passwordReset = {};
 
+
+        vm.success = false;
+        vm.timer = null;
         vm.title = 'Settings';
         vm.logout = logout;
         vm.email = user.email;
@@ -117,7 +120,14 @@
             //Update user
             Auth.update(user).finally(function() {
                 $ionicLoading.hide();
-
+                vm.success = true;
+                if (vm.timer) {
+                    $timeout.cancel(vm.timer);
+                    vm.timer = null;
+                }
+                vm.timer = $timeout(function() {
+                    vm.success = false;
+                }, 3000);
                 //Reset `resetPassword` form
                 vm.formScope.passwordReset.$submitted = false;
                 vm.password_model = {

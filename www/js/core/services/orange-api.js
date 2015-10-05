@@ -67,7 +67,9 @@
                     });
 
                     RestangularConfigurer.setErrorInterceptor(function (response, deferred, responseHandler) {
-                        var _error = (response.data === null) ? [] : response.data.errors[0];
+                        if (!_.isUndefined(response.data.errors)) {
+                            var _error = (response.data === null) ? [] : response.data.errors[0];
+                        }
                         switch (response.status) {
                             case 500:
                                 $ionicLoading.hide();
@@ -140,6 +142,8 @@
                         search: OrangeRest.all('rxnorm').all('group'),
                         spelling: OrangeRest.all('rxnorm').all('spelling')
                     },
+                    medications: OrangeRest.all('medications'),
+                    schedule: OrangeRest.all('schedule'),
                     rest: OrangeRest
                 }
             }]

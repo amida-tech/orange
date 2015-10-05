@@ -40,7 +40,6 @@
         Service.prototype.saveItem = saveItem;
         Service.prototype.setItem = setItem;
         Service.prototype.removeItem = removeItem;
-        Service.prototype.getAllItems = getAllItems;
 
         return new Service();
 
@@ -113,6 +112,7 @@
             BasePagingService.prototype.setItem.call(this, item);
             if (this.item) {
                 setFullName(this.item);
+
                 if (!this.item.habits) {
                     return this.setHabits(this.item);
                 } else {
@@ -246,15 +246,6 @@
                 }
                 patient.habits = habits;
             });
-        }
-
-        // FIXME: Remove this, when limit:0 will work for all services
-        function getAllItems(force) {
-            if (force || this.count === 0 || this.count > this.offset) {
-                return this.initItems(true);
-            } else {
-                return this.getItems();
-            }
         }
 
         function getReport(patientId, month, year) {

@@ -10,11 +10,14 @@
     function PharmacyDetailsCtrl($stateParams, $cordovaInAppBrowser, $locale, PharmacyService) {
         var vm = this;
 
-        vm.pharmacyPromise = PharmacyService.getItems();
+        vm.pharmacyPromise = PharmacyService.getItems().then(
+            function () {
+                PharmacyService.getItem($stateParams['id']).then(function (pharmacy) {
+                    vm.pharmacy = pharmacy;
+                });
+            }
+        );
         vm.days = $locale.DATETIME_FORMATS.DAY;
-        PharmacyService.getItem($stateParams['id']).then(function (pharmacy) {
-            vm.pharmacy = pharmacy;
-        });
 
         vm.toMap = function () {
             $cordovaInAppBrowser.open('http://maps.apple.com/?q=' + vm.pharmacy.address.replace(' ', '+'), '_system');
