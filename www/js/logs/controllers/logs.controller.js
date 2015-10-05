@@ -43,7 +43,7 @@
         }
 
         function habits(patient) {
-            PatientService.setItem(patient);
+            PatientService.setCurrentPatient(patient);
             $state.go('onboarding-log.habits', {patient_id: patient.id})
         }
 
