@@ -20,7 +20,6 @@
 
             this.errorItemNotFound = errorList.INVALID_PATIENT_ID;
             this.errorItemNotFoundText = 'Patient not found';
-            this.skipHabits = false;
         };
 
         Service.prototype = Object.create(BasePagingService.prototype);
@@ -41,7 +40,6 @@
         Service.prototype.saveItem = saveItem;
         Service.prototype.setItem = setItem;
         Service.prototype.removeItem = removeItem;
-        Service.prototype.getAllItems = getAllItems;
 
         return new Service();
 
@@ -88,8 +86,6 @@
                 }
             }
 
-            this.skipHabits = true;
-
             return BasePagingService.prototype.saveItem.call(this, savedItem).then(function (item) {
                 console.log('Begin patient.saveItem callback');
 
@@ -108,10 +104,7 @@
                         return item;
                     });
                 }
-                self.skipHabits = false;
                 return item;
-            }, function () {
-                self.skipHabits = false;
             });
         }
 
@@ -253,15 +246,6 @@
                 }
                 patient.habits = habits;
             });
-        }
-
-        // FIXME: Remove this, when limit:0 will work for all services
-        function getAllItems(force) {
-            if (force || this.count === 0 || this.count > this.offset) {
-                return this.initItems(true);
-            } else {
-                return this.getItems();
-            }
         }
 
         function getReport(patientId, month, year) {

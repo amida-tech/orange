@@ -90,25 +90,11 @@
         }
 
         function getAllItems(force) {
-            // TODO: Uncommented this, when limit:0 will work for all services
-            //if (force || this.count === 0 || this.count > this.offset) {
-            //    return initItems.call(this, true);
-            //} else {
-            //    return this.getItems();
-            //}
-            var self = this;
-            return fetchItems.call(this, {limit: 0}).then(function (response) {
-                var count = response.meta['count'] || 0;
-                if (count && (count > self.offset || force)) {
-                    return self.initItems(true, count);
-                } else {
-                    if (count === 0) {
-                        self.items = response;
-                    }
-                    self.sendListChanged();
-                    return self.getItems();
-                }
-            });
+            if (force || this.count === 0 || this.count > this.offset) {
+                return initItems.call(this, true);
+            } else {
+                return this.getItems();
+            }
         }
 
         function fetchItems(options) {
