@@ -75,6 +75,8 @@
 
             if (delay === 'paused') {
                 result = 'Off&nbsp;&nbsp;' + offIcon;
+            } else if (delay === 0) {
+                result = 'Exact Time&nbsp;&nbsp;' + onIcon;
             } else if (delay < 60) {
                 result = delay + '&nbsp;Min.&nbsp;&nbsp;' + onIcon;
             } else {

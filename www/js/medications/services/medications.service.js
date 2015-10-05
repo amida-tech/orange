@@ -74,7 +74,7 @@
             for (var i = 0, len = medication.schedule.times.length; i < len; i++) {
                 var time = medication.schedule.times[i];
                 var notification = notifications[i] || 30;
-                if (parseInt(notification)) {
+                if (!_.isNaN(parseInt(notification))) {
                     notification = parseInt(notification);
                 }
                 console.log('setting notification time', medication.id, time.id, notification);

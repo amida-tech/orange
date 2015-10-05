@@ -14,7 +14,7 @@
             <ion-spinner class="orange-loading-spinner" icon="dots" ng-show="!log_details.currentLog"></ion-spinner>
         </div>
         <div class="item item-body">
-            <h1 class="pull-left" style="width: 100%">{{ log_details.currentLog.first_name }}<br>{{ log_details.currentLog.last_name }}</h1>
+            <h1 class="pull-left">{{ log_details.currentLog.first_name }}<br>{{ log_details.currentLog.last_name }}</h1>
             <div class="orange-logs pull-right" ng-if="log_details.currentLog">
                 <div class="item-log">
                     <avatar patient="log_details.currentLog"></avatar>
