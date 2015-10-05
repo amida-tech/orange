@@ -40,7 +40,8 @@
         </ion-infinite-scroll>
     </ion-content>
     <div class="floating-button" ng-class="{'assertive': notes_list.filter}" ng-click="notes_list.selectMedication()">
-        <span class="icon" ng-class="{'ion-ios-close-empty': notes_list.filter, 'ion-funnel': !notes_list.filter}"></span>
+        <span class="icon ion-funnel" ng-if="!notes_list.filter"></span>
+        <span class="icon-filter-off" ng-if="notes_list.filter"></span>
     </div>
 </ion-view>
 

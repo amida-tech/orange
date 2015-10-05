@@ -1548,7 +1548,16 @@ h4.list-header {
     margin-top: 0;
     margin-left: 60px + $padding-base-horizontal * 2;
   }
+}
 
+.icon-filter-off {
+  display: inline-block;
+  background: url('../img/filter_off_80.png') no-repeat center;
+  background-size: 40px 40px;
+  width: 32px;
+  height: 36px;
+  position: relative;
+  top: 8px
 }
 
 

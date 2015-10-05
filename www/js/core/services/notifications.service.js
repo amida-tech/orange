@@ -117,7 +117,7 @@
                 }
 
                 //Set Text
-                var messageText = 'Medication Reminder: ' + 'is scheduled to take ' + medication.dose.quantity + ' ' +
+                var messageText = 'Medication Reminder: ' + 'scheduled to take ' + medication.dose.quantity + ' ' +
                     medication.dose.unit + ' of ' + medication.name +
                     ' at ' + moment(item.date).format('hh:mm A');
 
@@ -247,13 +247,15 @@
         }
 
         function _triggerNotifyEvent (ev, notification, state) {
-            if (_checkTriggered(JSON.parse(notification.data).event)) {
+            var event = JSON.parse(notification.data).event;
+            if (_checkTriggered(event)) {
                 return;
             }
 
             if ($rootScope.isIOS && $rootScope.appOpen) {
                 var notifyAlertObject = {
                     title: notification.title,
+                    patientId: event.patient_id,
                     template: notification.text,
                     okType: 'button-dark-orange',
                     okText: 'Open Today',
@@ -291,13 +293,23 @@
             }
 
             var alertPromise = $ionicPopup.confirm(alertObj);
-            alertPromise.then(_alertConfirm);
+            alertPromise.then(function(confirm) {
+                PatientService.getPatient().then(function(current) {
+                    if (confirm && current.id !== alertObj.patientId) {
+                        OrangeApi.patients.get(alertObj.patientId).then(function(patient) {
+                            PatientService.setCurrentPatient(patient);
+                            _alertConfirm(confirm);
+                        });
+                        return;
+                    }
+                    _alertConfirm(confirm);
+                });
+            });
         }
         function _alertConfirm(confirm) {
             if (stackAlerts.length) {
                 var alertObj = stackAlerts.shift();
-                var alertPromise = $ionicPopup.confirm(alertObj);
-                alertPromise.then(_alertConfirm);
+                _notificationAlert(alertObj);
             }
 
             if (confirm && $state.name != 'app.today.schedule') {
