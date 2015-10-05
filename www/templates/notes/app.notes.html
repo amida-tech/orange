@@ -11,7 +11,7 @@
     </ion-nav-bar>
     <ion-header-bar class="bar bar-subheader bar-orange filter-title" align-title="left" ng-if="notes_list.filter">
         <h4 class="title">
-            Filter - {{notes_list.filter.medication.brand}} <strong>{{notes_list.filter.medication.name}}</strong>
+            Filter - {{notes_list.filter.medication.brand ? notes_list.filter.medication.brand : notes_list.filter.medication.name}}
         </h4>
     </ion-header-bar>
     <ion-content class="light-bg" ng-class="{'has-subheader': notes_list.filter}">
