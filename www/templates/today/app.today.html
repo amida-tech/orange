@@ -22,7 +22,8 @@
             <h3>Your schedule is empty</h3>
         </div>
 
-        <div ng-if="today.schedule.length && filter.events.length" ng-repeat="filter in today.filters"
+        <div ng-if="today.schedule.length && filter.events.length"
+             ng-repeat="filter in today.filters"
              class="schedule-item">
             <div class="row row-bottom schedule-header">
                 <div class="col col-60 schedule-header-left" ng-bind="filter.title"></div>
@@ -58,6 +59,8 @@
                 </div>
             </div>
         </div>
+
+        <div style="height: 80px;"></div>
     </ion-content>
     <div class="floating-button" ui-sref="app.today.as_needed" ng-if="today.withAsNeeded">
         <span class="icon ion-plus"></span>
