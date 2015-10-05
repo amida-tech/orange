@@ -1254,6 +1254,26 @@ ion-option-button.option-control.button {
   }
 }
 
+.pharmacy-edit-hours {
+  div {
+    display: inline-block;
+    max-width: 35%;
+
+    .apply-button {
+      min-height: $input-height;
+      margin: 0;
+      padding-left: 4px;
+      padding-right: 4px;
+      font-size: 14px;
+    }
+  }
+
+  .item-input {
+    margin-bottom: 0;
+    overflow: initial;
+  }
+}
+
 .log-details-habits-list {
   h2 {
     margin-top: 0;
