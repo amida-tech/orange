@@ -523,7 +523,8 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
 
                     .state('onboarding-log.medications.list', {
                         url: '',
-                        templateUrl: 'templates/logs/logs.setup.medications.html'
+                        templateUrl: 'templates/logs/logs.setup.medications.html',
+                        cache: false
                     })
 
                     .state('onboarding-log.medications.search', {
