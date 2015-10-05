@@ -1496,3 +1496,13 @@ h4.list-header {
     }
   }
 }
+
+.popup-body {
+  padding-top: 0;
+  padding-bottom: 0;
+  p {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: $padding-large-vertical;
+  }
+}
