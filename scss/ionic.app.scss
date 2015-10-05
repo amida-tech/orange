@@ -1526,3 +1526,29 @@ h4.list-header {
     margin-top: $padding-large-vertical;
   }
 }
+
+.import-item {
+  .bb-logo {
+    display: block;
+    width: 60px;
+    float: left;
+    margin: $padding-base-horizontal;
+  }
+
+  .amida-logo {
+    display: inline-block;
+    width: 90px;
+    margin-top: $padding-base-horizontal;
+  }
+  h4 {
+    font-family: 'OpenSans';
+    font-weight: 700;
+    display: block;
+    font-size: $font-size-base * 1.2;
+    margin-top: 0;
+    margin-left: 60px + $padding-base-horizontal * 2;
+  }
+
+}
+
+
