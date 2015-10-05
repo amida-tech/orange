@@ -1,6 +1,6 @@
 # Orange app Release Notes
 
-# v1.00.0 - October 5, 2015
+# v1.0 - October 5, 2015
 
 ##DRE Medication Import
 - Users may now import medications via Amida's Data Reconciliation Engine
