@@ -73,7 +73,7 @@
                 vm.doctors.push(doctor)
             });
             if (!vm.doctors.length) {
-                GlobalService.showConfirm('Doctors not found. Do you want add doctor manually?').then(
+                GlobalService.showConfirm('Doctor not found. Do you want add doctor manually?').then(
                     function (confirm) {
                         if (confirm) {
                             $state.go('app.doctors.add');
