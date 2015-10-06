@@ -26,7 +26,7 @@
         </ion-list>
 
         <div class="paused-container" ng-if="medications.medications.paused.length">
-            <p class="form-title padding">Paused</p>
+            <p class="form-title padding" style="margin-top:30px">Paused</p>
             <ion-list ng-class="(medications.medications.archived.length) ? 'list-last-open' : ''">
                 <ion-item ng-repeat="medication in medications.medications.paused" ng-click="medications.details(medication, $event)">
                     <medication-block medication-name="medication.name"
@@ -36,7 +36,7 @@
         </div>
 
         <div class="archived-container" ng-if="medications.medications.archived.length">
-            <p class="form-title padding">Archived</p>
+            <p class="form-title padding" style="margin-top:30px">Archived</p>
             <ion-list>
                 <ion-item ng-repeat="medication in medications.medications.archived" ng-click="medications.details(medication, $event)">
                     <medication-block medication-name="medication.name"

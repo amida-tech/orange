@@ -142,7 +142,7 @@
         function logout() {
             $ionicPopup.confirm({
                 title: 'Sign Out',
-                template: '<p class="text-center">Are you sure you want sign out?</p>',
+                template: '<p class="text-center">Are you sure you want to sign out?</p>',
                 okText: '<b>Yes</b>',
                 okType: 'button-dark-orange'
             }).then(

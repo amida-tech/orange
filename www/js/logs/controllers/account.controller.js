@@ -96,17 +96,15 @@
                 });
             }
 
-            $scope.$watch('user.email', function () {
-                if ($scope.errors.length) {
-                    $scope.errors = [];
-                }
-            });
+            $scope.$watch('user.email', clearErrors);
+            $scope.$watch('user.password', clearErrors);
+            $scope.$on('$stateChangeStart', clearErrors);
 
-            $scope.$watch('user.password', function () {
+            function clearErrors() {
                 if ($scope.errors.length) {
                     $scope.errors = [];
                 }
-            });
+            }
         }
 
         function goToTerms() {

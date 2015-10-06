@@ -1,6 +1,46 @@
 # Orange app Release Notes
 
-# v0.99.0 - September, 2015
+# v1.0 - October 5, 2015
+
+##DRE Medication Import
+- Users may now import medications via Amida's Data Reconciliation Engine
+– Users may begin this process during account creation
+
+##Notes Filtering
+– Users may now filter notes by attached medications.
+
+##Medication Detail Enhancements
+– Users will now see all notes attached to a medication when viewing the medication's details.
+
+##Medication Lookup
+– Medications not found in the RxNorm system may now be added manually.
+
+##Doctor Lookup
+– Doctors not found in the National Provider Identifier database may now be added manually.
+
+##Notification Enhancements
+– Individual event notifications can now be toggled via a quick-select button on the medication detail view.
+– Notification text has been enhanced.
+– Notifications now display the name of the log the notification is for.
+- Notifications can now be set for the exact time in which a dosing event occurs.
+
+##General
+— Some warnings and prompts have been rewritten to fix grammar and improve clarity.
+– Some destructive actions (such as cancelling a note, changing a password) have had prompts added to prevent accidental use.
+– Some visual changes were applied to improve clarity.
+
+##Bugfixes
+– A bug where a user would not recieve all notifications if configured for multiple logs has been fixed.
+– A bug where opening a notification took you to the wrong log was fixed.
+– A bug where notifications would stop functioning on Android with device restart has been fixed.
+– A bug where the Floating Action Button clipped list items if the list was too long was fixed.
+– A bug where recieving notifications while in the midddle of adding a new medication caused you to lose your progress has been fixed.
+– A bug where the time was not displaying properly for as needed medications has been fixed.
+– A bug where certain details for pharmacies/doctors were not updating on save has been fixed.
+– A bug where certain fields would be prepopulated with old data when used in succession has been fixed.
+
+
+# v0.99.0 - September 15, 2015
 
 ## Account Creation
 - Account registration is now available
@@ -12,7 +52,7 @@
 
 ## Medications
 - Medications can now be imported into logs.
-- Users may search for medications utilizing the RXnorm api, or imput them manually.
+- Users may search for medications utilizing the RXnorm api.
 - Users may flag medications as active, paused, or archived.
 - Mediations can be assigned a schedule for tracking prescribed dosing.
 - Users may configure notification reminders for medication dosing.
@@ -24,7 +64,7 @@
 
 ## Doctors
 - Doctors can now be recorded.
-- Users may record a doctor with a National Provider Identifier via search, or by manually entering a doctor’s information.
+- Users may record a doctor with a National Provider Identifier via search.
 - Users may record a doctors’s location and contact information.
 - Users may add a note to a doctor entry.
 
