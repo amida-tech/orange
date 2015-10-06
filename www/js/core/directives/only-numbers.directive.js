@@ -8,7 +8,9 @@
     function onlyNumbers() {
         return {
             require: '?ngModel',
-            scope: {},
+            scope: {
+                'max': '=max'
+            },
             link: function (scope, element, attributes, ngModel) {
                 var _value;
                 ngModel.$parsers.unshift(function (val) {
@@ -20,6 +22,9 @@
                     }
                     if (val.toString().match(/^(\d+\.?\d*)?$/g) && val != 0 || val === '') {
                         _value = val;
+                    }
+                    if (scope.max && _value > scope.max) {
+                        _value = scope.max;
                     }
                     ngModel.$viewValue = _value;
                     ngModel.$render();
