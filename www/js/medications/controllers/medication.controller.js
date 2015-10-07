@@ -64,6 +64,12 @@
             });
         }
 
+        function clearNotificationTexts() {
+            vm.times.forEach(function (item, index) {
+                delete vm.medication.schedule.times[index].notificationText;
+            });
+        }
+
         function getNotificationText(time) {
             var result = '';
             var onIcon = '<i class="ion-android-notifications"></i>';
@@ -154,6 +160,7 @@
                 ]
             }).then(function (confirm) {
                 if (confirm) {
+                    clearNotificationTexts();
                     if ($scope.statusData.selectedStatus === 'delete') {
                         remove(vm.medication);
                     } else {
