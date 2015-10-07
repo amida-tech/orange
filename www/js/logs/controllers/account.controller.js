@@ -108,7 +108,7 @@
         }
 
         function goToTerms() {
-            $cordovaInAppBrowser.open('http://orange.amida-tech.com/terms.html', '_blank');
+            $cordovaInAppBrowser.open('http://orangerx.amida-tech.com/terms.html', '_blank');
         }
     }
 })();
