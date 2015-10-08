@@ -1352,11 +1352,14 @@ ion-option-button.option-control.button {
 
 .agree-div {
   padding-top: 5px;
-  font-size: 13px;
-  font-weight: bold;
-  margin: 0 0 0 3px;
-  text-decoration: underline;
-  display: inline-block;
+
+  p {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0 0 0 3px;
+    text-decoration: underline;
+    display: inline-block;
+  }
 }
 
 .platform-ios textarea::-webkit-input-placeholder {
