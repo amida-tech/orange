@@ -4,10 +4,14 @@
             <i class="icon ion-arrow-left-c"></i>
         </button>
         <h1 class="title" ng-bind="search.title"></h1>
-
+        <div class="buttons">
+                <button class="button button-clear button-small button-dose"
+                        ng-click="medications.importMedications()">Import</button>
+        </div>
     </ion-header-bar>
     <ion-content padding="true" class="padding">
         <p class="form-title">Search</p>
+
         <form class="orange-form" name="searchForm">
             <label class="item-input">
                 <input type="search" placeholder="Medication" ng-model="search.term" ng-change="search.search()"

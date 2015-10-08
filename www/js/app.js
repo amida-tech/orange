@@ -236,6 +236,15 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                             }
                         }
                     })
+                    .state('app.medications_import', {
+                        url: '/medications/import',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/medications/app.medications.import.html',
+                                controller: 'LogMedicationsCtrl as medication'
+                            }
+                        }
+                    })
                     .state('app.medication_add', {
                         url: '/medications/add',
                         views: {

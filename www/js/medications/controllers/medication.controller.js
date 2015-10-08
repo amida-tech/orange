@@ -13,7 +13,7 @@
         var vm = this;
         vm.medicationStatusMap = {
             manual: 'Manually Entered',
-            import: 'Automatic Imported'
+            imported: 'Automatic Imported'
         };
         vm.notes = null;
         vm.title = 'Medication Details';

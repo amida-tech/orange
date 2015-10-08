@@ -93,8 +93,10 @@
 
                 for (var i = 0, len = medication.schedule.times.length; i < len; i++) {
                     var time = medication.schedule.times[i];
-                    var promise = medication.all('times').one(time.id.toString()).customGET();
-                    promises.push(promise);
+                    if (time && !_.isUndefined(time.id)) {
+                        var promise = medication.all('times').one(time.id.toString()).customGET();
+                        promises.push(promise);
+                    }
                 }
                 return $q.all(promises);
             } else {

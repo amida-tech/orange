@@ -19,9 +19,16 @@
         vm.importComplete = false;
         vm.hasImported = false;
         vm.medications = null;
-        PatientService.getItem($stateParams['patient_id']).then(function (patient) {
-            vm.log = patient;
-        });
+        if ($stateParams['patient_id']) {
+            PatientService.getItem($stateParams['patient_id']).then(function (patient) {
+                vm.log = patient;
+            });
+        } else {
+            PatientService.getPatient().then(function (patient) {
+                vm.log = patient;
+            })
+        }
+
 
         vm.pickMedication = pickMedication;
         vm.getSMARTToken = getSMARTToken;
@@ -115,6 +122,9 @@
                                 function () {
                                     $ionicLoading.hide();
                                     vm.importComplete = true;
+                                    if ($state.current.name === 'app.medications_import') {
+                                        $state.go('app.medications');
+                                    }
                                 }
                             );
 
