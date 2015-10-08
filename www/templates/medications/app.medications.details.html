@@ -45,7 +45,7 @@
             <ion-spinner class="spinner-orange-light" icon="dots"></ion-spinner>
         </div>
         <ion-list ng-if="medication.notes.length > 0">
-            <ion-item ng-repeat="note in medication.notes">
+            <ion-item ng-repeat="note in medication.notes" class="item-text-wrap">
                 <div class="block-with-subscribe">
                     <div class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></div>
                     <div class="text-basic" ng-bind="note.text"></div>
