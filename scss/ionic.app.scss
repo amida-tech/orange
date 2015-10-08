@@ -916,7 +916,7 @@ ion-content {
     .log-avatar-img {
       width: $log-size;
       height: $log-size;
-      background-color: $orange;
+      background-color: $orange-light;
       //box-shadow: inset 0 0 0 10px $orange-light;
       border-radius: 50%;
     }
@@ -1097,7 +1097,7 @@ ion-content {
         width: $avatar-size;
         height: $avatar-size;
         border-radius: 50%;
-        background-color: $orange;
+        background-color: $orange-light;
         //box-shadow: inset 0 0 0 10px $orange-light;
         //background: transparent url('../img/ionic.png') no-repeat center;
         background-size: 100%;

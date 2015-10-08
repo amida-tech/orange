@@ -14,6 +14,7 @@
 
         vm.activate = activate;
         vm.notifications = null;
+        vm.times = [];
         vm.events = null;
         vm.save = save;
         vm.toggleEvent = toggleEvent;
@@ -155,7 +156,7 @@
                 event.text = MedicationService.getEventText(event);
             }
 
-            event.notification = '30';
+            //event.notification = '30';
             if (event.type === 'event' && ['breakfast', 'lunch', 'dinner'].indexOf(event.event) !== -1) {
                 event.eventType = 'meal';
             } else if (event.type === 'event') {
@@ -177,7 +178,15 @@
             MedicationService.getItem($stateParams['id']).then(function (medication) {
                 if (medication && medication.schedule && medication.schedule.times !== vm.events) {
                     console.log('Events changed', medication.schedule.times);
-                    update(angular.copy(medication.schedule.times));
+                    if (medication.id) {
+                        MedicationService.getNotifications().then(function (times) {
+                            vm.times = times;
+                            update(angular.copy(medication.schedule.times));
+                        });
+                    } else {
+                        update(angular.copy(medication.schedule.times));
+                    }
+
                 } else {
                     update([]);
                 }
@@ -187,7 +196,12 @@
         function update(events) {
             vm.notifications = [];
             vm.events = _.map(events, function (event, index) {
-                vm.notifications[index] = '30';
+                if (vm.times.length && !_.isUndefined(vm.times[index])) {
+                    vm.notifications[index] = vm.times[index].user.toString() || '30';
+                } else {
+                    vm.notifications[index] = '30';
+                }
+                console.log(vm.notifications[index]);
                 return prepareEvent(event);
             });
 
