@@ -6,7 +6,9 @@
             </button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
-            <button class="button button-clear" ui-sref="logs-setup({from_medication: true, log_id: medication.log.id})">Done</button>
+            <button class="button button-clear"
+                    ui-sref="logs-setup({from_medication: true, log_id: medication.log.id})">Done
+            </button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content padding="true">
@@ -21,16 +23,39 @@
             </div>
             <div class="item item-body import-item">
                 <p class="form-title">Automatic Import</p>
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-     viewBox="251.1 137.7 233.4 40.9" style="enable-background:new 251.1 137.7 233.4 40.9;width:280px;margin-top:20px;margin-bottom:20px;text-align:center" xml:space="preserve">
+
+                <div class="text-center">
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     viewBox="251.1 137.7 233.4 40.9" style="enable-background:new 251.1 137.7 233.4 40.9;width:250px;margin-top:20px;margin-bottom:20px;text-align:center" xml:space="preserve">
 <style type="text/css">
-    .st0{fill:#989898;}
-    .st1{clip-path:url(#SVGID_4_);fill:#989898;}
-    .st2{fill:#B4B4B4;}
-    .st3{clip-path:url(#SVGID_6_);}
-    .st4{clip-path:url(#SVGID_8_);}
-    .st5{clip-path:url(#SVGID_10_);}
-    .st6{fill:#2F86C0;}
+    .st0 {
+        fill: #989898;
+    }
+
+    .st1 {
+        clip-path: url(#SVGID_4_);
+        fill: #989898;
+    }
+
+    .st2 {
+        fill: #B4B4B4;
+    }
+
+    .st3 {
+        clip-path: url(#SVGID_6_);
+    }
+
+    .st4 {
+        clip-path: url(#SVGID_8_);
+    }
+
+    .st5 {
+        clip-path: url(#SVGID_10_);
+    }
+
+    .st6 {
+        fill: #2F86C0;
+    }
 </style>
 <g>
     <g>
@@ -118,7 +143,7 @@
                                     <use xlink:href="#SVGID_9_"  style="overflow:visible;"/>
                                 </clipPath>
                                 <g class="st5">
-                                    
+
                                         <image style="overflow:visible;enable-background:new    ;" width="50" height="50" xlink:href="3FD3B7218645509B.jpeg"  transform="matrix(0.216 0 0 0.216 282.31 162.8787)">
                                     </image>
                                 </g>
@@ -132,7 +157,8 @@
     </g>
 </g>
 </svg>
-                <h4 style="text-align:center;margin:0;padding:0;">Data Reconciliation Engine</h4>
+                    <h4 style="text-align:center;margin:0;padding:0;">Data Reconciliation Engine</h4>
+                </div>
             </div>
 
             <div class="item item-button">
@@ -151,19 +177,21 @@
             <ion-item ng-click="medication.editMedication(med, $event)"
                       ng-repeat="med in medication.medications | filter: {origin: 'imported'}">
 
-                    <medication-block medication-name="med.name"
-                                      medication-brand="med.brand"></medication-block>
+                <medication-block medication-name="med.name"
+                                  medication-brand="med.brand"></medication-block>
             </ion-item>
             <div class="item item-text-wrap">
                 <p class="form-title">Via Manual Entry</p>
             </div>
             <ion-item ng-click="medication.editMedication(med, $event)"
                       ng-repeat="med in medication.medications | filter: {origin: '!imported'}">
-                    <medication-block medication-name="med.name"
-                                      medication-brand="med.brand"></medication-block>
+                <medication-block medication-name="med.name"
+                                  medication-brand="med.brand"></medication-block>
             </ion-item>
             <div class="item item-button">
-                <button class="button button-full button-orange" ui-sref="onboarding-log.medications.search">Add Medication</button>
+                <button class="button button-full button-orange" ui-sref="onboarding-log.medications.search">Add
+                    Medication
+                </button>
             </div>
         </div>
 
