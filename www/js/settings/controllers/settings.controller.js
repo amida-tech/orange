@@ -5,10 +5,10 @@
         .module('orange')
         .controller('SettingsCtrl', SettingsCtrl);
 
-    SettingsCtrl.$inject = ['$scope', '$timeout', '$state', '$ionicPopup', '$ionicLoading', 'Auth', 'OrangeApi'];
+    SettingsCtrl.$inject = ['$scope', '$timeout', '$state', '$ionicPopup', '$ionicLoading', 'Auth', 'PatientService'];
 
     /* @ngInject */
-    function SettingsCtrl($scope, $timeout, $state, $ionicPopup, $ionicLoading, Auth) {
+    function SettingsCtrl($scope, $timeout, $state, $ionicPopup, $ionicLoading, Auth, PatientService) {
         /* jshint validthis: true */
         var vm = this;
         var user = Auth.userInfo();
@@ -119,23 +119,31 @@
 
             //Update user
             Auth.update(user).finally(function() {
-                $ionicLoading.hide();
-                vm.success = true;
-                if (vm.timer) {
-                    $timeout.cancel(vm.timer);
-                    vm.timer = null;
-                }
-                vm.timer = $timeout(function() {
-                    vm.success = false;
-                }, 3000);
-                //Reset `resetPassword` form
-                vm.formScope.passwordReset.$submitted = false;
-                vm.password_model = {
-                    old: '',
-                    new: '',
-                    confirm: ''
-                };
-
+                PatientService.getMe().then(function(patient) {
+                   if (patient) {
+                       patient.phone = user.phone ? user.phone : patient.phone;
+                       patient.first_name = user.first_name ? user.first_name : patient.first_name;
+                       patient.last_name = user.last_name ? user.last_name : patient.last_name;
+                       patient.save();
+                   }
+                }).finally(function() {
+                    $ionicLoading.hide();
+                    vm.success = true;
+                    if (vm.timer) {
+                        $timeout.cancel(vm.timer);
+                        vm.timer = null;
+                    }
+                    vm.timer = $timeout(function() {
+                        vm.success = false;
+                    }, 3000);
+                    //Reset `resetPassword` form
+                    vm.formScope.passwordReset.$submitted = false;
+                    vm.password_model = {
+                        old: '',
+                        new: '',
+                        confirm: ''
+                    };
+                });
             })
         }
 

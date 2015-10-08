@@ -40,6 +40,7 @@
         Service.prototype.saveItem = saveItem;
         Service.prototype.setItem = setItem;
         Service.prototype.removeItem = removeItem;
+        Service.prototype.getMe = getMe;
 
         return new Service();
 
@@ -57,6 +58,21 @@
                     return item;
                 }
             );
+        }
+
+        function getMe() {
+            var q = $q.defer();
+            var patient = null;
+
+            if (this.items.length > 0) {
+                patient = _.find(this.items, function(patient) {
+                    return patient.me;
+                });
+                if (patient) {
+                    q.resolve(patient);
+                }
+            }
+            return q.promise;
         }
 
         function saveItem(savedItem) {
