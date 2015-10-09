@@ -24,8 +24,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                          return status;
                      }
 
-                     PatientService.changeStateByPatient();
-                     notifications.updateNotify();
+                     PatientService.changeStateByPatient().then(notifications.updateNotify);
                  } else {
                      // Not authorized
                      $state.go('onboarding');
