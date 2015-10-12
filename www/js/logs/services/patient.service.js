@@ -105,7 +105,9 @@
             return BasePagingService.prototype.saveItem.call(this, savedItem).then(function (item) {
                 console.log('Begin patient.saveItem callback');
 
-                if (self.currentPatient === null || self.currentPatient.id == item.id) {
+                if (self.currentPatient === null) {
+                    self.setCurrentPatient(item);
+                } else if (self.currentPatient.id == item.id) {
                     self.currentPatient = item;
                 }
 
