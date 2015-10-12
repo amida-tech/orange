@@ -98,7 +98,10 @@
 
             $scope.$watch('user.email', clearErrors);
             $scope.$watch('user.password', clearErrors);
-            $scope.$on('$stateChangeStart', clearErrors);
+            $scope.$on('$stateChangeStart', function () {
+                clearErrors();
+                form.$submitted = false;
+            });
 
             function clearErrors() {
                 if ($scope.errors.length) {
