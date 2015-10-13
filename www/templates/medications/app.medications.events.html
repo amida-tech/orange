@@ -46,7 +46,7 @@
                     <div ng-if="event.eventType === 'exact'">
                         <p class="text-muted">At what time?</p>
                         <label class="item-input">
-                            <input type="text" placeholder="Time" ng-model="event.time" timefield/>
+                            <input type="text" placeholder="Time" ng-model="event.time" ng-class="{'has-error': event.hasError}" timefield/>
                         </label>
                     </div>
 

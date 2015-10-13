@@ -570,6 +570,9 @@ dl.dl-worksheet {
 
     input,
     textarea {
+      &.has-error {
+        border-color: $red;
+      }
       border: 1px solid $lightgray;
       border-radius: $card-border-radius;
       padding: $padding-base-vertical $padding-base-horizontal;
