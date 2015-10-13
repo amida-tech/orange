@@ -64,6 +64,7 @@
                     if (elem !== event) {
                         if (elem.show) {
                             elem = prepareEvent(cleanEvent(elem));
+                            elem.text = MedicationService.getEventText(elem);
                         }
                         elem.show = false;
                     }
@@ -198,6 +199,9 @@
             vm.events = _.map(events, function (event, index) {
                 if (vm.times.length && !_.isUndefined(vm.times[index])) {
                     vm.notifications[index] = vm.times[index].user.toString() || '30';
+                    if (vm.notifications[index] === 'default') {
+                        vm.notifications[index] = '30';
+                    }
                 } else {
                     vm.notifications[index] = '30';
                 }
