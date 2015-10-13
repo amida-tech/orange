@@ -217,10 +217,12 @@
                     OrangeApi.patients.get(patientId).then(function(patient) {
                         PatientService.setCurrentPatient(patient);
                         _clickNotifyProcess(notification);
+                        console.log('Click not current id');
                     });
                     return;
                 }
 
+                console.log('Click current id');
                 _clickNotifyProcess(notification);
             });
         }
@@ -235,9 +237,10 @@
                         var stateChangeEvent = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
                             if (toState.name == 'app.today.schedule') {
                                 //Delay for init today
+
                                 $timeout(function () {
                                     $rootScope.$broadcast('today:click:notification', notification);
-                                }, 100);
+                                });
                                 //Remove Event
                                 stateChangeEvent();
                             }
@@ -245,20 +248,13 @@
                     }
 
                 });
+                return;
             }
 
             $state.go('app.today.schedule', {}, {reload: true});
-            var stateChangeEvent = $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-                if (toState.name == 'app.today.schedule') {
-                    //Delay for init today
-                    $timeout(function () {
-                        $rootScope.$broadcast('today:click:notification', notification);
-                    }, 100);
-                    //Remove Event
-                    stateChangeEvent();
-                }
-            });
-
+            $timeout(function () {
+                $rootScope.$broadcast('today:click:notification', notification);
+            }, 1000);
         }
 
         function _triggerNotifyEvent (ev, notification, state) {

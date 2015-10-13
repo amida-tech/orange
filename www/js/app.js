@@ -24,8 +24,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                          return status;
                      }
 
-                     PatientService.changeStateByPatient();
-                     notifications.updateNotify();
+                     PatientService.changeStateByPatient().then(notifications.updateNotify);
                  } else {
                      // Not authorized
                      $state.go('onboarding');
@@ -236,6 +235,15 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                             }
                         }
                     })
+                    .state('app.medications_import', {
+                        url: '/medications/import',
+                        views: {
+                            'menuContent': {
+                                templateUrl: 'templates/medications/app.medications.import.html',
+                                controller: 'LogMedicationsCtrl as medication'
+                            }
+                        }
+                    })
                     .state('app.medication_add', {
                         url: '/medications/add',
                         views: {
@@ -243,6 +251,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                                 templateUrl: 'templates/medications/app.medication.add.html',
                                 controller: 'MedicationAddCtrl as medications_add'
                             }
+                        },
+                        params: {
+                            backState: 'app.medications',
+                            nextState: 'app.medication.schedule'
                         }
                     })
                     .state('app.medication', {
@@ -372,6 +384,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/add',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
+                        cache: false,
                         params: {
                             nextState: 'app.logs.list',
                             backState: 'app.logs.list'
@@ -459,6 +472,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/onboarding/logs/add',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
+                        cache: false,
                         params: {
                             nextState: 'logs',
                             backState: 'logs'
@@ -534,11 +548,23 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         controller: 'MedicationSearchCtrl as search',
                         cache: false
                     })
-
+                    .state('onboarding-log.medications.add', {
+                        url: '/search',
+                        templateUrl: 'templates/medications/app.medication.add.html',
+                        controller: 'MedicationAddCtrl as medications_add',
+                        cache: false,
+                        params: {
+                            backState: 'onboarding-log.medications.search',
+                            nextState: 'onboarding-log.medications.schedule'
+                        }
+                    })
                     .state('onboarding-log.medications.schedule', {
                         url: '/schedule',
                         templateUrl: 'templates/medications/app.medications.schedule.html',
-                        controller: 'MedicationScheduleCtrl as schedule'
+                        controller: 'MedicationScheduleCtrl as schedule',
+                        params: {
+                            backState: 'onboarding-log.medications.search'
+                        }
                     })
                     .state('onboarding-log.medications.events', {
                         url: '/events',

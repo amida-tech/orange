@@ -10,9 +10,11 @@
 
     function SharingCtrl($scope, $state, $q, $ionicLoading, $ionicPopup, PatientService,
                          RequestsService, GlobalService) {
-        var vm = this;
+        var vm = this,
+            currentStateName = $state.current.name;
 
         vm.months = [];
+        vm.logs = [];
         vm.accept = accept;
         vm.decline = decline;
         vm.cancel = cancel;
@@ -27,6 +29,7 @@
             vm.logList = _.chunk(items, 3);
             vm.log = vm.logs && vm.logs[0].id.toString();
             onChange();
+            $scope.$on('$stateChangeSuccess', onChange);
         });
 
         update();
@@ -104,7 +107,10 @@
             }
         }
 
-        function onChange() {
+        function onChange(event, stateTo) {
+            if (event && stateTo.name !== currentStateName) {
+                return
+            }
             var patient = _.find(vm.logs, function (item) {
                 return item.id == vm.log;
             });

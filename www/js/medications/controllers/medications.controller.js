@@ -22,6 +22,7 @@
         vm.pickMedication = pickMedication;
         vm.showSearchModal = showSearchModal;
         vm.addNew = addNew;
+        vm.importMedications = importMedications;
 
         refresh();
 
@@ -31,6 +32,12 @@
         }).then(function(modal) {
             vm.searchModal = modal
         });
+
+
+        function importMedications() {
+            vm.searchModal.hide();
+            $state.go('app.medications_import');
+        }
 
         function pickMedication(medication, $event) {
             if ($event.target.tagName == 'SPAN') {

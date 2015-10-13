@@ -13,7 +13,7 @@
         var vm = this;
         vm.medicationStatusMap = {
             manual: 'Manually Entered',
-            import: 'Automatic Imported'
+            imported: 'Automatic Imported'
         };
         vm.notes = null;
         vm.title = 'Medication Details';
@@ -61,6 +61,12 @@
         function updateNotificationTexts() {
             vm.times.forEach(function (item, index) {
                 vm.medication.schedule.times[index].notificationText = getNotificationText(item);
+            });
+        }
+
+        function clearNotificationTexts() {
+            vm.times.forEach(function (item, index) {
+                delete vm.medication.schedule.times[index].notificationText;
             });
         }
 
@@ -154,6 +160,7 @@
                 ]
             }).then(function (confirm) {
                 if (confirm) {
+                    clearNotificationTexts();
                     if ($scope.statusData.selectedStatus === 'delete') {
                         remove(vm.medication);
                     } else {

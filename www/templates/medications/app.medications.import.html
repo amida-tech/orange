@@ -1,17 +1,14 @@
-<ion-view hide-nav-bar="false" view-title="Add Medications">
+<ion-view hide-nav-bar="false" view-title="Import medications">
     <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-buttons side="left">
-            <button ui-sref="onboarding-log.habits" class="button back-button button-clear header-item">
+            <button ui-sref="app.medications" class="button back-button button-clear header-item">
                 <i class="icon ion-arrow-left-c"></i>
             </button>
         </ion-nav-buttons>
-        <ion-nav-buttons side="right">
-            <button class="button button-clear"
-                    ui-sref="logs-setup({from_medication: true, log_id: medication.log.id})">Done
-            </button>
-        </ion-nav-buttons>
     </ion-nav-bar>
+
     <ion-content padding="true">
+
         <div class="card orange-card with-avatar" ng-if="!medication.importComplete">
             <div class="orange-avatar">
                 <div class="item-log" ng-if="medication.log">
@@ -165,35 +162,5 @@
                 <button class="button button-full button-orange" ng-click="medication.getSMARTToken()">Import</button>
             </div>
         </div>
-        <div class="card orange-card" ng-class="{'with-avatar': medication.importComplete}">
-            <div class="orange-avatar" ng-if="medication.importComplete">
-                <div class="item-log" ng-if="medication.log">
-                    <avatar patient="medication.log"></avatar>
-                </div>
-            </div>
-            <div class="item item-text-wrap" ng-if="medication.hasImported">
-                <p class="form-title">Via Automatic Import</p>
-            </div>
-            <ion-item ng-click="medication.editMedication(med, $event)"
-                      ng-repeat="med in medication.medications | filter: {origin: 'imported'}">
-
-                <medication-block medication-name="med.name"
-                                  medication-brand="med.brand"></medication-block>
-            </ion-item>
-            <div class="item item-text-wrap">
-                <p class="form-title">Via Manual Entry</p>
-            </div>
-            <ion-item ng-click="medication.editMedication(med, $event)"
-                      ng-repeat="med in medication.medications | filter: {origin: '!imported'}">
-                <medication-block medication-name="med.name"
-                                  medication-brand="med.brand"></medication-block>
-            </ion-item>
-            <div class="item item-button">
-                <button class="button button-full button-orange" ui-sref="onboarding-log.medications.search">Add
-                    Medication
-                </button>
-            </div>
-        </div>
-
     </ion-content>
 </ion-view>

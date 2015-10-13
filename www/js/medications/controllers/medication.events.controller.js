@@ -14,6 +14,7 @@
 
         vm.activate = activate;
         vm.notifications = null;
+        vm.times = [];
         vm.events = null;
         vm.save = save;
         vm.toggleEvent = toggleEvent;
@@ -53,20 +54,29 @@
         ////////////////
 
         function toggleEvent(event) {
-            event.show = !event.show;
-            if (!event.show) {
+
+            if (event.show) {
+                if (event.eventType === 'exact' && !event.time) {
+                    event.hasError = true;
+                    return;
+                }
                 event = prepareEvent(cleanEvent(event));
                 event.text = MedicationService.getEventText(event);
+                event.show = false;
             } else {
                 vm.buttonText = 'Schedule';
-                vm.events.forEach(function (elem) {
-                    if (elem !== event) {
-                        if (elem.show) {
-                            elem = prepareEvent(cleanEvent(elem));
-                        }
-                        elem.show = false;
+                var current = _.find(vm.events, {show: true});
+
+                if (current) {
+                    if (current.eventType === 'exact' && !current.time) {
+                        current.hasError = true;
+                        return;
                     }
-                })
+                    current = prepareEvent(cleanEvent(current));
+                    current.text = MedicationService.getEventText(current);
+                    current.show = false;
+                }
+                event.show = true;
             }
         }
 
@@ -111,6 +121,10 @@
             var switched = false;
             var current = _.find(vm.events, {show: true});
             if (current) {
+                if (current.eventType === 'exact' && !current.time) {
+                    current.hasError = true;
+                    return true;
+                }
                 var currentIndex = vm.events.indexOf(current);
                 if (currentIndex < vm.events.length - 1) {
                     toggleEvent(vm.events[currentIndex]);
@@ -144,6 +158,7 @@
             delete event.eventType;
             delete event.text;
             delete event.show;
+            delete event.hasError;
             //delete event.id;
             delete event.notification;
             delete event.notificationText;
@@ -155,7 +170,7 @@
                 event.text = MedicationService.getEventText(event);
             }
 
-            event.notification = '30';
+            //event.notification = '30';
             if (event.type === 'event' && ['breakfast', 'lunch', 'dinner'].indexOf(event.event) !== -1) {
                 event.eventType = 'meal';
             } else if (event.type === 'event') {
@@ -177,7 +192,15 @@
             MedicationService.getItem($stateParams['id']).then(function (medication) {
                 if (medication && medication.schedule && medication.schedule.times !== vm.events) {
                     console.log('Events changed', medication.schedule.times);
-                    update(angular.copy(medication.schedule.times));
+                    if (medication.id) {
+                        MedicationService.getNotifications().then(function (times) {
+                            vm.times = times;
+                            update(angular.copy(medication.schedule.times));
+                        });
+                    } else {
+                        update(angular.copy(medication.schedule.times));
+                    }
+
                 } else {
                     update([]);
                 }
@@ -187,7 +210,14 @@
         function update(events) {
             vm.notifications = [];
             vm.events = _.map(events, function (event, index) {
-                vm.notifications[index] = '30';
+                if (vm.times.length && !_.isUndefined(vm.times[index])) {
+                    vm.notifications[index] = vm.times[index].user.toString() || '30';
+                    if (vm.notifications[index] === 'default') {
+                        vm.notifications[index] = '30';
+                    }
+                } else {
+                    vm.notifications[index] = '30';
+                }
                 return prepareEvent(event);
             });
 

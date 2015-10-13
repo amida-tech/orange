@@ -11,7 +11,7 @@
         var vm = this;
         vm.schedule = schedule;
         vm.errors = [];
-        vm.backState = 'app.medications';
+        vm.backState = $state.params['backState'];
 
         vm.medication = {
             access_anyone: 'write',
@@ -32,7 +32,7 @@
             form.$submitted = true;
             if (_.isEmpty(form.$error)) {
                 MedicationService.setItem(vm.medication);
-                $state.go('app.medication.schedule', {backState: $state.current.name});
+                $state.go($state.params['nextState'], {backState: $state.current.name});
             }
         }
     }

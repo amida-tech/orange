@@ -61,6 +61,7 @@
                 //Update user
                 response.put(userPut).then( function (response) {
                     //Take new token, if password is updated
+                    user = response;
                     if ('password' in userPut) {
                         response.password = userPut.password;
                         auth(response).then(function (status) {})

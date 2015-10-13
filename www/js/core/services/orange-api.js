@@ -67,7 +67,7 @@
                     });
 
                     RestangularConfigurer.setErrorInterceptor(function (response, deferred, responseHandler) {
-                        if (!_.isUndefined(response.data.errors)) {
+                        if (!_.isUndefined(response.data)) {
                             var _error = (response.data === null) ? [] : response.data.errors[0];
                         }
                         switch (response.status) {

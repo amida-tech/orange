@@ -6,11 +6,11 @@
         .controller('AddLogCtrl', AddLogCtrl);
 
     AddLogCtrl.$inject = ['$scope', '$state', '$stateParams', '$ionicLoading', '$ionicModal', '$cordovaCamera',
-        'PatientService', 'notifications'];
+        'PatientService', 'notifications', 'Auth'];
 
     /* @ngInject */
     function AddLogCtrl($scope, $state, $stateParams, $ionicLoading, $ionicModal, $cordovaCamera,
-                        PatientService, notify) {
+                        PatientService, notify, Auth) {
 
         $scope.editMode = !!$state.params['editMode'];
         $scope.saveLog = saveLog;
@@ -21,6 +21,9 @@
         $scope.iconItems = _.chunk($scope.settings.avatars, 3);
         $scope.backState = $state.params['backState'] + '({id: ' + $stateParams.id + '})';
         $scope.errors = [];
+        $scope.habitsDone = habitsDone;
+        $scope.habitsErrors = [];
+        $scope.habitsForm = {};
         $scope.withHabits = $scope.editMode && $state.current.name !== 'logs-edit';
 
         if ('id' in $stateParams) {
@@ -95,8 +98,21 @@
                     }
                     PatientService.setItem(null);
                     $scope.editLog = patient;
-                    $ionicLoading.hide();
-                    goToNextState();
+                    if (patient.me) {
+                        var user = {
+                            first_name: patient.first_name,
+                            last_name: patient.last_name,
+                            phone: patient.phone
+                        };
+                        Auth.update(user).finally(function() {
+                            $ionicLoading.hide();
+                            goToNextState();
+                        });
+                    } else {
+                        $ionicLoading.hide();
+                        goToNextState();
+                    }
+
                 },
                 function (error) {
                     $ionicLoading.hide();
@@ -110,6 +126,20 @@
             var options = {reload: $scope.editLog.id === PatientService.currentPatient.id};
             $state.go($state.params['nextState'] || 'logs', {}, options);
             $ionicLoading.hide();
+        }
+
+        function habitsDone() {
+            if (!$scope.editLog.habits || !_.all([
+                    $scope.editLog.habits['wake'],
+                    $scope.editLog.habits['breakfast'],
+                    $scope.editLog.habits['dinner'],
+                    $scope.editLog.habits['lunch'],
+                    $scope.editLog.habits['sleep']])) {
+                $scope.habitsErrors = ['Please fill all habits'];
+            } else {
+                $scope.habitsErrors = [];
+                $scope.habitsModal.hide();
+            }
         }
     }
 })();

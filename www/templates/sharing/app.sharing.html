@@ -56,7 +56,8 @@
                 </label>
                 <label class="item item-input item-select">
                     <select data-ng-model="sharing.month"
-                            ng-options="option.name for option in sharing.months track by option.id">
+                            ng-options="option.name for option in sharing.months track by option.id"
+                            ng-disabled="!sharing.months.length">
 
                     </select>
                 </label>
@@ -64,7 +65,7 @@
                     <span class="input-label input-label-wo-margin">Select Log</span>
                 </label>
                 <label class="item item-input item-select">
-                    <select data-ng-model="sharing.log" ng-change="sharing.onChange()">
+                    <select data-ng-model="sharing.log" ng-change="sharing.onChange()" ng-disabled="!sharing.logs.length">
                         <option ng-repeat="log in sharing.logs" value="{{ log.id }}">{{ log.first_name + ' ' + log.last_name }}</option>
                     </select>
                 </label>
