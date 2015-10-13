@@ -14,16 +14,14 @@
         $scope.login = login;
         $scope.signUp = signUp;
         $scope.goToTerms = goToTerms;
-        $scope.error = false;
         $scope.errors = [];
         $scope.user = {};
 
         function signUp(form) {
             $scope.errors = [];
+            form.$submitted = true;
 
-            if (!form.$valid || $scope.errors.length) {
-                $scope.error = true;
-            } else {
+            if (form.$valid) {
                 $scope.error = false;
 
                 // Prepare User object
@@ -45,20 +43,17 @@
                     function (response) {
                         Auth.auth(user).then(function (status) {
                             if (status === true) {
-                                $scope.error = false;
                                 $scope.errors = [];
 
                                 PatientService.changeStateByPatient();
                                 notify.updateNotify();
                             } else {
-                                $scope.error = true;
                                 $scope.errors = [];
                                 $scope.errors.push('Invalid Email or Password')
                             }
                         })
                     },
                     function (error) {
-                        $scope.error = true;
                         $scope.errors = _.map(error.data.errors, _.startCase);
                     }
                 ).finally($ionicLoading.hide);

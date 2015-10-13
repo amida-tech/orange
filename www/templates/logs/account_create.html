@@ -8,7 +8,7 @@
     <ion-content padding="true" class="orange-bg">
         <div class="card orange-card">
             <form class="orange-form" name="signUpForm" ng-submit="signUp(signUpForm)">
-            <div class="item item-error" ng-if="error">
+            <div class="item item-error" ng-if="errors.length || (!signUpForm.$valid && signUpForm.$submitted)">
                 <div ng-messages="signUpForm.fullName.$error">
                     <p ng-message="required">Full Name is required</p>
                 </div>
