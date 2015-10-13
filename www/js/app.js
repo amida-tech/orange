@@ -251,6 +251,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                                 templateUrl: 'templates/medications/app.medication.add.html',
                                 controller: 'MedicationAddCtrl as medications_add'
                             }
+                        },
+                        params: {
+                            backState: 'app.medications',
+                            nextState: 'app.medication.schedule'
                         }
                     })
                     .state('app.medication', {
@@ -542,11 +546,23 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         controller: 'MedicationSearchCtrl as search',
                         cache: false
                     })
-
+                    .state('onboarding-log.medications.add', {
+                        url: '/search',
+                        templateUrl: 'templates/medications/app.medication.add.html',
+                        controller: 'MedicationAddCtrl as medications_add',
+                        cache: false,
+                        params: {
+                            backState: 'onboarding-log.medications.search',
+                            nextState: 'onboarding-log.medications.schedule'
+                        }
+                    })
                     .state('onboarding-log.medications.schedule', {
                         url: '/schedule',
                         templateUrl: 'templates/medications/app.medications.schedule.html',
-                        controller: 'MedicationScheduleCtrl as schedule'
+                        controller: 'MedicationScheduleCtrl as schedule',
+                        params: {
+                            backState: 'onboarding-log.medications.search'
+                        }
                     })
                     .state('onboarding-log.medications.events', {
                         url: '/events',
