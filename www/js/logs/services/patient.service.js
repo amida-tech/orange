@@ -70,7 +70,11 @@
                 });
                 if (patient) {
                     q.resolve(patient);
+                } else {
+                    q.resolve(null);
                 }
+            } else {
+                q.resolve(null);
             }
             return q.promise;
         }
