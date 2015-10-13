@@ -14,6 +14,7 @@
             currentStateName = $state.current.name;
 
         vm.months = [];
+        vm.logs = [];
         vm.accept = accept;
         vm.decline = decline;
         vm.cancel = cancel;
