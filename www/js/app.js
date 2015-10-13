@@ -384,6 +384,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/add',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
+                        cache: false,
                         params: {
                             nextState: 'app.logs.list',
                             backState: 'app.logs.list'
@@ -471,6 +472,7 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                         url: '/onboarding/logs/add',
                         templateUrl: 'templates/logs/logs.add.html',
                         controller: 'AddLogCtrl',
+                        cache: false,
                         params: {
                             nextState: 'logs',
                             backState: 'logs'
