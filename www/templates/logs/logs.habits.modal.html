@@ -5,12 +5,15 @@
             <span class="back-text"></span>
         </button>
         <h1 class="title">Setup Habits</h1>
-        <button ng-click="habitsModal.hide()" class="button buttons button-clear">
+        <button ng-click="habitsDone()" class="button buttons button-clear">
             Done
         </button>
     </ion-header-bar>
     <ion-content>
         <div class="item-body">
+            <div class="item item-error" ng-if="habitsErrors.length">
+                <p ng-repeat="error in habitsErrors" ng-bind="error"></p>
+            </div>
             <form class="orange-form">
                 <label class="item-input item-stacked-label">
                     <span class="input-label">What time do you usually wake up?</span>
