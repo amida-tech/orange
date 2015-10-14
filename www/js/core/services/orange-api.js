@@ -108,8 +108,12 @@
                                     if (_.isUndefined($rootScope.currentState))
                                         $rootScope.currentState = $state.current.name;
 
-                                    $state.go('retry');
-                                    return false;
+                                    if ($state.current.name === 'loading') {
+                                        return response;
+                                    } else {
+                                        $state.go('retry');
+                                        return false;
+                                    }
                                 }
                         }
 
