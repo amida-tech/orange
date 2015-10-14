@@ -58,14 +58,20 @@
             }
             var importCondition = !newItem['import_id'] || !_.find(this.items, {import_id: newItem['import_id']});
             PatientPagingService.prototype.newItemSuccess.call(this, newItem, addCondition && importCondition);
-            notify.addNotifyByMedication(newItem);
+            //notify.addNotifyByMedication(newItem);
         }
 
         function updateNotification(id, value) {
             var medication = this.item;
-            return medication.all('times').one(id.toString()).customPUT({
+            var promise = medication.all('times').one(id.toString()).customPUT({
                 user: value
             });
+
+            promise.then(function() {
+                notify.updateNotify();
+            });
+
+            return promise;
         }
 
         function setNotifications(notifications) {
@@ -83,7 +89,13 @@
                 });
                 promises.push(promise);
             }
-            return $q.all(promises);
+
+            var q = $q.all(promises);
+
+            q.then(function() {
+                notify.addNotifyByMedication(medication);
+            });
+            return q;
         }
 
         function getNotifications() {
