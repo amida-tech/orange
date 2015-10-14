@@ -5,8 +5,9 @@
                 <i class="icon ion-arrow-left-c"></i>
             </button>
         </ion-nav-buttons>
-        <ion-nav-buttons side="right" >
-            <button class="button button-clear button-small button-dose" ng-click="log_details.deleteLog()">Delete</button>
+        <ion-nav-buttons side="right">
+            <button class="button button-clear button-small button-dose" ng-click="log_details.deleteLog()"
+                    ng-if="!log_details.currentLog.me">Delete</button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg has-footer">
