@@ -12,7 +12,7 @@
 
         var _filterMedications = function(medications) {
             return _.filter(medications, function(medication) {
-                return medication.schedule.as_needed;
+                return medication.schedule.as_needed && medication.status !== 'archived';
             });
         };
 
