@@ -12,7 +12,7 @@
 
     /* @ngInject */
     function LogMedicationsCtrl($scope, $q, $state, $stateParams,
-                                $ionicLoading, TokenService, Oauth, PatientService, MedicationService) {
+        $ionicLoading, TokenService, Oauth, PatientService, MedicationService) {
         /* jshint validthis: true */
         var vm = this;
 
@@ -64,7 +64,7 @@
                 var i, len = val.entry.length;
                 for (i = 0; i < len; i++) {
                     var content = val.entry[i].content || val.entry[i].resource;
-                    if (content && content.resourceType === 'MedicationPrescription') {
+                    if (content && content.resourceType === 'MedicationOrder') {
                         var contained = content.contained;
                         if (contained && contained.length > 0) {
                             var j, len2 = contained.length;
@@ -76,6 +76,53 @@
                                 };
                                 if (item.code && item.code.coding.length && item.code.coding[0].code) {
                                     med.code = parseInt(item.code.coding[0].code);
+                                }
+                                result.push(prepareMedication(med));
+                            }
+                        } else { //Medication is not in contained but in bundle itself
+                            console.log("content.medicationReference", content.medicationReference.reference);
+                            if (content.medicationReference) {
+                                var splitted = (content.medicationReference.reference || '').split('/');
+                                var medicationId = splitted[splitted.length - 1];
+                                var j, resource;
+                                for (j = 0; j < len; j++) {
+                                    var resource = val.entry[j].content || val.entry[j].resource;
+                                    if (resource && resource.resourceType === 'Medication' && resource.id === medicationId) {
+                                        console.log(JSON.stringify(resource, null, 4));
+                                        if (resource.code && resource.code.coding && resource.code.coding.length) {
+                                            var med = {
+                                                'name': resource.code.coding[0].display,
+                                                'status': content.status
+                                            };
+                                            if (resource.code.coding[0].code) {
+                                                med.code = parseInt(resource.code.coding[0].code);
+                                            }
+                                            med = prepareMedication(med);
+                                            /*console.log("content.dosageInstruction.timing", content.dosageInstruction, content.dosageInstruction[0].timing);
+                                            if( content.dosageInstruction && content.dosageInstruction.length) {
+                                                var repeat = content.dosageInstruction[0].timing.repeat;
+                                                console.log("content.dosageInstruction.timing", content.dosageInstruction[0].timing);
+                                                if(repeat) {
+                                                    if(repeat.period && repeat.periodUnits) {
+                                                        med.schedule.as_needed = false;
+                                                        med.schedule.regularly = true;
+                                                        med.schedule.frequency = {'unit': repeat.periodUnits, 'n': repeat.period };
+                                                    }
+                                                }
+                                            }
+                                            console.log(JSON.stringify(med, null, 4));*/
+                                            result.push(med);
+                                        }
+                                        break;
+                                    }
+                                }
+                            } else if (content.medicationCodeableConcept && content.medicationCodeableConcept.coding && content.medicationCodeableConcept.coding.length) {
+                                var med = {
+                                    'name': content.medicationCodeableConcept.coding[0].display,
+                                    'status': content.status
+                                };
+                                if (resource.code.coding[0].code) {
+                                    med.code = parseInt(resource.code.coding[0].code);
                                 }
                                 result.push(prepareMedication(med));
                             }
@@ -126,7 +173,7 @@
                                         $state.go('app.medications');
                                     }
                                 }
-                            );
+                                );
 
                         });
                     }
@@ -158,7 +205,7 @@
             MedicationService.getItems(true).then(
                 function (medications) {
                     vm.medications = medications;
-                    vm.hasImported = !!(_.find(vm.medications, {origin: 'imported'}));
+                    vm.hasImported = !!(_.find(vm.medications, { origin: 'imported' }));
                     $scope.$broadcast('scroll.refreshComplete');
                 },
                 function (error) {
@@ -166,7 +213,7 @@
                     console.log(error);
 
                 }
-            );
+                );
         }
 
         function editMedication(medication, $event) {
