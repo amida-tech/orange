@@ -27,6 +27,7 @@
         Service.prototype.getPatient = getPatient;
         Service.prototype.getHabits = getHabits;
         Service.prototype.setHabits = setHabits;
+        Service.prototype.fillHabits = fillHabits;
         Service.prototype.getTZName = getTZName;
         Service.prototype.setCurrentPatient = setCurrentPatient;
 
@@ -281,6 +282,16 @@
                     end_date: endDate.toISOString().split('T')[0]
                 }
             );
+        }
+
+        function fillHabits(habits) {
+            habits = habits || {};
+            habits.wake = habits.wake || '07:00 am';
+            habits.breakfast = habits.breakfast || '08:00 am';
+            habits.lunch = habits.lunch || '12:00 pm';
+            habits.dinner = habits.dinner || '06:00 pm';
+            habits.sleep = habits.sleep || '11:00 pm';
+            return habits;
         }
 
         function setFullName(patient) {

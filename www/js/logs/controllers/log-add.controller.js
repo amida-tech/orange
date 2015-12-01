@@ -29,6 +29,7 @@
         if ('id' in $stateParams) {
             PatientService.getItem($stateParams['id'], true).then(function (patient) {
                 $scope.editLog = $scope.editMode ? patient : {};
+                $scope.habits = PatientService.fillHabits(angular.copy($scope.editLog.habits) || {});
                 $scope.title = 'Edit Log';
             })
         } else {
@@ -91,6 +92,7 @@
             $ionicLoading.show({
                 template: 'Saving...'
             });
+            $scope.editLog.habits = $scope.habits;
             PatientService.saveItem($scope.editLog).then(
                 function (patient) {
                     if (!_.isUndefined($scope.log) && $scope.log.id == PatientService.currentPatient.id) {
@@ -129,12 +131,12 @@
         }
 
         function habitsDone() {
-            if (!$scope.editLog.habits || !_.all([
-                    $scope.editLog.habits['wake'],
-                    $scope.editLog.habits['breakfast'],
-                    $scope.editLog.habits['dinner'],
-                    $scope.editLog.habits['lunch'],
-                    $scope.editLog.habits['sleep']])) {
+            if (!$scope.habits || !_.all([
+                    $scope.habits['wake'],
+                    $scope.habits['breakfast'],
+                    $scope.habits['dinner'],
+                    $scope.habits['lunch'],
+                    $scope.habits['sleep']])) {
                 $scope.habitsErrors = ['Please fill all habits'];
             } else {
                 $scope.habitsErrors = [];
