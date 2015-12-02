@@ -94,6 +94,8 @@
 
             vm.event = event;
             vm.event.text = getEventText(event);
+            vm.event.tookDate = moment(event.date).format('YYYY-MM-DD');
+            vm.event.tookTime = moment(event.date).format('hh:mm a');
             vm.showDetails = !!event.dose_id || vm.title.toLowerCase() !== 'today';
             vm.isToday = moment().format(dateFormat) === vm.scheduleDate;
             if (!vm.showDetails) {
@@ -102,7 +104,7 @@
 
             vm.dose = {
                 medication_id: event.medication_id,
-                date: moment().format(),
+                date: null,
                 taken: true,
                 scheduled: event.scheduled,
                 notes: event.dose && event.dose.notes
@@ -141,11 +143,12 @@
                 function (confirm) {
                     if (!confirm) {
                         return;
+
                     }
 
                     var dose = {
                         medication_id: event.medication_id,
-                        date: moment().format(),
+                        date: moment(event.tookDate + ' ' + event.tookTime, 'YYYY-MM-DD hh:mm a').format(),
                         taken: !skipped,
                         scheduled: event.scheduled,
                         dose: {

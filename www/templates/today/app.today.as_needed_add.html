@@ -27,11 +27,35 @@
 
                 <ion-item class="orange-form item-text-wrap">
                     <p class="text-basic" ng-bind="asNeededAdd.takenText"></p>
-                    <br/>
+                    <br>
+                    <div class="clearfix"></div>
                     <p class="text-muted">Modify this dose?</p>
 
                     <button-spinner model="asNeededAdd.dose.dose.quantity" min-value=1 subscribe="{{asNeededAdd.dose.dose.unit}}"></button-spinner>
+                    <br>
+                    <label class="checkbox checkbox-square checkbox-orange">
+                        <input type="checkbox" name="alreadyTaken" ng-model="asNeededAdd.taken" required/>
+                        Set exact time
+                    </label>
+                    <br><br>
+                    <div class="row row-no-padding" ng-if="asNeededAdd.taken">
 
+                        <div class="col col-60 padding-right" style="padding-right: 10px;">
+                            <p class="text-muted">Date</p>
+                            <label class="item-input">
+                                <input type="text" required name="tookDate" ng-model="asNeededAdd.tookDate"
+                                       placeholder="Date" datefield/>
+                            </label>
+                        </div>
+                        <div class="col col-40 padding-left">
+                            <p class="text-muted">Time</p>
+                            <label class="item-input">
+                                <input type="text" required name="tookTime"
+                                       ng-model="asNeededAdd.tookTime" placeholder="Time" timefield/>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
                     <label class="item-input padding-top">
                             <textarea name="text"
                                       rows="8"
