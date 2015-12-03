@@ -5,11 +5,11 @@
         .module('orange')
         .factory('PatientService', PatientService);
 
-    PatientService.$inject = ['$q', '$state', '$ionicLoading', 'OrangeApi', '$localstorage',
+    PatientService.$inject = ['$q', '$rootScope', '$state', '$ionicLoading', 'OrangeApi', '$localstorage',
         'BasePagingService', 'Avatar', 'errorList'];
 
     /* @ngInject */
-    function PatientService($q, $state, $ionicLoading, OrangeApi, $localstorage, BasePagingService,
+    function PatientService($q, $rootScope, $state, $ionicLoading, OrangeApi, $localstorage, BasePagingService,
                             Avatar, errorList) {
 
         var Service = function () {
@@ -214,6 +214,7 @@
                     patient && self.setCurrentPatient(patient);
                     self.setHabits(patient);
                     $ionicLoading.hide();
+                    $rootScope.$broadcast('changePatient');
                     return patient;
                 },
                 errorGetPatients

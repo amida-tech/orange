@@ -17,6 +17,7 @@
             this.errorItemNotFound = errorList.INVALID_JOURNAL_ID;
             this.errorItemNotFoundText = 'Note not found';
             this.afterErrorItemNotFoundState = 'app.notes.list';
+            console.log('Start NoteService');
         };
 
         Service.prototype = Object.create(PatientPagingService.prototype);

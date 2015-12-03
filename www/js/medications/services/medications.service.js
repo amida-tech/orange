@@ -16,6 +16,7 @@
 
             this.errorItemNotFound = errorList.INVALID_MEDICATION_ID;
             this.errorItemNotFoundText = 'Medication not found';
+            console.log('Start MedicationService');
         };
 
         Service.prototype = Object.create(PatientPagingService.prototype);
@@ -126,11 +127,13 @@
             this.item.schedule.times = events;
         }
 
-        function getEventText(event) {
+        function getEventText(event, medication) {
+
             var result = '';
-            if (this.item) {
-                var quantity = this.item.dose.quantity;
-                var unit = this.item.dose.unit;
+            medication = medication || this.item;
+            if (medication) {
+                var quantity = medication.dose.quantity;
+                var unit = medication.dose.unit;
                 result += _.capitalize(n2w.toWords(quantity || 0));
                 result += ' ' + unit;
                 if (event.type == 'exact') {

@@ -105,13 +105,13 @@
                                     $rootScope.parentResponse = response;
                                     $rootScope.promise = deferred;
 
-                                    if (_.isUndefined($rootScope.currentState))
+                                    if (_.isUndefined($rootScope.currentState) && $state.current.name !== 'loading')
                                         $rootScope.currentState = $state.current.name;
 
-                                    if ($state.current.name === 'loading') {
+                                    if ($state.current.name.indexOf('offline') >= 0) {
                                         return response;
                                     } else {
-                                        $state.go('retry');
+                                        $state.go('offline.index');
                                         return false;
                                     }
                                 }

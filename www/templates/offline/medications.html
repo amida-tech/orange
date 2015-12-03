@@ -1,0 +1,35 @@
+<ion-view hide-nav-bar="false" view-title="Medications">
+    <ion-nav-buttons side="left">
+        <button ui-sref="offline.index" class="button back-button button-clear header-item">
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content class="light-bg no-padding">
+        <ion-list ng-class="(offline.medications.paused.length || offline.medications.archived.length) ? 'list-last-open' : ''">
+            <ion-item ng-repeat="medication in offline.medications.active" ui-sref="offline.medication({id: medication.id})">
+                <medication-block medication-name="medication.name"
+                                  medication-brand="medication.brand"></medication-block>
+            </ion-item>
+        </ion-list>
+
+        <div class="paused-container" ng-if="offline.medications.paused.length">
+            <p class="form-title padding" style="margin-top:30px">Paused</p>
+            <ion-list ng-class="(offline.medications.archived.length) ? 'list-last-open' : ''">
+                <ion-item ng-repeat="medication in offline.medications.paused" ui-sref="offline.medication({id: medication.id})">
+                    <medication-block medication-name="medication.name"
+                                      medication-brand="medication.brand"></medication-block>
+                </ion-item>
+            </ion-list>
+        </div>
+
+        <div class="archived-container" ng-if="offline.medications.archived.length">
+            <p class="form-title padding" style="margin-top:30px">Archived</p>
+            <ion-list class="list-last-open">
+                <ion-item ng-repeat="medication in offline.medications.archived" ui-sref="offline.medication({id: medication.id})">
+                    <medication-block medication-name="medication.name"
+                                      medication-brand="medication.brand"></medication-block>
+                </ion-item>
+            </ion-list>
+        </div>
+    </ion-content>
+</ion-view>

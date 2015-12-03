@@ -26,6 +26,8 @@
         $scope.habitsForm = {};
         $scope.withHabits = $scope.editMode && $state.current.name !== 'logs-edit';
 
+        var birthDateErrorMessage = 'Invalid Date of Birth';
+
         if ('id' in $stateParams) {
             PatientService.getItem($stateParams['id'], true).then(function (patient) {
                 $scope.editLog = $scope.editMode ? patient : {};
@@ -36,6 +38,21 @@
             $scope.editLog = {};
             $scope.title = 'Add New Log';
         }
+
+        $scope.$watch('editLog.birthdate', function(newVal) {
+
+            if (newVal && moment(newVal, 'YYYY-MM-DD') > moment()) {
+                console.warn(birthDateErrorMessage);
+                $scope.errors.push(birthDateErrorMessage);
+            } else {
+                var index = $scope.errors.indexOf(birthDateErrorMessage);
+                if (index >= 0) {
+                    $scope.errors.splice(index, 1);
+                }
+
+            }
+
+        });
 
 
         $ionicModal.fromTemplateUrl('templates/logs/logs.icon.modal.html', {
@@ -85,7 +102,7 @@
 
         function checkForm(form) {
             form.$submitted = true;
-            return _.isEmpty(form.$error);
+            return _.isEmpty(form.$error) && !$scope.errors.length;
         }
 
         function saveLog() {

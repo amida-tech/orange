@@ -34,12 +34,14 @@
         Service.prototype.initItems = initItems;
         Service.prototype.getItems = getItems;
         Service.prototype.getAllItems = getAllItems;
+        Service.prototype.getCachedItems = getCachedItems;
         Service.prototype.sendListChanged = sendListChanged;
         Service.prototype.onListChanged = onListChanged;
         Service.prototype.hasMore = hasMore;
         Service.prototype.moreItems = moreItems;
         Service.prototype.setItem = setItem;
         Service.prototype.getItem = getItem;
+        Service.prototype.getCachedItem = getCachedItem;
         Service.prototype.getItemPromise = getItemPromise;
         Service.prototype.removeItem = removeItem;
         Service.prototype.excludeItemFromList = excludeItemFromList;
@@ -87,6 +89,10 @@
                 this.sendListChanged();
                 return deferred.promise;
             }
+        }
+
+        function getCachedItems() {
+            return this.items;
         }
 
         function getAllItems(force) {
@@ -176,6 +182,12 @@
                     }
                 );
             }
+        }
+
+        function getCachedItem(itemId) {
+            return _.find(this.items, function (item) {
+                return item.id == itemId;
+            });
         }
 
         function getItemPromise(itemId) {

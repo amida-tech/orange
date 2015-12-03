@@ -1,0 +1,19 @@
+<ion-view hide-nav-bar="false" view-title="Offline Mode">
+    <ion-content class="light-bg no-padding">
+        <ion-list>
+            <ion-item class="text-center item-text-wrap">
+                <div class="text-header dark-red text-basic-bold">No internet connection</div>
+                <p class="text-basic-bold">Here is your information for any emergency needs</p>
+            </ion-item>
+            <ion-item ui-sref="offline.medications">
+                <p class="text-basic-bold">{{'Medications'|uppercase}}</p>
+            </ion-item>
+            <ion-item ui-sref="offline.doctors">
+                <p class="text-basic-bold">{{'Doctors'|uppercase}}</p>
+            </ion-item>
+            <ion-item ui-sref="offline.pharmacies">
+                <p class="text-basic-bold">{{'Pharmacies'|uppercase}}</p>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

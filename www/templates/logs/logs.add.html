@@ -21,7 +21,7 @@
                 <form class="orange-form" name="patientForm">
                     <div class="item item-error"
                          ng-if="patientForm.$submitted && !patientForm.$valid || errors.length">
-                        <div ng-messages="patientForm.name.$error">
+                        <div ng-messages="patientForm.name.$error" ng-if="patientForm.$submitted">
                             <p ng-message="required">Full Name is required</p>
                         </div>
                         <p ng-repeat="error in errors" ng-bind="error"></p>
@@ -34,7 +34,7 @@
                         <input type="text"
                                ng-model="editLog.birthdate"
                                placeholder="Date of Birth (Optional)"
-                               max-date-now="true"
+                               max-date-now="false"
                                datefield/>
                     </label>
                     <label class="item-input">
