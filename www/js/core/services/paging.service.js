@@ -155,7 +155,7 @@
                 self = this;
 
             if (this.item && (this.item.id == itemId || itemId === undefined)) {
-                deferred.resolve(isClone ? angular.copy(this.item) : this.item);
+                deferred.resolve(isClone ? OrangeApi.rest.copy(this.item) : this.item);
                 return deferred.promise;
             } else if (!itemId) {
                 deferred.resolve(null);
@@ -166,7 +166,7 @@
                         return item.id == itemId;
                     });
                     if (existItem) {
-                        deferred.resolve(isClone ? angular.copy(existItem) : existItem);
+                        deferred.resolve(isClone ? OrangeApi.rest.copy(existItem) : existItem);
                         return deferred.promise;
                     }
                 }
