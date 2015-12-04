@@ -6,22 +6,15 @@
         .controller('SharingReportCtrl', SharingReportCtrl);
 
     SharingReportCtrl.$inject = ['$scope', '$stateParams', '$cordovaActionSheet', '$cordovaFile',
-                                 'PDFViewerService', 'PatientService'];
+        'PDFViewerService', 'PatientService'];
 
     function SharingReportCtrl($scope, $stateParams, $cordovaActionSheet, $cordovaFile, pdf, PatientService) {
         var reportDir = cordova.file.externalCacheDirectory || cordova.file.cacheDirectory,
             fileName = $stateParams.id + '.pdf',
             printPdf = window.plugins.PrintPDF,
             pdfData,
-            buttonLabels = ['Email'],
-            deviceVersion = _.map(device.version.split('.'), Number),
+            buttonLabels = ['Email', 'Print'],
             patient = null;
-
-        // Only for iOS & Android 4.4+
-        if (!(device.platform === 'Android' && (
-                deviceVersion[0] < 4 || deviceVersion[0] === 4 && deviceVersion[1] < 4))) {
-            buttonLabels.push('Print');
-        }
 
         $scope.pdfURL = '';
         $scope.viewer = pdf.Instance('viewer');
@@ -32,13 +25,13 @@
         $scope.pdfHeight = window.innerHeight - 120;
         $scope.pdfWidth = window.innerWidth;
 
-        $scope.pageLoaded = function(currentPage, totalPages) {
+        $scope.pageLoaded = function (currentPage, totalPages) {
             $scope.currentPage = currentPage;
             $scope.totalPages = totalPages;
             $scope.loading = false;
         };
 
-        $scope.loadProgress = function(loaded, total, state) {
+        $scope.loadProgress = function (loaded, total, state) {
             console.log('loaded =', loaded, 'total =', total, 'state =', state);
             $scope.loading = false;
         };
@@ -104,14 +97,14 @@
             });
         }
 
-        function _arrayBufferToBase64( buffer ) {
+        function _arrayBufferToBase64(buffer) {
             var binary = '';
-            var bytes = new Uint8Array( buffer );
+            var bytes = new Uint8Array(buffer);
             var len = bytes.byteLength;
             for (var i = 0; i < len; i++) {
-                binary += String.fromCharCode( bytes[ i ] );
+                binary += String.fromCharCode(bytes[i]);
             }
-            return window.btoa( binary );
+            return window.btoa(binary);
         }
 
         $scope.$on('pdfviewer.nextPage', setLoadingTrue);
