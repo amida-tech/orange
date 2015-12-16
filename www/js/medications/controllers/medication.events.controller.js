@@ -28,7 +28,7 @@
 
         vm.eventTypes = [
             {name: 'Around a Meal', key: 'meal'},
-            {name: 'As a Set Time', key: 'exact'},
+            {name: 'At a Set Time', key: 'exact'},
             {name: 'Morning/Night', key: 'sleep'}
         ];
 
