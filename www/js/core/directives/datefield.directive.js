@@ -10,7 +10,8 @@
     function datefield($cordovaDatePicker) {
         return {
             scope: {
-                'maxDateNow': '='
+//allow dates in the future as per request
+//                'maxDateNow': '='
             },
             require: 'ngModel',
             link: function (scope, elem, attrs, ngModel) {
