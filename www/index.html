@@ -23,9 +23,6 @@
     <script src="lib/ng-pdfviewer/ng-pdfviewer.js"></script>
     <script src="lib/angular-ellipsis/src/angular-ellipsis.js"></script>
 
-    <!-- patches -->
-    <script src="js/core/angular-ios9-uiwebview.patch.js"></script>
-
     <script>
         var handleOpenURL = function(url) {
             var hash = url.split('//')[1];
@@ -88,11 +85,13 @@
     <script src="js/today/controllers/today.as_needed.add.controller.js"></script>
     <script src="js/today/services/dose.service.js"></script>
 
+    <!-- Notes -->
     <script src="js/notes/controllers/notes.list.controller.js"></script>
     <script src="js/notes/controllers/note.add.controller.js"></script>
     <script src="js/notes/controllers/note.details.controller.js"></script>
     <script src="js/notes/services/note.service.js"></script>
 
+    <!-- Medications -->
     <script src="js/medications/controllers/medications.controller.js"></script>
     <script src="js/medications/controllers/medication.add.controller.js"></script>
     <script src="js/medications/controllers/medication.controller.js"></script>
@@ -102,15 +101,18 @@
     <script src="js/medications/services/medications.service.js"></script>
     <script src="js/medications/directives/medication-block.directive.js"></script>
 
+    <!-- Doctors -->
     <script src="js/doctors/controllers/doctor.search.controller.js"></script>
     <script src="js/doctors/controllers/doctor.details.controller.js"></script>
     <script src="js/doctors/controllers/doctor.controller.js"></script>
     <script src="js/doctors/services/doctor.service.js"></script>
 
+    <!-- Pharmacies -->
     <script src="js/pharmacies/controllers/pharmacy.add.controller.js"></script>
     <script src="js/pharmacies/controllers/pharmacy.details.controller.js"></script>
     <script src="js/pharmacies/services/pharmacy.service.js"></script>
 
+    <!-- Logs -->
     <script src="js/logs/controllers/account.controller.js"></script>
     <script src="js/logs/controllers/logs.controller.js"></script>
     <script src="js/logs/controllers/log-add.controller.js"></script>
@@ -120,12 +122,19 @@
     <script src="js/logs/controllers/log-medications.controller.js"></script>
     <script src="js/logs/services/patient.service.js"></script>
 
+    <!-- Sharing -->
     <script src="js/sharing/controllers/sharing.controller.js"></script>
     <script src="js/sharing/controllers/sharing.accept.controller.js"></script>
     <script src="js/sharing/controllers/sharing.report.controller.js"></script>
     <script src="js/sharing/services/requests.service.js"></script>
 
+    <!-- Settings -->
     <script src="js/settings/controllers/settings.controller.js"></script>
+
+    <!-- Offline -->
+    <script src="js/offline/controllers/offline.controller.js"></script>
+    <script src="js/offline/controllers/offline.item.controller.js"></script>
+    <script src="js/offline/services/offline.service.js"></script>
 
 </head>
 <body ng-app="orange">

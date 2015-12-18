@@ -1,38 +1,46 @@
 angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ngPDFViewer', 'dibari.angular-ellipsis', 'ngIOS9UIWebViewPatch'])
 
     .run(function ($timeout, $ionicPlatform, Auth, $ionicHistory, $rootScope, $state, PatientService,
-                   notifications, settings, errorList) {
+                   notifications, settings, errorList, OfflineService) {
 
              // Initializing app
              $rootScope.initialized = false;
              $rootScope.appOpen = true;
              $rootScope.settings = settings;
              $rootScope.ERROR_LIST = errorList;
+             $rootScope.initAuth = function() {
+                 Auth.init().then(function (status) {
+                     $rootScope.initialized = true;
+                     $ionicHistory.nextViewOptions({
+                         disableBack: true,
+                         historyRoot: true
+                     });
+                     if (status === true) {
+                         // User authorized
+                         if ($rootScope.cachedState) {
+                             PatientService.getPatient().then(function () {
+                                 $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
+                             });
+                             return status;
+                         }
 
-             Auth.init().then(function (status) {
-                 $rootScope.initialized = true;
-                 $ionicHistory.nextViewOptions({
-                     disableBack: true,
-                     historyRoot: true
-                 });
-                 if (status === true) {
-                     // User authorized
-                     if ($rootScope.cachedState) {
-                         PatientService.getPatient().then(function () {
-                             $state.go($rootScope.cachedState.toState.name, $rootScope.cachedState.toParams);
+                         PatientService.changeStateByPatient().then(function() {
+                             notifications.updateNotify();
+                             OfflineService.init();
                          });
-                         return status;
+                     } else {
+                         // Not authorized
+                         $state.go('onboarding');
                      }
+                 });
+             };
 
-                     PatientService.changeStateByPatient().then(notifications.updateNotify);
-                 } else {
-                     // Not authorized
-                     $state.go('onboarding');
-                 }
-             });
+             $rootScope.initAuth();
+
+
 
              $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                 if (!$rootScope.initialized && toState.name !== 'loading' && toState.name !== 'onboarding') {
+                 if (!$rootScope.initialized && toState.name !== 'loading' && toState.name !== 'onboarding' && toState.name.indexOf('offline') < 0) {
                      $rootScope.cachedState = {
                          toState: toState,
                          toParams: toParams
@@ -594,8 +602,53 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                     .state('onboarding', {
                         url: '/onboarding',
                         templateUrl: 'templates/core/onboarding.html'
+                    })
+                    .state('offline', {
+                        abstract: true,
+                        url: '/offline',
+                        cache: false,
+                        templateUrl: 'templates/offline/offline.html',
+                        controller: 'OfflineController as offline'
+                    })
+                    .state('offline.index', {
+                        url: '/index',
+                        cache: false,
+                        templateUrl: 'templates/offline/index.html'
+                    })
+                    .state('offline.medications', {
+                        url: '/medications',
+                        cache: false,
+                        templateUrl: 'templates/offline/medications.html'
+                    })
+                    .state('offline.medication', {
+                        url: '/medications/:id',
+                        templateUrl: 'templates/offline/medication.html',
+                        cache: false,
+                        controller: 'OfflineItemController as medication'
+                    })
+                    .state('offline.doctors', {
+                        url: '/doctors',
+                        cache: false,
+                        templateUrl: 'templates/offline/doctors.html'
+                    })
+                    .state('offline.doctor', {
+                        url: '/doctor/:id',
+                        cache: false,
+                        templateUrl: 'templates/offline/doctor.html',
+                        controller: 'OfflineItemController as doctor'
+                    })
+                    .state('offline.pharmacies', {
+                        url: '/notes',
+                        cache: false,
+                        templateUrl: 'templates/offline/pharmacies.html'
+                    })
+                    .state('offline.pharmacy', {
+                        url: '/pharmacy/:id',
+                        cache: false,
+                        templateUrl: 'templates/offline/pharmacy.html',
+                        controller: 'OfflineItemController as pharmacy'
                     });
 
-                // if none of the above states are matched, use this as the fallback
+        // if none of the above states are matched, use this as the fallback
                 $urlRouterProvider.otherwise('/loading');
             });

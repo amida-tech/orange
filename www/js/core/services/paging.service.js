@@ -34,12 +34,14 @@
         Service.prototype.initItems = initItems;
         Service.prototype.getItems = getItems;
         Service.prototype.getAllItems = getAllItems;
+        Service.prototype.getCachedItems = getCachedItems;
         Service.prototype.sendListChanged = sendListChanged;
         Service.prototype.onListChanged = onListChanged;
         Service.prototype.hasMore = hasMore;
         Service.prototype.moreItems = moreItems;
         Service.prototype.setItem = setItem;
         Service.prototype.getItem = getItem;
+        Service.prototype.getCachedItem = getCachedItem;
         Service.prototype.getItemPromise = getItemPromise;
         Service.prototype.removeItem = removeItem;
         Service.prototype.excludeItemFromList = excludeItemFromList;
@@ -87,6 +89,10 @@
                 this.sendListChanged();
                 return deferred.promise;
             }
+        }
+
+        function getCachedItems() {
+            return this.items;
         }
 
         function getAllItems(force) {
@@ -149,7 +155,7 @@
                 self = this;
 
             if (this.item && (this.item.id == itemId || itemId === undefined)) {
-                deferred.resolve(isClone ? angular.copy(this.item) : this.item);
+                deferred.resolve(isClone ? OrangeApi.rest.copy(this.item) : this.item);
                 return deferred.promise;
             } else if (!itemId) {
                 deferred.resolve(null);
@@ -160,7 +166,7 @@
                         return item.id == itemId;
                     });
                     if (existItem) {
-                        deferred.resolve(isClone ? angular.copy(existItem) : existItem);
+                        deferred.resolve(isClone ? OrangeApi.rest.copy(existItem) : existItem);
                         return deferred.promise;
                     }
                 }
@@ -176,6 +182,12 @@
                     }
                 );
             }
+        }
+
+        function getCachedItem(itemId) {
+            return _.find(this.items, function (item) {
+                return item.id == itemId;
+            });
         }
 
         function getItemPromise(itemId) {

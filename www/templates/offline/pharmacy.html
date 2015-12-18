@@ -1,0 +1,43 @@
+<ion-view hide-nav-bar="false" view-title="Pharmacy Details">
+    <ion-nav-buttons side="left">
+        <button ui-sref="offline.pharmacies" class="button back-button button-clear header-item">
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content class="light-bg no-padding">
+        <div class="padding">
+            <div class="block-with-subscribe">
+                <div class="text-header" ng-bind="pharmacy.item.name"></div>
+            </div>
+            <ion-list class="list-last-open list-details">
+                <ion-item ng-if="pharmacy.item.address">
+                    <span class="text-basic pre-line" ng-bind="pharmacy.item.address"></span>
+                    <span class="item-label">
+                        <span class="button text-title" ng-click="pharmacy.toMap()">DIRECTIONS</span>
+                    </span>
+                </ion-item>
+                <ion-item ng-if="pharmacy.item.phone" class="text-container">
+                    <span class="text-basic phone" ng-bind="pharmacy.item.phone"></span>
+                    <span class="item-label">
+                        <span class="button text-title" call-phone phone="{{ pharmacy.item.phone }}">CALL</span>
+                    </span>
+                </ion-item>
+                <ion-item ng-if="pharmacy.item.notes">
+                    <span class="text-basic" ng-bind="pharmacy.item.notes"></span>
+                </ion-item>
+            </ion-list>
+            <div class="block-with-subscribe">
+                <div class="form-title">Working Hours:</div>
+            </div>
+            <div class="pharmacy-details-hours-list">
+                <div class="item" ng-repeat="day in pharmacy.days">
+                    <div class="day"><strong>{{ day }}:</strong></div>
+                     <span>
+                         {{ pharmacy.item.hours[day.toLowerCase()]['open'] }}
+                    - {{ pharmacy.item.hours[day.toLowerCase()]['close'] }}
+                     </span>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

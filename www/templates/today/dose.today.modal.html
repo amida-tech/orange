@@ -12,14 +12,41 @@
                                   medication-brand="today.event.medication.brand"></medication-block>
             </div>
             <div class="item item-text-wrap orange-form">
-                <p ng-bind="today.event.text">One unit at 9:00am, taken without food</p>
-                <label class="item-input padding-top" ng-show="!today.showDetails && today.isToday">
-                        <textarea name="text"
-                                  rows="8"
-                                  placeholder="Add a note..."
-                                  data-ng-model="today.notes"
-                                ></textarea>
-                </label>
+                <p ng-bind="today.event.text"></p>
+
+                <div ng-show="!today.showDetails && today.isToday">
+                    <label class="checkbox checkbox-square checkbox-orange">
+                        <input type="checkbox" name="alreadyTaken" ng-model="today.event.taken" required/>
+                        I've already taken this medication
+                    </label>
+                    <div class="clearfix"></div>
+
+                    <div class="row row-no-padding" ng-if="today.event.taken">
+
+                        <div class="col col-60 padding-right" style="padding-right: 10px;">
+                            <p class="text-muted">Date</p>
+                            <label class="item-input">
+                                <input type="text" required name="tookDate" ng-model="today.event.tookDate"
+                                       placeholder="Date" datefield/>
+                            </label>
+                        </div>
+                        <div class="col col-40 padding-left">
+                            <p class="text-muted">Time</p>
+                            <label class="item-input">
+                                <input type="text" required name="tookTime"
+                                       ng-model="today.event.tookTime" placeholder="Time" timefield/>
+                            </label>
+                        </div>
+                    </div>
+                    <label class="item-input padding-top">
+                            <textarea name="text"
+                                      rows="8"
+                                      placeholder="Add a note..."
+                                      data-ng-model="today.notes"
+                                    ></textarea>
+                    </label>
+
+                </div>
                 <div ng-show="!today.showDetails && !today.isToday">
                     <p class="detail-item" ng-bind="today.dose.notes"></p>
                 </div>

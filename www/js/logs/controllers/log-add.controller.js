@@ -26,15 +26,33 @@
         $scope.habitsForm = {};
         $scope.withHabits = $scope.editMode && $state.current.name !== 'logs-edit';
 
+        var birthDateErrorMessage = 'Invalid Date of Birth';
+
         if ('id' in $stateParams) {
             PatientService.getItem($stateParams['id'], true).then(function (patient) {
                 $scope.editLog = $scope.editMode ? patient : {};
+                $scope.habits = PatientService.fillHabits(angular.copy($scope.editLog.habits) || {});
                 $scope.title = 'Edit Log';
             })
         } else {
             $scope.editLog = {};
             $scope.title = 'Add New Log';
         }
+
+        $scope.$watch('editLog.birthdate', function(newVal) {
+
+            if (newVal && moment(newVal, 'YYYY-MM-DD') > moment()) {
+                console.warn(birthDateErrorMessage);
+                $scope.errors.push(birthDateErrorMessage);
+            } else {
+                var index = $scope.errors.indexOf(birthDateErrorMessage);
+                if (index >= 0) {
+                    $scope.errors.splice(index, 1);
+                }
+
+            }
+
+        });
 
 
         $ionicModal.fromTemplateUrl('templates/logs/logs.icon.modal.html', {
@@ -84,13 +102,14 @@
 
         function checkForm(form) {
             form.$submitted = true;
-            return _.isEmpty(form.$error);
+            return _.isEmpty(form.$error) && !$scope.errors.length;
         }
 
         function saveLog() {
             $ionicLoading.show({
                 template: 'Saving...'
             });
+            $scope.editLog.habits = $scope.habits;
             PatientService.saveItem($scope.editLog).then(
                 function (patient) {
                     if (!_.isUndefined($scope.log) && $scope.log.id == PatientService.currentPatient.id) {
@@ -129,12 +148,12 @@
         }
 
         function habitsDone() {
-            if (!$scope.editLog.habits || !_.all([
-                    $scope.editLog.habits['wake'],
-                    $scope.editLog.habits['breakfast'],
-                    $scope.editLog.habits['dinner'],
-                    $scope.editLog.habits['lunch'],
-                    $scope.editLog.habits['sleep']])) {
+            if (!$scope.habits || !_.all([
+                    $scope.habits['wake'],
+                    $scope.habits['breakfast'],
+                    $scope.habits['dinner'],
+                    $scope.habits['lunch'],
+                    $scope.habits['sleep']])) {
                 $scope.habitsErrors = ['Please fill all habits'];
             } else {
                 $scope.habitsErrors = [];

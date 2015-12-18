@@ -15,6 +15,7 @@
             this.errorItemNotFound = errorList.INVALID_DOCTOR_ID;
             this.errorItemNotFoundText = 'Doctor not found';
             this.afterErrorItemNotFoundState = 'app.doctors.list';
+            console.log('Start DoctorService');
         };
 
         Service.prototype = Object.create(PatientPagingService.prototype);

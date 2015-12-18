@@ -15,6 +15,7 @@
             this.errorItemNotFound = errorList.INVALID_PHARMACY_ID;
             this.errorItemNotFoundText = 'Pharmacy not found';
             this.afterErrorItemNotFoundState = 'app.pharmacies.list';
+            console.log('Start PharmacyService');
         };
 
         Service.prototype = Object.create(PatientPagingService.prototype);

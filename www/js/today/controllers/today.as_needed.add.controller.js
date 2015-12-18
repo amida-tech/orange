@@ -13,6 +13,9 @@
         var vm = this,
             forceBack = false;
         vm.date = moment();
+        vm.tookDate = vm.date.format('YYYY-MM-DD');
+        vm.tookTime = vm.date.format('hh:mm a');
+
         vm.dose = {
             medication_id: $stateParams.id,
             date: vm.date.format(),
@@ -55,6 +58,7 @@
 
         vm.createDose = function() {
             $ionicLoading.show({template: 'Save Intake...'});
+            vm.dose.date = moment(vm.tookDate + ' ' + vm.tookTime, 'YYYY-MM-DD hh:mm a').format();
             DoseService.saveItem(vm.dose).then(function () {
                 forceBack = true;
                 $ionicLoading.hide();

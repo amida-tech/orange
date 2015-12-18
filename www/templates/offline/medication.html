@@ -1,0 +1,40 @@
+<ion-view hide-nav-bar="false" view-title="Medication Details">
+    <ion-nav-buttons side="left">
+        <button ui-sref="offline.medications" class="button back-button button-clear header-item">
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content class="light-bg no-padding">
+        <ion-list ng-if="medication.item" class="list-last-open">
+            <ion-item class="item-title">
+                <medication-block medication-name="medication.item.name"
+                                  medication-brand="medication.item.brand"></medication-block>
+                <div class="med-info">
+                    <p ng-bind="medication.item.schedule_summary"></p>
+                    <p ng-bind="medication.eventsText"></p>
+                </div>
+            </ion-item>
+            <ion-item ng-repeat="event in medication.item.schedule.times" class="medication-event">
+                <h2 class="text-title" ng-bind="($index + 1|toWords:true) + ' event'"></h2>
+                <p class="info" ng-bind="medication.getEventText(event)"></p>
+            </ion-item>
+            <ion-item>
+                <span class="text-muted" ng-bind="medication.medicationStatusMap[medication.item.origin]"></span>
+            </ion-item>
+
+            <h4 class="list-header" ng-if="medication.item.notes !== null && medication.item.notes.length > 0">Medication notes</h4>
+            <div class="text-center" ng-if="medication.item.notes === null">
+                <ion-spinner class="spinner-orange-light" icon="dots"></ion-spinner>
+            </div>
+            <ion-list ng-if="medication.item.notes.length > 0">
+                <ion-item ng-repeat="note in medication.item.notes" class="item-text-wrap">
+                    <div class="block-with-subscribe">
+                        <div class="text-header" ng-bind="note.date|date:'MMMM d, h:mm a'"></div>
+                        <div class="text-basic" ng-bind="note.text"></div>
+                    </div>
+                </ion-item>
+            </ion-list>
+
+        </ion-list>
+    </ion-content>
+</ion-view>

@@ -8,7 +8,7 @@
     TodayCtrl.$inject = ['$q', '$scope', '$stateParams', '$ionicLoading', '$ionicModal', '$cordovaDatePicker',
         'n2w', 'PatientService', 'MedicationService', 'DoseService', 'GlobalService', 'notifications'];
 
-    function TodayCtrl($q, $scope, $stateParams, $ionicLoading, $ionicModal,$cordovaDatePicker, n2w,
+    function TodayCtrl($q, $scope, $stateParams, $ionicLoading, $ionicModal, $cordovaDatePicker, n2w,
                        PatientService, MedicationService, DoseService, GlobalService, notify) {
         var vm = this,
             doseModal = null,
@@ -17,15 +17,14 @@
         vm.hideButtons = false;
 
         if ($scope.isAndroid) {
-            window.addEventListener('native.keyboardshow', function() {
+            window.addEventListener('native.keyboardshow', function () {
                 vm.hideButtons = true;
             });
 
-            window.addEventListener('native.keyboardhide', function() {
+            window.addEventListener('native.keyboardhide', function () {
                 vm.hideButtons = false;
             });
         }
-
 
 
         var dateFormat = $scope.settings.dateFormat;
@@ -94,6 +93,8 @@
 
             vm.event = event;
             vm.event.text = getEventText(event);
+            vm.event.tookDate = moment(event.date).format('YYYY-MM-DD');
+            vm.event.tookTime = moment(event.date).format('hh:mm a');
             vm.showDetails = !!event.dose_id || vm.title.toLowerCase() !== 'today';
             vm.isToday = moment().format(dateFormat) === vm.scheduleDate;
             if (!vm.showDetails) {
@@ -102,7 +103,7 @@
 
             vm.dose = {
                 medication_id: event.medication_id,
-                date: moment().format(),
+                date: null,
                 taken: true,
                 scheduled: event.scheduled,
                 notes: event.dose && event.dose.notes
@@ -134,18 +135,19 @@
             vm.quantity = event.medication.dose.quantity;
             var template = '<p class="text-center">Mark this medication event as' + (skipped ? ' skipped' : ' taken') + '?</p>';
             if (!skipped) {
-                template = '<p>Modify this dose?</p><button-spinner model="today.quantity" min-value=1 subscribe="'+event.medication.dose.unit+'"></button-spinner>' + template;
+                template = '<p>Modify this dose?</p><button-spinner model="today.quantity" min-value=1 subscribe="' + event.medication.dose.unit + '"></button-spinner>' + template;
             }
 
             GlobalService.showConfirm(template, event.medication.brand, $scope).then(
                 function (confirm) {
                     if (!confirm) {
                         return;
+
                     }
 
                     var dose = {
                         medication_id: event.medication_id,
-                        date: moment().format(),
+                        date: moment(event.tookDate + ' ' + event.tookTime, 'YYYY-MM-DD hh:mm a').format(),
                         taken: !skipped,
                         scheduled: event.scheduled,
                         dose: {
@@ -163,14 +165,15 @@
                         function (data) {
                             $ionicLoading.hide();
                             var template = data.data.errors.indexOf('invalid_medication_id') > -1
-                                           ? 'Medication not found'
-                                           : _.map(data.data.errors, _.startCase);
+                                ? 'Medication not found'
+                                : _.map(data.data.errors, _.startCase);
                             GlobalService.showError(template);
                         }
                     ).finally(function () {
-                                     refresh();
-                                     hideModal(true);
-                                 })
+                        hideModal(true);
+                        refresh();
+
+                    })
                 });
         }
 
@@ -304,7 +307,7 @@
                         if (elem.event.type === 'exact') {
                             f += '0-' + moment(elem.event.time, $scope.settings.timeFormat).format('HH:mm');
                         } else {
-                            f += whens[elem.event.when] + '-' +  moment(getHabitsTime(elem.event), $scope.settings.timeFormat).format('HH:mm');
+                            f += whens[elem.event.when] + '-' + moment(getHabitsTime(elem.event), $scope.settings.timeFormat).format('HH:mm');
                         }
                         f += '-';
                         if (elem.dose_id) {
@@ -320,7 +323,7 @@
                     //console.log(groups);
                     vm.filters = [];
                     var keys = _.keysIn(groups).sort();
-                    _.forEach(keys, function(key) {
+                    _.forEach(keys, function (key) {
                         var events = groups[key];
                         var title = getFilterTitle(events[0]);
                         var name = getFilterName(events);
@@ -360,7 +363,7 @@
                 event.doseModel = event.medication.dose;
 
                 // Simulate event object
-                var $event = { target: {} };
+                var $event = {target: {}};
                 showModal(event, $event);
             });
         });

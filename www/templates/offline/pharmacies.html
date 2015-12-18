@@ -1,0 +1,17 @@
+<ion-view hide-nav-bar="false" view-title="Pharmacies">
+    <ion-nav-buttons side="left">
+        <button ui-sref="offline.index" class="button back-button button-clear header-item">
+            <i class="icon ion-arrow-left-c"></i>
+        </button>
+    </ion-nav-buttons>
+    <ion-content class="light-bg no-padding">
+        <ion-list>
+            <ion-item class="item-text-wrap" ng-repeat="pharmacy in offline.pharmacies" ui-sref="offline.pharmacy({id: pharmacy.id})">
+                <div class="block-with-subscribe">
+                    <div class="text-basic-bold" ng-bind="pharmacy.name"></div>
+                    <div class="text-basic" ng-bind="pharmacy.address"></div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

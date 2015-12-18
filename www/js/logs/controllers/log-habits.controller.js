@@ -5,14 +5,19 @@
         .module('orange')
         .controller('LogHabitsCtrl', LogHabitsCtrl);
 
-    LogHabitsCtrl.$inject = ['$ionicLoading', '$state', '$stateParams', 'PatientService'];
+    LogHabitsCtrl.$inject = ['$scope', '$ionicLoading', '$state', '$stateParams', 'PatientService'];
 
     /* @ngInject */
-    function LogHabitsCtrl($ionicLoading, $state, $stateParams, PatientService) {
+    function LogHabitsCtrl($scope, $ionicLoading, $state, $stateParams, PatientService) {
 
         var vm = this;
         PatientService.getItem($stateParams['patient_id']).then(function (patient) {
             vm.log = patient;
+        });
+
+        $scope.$watch('habits.log.habits', function(value) {
+            vm.oldHabits = angular.copy(value);
+            vm.log.habits = PatientService.fillHabits(value);
         });
 
         vm.habitsForm = {};

@@ -5,11 +5,11 @@
         .module('orange')
         .factory('PatientService', PatientService);
 
-    PatientService.$inject = ['$q', '$state', '$ionicLoading', 'OrangeApi', '$localstorage',
+    PatientService.$inject = ['$q', '$rootScope', '$state', '$ionicLoading', 'OrangeApi', '$localstorage',
         'BasePagingService', 'Avatar', 'errorList'];
 
     /* @ngInject */
-    function PatientService($q, $state, $ionicLoading, OrangeApi, $localstorage, BasePagingService,
+    function PatientService($q, $rootScope, $state, $ionicLoading, OrangeApi, $localstorage, BasePagingService,
                             Avatar, errorList) {
 
         var Service = function () {
@@ -27,6 +27,7 @@
         Service.prototype.getPatient = getPatient;
         Service.prototype.getHabits = getHabits;
         Service.prototype.setHabits = setHabits;
+        Service.prototype.fillHabits = fillHabits;
         Service.prototype.getTZName = getTZName;
         Service.prototype.setCurrentPatient = setCurrentPatient;
 
@@ -213,6 +214,7 @@
                     patient && self.setCurrentPatient(patient);
                     self.setHabits(patient);
                     $ionicLoading.hide();
+                    $rootScope.$broadcast('changePatient');
                     return patient;
                 },
                 errorGetPatients
@@ -281,6 +283,16 @@
                     end_date: endDate.toISOString().split('T')[0]
                 }
             );
+        }
+
+        function fillHabits(habits) {
+            habits = habits || {};
+            habits.wake = habits.wake || '07:00 am';
+            habits.breakfast = habits.breakfast || '08:00 am';
+            habits.lunch = habits.lunch || '12:00 pm';
+            habits.dinner = habits.dinner || '06:00 pm';
+            habits.sleep = habits.sleep || '11:00 pm';
+            return habits;
         }
 
         function setFullName(patient) {
