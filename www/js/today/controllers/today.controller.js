@@ -144,10 +144,19 @@
                         return;
 
                     }
-
+                    
+                    var dateTaken;
+                    
+                    //If the event does not specify a date/time then use the current time
+                    if (event.tookDate === undefined){
+                    	dateTaken = moment().format();
+                    }else{
+                    	dateTaken = moment(event.tookDate + ' ' + event.tookTime, 'YYYY-MM-DD hh:mm a').format();
+                    }
+                    
                     var dose = {
                         medication_id: event.medication_id,
-                        date: moment(event.tookDate + ' ' + event.tookTime, 'YYYY-MM-DD hh:mm a').format(),
+                        date: dateTaken,
                         taken: !skipped,
                         scheduled: event.scheduled,
                         dose: {
