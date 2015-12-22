@@ -62,14 +62,14 @@
         function getDRECredentials(callback) {
             var c = {
                 name: 'DRE/FHIR',
-                url: 'http://dre.amida-demo.com:3000/',
-                auth_url: 'http://dre.amida-demo.com:3000/',
+                url: 'http://dre2.amida-demo.com:3001/',
+                auth_url: 'http://dre2.amida-demo.com:3001/',
                 logo_url: '',
                 credentials: {
                     client_id: 'argonaut_demo_client_local',
                     client_secret: 'have no secrets!',
-                    site: 'http://dre.amida-demo.com:3000/',
-                    api_url: 'http://dre.amida-demo.com:3000/fhir',
+                    site: 'http://dre2.amida-demo.com:3001/',
+                    api_url: 'http://dre2.amida-demo.com:3001/api/v1/storage/fhir',
                     authorization_path: 'oauth2/authorize',
                     token_path: 'oauth2/token',
                     revocation_path: 'oauth2/revoke',
@@ -146,7 +146,7 @@
                 }
             })
                 .success(function (data) {
-                             callback(data);
+                            callback(data);
                          })
                 .error(function (data, status) {
                            callback(status);
@@ -157,7 +157,7 @@
         function getMedications(token, patient, callback) {
             $http({
                 method: "get",
-                url: token.c.credentials.api_url + '/MedicationPrescription?patient=' + patient,
+                url: token.c.credentials.api_url + '/MedicationOrder?patient=' + patient,
                 headers: {
                     Authorization: 'Bearer ' + token.access_token,
                     Accept: 'application/json'
@@ -175,16 +175,16 @@
         function getUserMedications(callback) {
             getToken(function (token) {
                 getPatients(token, function(patients) {
-                    console.log('Received patients: ', patients);
 
                     //Pick first patient for now
-                    var patient = patients.entry.length ? patients.entry[0] : null;
+                    var patient = patients && patients.entry && patients.entry.length ? patients.entry[0] : null;
                     if (patient) {
                         console.log("Patient: "+ JSON.stringify(patient,null,4));
                         var patientID = patient.resource.id;
-                        patientID=patientID.split("/")[1];
+                        var splitted = patientID.split("/");
+                        patientID=splitted[splitted.length-1]; // Rightmost element
                         console.log("patientID: ", patientID);
-                        var medUrl = token.c.credentials.api_url + '/MedicationPrescription?patient=' + patientID;
+                        var medUrl = token.c.credentials.api_url + '/MedicationOrder?patient=' + patientID + '&_include=MedicationOrder%3Amedication';
                         $http({
                             method: "get",
                             url: medUrl,
