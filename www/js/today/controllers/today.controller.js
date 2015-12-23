@@ -142,12 +142,11 @@
                 function (confirm) {
                     if (!confirm) {
                         return;
-
                     }
 
                     var dose = {
                         medication_id: event.medication_id,
-                        date: moment(event.tookDate + ' ' + event.tookTime, 'YYYY-MM-DD hh:mm a').format(),
+                        date: moment().format(),
                         taken: !skipped,
                         scheduled: event.scheduled,
                         dose: {
