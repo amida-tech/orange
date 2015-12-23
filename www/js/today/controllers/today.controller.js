@@ -93,8 +93,8 @@
 
             vm.event = event;
             vm.event.text = getEventText(event);
-            vm.event.tookDate = moment(event.date).format('YYYY-MM-DD');
-            vm.event.tookTime = moment(event.date).format('hh:mm a');
+            vm.event.tookDate = moment().format('YYYY-MM-DD');
+            vm.event.tookTime = moment().format('hh:mm a');
             vm.showDetails = !!event.dose_id || vm.title.toLowerCase() !== 'today';
             vm.isToday = moment().format(dateFormat) === vm.scheduleDate;
             if (!vm.showDetails) {
@@ -140,13 +140,17 @@
 
             GlobalService.showConfirm(template, event.medication.brand, $scope).then(
                 function (confirm) {
+                    event.tookDate = event.tookDate || moment().format('YYYY-MM-DD');
+                    event.tookTime = event.tookTime || moment().format('hh:mm a');
+
                     if (!confirm) {
                         return;
                     }
 
+
                     var dose = {
                         medication_id: event.medication_id,
-                        date: moment().format(),
+                        date: moment(event.tookDate + ' ' + event.tookTime, 'YYYY-MM-DD hh:mm a').format(),
                         taken: !skipped,
                         scheduled: event.scheduled,
                         dose: {
