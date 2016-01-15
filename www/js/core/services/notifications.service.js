@@ -86,7 +86,7 @@
                 end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')
             });
             var medPromise = OrangeApi.medications.getList();
-            var patientsPromise = PatientService.getAllItems();
+            var patientsPromise = PatientService.getAllItemsWithHabits();
 
             $q.all([medPromise, schedulePromise, patientsPromise]).then(function(data) {
                 var medications = data[0];
@@ -127,11 +127,14 @@
                     return;
                 }
 
+                var tz = patient.habits.tz;
+                var takeTime = moment(item.date).tz(tz).format('hh:mm A') + ' ' + tz;
+
                 //Set Text
                 var messageText = 'Medication Reminder: ' + patient['first_name'] + ' ' +
                     patient['last_name'] + ' is scheduled to take ' + medication.dose.quantity + ' ' +
                     medication.dose.unit + ' of ' + medication.name +
-                    ' at ' + moment(item.date).format('hh:mm A');
+                    ' at ' + takeTime;
 
                 var data = {
                     event: item,
@@ -141,7 +144,7 @@
                 var schDate = new Date(item.notification);
                 var scheduleOptions = {
                     id: id,
-                    title: 'Take at ' + moment(item.date).format('hh:mm A'),
+                    title: 'Take at ' + takeTime,
                     text: messageText,
                     at: schDate,
                     data: JSON.stringify(data)
@@ -197,7 +200,7 @@
                 return;
             }
 
-            var patientsPromise = PatientService.getAllItems();
+            var patientsPromise = PatientService.getAllItemsWithHabits();
             var schedulePromise = OrangeApi.schedule.getList({
                 medication_id: medication.id,
                 end_date: moment().date(moment().date() + 1).format('YYYY-MM-DD')

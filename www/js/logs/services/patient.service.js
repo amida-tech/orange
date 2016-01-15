@@ -24,6 +24,7 @@
 
         Service.prototype = Object.create(BasePagingService.prototype);
         Service.prototype.getItem = getItem;
+        Service.prototype.getAllItemsWithHabits = getAllItemsWithHabits;
         Service.prototype.getPatient = getPatient;
         Service.prototype.getHabits = getHabits;
         Service.prototype.setHabits = setHabits;
@@ -59,6 +60,27 @@
                     return item;
                 }
             );
+        }
+
+        function getAllItemsWithHabits() {
+            var q = $q.defer();
+            var that = this;
+            this.getAllItems(true).then(function(patients) {
+                var promises = _.map(patients, function(patient) {
+                    return that.getHabits(patient);
+                });
+
+                $q.all(promises).then(function(habits) {
+                    var patientsWithHabits = _.zipWith(patients, habits, function(patient, habit) {
+                        patient.habits = habit.plain();
+                        return patient.plain();
+                    });
+                    q.resolve(patientsWithHabits);
+                });
+            });
+
+
+            return q.promise;
         }
 
         function getMe() {
