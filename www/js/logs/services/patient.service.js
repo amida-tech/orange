@@ -72,8 +72,8 @@
 
                 $q.all(promises).then(function(habits) {
                     var patientsWithHabits = _.zipWith(patients, habits, function(patient, habit) {
-                        patient.habits = habit.plain();
-                        return patient.plain();
+                        patient.habits = habit;
+                        return patient;
                     });
                     q.resolve(patientsWithHabits);
                 });
