@@ -1,0 +1,34 @@
+.log-list {
+  border: 2px solid $silver;
+  border-radius: 4px;
+  max-width: 90%;
+  position: relative;
+  margin: 0 auto;
+  &__log {
+    background-color: $white;
+    border-bottom: 1px solid $silver;
+    position: relative;
+    height: 64px;
+    padding-left: 60px + 4px;
+    &:last-of-type {
+      border-bottom: none;
+    }
+    &-icon {
+      position: absolute;
+      font-size: 52px;
+      display: block;
+      padding: 4px;
+      height: 60px;
+      width: 60px;
+      text-align: center;
+      line-height: 60px;
+      left: 0;
+      right: 0;
+    }
+    &-title {
+      @extend .typography__list-header;
+      position: relative;
+      margin-top: 1em;
+    }
+  }
+}

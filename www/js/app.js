@@ -154,6 +154,10 @@ angular.module('orange', ['ionic', 'restangular', 'ngMessages', 'ngCordova', 'ng
                 // Set up the various states which the app can be in.
                 // Each state's controller can be found in controllers.js
                 $stateProvider
+                    .state('developer', {
+                        url: '/developer',
+                        templateUrl: 'templates/developer/developer.html'
+                    })
                     .state('loading', {
                         url: '/loading',
                         templateUrl: 'templates/core/loading.html'

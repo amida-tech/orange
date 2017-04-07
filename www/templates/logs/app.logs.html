@@ -13,8 +13,8 @@
         </div>
         <div class="list list-clean">
             <div class="orange-logs item item-text-wrap">
-                <div class="row row-no-padding" ng-repeat="item in menu_logs.logList">
-                    <div class="col col-33" ng-repeat="log in item">
+                <div class="log-list row row-no-padding" ng-repeat="item in menu_logs.logList">
+                    <div class="log-list__log col col-33" ng-repeat="log in item">
                         <div class="item-log" ng-click="menu_logs.details(log)">
                             <avatar patient="log"></avatar>
                             <div class="log-title">
@@ -24,27 +24,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="row row-no-padding">
-                    <!--<div class="col col-33" ng-if="!withMe">-->
-                        <!--<div class="item-log" ui-sref="app.logs.add_my">-->
-                            <!--<div class="log-avatar">-->
-                            <!--</div>-->
-                            <!--<div class="log-title">My<br>Log</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <div class="col col-33">
-                        <div class="item-log" ui-sref="app.logs.add">
-                            <div class="log-avatar orange-bg add-avatar">
-                            </div>
-                            <div class="log-title">Add<br>New Log</div>
+                <div class="log-list row row-no-padding">
+                    <div class="log-list__log item-log" ui-sref="app.logs.add">
+                        <div class="log-avatar orange-bg add-avatar">
                         </div>
+                        <div class="log-title">Add<br>New Log</div>
                     </div>
-                    <div class="col col-33">
-                        <div class="item-log" ui-sref="app.logs.request">
-                            <div class="log-avatar orange-bg import-avatar">
-                            </div>
-                            <div class="log-title">Import<br>Existing Log</div>
+                    <div class="log-list__log item-log" ui-sref="app.logs.request">
+                        <div class="log-avatar orange-bg import-avatar">
                         </div>
+                        <div class="log-title">Import<br>Existing Log</div>
                     </div>
                 </div>
             </div>
