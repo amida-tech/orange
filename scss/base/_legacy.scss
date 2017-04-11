@@ -140,7 +140,7 @@ $button-mini-padding: 2px;
 $label-item-padding: 90px;
 
 // Include all of Ionic
-@import "../www/lib/ionic/scss/ionic";
+@import "../../www/lib/ionic/scss/ionic";
 
 // Sizes
 $log-size: 80px;
@@ -1567,3 +1567,9 @@ h4.list-header {
 }
 
 
+
+
+
+.view-container {
+  left: 0 !important;
+}

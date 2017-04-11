@@ -1,88 +1,65 @@
-<ion-view hide-nav-bar="false" view-title="Add Logs">
+<ion-view hide-nav-bar="false" view-title="Add Logs" id="registration__add-logs">
     <ion-nav-bar class="bar-orange" align-title="center">
         <ion-nav-buttons side="right">
             <button class="button button-clear" ui-sref="logs-setup">Done</button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <ion-content class="light-bg padding-top">
-        <ion-refresher pulling-text="Pull to refresh" on-refresh="update(true)">
-        </ion-refresher>
+        <!--<ion-refresher pulling-text="Pull to refresh" on-refresh="update(true)">
+        </ion-refresher>-->
         <div class="text-center">
             <ion-spinner class="orange-loading-spinner" icon="dots" ng-show="!logsCtrl.patientPromise.$$state.status"></ion-spinner>
         </div>
         <div class="registration__introduction">
-            <p>
+            <h1>
                 Logs are used to store all your medication information in one place.
-            </p>
-            You can securely store your health information in each log. Use them to save your:
+            </h1>
+            <p>
+            You can securely store your health information in each log. You'll use logs to record your:
             <ul>
                 <li>⏰ Medication Schedules</li>
                 <li>📅 Dosing Records</li>
-                <li>✏️ Health Notes</li>
                 <li>👩‍⚕️Care Team</li>
                 <li>💊 Pharmacies</li>
 
             </ul>
-            <p> We've created two logs to get you started: <span>Jon Berry's log</span> and <span>Jon Berry's Personal log</span>.
+            </p>
+            <p> We've created two logs to get you started: <span>{{ logs[0].first_name }}&nbsp;{{ logs[0].last_name }}'s log</span> and <span>{{ logs[0].first_name }}&nbsp;{{ logs[0].last_name }}'s Confidential log</span>.
                 You can create other logs for yourself, a family member, or someone you care for.
         </div>
         <div class="logs__your-logs">
-            <h1>
+            <h1 style="padding-left: 1em;">
                 <span>📚</span>
                 Your Logs
             </h1>
         </div>
-        <ul class="log-list " ng-repeat="row in logsCtrl.logList">
+        <ul class="log-list" ng-repeat="row in logsCtrl.logList">
             <li class="log-list__log" ng-repeat="log in row" ng-click="logsCtrl.edit(log)">
                 <!--<avatar patient="log"></avatar>-->
                 <span class="log-list__log-icon">📔</span>
                 <h2 class="log-list__log-title">{{ log.first_name }}&nbsp;{{ log.last_name }}'s Log</h2>
-                <span>Shared with: Just me</span>
+                <p class="log-list__log-description">Shared with: Just me</p>
             </li>
             <li class="log-list__log" ng-repeat="log in row" ng-click="logsCtrl.edit(log)">
                 <!--<avatar patient="log"></avatar>-->
                 <span class="log-list__log-icon">📔</span>
-                <h2 class="log-list__log-title">{{ log.first_name }}&nbsp;{{ log.last_name }}'s Log</h2>
-                <span>Shared with: Just me</span>
-            </li>
-            <li class="log-list__log" ng-repeat="log in row" ng-click="logsCtrl.edit(log)">
-                <!--<avatar patient="log"></avatar>-->
-                <span class="log-list__log-icon">📔</span>
-                <h2 class="log-list__log-title">{{ log.first_name }}&nbsp;{{ log.last_name }}'s Log</h2>
-                <span>Shared with: Just me</span>
+                <h2 class="log-list__log-title">{{ log.first_name }}&nbsp;{{ log.last_name }}'s Confidential Log</h2>
+                <p class="log-list__log-description">Shared with: Just me</p>
             </li>
         </ul>
-        <ion-infinite-scroll ng-if="hasMore()" distance="{{ settings.defaultScrollDistance }}" on-infinite="loadMore()">
-        </ion-infinite-scroll>
+        <!--<ion-infinite-scroll ng-if="hasMore()" distance="{{ settings.defaultScrollDistance }}" on-infinite="loadMore()">
+        </ion-infinite-scroll>-->
         <div class="row row-no-padding">
-            <!--<div class="col col-33" ng-if="!withMe">-->
-            <!--<div class="item-log" ui-sref="logs-add-my">-->
-            <!--<div class="log-avatar">-->
-            <!--</div>-->
-            <!--<div class="log-title">My<br>Log</div>-->
-            <!--</div>-->
-            <!--</div>-->
-            <div class="col col-33">
-                <div class="item-log" ui-sref="logs-add">
-                    <div class="log-avatar orange-bg add-avatar">
-                    </div>
-                    <div class="log-title">Add New Log</div>
+            <div class="log-list log-list--half-width">
+                <div class="log-list__log" ui-sref="logs-add">
+                    <h2 class="log-list__log-title">Add New Log</h2>
                 </div>
             </div>
-            <div class="col col-33">
-                <div class="item-log" ui-sref="logs-request">
-                    <div class="log-avatar orange-bg import-avatar">
-                    </div>
-                    <div class="log-title">Link Existing Log</div>
+            <div class="log-list log-list--half-width">
+                <div class="log-list__log" ui-sref="logs-request">
+                    <h2 class="log-list__log-title">Link Existing Log</h2>
                 </div>
             </div>
         </div>
-        <h1>Test one</h1>
-        <h2>Test one</h2>
-        <h3>Test one</h3>
-        <h4>Test one</h4>
-        <h5>Test one</h5>
-        <h6>Test one</h6>
-
     </ion-content>
 </ion-view>

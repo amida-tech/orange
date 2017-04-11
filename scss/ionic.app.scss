@@ -3,9 +3,12 @@
 @import 'base/legacy';
 
 @import 'vendor/reset';
+@import url('https://fonts.googleapis.com/css?family=Lato|Montserrat:400,700');
 
 @import 'theme/default/variables';
 
 @import 'tags/text';
 
 @import 'elements/log-list';
+
+@import 'views/registration/add-logs';
