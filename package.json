@@ -19,7 +19,7 @@
     "cordova-plugin-console",
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
-    "com.ionic.keyboard",
+    "ionic-plugin-keyboard",
     {
       "locator": "https://github.com/VitaliiBlagodir/cordova-plugin-datepicker.git",
       "id": "cordova-plugin-datepicker"
@@ -37,12 +37,9 @@
       "locator": "https://github.com/katzer/cordova-plugin-local-notifications",
       "id": "de.appplant.cordova.plugin.local-notification"
     },
-    "org.apache.cordova.file",
-    "nl.x-services.plugins.socialsharing",
-    {
-      "locator": "https://github.com/EddyVerbruggen/cordova-plugin-actionsheet.git",
-      "id": "nl.x-services.plugins.actionsheet"
-    },
+    "cordova-plugin-file",
+    "cordova-plugin-x-socialsharing",
+    "cordova-plugin-actionsheet",
     {
       "locator": "https://github.com/sarahgoldman/cordova-print-pdf-plugin.git",
       "id": "cordova-plugin-print-pdf"
@@ -50,7 +47,7 @@
     "cordova-plugin-statusbar"
   ],
   "cordovaPlatforms": [
-    "ios",
-    "android"
+    "android",
+    "ios"
   ]
 }

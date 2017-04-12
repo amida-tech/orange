@@ -148,7 +148,7 @@
         }
 
         function habitsDone() {
-            if (!$scope.habits || !_.all([
+            if (!$scope.habits || !_.every([
                     $scope.habits['wake'],
                     $scope.habits['breakfast'],
                     $scope.habits['dinner'],

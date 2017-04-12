@@ -98,7 +98,7 @@
 
         function checkHabits() {
             var habits = PatientService.currentPatient.habits;
-            return _.all([
+            return _.every([
                 habits['wake'],
                 habits['breakfast'],
                 habits['lunch'],

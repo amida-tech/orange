@@ -9,3 +9,7 @@ www/lib/
 
 www/css/ionic.app.css
 www/css/ionic.app.min.css
+
+.vscode/settings.json
+
+npm-debug.log
