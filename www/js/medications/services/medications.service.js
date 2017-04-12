@@ -36,6 +36,14 @@
 
 
         function saveItem(savedItem) {
+            if (savedItem && savedItem.schedule && savedItem.schedule.times) {
+                savedItem.schedule.times = savedItem.schedule.times.map(function (time) {
+                    time = Object.assign({}, time);
+                    delete time.description;
+                    delete time.heading;
+                    return time;
+                });
+            }
             var promise = PatientPagingService.prototype.saveItem.call(this, savedItem);
             if (savedItem.id) {
                 promise = promise.then(function () {
