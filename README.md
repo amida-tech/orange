@@ -43,7 +43,7 @@ To build the app with the API running locally you must make the following edit:
 
 Find the file `settings.js` in the directory `~/orange/www/js/core/constants/`
 
-Change the value of `orangeApiUrl` on line 6 from `https://orange-secure.amida-demo.com/api/v1` to `http://localhost:5000/v1/` and save those changes.  
+Change the value of `orangeApiUrl` on line 6 from `https://orange-secure.amida-demo.com/api/v1` to `http://localhost:5000/v1/`
 
 
 And then...
