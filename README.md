@@ -35,6 +35,12 @@ bower install
 gulp sass
 ```
 
+To build the app with the API running locally you must make the following edit:
+
+Find the file `settings.js` in the directory `~/orange/www/js/core/constants/`
+
+Change the value of `orangeApiUrl` on line 6 from `https://orange-secure.amida-demo.com/api/v1` to `http://localhost:5000/v1/`
+
 ### Emulating
 
 In order to emulate for iOS you will need to have XCode Installed and be using a Mac.
