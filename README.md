@@ -31,21 +31,9 @@ In order to get started, cordova and ionic need to be installed.  Do this by run
 npm install -g cordova ionic gulp bower
 
 npm install
-```
-
-Restore the platforms and plugins from package.json:
-
-```
-ionic state restore
-```
-
-And then...
-
-```
 bower install
 gulp sass
 ```
-
 
 ### Emulating
 
