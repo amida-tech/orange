@@ -3,6 +3,7 @@
   "version": "0.99.1",
   "description": "Orange: An Ionic project",
   "dependencies": {
+    "cordova-ios": "^4.4.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.2.0",
     "gulp-minify-css": "^0.3.0",
