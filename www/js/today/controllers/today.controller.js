@@ -154,6 +154,7 @@
                     }else{
                     	dateTaken = moment(event.tookDate + ' ' + event.tookTime, 'YYYY-MM-DD hh:mm a').format();
                     }
+
                     var dose = {
                         medication_id: event.medication_id,
                         date: dateTaken,
