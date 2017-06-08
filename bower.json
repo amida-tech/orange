@@ -1,11 +1,8 @@
 {
-  "name": "Orange",
+  "name": "orange",
   "private": "true",
   "resolutions": {
-    "angular": "=1.4.3",
-    "ionic": "~1.1.1",
-    "angular-animate": "1.4.3",
-    "angular-sanitize": "1.4.3"
+    "angular": "=1.4.3"
   },
   "dependencies": {
     "ionic": "driftyco/ionic-bower#1.1.1",
