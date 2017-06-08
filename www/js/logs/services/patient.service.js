@@ -295,8 +295,15 @@
         }
 
         function getReport(patientId, month, year) {
-            var startDate = new Date(Date.UTC(year, month, 1)),
-                endDate = new Date(Date.UTC(year, parseInt(month) + 1, 0));
+            var startDate, endDate;
+        	if (month === undefined && year === undefined){
+        		startDate = new Date();
+        		endDate = startDate;
+        	}else{
+        		startDate = new Date(Date.UTC(year, month, 1));
+        		endDate = new Date(Date.UTC(year, parseInt(month) + 1, 0));
+        	}
+
             return OrangeApi.patients.withHttpConfig({
                 responseType: 'arraybuffer'
             }).get(

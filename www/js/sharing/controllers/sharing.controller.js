@@ -131,8 +131,8 @@
                     }
                     vm.month = _.last(vm.months);
                 } else {
-                    vm.buttonDisabled = true;
                     vm.months = [];
+
                 }
             });
         }

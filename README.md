@@ -1,4 +1,4 @@
-#Orange Rx
+# Orange Rx
 Amida’s Orange Rx mobile application helps make medication management
 easy and safe. Instead error-prone manual data entry, Orange Rx
 automatically imports - under the patients control - personal health data from
@@ -6,22 +6,15 @@ a variety of electronic sources. Combining open source Blue ButtonTM technology 
 
 Some of the features of the Orange Rx app include:
 
-– Notifications and reminders for medication dosing
-
-– Automatic synchronization for up-to- date dosing information
-
-– Multi-user log-in for multiple individuals to manage and view medication schedules
-
-– Data storage in a secure, private, HIPAA-compliant server
-
-– Easily hosted on a HIPAA-compliant Amida server, your server, or in the cloud
-
-– Seamless integration to all file types and existing systems using Amida’s open source Data Reconciliation Engine
+- Notifications and reminders for medication dosing
+- Automatic synchronization for up-to- date dosing information
+- Multi-user log-in for multiple individuals to manage and view medication schedules
+- Data storage in a secure, private, HIPAA-compliant server
+- Easily hosted on a HIPAA-compliant Amida server, your server, or in the cloud
+- Seamless integration to all file types and existing systems using Amida’s open source Data Reconciliation Engine
 
 
-## About
-
-Medication management app
+## Development
 
 ### Installation
 
@@ -31,21 +24,15 @@ In order to get started, cordova and ionic need to be installed.  Do this by run
 npm install -g cordova ionic gulp bower
 
 npm install
-```
-
-Restore the platforms and plugins from package.json:
-
-```
-ionic state restore
-```
-
-And then...
-
-```
 bower install
 gulp sass
 ```
 
+To build the app with the API running locally you must make the following edit:
+
+Find the file `settings.js` in the directory `~/orange/www/js/core/constants/`
+
+Change the value of `orangeApiUrl` on line 6 from `https://orange-secure.amida-demo.com/api/v1` to `http://localhost:5000/v1/`
 
 ### Emulating
 
