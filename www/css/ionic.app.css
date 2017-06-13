@@ -9289,11 +9289,11 @@ body {
   white-space: pre-line !important; }
 
 .spinner.spinner-orange-light {
-  stroke: #FFD496;
-  fill: #FFD496; }
+  stroke: #387ef5;
+  fill: #387ef5; }
 
 .item-error {
-  background-color: #B00212;
+  background-color: #FA2E20;
   padding: 12px 16px; }
   .item-error p {
     color: #fff;
@@ -9314,7 +9314,7 @@ body {
     font-weight: 600; }
 
 .item-warning {
-  background-color: #FFD496;
+  background-color: #387ef5;
   padding: 12px 16px;
   border: none !important; }
   .item-warning p {
@@ -9392,19 +9392,14 @@ dl.dl-worksheet dd {
   border-color: #01133f;
   color: #fff; }
 
-.button.button-blue{
-  background-color: #387ef5;
-  border-color: #387ef5;
-}
-
 .button.button-orange {
   background-color: #387ef5;
   border-color: #387ef5; }
   .button.button-orange.button-outline {
     background-color: transparent;
-    color: #FFD496; }
+    color: #387ef5; }
   .button.button-orange.activated, .button.button-orange.button-icon.activated {
-    background-color: #FFD496;
+    background-color: #387ef5;
     opacity: 0.5; }
 
 .calendar .wrapper {
@@ -9564,11 +9559,11 @@ ion-content .schedule-item:last-child {
       color: #B00212; }
 
 .scroll-refresher.light-orange .ionic-refresher-content.ionic-refresher-with-text {
-  color: #FFD496; }
+  color: #387ef5; }
 
 .scroll-refresher.light-orange .ionic-refresher-content .icon-refreshing svg {
-  stroke: #FFD496;
-  fill: #FFD496; }
+  stroke: #387ef5;
+  fill: #387ef5; }
 
 .list.list-schedule {
   margin-top: 0;
@@ -9603,7 +9598,7 @@ ion-content .schedule-item:last-child {
       font-size: 12.6px;
       margin-top: 12px; }
   .list.orange-list .button-bar {
-    box-shadow: 0 0 2px #FFD496;
+    box-shadow: 0 0 2px #387ef5;
     margin-bottom: 24px; }
     .list.orange-list .button-bar .button {
       padding: 0;
@@ -9751,13 +9746,13 @@ ion-content .schedule-item:last-child {
     .orange-avatar .item-log .log-avatar-img {
       width: 80px;
       height: 80px;
-      background-color: #FFD496;
+      background-color: #387ef5;
       border-radius: 50%; }
     .orange-logs .item-log .log-avatar,
     .orange-avatar .item-log .log-avatar {
       width: 80px;
       height: 80px;
-      background-color: #FFD496;
+      background-color: #387ef5;
       border-radius: 50%; }
       .orange-logs .item-log .log-avatar.active, .orange-logs .item-log .log-avatar.orange-bg,
       .orange-avatar .item-log .log-avatar.active,
@@ -9880,7 +9875,7 @@ ion-content .schedule-item:last-child {
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background-color: #FFD496;
+        background-color: #387ef5;
         background-size: 100%; }
       .orange-menu .menu.menu-left .avatar p {
         color: #fff;
@@ -9928,7 +9923,7 @@ ion-content .schedule-item:last-child {
   top: 50%;
   margin-top: -80px; }
   .loading h3 {
-    color: #FFD496;
+    color: #387ef5;
     font-size: 28px;
     font-weight: 400; }
 
@@ -10156,6 +10151,7 @@ ion-option-button.option-control.button {
   vertical-align: middle; }
 
 .logo {
+  margin-top: 10px;
   text-align: center; }
   .logo img {
     position: relative;

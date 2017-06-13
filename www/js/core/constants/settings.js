@@ -4,9 +4,9 @@
     angular
         .module('orange')
         .constant('settings', {
-           // 'orangeApiUrl': 'https://orange-secure.amida-demo.com/api/v1',
+            'orangeApiUrl': 'https://orange-secure.amida-demo.com/api/v1',
             'clientSecret': 'testsecret',
-            'orangeApiUrl': 'http://localhost:5000/v1/',
+            //'orangeApiUrl': 'http://localhost:5000/v1/',
             // 'clientSecret': 'arewedoneyetquestionmark',
             // 'orangeApiUrl': 'https://orange-secure.amida-demo.com/api/v1',
             // 'clientSecret': 'arewedoneyetquestionmark',

@@ -109,12 +109,15 @@ $dark: #4D4D4D !default;
 $more-dark: #444 !default;
 
 // Colors
-$orange: #FAAA20;
-$orange-lighter: #feecd1;
-$orange-light: #FFD496;
+$orange: #01133f;
+$orange-lighter: #FDFEFE;
+$orange-light: #387ef5;
+$VA-blue: #01133f;
+$white: #FDFEFE;
+$actionItem-blue: #387ef5;
 $red: #FA2E20;
-$dark-red: #D0021B;
-$green: #20B11D;
+$dark-red: #B00212;
+$green: #013f2d;
 $gray: #9E9A9A;
 $middlegray: #ccc;
 $lightgray: #efefef;
@@ -426,8 +429,8 @@ dl.dl-worksheet {
 }
 
 .button.button-dark-orange {
-  background-color: $orange;
-  border-color: $orange;
+  background-color: $VA-blue;
+  border-color: $VA-blue;
   color: $light;
 }
 
@@ -1487,6 +1490,7 @@ ion-option-button.option-control.button {
 }
 
 .logo {
+  margin-top: 10px;
   text-align: center;
 
   img {
