@@ -211,6 +211,8 @@
 
         function getFilterTitle(event) {
             var result = '';
+            if(event.eventsType === 'meditation' || event.eventsType === 'mood')
+                return "";
             if (event.event.type == 'exact') {
                 if (!_.isUndefined(event.scheduled)) {
                     result += moment(event.date).format(timeFormat);
@@ -236,6 +238,10 @@
             var result = '';
             var event = events[0];
             var now = moment();
+
+            if(event.eventsType === 'meditation' || event.eventsType === 'mood')
+                return "";
+
 
             if (event.dose_id) {
                 if (event.took_medication) {
@@ -263,6 +269,39 @@
             return status;
         }
 
+        function generateDate(elem) {
+            var f = '';
+            var whens = {
+                'before': '1',
+                'during': '2',
+                'after': '3'
+            };
+            f += moment(elem.date).format('YYYY-MM-DD-HH-mm-');
+            if (elem.event.type === 'exact') {
+                f += '0-' + moment(elem.event.time, $scope.settings.timeFormat).format('HH:mm');
+            } else  {
+                f += whens[elem.event.when] + '-' + moment(getHabitsTime(elem.event), $scope.settings.timeFormat).format('HH:mm');
+            }
+            f += '-';
+            if (elem.dose_id) {
+                f += moment(elem.dose.date).format('HH:mm-');
+                f += (elem.took_medication ? '0' : '1')
+            } else {
+                f += '00:00-0';
+            }
+
+            return f;
+        }
+
+        function generateMeditationDate(elem){
+            var f = '';
+            f += moment(elem.date).format('YYYY-MM-DD-HH-mm-');
+            f += '0-' + moment(elem.date, $scope.settings.timeFormat).format('HH:mm');
+            f += '-00:00-0';
+            return f;
+
+        }
+
         function refresh() {
             var filter = {
                 start_date: vm.scheduleDate,
@@ -272,10 +311,12 @@
                 patient.all('schedule').getList(filter),
                 MedicationService.getAllItems(true),
                 PatientService.getHabits(patient),
+                patient.all('journal/meditations').getList(),
+                patient.all('journal/moods').getList(),
                 DoseService.getAllItems(true)
             ]).then(
                 function (data) {
-                    // Update notify, on refresh scheduling
+//                     Update notify, on refresh scheduling
                     if (vm.schedule !== null && data[1].plain().length != vm.medications.length) {
                         notify.updateNotify();
                     }
@@ -283,7 +324,9 @@
                     vm.schedule = data[0].plain();
                     vm.medications = data[1].plain();
                     vm.habits = data[2].plain();
-                    vm.doses = data[3].plain();
+                    vm.meditations = data[3].plain();
+                    vm.moods = data[4].plain();
+                    vm.doses = data[4].plain();
                     vm.schedule.forEach(function (elem) {
                         elem.medication = _.find(vm.medications, {id: elem.medication_id});
                         elem.doseModel = elem.medication.dose;
@@ -303,33 +346,27 @@
                             elem.doseModel = elem.dose.dose;
                         }
                         elem.status = getEventStatus(elem);
+                        elem.formattedDate = generateDate(elem);
+                        elem.eventsType = 'medication';
+
                     });
 
-                    var groups = _.groupBy(vm.schedule, function (elem) {
-                        var f = '';
-                        var whens = {
-                            'before': '1',
-                            'during': '2',
-                            'after': '3'
-                        };
-                        f += moment(elem.date).format('YYYY-MM-DD-HH-mm-');
-                        if (elem.event.type === 'exact') {
-                            f += '0-' + moment(elem.event.time, $scope.settings.timeFormat).format('HH:mm');
-                        } else {
-                            f += whens[elem.event.when] + '-' + moment(getHabitsTime(elem.event), $scope.settings.timeFormat).format('HH:mm');
-                        }
-                        f += '-';
-                        if (elem.dose_id) {
-                            f += moment(elem.dose.date).format('HH:mm-');
-                            f += (elem.took_medication ? '0' : '1')
-                        } else {
-                            f += '00:00-0';
-                        }
+                    vm.meditations.forEach(function (elem) {
+                        elem.formattedDate = generateMeditationDate(elem);
+                        elem.eventsType = 'meditation';
 
-                        return f;
+                    })
+
+                    vm.moods.forEach(function (elem){
+                        elem.formattedDate = generateMeditationDate(elem);
+                        elem.eventsType = 'mood';
                     });
 
-                    //console.log(groups);
+
+                    var events = vm.schedule.concat(vm.meditations).concat(vm.moods);
+
+                    var groups = _.groupBy(events, 'formattedDate');
+
                     vm.filters = [];
                     var keys = _.keysIn(groups).sort();
                     _.forEach(keys, function (key) {
@@ -341,8 +378,9 @@
                             name: name,
                             events: events
                         })
-                    });
 
+                    });
+                    console.log(vm.filters[4]);
                     vm.withAsNeeded = _.some(vm.medications, function (item) {
                         return item.schedule.as_needed === true;
                     });

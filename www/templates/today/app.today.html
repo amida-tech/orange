@@ -37,7 +37,7 @@
                     <div class="row row-center row-no-padding">
 
                         <div class="col col-75 med-title" ng-click="today.openModal(event, $event)">
-                            <medication-block medication-name="event.medication.name"
+                            <medication-block medication-name="event.mood"
                                               medication-brand="event.medication.brand + ' - ' + event.doseModel.quantity + ' ' + event.doseModel.unit"></medication-block>
                             <p class="muted" ng-if="event.dose_id">
                                 <small ng-bind="(event.took_medication ? 'Taken: ' : 'Skipped: ') + (event.dose.date|date:'hh:mm a'|lowercase)"></small>
@@ -56,6 +56,17 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="item item-schedule" ng-repeat="event in filter.events.meditation">
+                    <div class="row row-center row-no-padding">
+
+                        <div class="col col-75 med-title" >
+                            <meditation-block meditation-text="event.text"
+                                              meditation-length="event.meditationLength">
+
+                            </meditation-block>
+                        </div>
+                    </div>>
                 </div>
             </div>
         </div>
